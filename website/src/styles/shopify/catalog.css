@@ -1,0 +1,1187 @@
+
+  .ara-company-catalog {
+    overflow: hidden;
+    padding: var(--ara-cc-top) 0 var(--ara-cc-bottom);
+    background-color: var(--ara-cc-bg);
+    background-image: repeating-linear-gradient(
+      to bottom,
+      transparent 0,
+      transparent 35px,
+      color-mix(in srgb, var(--ara-cc-line) 42%, transparent) 35px,
+      color-mix(in srgb, var(--ara-cc-line) 42%, transparent) 37px
+    );
+    color: var(--ara-cc-text);
+  }
+
+  .ara-company-catalog * {
+    box-sizing: border-box;
+  }
+
+  .ara-company-catalog .ara-company-catalog__inner {
+    width: min(100%, var(--ara-cc-max));
+    margin: 0 auto;
+    padding: 0 40px;
+  }
+
+  .ara-company-catalog .ara-company-catalog__intro {
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) minmax(300px, 0.55fr);
+    gap: 50px;
+    align-items: end;
+    margin-bottom: 38px;
+  }
+
+  .ara-company-catalog .ara-company-catalog__eyebrow,
+  .ara-company-catalog .ara-company-catalog__search > span,
+  .ara-company-catalog .ara-company-catalog__filter,
+  .ara-company-catalog .ara-company-catalog__count,
+  .ara-company-catalog .ara-company-catalog__group-heading small,
+  .ara-company-catalog .ara-company-catalog__card-heading,
+  .ara-company-catalog .ara-company-catalog__card-footer,
+  .ara-company-catalog .ara-company-catalog__open {
+    font-family: var(--font-body-family);
+    font-style: var(--font-body-style);
+  }
+
+  .ara-company-catalog .ara-company-catalog__eyebrow {
+    color: var(--ara-cc-neutral);
+    font-size: var(--ara-cc-meta-desktop);
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .ara-company-catalog .ara-company-catalog__intro h1 {
+    margin: 13px 0 0;
+    font-family: var(--font-heading-family);
+    font-size: var(--ara-cc-heading-desktop);
+    font-style: var(--font-heading-style);
+    font-weight: var(--font-heading-weight);
+    line-height: 0.96;
+    letter-spacing: -0.05em;
+  }
+
+  .ara-company-catalog .ara-company-catalog__description {
+    color: var(--ara-cc-muted);
+    font-family: var(--font-body-family);
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  .ara-company-catalog .ara-company-catalog__description p {
+    margin: 0;
+  }
+
+  .ara-company-catalog .ara-company-catalog__tools {
+    display: grid;
+    grid-template-columns: minmax(250px, 0.72fr) minmax(0, 1.4fr) auto;
+    gap: 16px;
+    align-items: end;
+    margin-bottom: 47px;
+    padding: 15px;
+    border: 1px solid var(--ara-cc-border);
+    border-radius: 10px;
+    background: color-mix(in srgb, var(--ara-cc-card) 94%, transparent);
+    box-shadow: 0 8px 26px rgba(22, 27, 46, 0.055);
+  }
+
+  .ara-company-catalog .ara-company-catalog__search {
+    display: grid;
+    gap: 7px;
+  }
+
+  .ara-company-catalog .ara-company-catalog__search > span,
+  .ara-company-catalog .ara-company-catalog__filter,
+  .ara-company-catalog .ara-company-catalog__count {
+    font-size: var(--ara-cc-meta-desktop);
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .ara-company-catalog .ara-company-catalog__search input {
+    width: 100%;
+    min-height: 42px;
+    padding: 10px 12px;
+    border: 1px solid var(--ara-cc-border);
+    border-radius: 7px;
+    background: #FFFFFF;
+    color: var(--ara-cc-text);
+    font-family: var(--font-body-family);
+    font-size: 14px;
+  }
+
+  .ara-company-catalog .ara-company-catalog__filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .ara-company-catalog .ara-company-catalog__filter {
+    min-height: 34px;
+    padding: 7px 10px;
+    border: 1px solid var(--ara-cc-border);
+    border-radius: 999px;
+    background: transparent;
+    color: var(--ara-cc-text);
+    cursor: pointer;
+  }
+
+  .ara-company-catalog .ara-company-catalog__filter:hover,
+  .ara-company-catalog .ara-company-catalog__filter.is-active {
+    border-color: var(--ara-cc-text);
+    background: var(--ara-cc-text);
+    color: #FFFFFF;
+  }
+
+  .ara-company-catalog .ara-company-catalog__count {
+    display: grid;
+    gap: 2px;
+    margin: 0;
+    color: var(--ara-cc-muted);
+    text-align: right;
+  }
+
+  .ara-company-catalog .ara-company-catalog__count strong {
+    color: var(--ara-cc-text);
+    font-family: var(--font-heading-family);
+    font-size: 24px;
+    line-height: 1;
+  }
+
+  .ara-company-catalog .ara-company-catalog__groups {
+    display: grid;
+    gap: 57px;
+  }
+
+  .ara-company-catalog .ara-company-catalog__group[hidden] {
+    display: none;
+  }
+
+  .ara-company-catalog .ara-company-catalog__group-heading {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    gap: 17px;
+    align-items: center;
+    margin-bottom: 17px;
+  }
+
+  .ara-company-catalog .ara-company-catalog__group-heading h2 {
+    margin: 0;
+    font-family: var(--font-heading-family);
+    font-size: var(--ara-cc-category-desktop);
+    font-style: italic;
+    font-weight: 500;
+    line-height: 1;
+  }
+
+  .ara-company-catalog .ara-company-catalog__group-heading > span {
+    height: 1px;
+    background: color-mix(in srgb, var(--ara-cc-text) 16%, transparent);
+  }
+
+  .ara-company-catalog .ara-company-catalog__group-heading small {
+    color: var(--ara-cc-muted);
+    font-size: var(--ara-cc-meta-desktop);
+    font-weight: 800;
+  }
+
+  .ara-company-catalog .ara-company-catalog__grid {
+    display: grid;
+    grid-template-columns: repeat(var(--ara-cc-columns), minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  .ara-company-catalog .ara-company-catalog__card {
+    position: relative;
+    display: grid;
+    min-width: 0;
+    min-height: 172px;
+    grid-template-rows: auto 1fr auto;
+    overflow: hidden;
+    padding: 14px 14px 11px;
+    border: 1px solid var(--ara-cc-border);
+    border-radius: 9px;
+    background: color-mix(in srgb, var(--ara-cc-card) 97%, transparent);
+    color: var(--ara-cc-neutral);
+    text-decoration: none;
+    box-shadow: 0 6px 17px rgba(22, 27, 46, 0.06);
+    transition:
+      transform 0.2s ease,
+      box-shadow 0.2s ease,
+      border-color 0.2s ease;
+  }
+
+  .ara-company-catalog .ara-company-catalog__card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    height: 3px;
+    background: var(--ara-company-marker);
+  }
+
+  .ara-company-catalog .ara-company-catalog__card--up {
+    color: var(--ara-cc-positive);
+  }
+
+  .ara-company-catalog .ara-company-catalog__card--down {
+    color: var(--ara-cc-negative);
+  }
+
+  .ara-company-catalog .ara-company-catalog__card[hidden] {
+    display: none;
+  }
+
+  .ara-company-catalog .ara-company-catalog__card:hover {
+    z-index: 2;
+    transform: translateY(-4px);
+    border-color: color-mix(in srgb, var(--ara-company-marker) 65%, var(--ara-cc-border));
+    box-shadow: 0 13px 28px rgba(22, 27, 46, 0.12);
+  }
+
+  .ara-company-catalog .ara-company-catalog__card-heading {
+    display: grid;
+    grid-template-columns: 5px minmax(0, 1fr) auto;
+    gap: 10px;
+    align-items: start;
+    color: var(--ara-cc-text);
+  }
+
+  .ara-company-catalog .ara-company-catalog__marker {
+    display: block;
+    width: 5px;
+    height: 31px;
+    border-radius: 999px;
+    background: var(--ara-company-marker);
+  }
+
+  .ara-company-catalog .ara-company-catalog__card-heading > div {
+    display: grid;
+    gap: 3px;
+    min-width: 0;
+  }
+
+  .ara-company-catalog .ara-company-catalog__card-heading strong {
+    overflow: hidden;
+    font-size: var(--ara-cc-company-desktop);
+    font-weight: 800;
+    line-height: 1.15;
+    letter-spacing: 0.02em;
+    text-overflow: ellipsis;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .ara-company-catalog .ara-company-catalog__card-heading small,
+  .ara-company-catalog .ara-company-catalog__ticker {
+    color: var(--ara-cc-muted);
+    font-size: var(--ara-cc-meta-desktop);
+    font-weight: 800;
+    letter-spacing: 0.07em;
+    line-height: 1.2;
+    text-transform: uppercase;
+  }
+
+  .ara-company-catalog .ara-company-catalog__ticker {
+    padding: 4px 6px;
+    border: 1px solid var(--ara-cc-border);
+    border-radius: 5px;
+    background: #FFFFFF;
+  }
+
+  .ara-company-catalog .ara-company-catalog__chart {
+    min-height: 71px;
+    margin-top: 7px;
+    padding: 3px 0 0;
+  }
+
+  .ara-company-catalog .ara-company-catalog__chart svg {
+    display: block;
+    width: 100%;
+    height: 68px;
+    overflow: visible;
+  }
+
+  .ara-company-catalog .ara-company-catalog__guide {
+    stroke: color-mix(in srgb, var(--ara-cc-border) 64%, transparent);
+    stroke-width: 1;
+    stroke-dasharray: 2 4;
+  }
+
+  .ara-company-catalog .ara-company-catalog__line {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2.15;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    vector-effect: non-scaling-stroke;
+  }
+
+  .ara-company-catalog .ara-company-catalog__dot {
+    fill: currentColor;
+    stroke: var(--ara-cc-card);
+    stroke-width: 1.6;
+  }
+
+  .ara-company-catalog .ara-company-catalog__card-footer {
+    display: grid;
+    grid-template-columns: 1fr auto auto;
+    gap: 8px;
+    align-items: center;
+    margin-top: 3px;
+    font-size: var(--ara-cc-meta-desktop);
+    font-weight: 800;
+    letter-spacing: 0.03em;
+  }
+
+  .ara-company-catalog .ara-company-catalog__change {
+    color: currentColor;
+  }
+
+  .ara-company-catalog .ara-company-catalog__status {
+    color: var(--ara-cc-muted);
+    text-transform: uppercase;
+  }
+
+  .ara-company-catalog .ara-company-catalog__period {
+    color: var(--ara-cc-muted);
+  }
+
+  .ara-company-catalog .ara-company-catalog__open {
+    position: absolute;
+    right: 10px;
+    bottom: 8px;
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    padding: 5px 7px;
+    border-radius: 999px;
+    background: var(--ara-cc-text);
+    color: #FFFFFF;
+    font-size: var(--ara-cc-meta-desktop);
+    font-weight: 800;
+    letter-spacing: 0.07em;
+    opacity: 0;
+    text-transform: uppercase;
+    transform: translateY(5px);
+    transition:
+      opacity 0.2s ease,
+      transform 0.2s ease;
+  }
+
+  .ara-company-catalog .ara-company-catalog__card:hover .ara-company-catalog__open {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .ara-company-catalog .ara-company-catalog__empty {
+    margin: 36px 0 0;
+    padding: 24px;
+    border: 1px solid var(--ara-cc-border);
+    border-radius: 8px;
+    background: var(--ara-cc-card);
+    color: var(--ara-cc-muted);
+    font-family: var(--font-heading-family);
+    font-size: 27px;
+    text-align: center;
+  }
+
+  @media screen and (max-width: 1249px) {
+    .ara-company-catalog .ara-company-catalog__grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .ara-company-catalog .ara-company-catalog__tools {
+      grid-template-columns: 1fr;
+      align-items: start;
+    }
+
+    .ara-company-catalog .ara-company-catalog__count {
+      text-align: left;
+    }
+  }
+
+  @media screen and (max-width: 949px) {
+    .ara-company-catalog .ara-company-catalog__intro {
+      grid-template-columns: 1fr;
+    }
+
+    .ara-company-catalog .ara-company-catalog__grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    .ara-company-catalog .ara-company-catalog__inner {
+      padding: 0 20px;
+    }
+
+    .ara-company-catalog .ara-company-catalog__intro h1 {
+      font-size: var(--ara-cc-heading-mobile);
+    }
+
+    .ara-company-catalog .ara-company-catalog__filters {
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      padding-bottom: 5px;
+      scrollbar-width: none;
+    }
+
+    .ara-company-catalog .ara-company-catalog__filters::-webkit-scrollbar {
+      display: none;
+    }
+
+    .ara-company-catalog .ara-company-catalog__filter {
+      flex: 0 0 auto;
+    }
+
+    .ara-company-catalog .ara-company-catalog__groups {
+      gap: 43px;
+    }
+
+    .ara-company-catalog .ara-company-catalog__group-heading h2 {
+      font-size: var(--ara-cc-category-mobile);
+    }
+
+    .ara-company-catalog .ara-company-catalog__grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 9px;
+    }
+
+    .ara-company-catalog .ara-company-catalog__card {
+      min-height: 164px;
+      padding: 12px 11px 9px;
+    }
+
+    .ara-company-catalog .ara-company-catalog__card-heading {
+      grid-template-columns: 4px minmax(0, 1fr);
+      gap: 8px;
+    }
+
+    .ara-company-catalog .ara-company-catalog__ticker {
+      grid-column: 2;
+      justify-self: start;
+      margin-top: 2px;
+    }
+
+    .ara-company-catalog .ara-company-catalog__card-heading strong {
+      font-size: var(--ara-cc-company-mobile);
+    }
+
+    .ara-company-catalog .ara-company-catalog__card-heading small,
+    .ara-company-catalog .ara-company-catalog__ticker,
+    .ara-company-catalog .ara-company-catalog__card-footer,
+    .ara-company-catalog .ara-company-catalog__group-heading small,
+    .ara-company-catalog .ara-company-catalog__search > span,
+    .ara-company-catalog .ara-company-catalog__filter,
+    .ara-company-catalog .ara-company-catalog__count {
+      font-size: var(--ara-cc-meta-mobile);
+    }
+
+    .ara-company-catalog .ara-company-catalog__chart svg {
+      height: 62px;
+    }
+
+    .ara-company-catalog .ara-company-catalog__open {
+      display: none;
+    }
+  }
+
+  @media screen and (max-width: 399px) {
+    .ara-company-catalog .ara-company-catalog__grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ara-company-catalog .ara-company-catalog__card,
+    .ara-company-catalog .ara-company-catalog__open {
+      transition: none;
+    }
+  }
+
+
+
+  .ara-company-catalog .ara-company-catalog__popup[hidden] {
+    display: none;
+  }
+
+  .ara-company-catalog .ara-company-catalog__popup {
+    position: fixed;
+    z-index: 9999;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    padding: 28px;
+  }
+
+  .ara-company-catalog .ara-company-catalog__popup-backdrop {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+    background: rgba(10, 14, 25, 0.72);
+    cursor: pointer;
+    backdrop-filter: blur(7px);
+  }
+
+  .ara-company-catalog .ara-company-catalog__popup-dialog {
+    position: relative;
+    z-index: 1;
+    width: min(100%, 860px);
+    max-height: calc(100vh - 56px);
+    overflow: auto;
+    border: 2px solid var(--ara-cc-text);
+    border-radius: 16px;
+    background:
+      repeating-linear-gradient(
+        to bottom,
+        transparent 0,
+        transparent 34px,
+        color-mix(in srgb, var(--ara-cc-line) 20%, transparent) 34px,
+        color-mix(in srgb, var(--ara-cc-line) 20%, transparent) 35px
+      ),
+      var(--ara-cc-bg);
+    box-shadow:
+      8px 8px 0 var(--ara-cc-gold),
+      0 32px 90px rgba(10, 14, 25, 0.34);
+  }
+
+  .ara-company-catalog .ara-company-catalog__popup-close {
+    position: sticky;
+    z-index: 4;
+    top: 14px;
+    float: right;
+    display: grid;
+    width: 42px;
+    height: 42px;
+    margin: 14px 14px -56px 0;
+    place-items: center;
+    border: 1px solid var(--ara-cc-text);
+    border-radius: 50%;
+    background: var(--ara-cc-card);
+    color: var(--ara-cc-text);
+    cursor: pointer;
+    font-size: 27px;
+    line-height: 1;
+  }
+
+  .ara-company-catalog .ara-company-catalog__popup-card {
+    padding: 26px;
+  }
+
+  .ara-company-catalog .ara-company-catalog__popup-folio {
+    display: flex;
+    justify-content: space-between;
+    gap: 18px;
+    padding: 12px 58px 12px 16px;
+    border: 1px solid var(--ara-popup-accent);
+    background: var(--ara-popup-accent);
+    color: #FFFFFF;
+    font-family: var(--font-body-family);
+    font-size: 10px;
+    font-weight: 900;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+
+  .ara-company-catalog .ara-company-catalog__popup-layout {
+    display: grid;
+    grid-template-columns: minmax(260px, 0.76fr) minmax(0, 1.24fr);
+    gap: 32px;
+    align-items: center;
+    padding: 30px 8px 8px;
+  }
+
+  .ara-company-catalog .ara-company-catalog__popup-visual {
+    min-width: 0;
+  }
+
+  .ara-company-catalog .ara-company-catalog__popup-book {
+    width: min(100%, 310px);
+    margin: 0 auto;
+    filter: drop-shadow(13px 16px 13px rgba(22, 27, 46, 0.22));
+  }
+
+  .ara-company-catalog .ara-company-catalog__popup-product-image,
+  .ara-company-catalog .ara-company-catalog__popup-cover {
+    display: block;
+    width: 100%;
+    aspect-ratio: 0.69;
+    border: 2px solid var(--ara-cc-text);
+    border-left-width: 10px;
+    border-radius: 3px 10px 10px 3px;
+    object-fit: cover;
+  }
+
+  .ara-company-catalog .ara-company-catalog__popup-cover {
+    position: relative;
+    overflow: hidden;
+    padding: 30px 23px 24px;
+    background:
+      repeating-linear-gradient(
+        to bottom,
+        transparent 0,
+        transparent 27px,
+        color-mix(in srgb, var(--ara-popup-cover-text) 14%, transparent) 27px,
+        color-mix(in srgb, var(--ara-popup-cover-text) 14%, transparent) 28px
+      ),
+      var(--ara-popup-cover);
+    color: var(--ara-popup-cover-text);
+    text-align: center;
+  }
+
+  .ara-company-catalog .ara-company-catalog__popup-cover-kicker {
+    display: block;
+    font-family: var(--font-body-family);
+    font-size: 9px;
+    font-weight: 900;
+    letter-spacing: 0.23em;
+    text-transform: uppercase;
+  }
+
+  .ara-company-catalog .ara-company-catalog__popup-cover > i {
+    display: block;
+    width: 100%;
+    height: 1px;
+    margin-top: 18px;
+    background: currentColor;
+    opacity: 0.24;
+  }
+
+  .ara-company-catalog .ara-company-catalog__popup-cover > strong {
+    display: block;
+    margin-top: 72px;
+    font-family: var(--font-heading-family);
+    font-size: clamp(37px, 5vw, 55px);
+    font-style: italic;
+    font-weight: 500;
+    line-height: 0.98;
+    letter-spacing: -0.05em;
+  }
+
+  .ara-company-catalog .ara-company-catalog__popup-cover > p {
+    max-width: 220px;
+    margin: 26px auto 0;
+    font-family: var(--font-body-family);
+    font-size: 13px;
+    line-height: 1.5;
+  }
+
+  .ara-company-catalog .ara-company-catalog__popup-cover > b {
+    position: absolute;
+    bottom: 17px;
+    left: 50%;
+    display: grid;
+    width: 37px;
+    height: 37px;
+    place-items: center;
+    border: 2px solid var(--ara-cc-gold);
+    border-radius: 50%;
+    background: var(--ara-cc-gold);
+    color: var(--ara-cc-text);
+    font-family: var(--font-heading-family);
+    font-size: 18px;
+    transform: translateX(-50%);
+  }
+
+  .ara-company-catalog .ara-company-catalog__popup-chart {
+    width: min(100%, 330px);
+    margin: 23px auto 0;
+    padding-top: 15px;
+    border-top: 1px solid var(--ara-cc-border);
+    color: var(--ara-cc-positive);
+  }
+
+  .ara-company-catalog .ara-company-catalog__popup-chart--down {
+    color: var(--ara-cc-negative);
+  }
+
+  .ara-company-catalog .ara-company-catalog__popup-chart--flat {
+    color: var(--ara-cc-neutral);
+  }
+
+  .ara-company-catalog .ara-company-catalog__popup-chart svg {
+    display: block;
+    width: 100%;
+    height: 56px;
+  }
+
+  .ara-company-catalog .ara-company-catalog__popup-chart-line {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2.2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .ara-company-catalog .ara-company-catalog__popup-chart circle {
+    fill: var(--ara-cc-gold);
+    stroke: var(--ara-cc-text);
+    stroke-width: 1.4;
+  }
+
+  .ara-company-catalog .ara-company-catalog__popup-copy {
+    min-width: 0;
+  }
+
+  .ara-company-catalog .ara-company-catalog__popup-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+  }
+
+  .ara-company-catalog .ara-company-catalog__popup-meta span {
+    padding: 5px 7px;
+    border: 1px solid var(--ara-cc-border);
+    background: var(--ara-cc-card);
+    color: var(--ara-cc-muted);
+    font-family: var(--font-body-family);
+    font-size: 8px;
+    font-weight: 900;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .ara-company-catalog .ara-company-catalog__popup-eyebrow {
+    margin: 28px 0 0;
+    color: var(--ara-popup-accent);
+    font-family: var(--font-body-family);
+    font-size: 10px;
+    font-weight: 900;
+    letter-spacing: 0.17em;
+    text-transform: uppercase;
+  }
+
+  .ara-company-catalog .ara-company-catalog__popup-copy h3 {
+    margin: 10px 0 0;
+    font-family: var(--font-heading-family);
+    font-size: clamp(46px, 6vw, 72px);
+    font-style: italic;
+    font-weight: 500;
+    line-height: 0.92;
+    letter-spacing: -0.055em;
+  }
+
+  .ara-company-catalog .ara-company-catalog__popup-tagline {
+    max-width: 470px;
+    margin: 18px 0 0;
+    color: var(--ara-cc-muted);
+    font-family: var(--font-body-family);
+    font-size: 15px;
+    line-height: 1.55;
+  }
+
+  .ara-company-catalog .ara-company-catalog__popup-chapter {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 14px;
+    align-items: center;
+    margin-top: 27px;
+    padding: 17px 0;
+    border-top: 1px solid var(--ara-cc-border);
+    border-bottom: 1px solid var(--ara-cc-border);
+  }
+
+  .ara-company-catalog .ara-company-catalog__popup-chapter span,
+  .ara-company-catalog .ara-company-catalog__popup-index > span {
+    color: var(--ara-cc-muted);
+    font-family: var(--font-body-family);
+    font-size: 8px;
+    font-weight: 900;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+  }
+
+  .ara-company-catalog .ara-company-catalog__popup-chapter strong {
+    font-family: var(--font-heading-family);
+    font-size: 21px;
+    font-style: italic;
+    font-weight: 500;
+    line-height: 1.1;
+  }
+
+  .ara-company-catalog .ara-company-catalog__popup-index {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    gap: 13px;
+    align-items: center;
+    padding: 17px 0;
+    border-bottom: 1px solid var(--ara-cc-border);
+  }
+
+  .ara-company-catalog .ara-company-catalog__popup-index > div {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+  }
+
+  .ara-company-catalog .ara-company-catalog__popup-index i {
+    display: block;
+    width: 21px;
+    height: 21px;
+    border: 1px solid var(--ara-cc-gold);
+    border-radius: 50%;
+    background: transparent;
+  }
+
+  .ara-company-catalog .ara-company-catalog__popup-index i.is-active {
+    background: var(--ara-cc-gold);
+    box-shadow: inset 0 0 0 5px var(--ara-cc-bg);
+  }
+
+  .ara-company-catalog .ara-company-catalog__popup-index > strong {
+    font-family: var(--font-heading-family);
+    font-size: 20px;
+    white-space: nowrap;
+  }
+
+  .ara-company-catalog .ara-company-catalog__popup-actions {
+    display: grid;
+    gap: 10px;
+    margin-top: 23px;
+  }
+
+  .ara-company-catalog .ara-company-catalog__popup-button {
+    display: flex;
+    min-height: 50px;
+    justify-content: center;
+    gap: 9px;
+    align-items: center;
+    padding: 12px 16px;
+    border: 1px solid var(--ara-cc-text);
+    font-family: var(--font-body-family);
+    font-size: 10px;
+    font-weight: 900;
+    letter-spacing: 0.07em;
+    text-align: center;
+    text-decoration: none;
+    text-transform: uppercase;
+  }
+
+  .ara-company-catalog .ara-company-catalog__popup-button--module {
+    background: var(--ara-cc-text);
+    color: #FFFFFF;
+  }
+
+  .ara-company-catalog .ara-company-catalog__popup-button--product {
+    border-color: var(--ara-cc-gold);
+    background: var(--ara-cc-gold);
+    color: var(--ara-cc-text);
+  }
+
+  .ara-company-catalog .ara-company-catalog__popup-button--disabled {
+    border-color: var(--ara-cc-border);
+    background: color-mix(in srgb, var(--ara-cc-card) 76%, transparent);
+    color: var(--ara-cc-muted);
+    cursor: default;
+  }
+
+  body.ara-company-popup-open {
+    overflow: hidden;
+  }
+
+  @media screen and (max-width: 749px) {
+    .ara-company-catalog .ara-company-catalog__popup {
+      padding: 14px;
+    }
+
+    .ara-company-catalog .ara-company-catalog__popup-dialog {
+      max-height: calc(100vh - 28px);
+      border-radius: 12px;
+      box-shadow:
+        5px 5px 0 var(--ara-cc-gold),
+        0 24px 60px rgba(10, 14, 25, 0.33);
+    }
+
+    .ara-company-catalog .ara-company-catalog__popup-card {
+      padding: 16px;
+    }
+
+    .ara-company-catalog .ara-company-catalog__popup-layout {
+      grid-template-columns: 1fr;
+      gap: 24px;
+      padding-top: 22px;
+    }
+
+    .ara-company-catalog .ara-company-catalog__popup-book {
+      width: min(76vw, 300px);
+    }
+
+    .ara-company-catalog .ara-company-catalog__popup-copy h3 {
+      font-size: clamp(44px, 14vw, 64px);
+    }
+
+    .ara-company-catalog .ara-company-catalog__popup-index {
+      grid-template-columns: 1fr auto;
+    }
+
+    .ara-company-catalog .ara-company-catalog__popup-index > div {
+      grid-column: 1 / -1;
+      order: 3;
+      overflow-x: auto;
+      padding-bottom: 2px;
+    }
+
+    .ara-company-catalog .ara-company-catalog__popup-index i {
+      flex: 0 0 20px;
+      width: 20px;
+      height: 20px;
+    }
+  }
+
+
+
+  .ara-company-catalog .ara-company-catalog__card[data-module-unavailable="true"] {
+    cursor: default;
+  }
+
+  .ara-company-catalog .ara-company-catalog__card[data-module-unavailable="true"]:hover {
+    transform: none;
+    border-color: var(--ara-cc-border);
+    box-shadow: 0 6px 17px rgba(22, 27, 46, 0.06);
+  }
+
+  .ara-company-catalog .ara-company-catalog__card[data-module-unavailable="true"] .ara-company-catalog__open {
+    display: none;
+  }
+
+
+
+  .ara-company-catalog {
+    --ara-cc-bg: #F5EFE1 !important;
+    --ara-cc-card: #FBF7EC !important;
+    --ara-cc-text: #161B2E !important;
+    --ara-cc-muted: #646575 !important;
+    --ara-cc-line: #1FA88F !important;
+    --ara-cc-border: #C9BEA8 !important;
+    --ara-cc-gold: #E0A526 !important;
+    background-image: repeating-linear-gradient(to bottom, transparent 0 35px, color-mix(in srgb, #1FA88F 8%, transparent) 35px 36px);
+  }
+
+  .ara-company-catalog .ara-company-catalog__intro {
+    padding: 25px 0 30px;
+    border-top: 4px solid var(--ara-cc-text);
+    border-bottom: 1px solid var(--ara-cc-text);
+  }
+
+  .ara-company-catalog .ara-company-catalog__tools {
+    margin-top: 24px;
+    padding: 18px;
+    border: 1px solid var(--ara-cc-text);
+    border-radius: 12px;
+    background: var(--ara-cc-card);
+    box-shadow: 5px 5px 0 color-mix(in srgb, var(--ara-cc-line) 22%, transparent);
+  }
+
+  .ara-company-catalog .ara-company-catalog__search input {
+    border-radius: 8px;
+    background: #FFFFFF;
+  }
+
+  .ara-company-catalog .ara-company-catalog__filter {
+    border-radius: 7px;
+  }
+
+  .ara-company-catalog .ara-company-catalog__filter.is-active {
+    background: var(--ara-cc-gold);
+    color: var(--ara-cc-text);
+    box-shadow: 3px 3px 0 var(--ara-cc-text);
+  }
+
+  .ara-company-catalog .ara-company-catalog__group-heading {
+    padding-top: 20px;
+    border-top: 2px solid var(--ara-cc-text);
+  }
+
+  .ara-company-catalog .ara-company-catalog__card {
+    overflow: hidden;
+    border: 1px solid var(--ara-cc-border);
+    border-radius: 13px;
+    box-shadow: 4px 4px 0 color-mix(in srgb, var(--ara-cc-line) 16%, transparent);
+  }
+
+  .ara-company-catalog .ara-company-catalog__card:hover,
+  .ara-company-catalog .ara-company-catalog__card:focus-visible {
+    transform: translateY(-5px);
+    box-shadow: 7px 7px 0 color-mix(in srgb, var(--ara-cc-gold) 30%, transparent);
+  }
+
+  .ara-company-catalog .ara-company-catalog__popup-dialog,
+  .ara-company-catalog .ara-company-catalog__popup-card,
+  .ara-company-catalog .ara-company-catalog__popup-cover {
+    border-radius: 14px;
+  }
+
+  @media screen and (max-width: 749px) {
+    .ara-company-catalog .ara-company-catalog__tools,
+    .ara-company-catalog .ara-company-catalog__card,
+    .ara-company-catalog .ara-company-catalog__popup-dialog {
+      border-radius: 10px;
+    }
+  }
+
+
+
+  .ara-company-catalog {
+    --ara-brand-ink: #161B2E;
+    --ara-brand-mint: #A6DECB;
+    --ara-brand-cream: #F5EFE1;
+    --ara-brand-paper: #F3ECDC;
+    --ara-brand-rise: #12A67C;
+    --ara-brand-fall: #ED5C5C;
+    --ara-brand-verdigris: #274B44;
+    --ara-brand-accent: #F0796B;
+  }
+
+  .ara-company-catalog .ara-company-catalog__brand-masthead {
+    display: grid;
+    grid-template-columns: minmax(210px, 360px) minmax(0, 1fr) 62px;
+    gap: 26px;
+    align-items: center;
+    margin-bottom: clamp(34px, 4vw, 62px);
+    padding: 16px 0 18px;
+    border-top: 3px solid var(--ara-brand-ink);
+    border-bottom: 1px solid var(--ara-brand-ink);
+  }
+
+  .ara-company-catalog .ara-company-catalog__brand-lockup img {
+    display: block;
+    width: min(100%, 310px);
+    height: auto;
+  }
+
+  .ara-company-catalog .ara-company-catalog__brand-index {
+    display: grid;
+    gap: 5px;
+    justify-items: end;
+    text-align: right;
+    font-family: var(--font-body-family);
+  }
+
+  .ara-company-catalog .ara-company-catalog__brand-index span {
+    color: var(--ara-brand-ink);
+    font-size: 11px;
+    font-weight: 900;
+    letter-spacing: .18em;
+  }
+
+  .ara-company-catalog .ara-company-catalog__brand-index small {
+    color: var(--ara-cc-muted);
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: .12em;
+  }
+
+  .ara-company-catalog .ara-company-catalog__brand-mark {
+    display: block;
+    width: 52px;
+    height: 52px;
+    border-radius: 12px;
+    object-fit: cover;
+  }
+
+  .ara-company-catalog .ara-company-catalog__intro {
+    position: relative;
+    padding: clamp(24px, 3vw, 42px);
+    border: 1px solid var(--ara-brand-ink);
+    border-radius: 8px;
+    background:
+      repeating-linear-gradient(
+        to bottom,
+        transparent 0 34px,
+        color-mix(in srgb, var(--ara-brand-mint) 22%, transparent) 34px 35px
+      ),
+      var(--ara-brand-cream);
+    box-shadow:
+      inset 0 0 0 5px var(--ara-brand-paper),
+      7px 7px 0 var(--ara-brand-mint);
+  }
+
+  .ara-company-catalog .ara-company-catalog__tools {
+    border-radius: 8px;
+    border-color: var(--ara-brand-ink);
+    background: var(--ara-brand-paper);
+    box-shadow: none;
+  }
+
+  .ara-company-catalog .ara-company-catalog__card {
+    border-radius: 6px;
+    border-color: color-mix(in srgb, var(--ara-brand-ink) 72%, transparent);
+    background: var(--ara-brand-paper);
+    box-shadow: 4px 4px 0 color-mix(in srgb, var(--ara-brand-mint) 54%, transparent);
+  }
+
+  .ara-company-catalog .ara-company-catalog__card:hover,
+  .ara-company-catalog .ara-company-catalog__card:focus-visible {
+    box-shadow:
+      0 0 0 2px var(--ara-cc-gold),
+      7px 7px 0 color-mix(in srgb, var(--ara-brand-mint) 66%, transparent);
+  }
+
+  .ara-company-catalog .ara-company-catalog__card-heading {
+    border-bottom: 1px solid color-mix(in srgb, var(--ara-brand-ink) 18%, transparent);
+  }
+
+  .ara-company-catalog .ara-company-catalog__popup-dialog {
+    border-radius: 8px;
+    border: 2px solid var(--ara-brand-ink);
+    background: var(--ara-brand-cream);
+    box-shadow:
+      0 0 0 4px var(--ara-brand-paper),
+      0 0 0 5px var(--ara-cc-gold);
+  }
+
+  .ara-company-catalog .ara-company-catalog__popup-card,
+  .ara-company-catalog .ara-company-catalog__popup-cover {
+    border-radius: 5px;
+  }
+
+  .ara-company-catalog .ara-company-catalog__popup-cover-mark {
+    display: block;
+    width: min(84%, 220px);
+    height: auto;
+    margin-top: auto;
+    object-fit: contain;
+  }
+
+  .ara-company-catalog .ara-company-catalog__popup-bookplate {
+    display: block;
+    width: min(100%, 180px);
+    height: auto;
+    margin: 0 0 18px;
+    border-radius: 6px;
+  }
+
+  .ara-company-catalog .ara-company-catalog__popup-index {
+    border-top: 1px solid var(--ara-brand-ink);
+    border-bottom: 1px solid var(--ara-brand-ink);
+    background: color-mix(in srgb, var(--ara-brand-paper) 82%, white);
+  }
+
+  .ara-company-catalog .ara-company-catalog__filter.is-active {
+    background: var(--ara-brand-mint);
+  }
+
+  @media screen and (max-width: 749px) {
+    .ara-company-catalog .ara-company-catalog__brand-masthead {
+      grid-template-columns: minmax(0, 1fr) 48px;
+      gap: 14px;
+    }
+
+    .ara-company-catalog .ara-company-catalog__brand-index {
+      grid-column: 1 / -1;
+      grid-row: 2;
+      justify-items: start;
+      text-align: left;
+    }
+
+    .ara-company-catalog .ara-company-catalog__brand-mark {
+      width: 44px;
+      height: 44px;
+      justify-self: end;
+    }
+  }

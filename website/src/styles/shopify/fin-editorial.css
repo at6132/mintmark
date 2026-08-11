@@ -1,0 +1,349 @@
+/*
+ * Fin. by Mintmark — letterpress card system
+ * Source: layout/theme.liquid (live Shopify store overrides)
+ * These rules style the Featured Pitch lead as a cream card with blue cap,
+ * gold corner, and photos mounted like prints.
+ */
+
+/* Fin. hierarchy, letterpress trim, colour by zone */
+.ara-editorial-front-page__lead,
+.ara-editorial-front-page__featured-story,
+.ara-editorial-front-page__market-item,
+.ara-editorial-front-page__quick-item,
+.ara-editorial-front-page__report {
+  --fin-acc: #176d5c;
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(160deg, #fffdf6, #fbf7ec 62%) !important;
+  border: 2px solid #161b2e !important;
+  border-radius: 10px !important;
+  box-shadow: 4px 4px 0 color-mix(in srgb, var(--fin-acc) 26%, transparent) !important;
+  transition: box-shadow 0.22s ease;
+}
+
+/* company question keeps dark editorial look with soft radius + cap hover */
+.ara-editorial-front-page__question {
+  --fin-acc: #005288;
+  position: relative;
+  overflow: hidden;
+  transition: box-shadow 0.25s ease;
+}
+
+/* hierarchy: weight scales with importance */
+.ara-editorial-front-page__lead {
+  border-width: 3px !important;
+  border-radius: 12px !important;
+  box-shadow: 6px 6px 0 color-mix(in srgb, var(--fin-acc) 30%, transparent) !important;
+  /* kill band1 right-rail divider from section CSS */
+  padding: 0 !important;
+  border-right-width: 3px !important;
+}
+
+.ara-editorial-front-page__market-item,
+.ara-editorial-front-page__quick-item,
+.ara-editorial-front-page__report {
+  border-width: 1.5px !important;
+  border-radius: 8px !important;
+  box-shadow: 3px 3px 0 color-mix(in srgb, var(--fin-acc) 20%, transparent) !important;
+}
+
+/* colour by zone, not per card */
+.ara-editorial-front-page__lead,
+.ara-editorial-front-page__question {
+  --fin-acc: #005288;
+}
+
+.ara-editorial-front-page__featured-story {
+  --fin-acc: #e0a526;
+}
+
+.ara-editorial-front-page__market-item,
+.ara-editorial-front-page__quick-item,
+.ara-editorial-front-page__report {
+  --fin-acc: #176d5c;
+}
+
+/* cap rule — grows on hover */
+.ara-editorial-front-page__lead::before,
+.ara-editorial-front-page__featured-story::before,
+.ara-editorial-front-page__question::before,
+.ara-editorial-front-page__market-item::before,
+.ara-editorial-front-page__quick-item::before,
+.ara-editorial-front-page__report::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 4px;
+  width: 64px;
+  background: var(--fin-acc);
+  z-index: 3;
+  transition: width 0.35s cubic-bezier(0.3, 0.1, 0.2, 1);
+}
+
+.ara-editorial-front-page__lead::before {
+  height: 5px;
+  width: 96px;
+}
+
+.ara-editorial-front-page__market-item::before,
+.ara-editorial-front-page__quick-item::before,
+.ara-editorial-front-page__report::before {
+  height: 3px;
+  width: 44px;
+}
+
+.ara-editorial-front-page__lead:hover::before,
+.ara-editorial-front-page__featured-story:hover::before,
+.ara-editorial-front-page__question:hover::before,
+.ara-editorial-front-page__market-item:hover::before,
+.ara-editorial-front-page__quick-item:hover::before,
+.ara-editorial-front-page__report:hover::before {
+  width: 100%;
+}
+
+.ara-editorial-front-page__lead:hover,
+.ara-editorial-front-page__featured-story:hover,
+.ara-editorial-front-page__market-item:hover,
+.ara-editorial-front-page__quick-item:hover,
+.ara-editorial-front-page__report:hover {
+  box-shadow: 7px 7px 0 color-mix(in srgb, var(--fin-acc) 38%, transparent) !important;
+}
+
+/* folio numbers */
+.ara-editorial-front-page__featured-rail {
+  counter-reset: finrail;
+}
+
+.ara-editorial-front-page__market-list,
+.ara-editorial-front-page__quick-list,
+.ara-editorial-front-page__report-grid {
+  counter-reset: findata;
+}
+
+.ara-editorial-front-page__featured-story {
+  counter-increment: finrail;
+}
+
+.ara-editorial-front-page__market-item,
+.ara-editorial-front-page__quick-item,
+.ara-editorial-front-page__report {
+  counter-increment: findata;
+}
+
+.ara-editorial-front-page__featured-story::after,
+.ara-editorial-front-page__market-item::after,
+.ara-editorial-front-page__quick-item::after,
+.ara-editorial-front-page__report::after {
+  content: counter(finrail, decimal-leading-zero);
+  position: absolute;
+  right: 10px;
+  bottom: 8px;
+  font-family: var(--font-accent-family), "Inter", sans-serif;
+  font-weight: 700;
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  color: var(--fin-acc);
+  opacity: 0.55;
+  pointer-events: none;
+  z-index: 3;
+}
+
+.ara-editorial-front-page__market-item::after,
+.ara-editorial-front-page__quick-item::after,
+.ara-editorial-front-page__report::after {
+  content: counter(findata, decimal-leading-zero);
+}
+
+/* one dark card as punctuation (company question) — matches live Shopify editorial */
+.ara-editorial-front-page__question {
+  background: linear-gradient(157deg, #1c2236, #0e1220) !important;
+  border: 1px solid #161b2e !important;
+  border-radius: 16px !important;
+  box-shadow: 0 16px 40px rgba(22, 27, 46, 0.1) !important;
+  overflow: hidden !important;
+}
+
+.ara-editorial-front-page__question:hover {
+  box-shadow: 0 22px 48px rgba(22, 27, 46, 0.16) !important;
+}
+
+.ara-editorial-front-page__question :is(h2, h3, h4, p) {
+  color: #f7f1e1 !important;
+}
+
+.ara-editorial-front-page__question :is(a, span, div) {
+  color: inherit;
+}
+
+.ara-editorial-front-page__question-copy {
+  color: #f7f1e1;
+}
+
+.ara-editorial-front-page__question-label,
+.ara-editorial-front-page__question .ara-editorial-front-page__question-label,
+.ara-editorial-front-page__question .ara-editorial-front-page__question-label span {
+  color: #e0a526 !important;
+}
+
+.ara-editorial-front-page__question .ara-editorial-front-page__question-label i {
+  background: currentColor !important;
+  opacity: 0.5;
+}
+
+.ara-editorial-front-page__question-link {
+  color: #f7f1e1 !important;
+  border-color: currentColor !important;
+}
+
+.ara-editorial-front-page__question:hover .ara-editorial-front-page__question-link {
+  color: #e0a526 !important;
+  border-color: #e0a526 !important;
+}
+
+/* photos mounted like prints (lead + featured only — question is edge-to-edge art) */
+.ara-editorial-front-page__lead-media,
+.ara-editorial-front-page__featured-media {
+  padding: 7px 7px 0 !important;
+  background: #fbf7ec !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  overflow: visible !important;
+}
+
+.ara-editorial-front-page__lead-media img,
+.ara-editorial-front-page__lead-media .ara-editorial-front-page__lead-image,
+.ara-editorial-front-page__featured-media img,
+.ara-editorial-front-page__featured-media .ara-editorial-front-page__featured-image {
+  display: block;
+  width: 100%;
+  border: 1.5px solid #161b2e;
+  border-radius: 4px;
+  height: auto !important;
+  min-height: 280px;
+  max-height: clamp(320px, 38vw, 520px);
+  object-fit: contain !important;
+  background: #fff;
+}
+
+/* company question media: full-bleed like live Shopify */
+.ara-editorial-front-page__question-media {
+  padding: 0 !important;
+  background: transparent !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  overflow: hidden !important;
+}
+
+.ara-editorial-front-page__question-media img,
+.ara-editorial-front-page__question-media .ara-editorial-front-page__question-image {
+  display: block;
+  width: 100%;
+  height: 100% !important;
+  min-height: 310px;
+  max-height: none;
+  object-fit: cover !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent;
+}
+
+/* padding + labels */
+.ara-editorial-front-page__lead-copy,
+.ara-editorial-front-page__featured-copy {
+  padding: 16px 17px !important;
+}
+
+.ara-editorial-front-page__market-item,
+.ara-editorial-front-page__quick-item,
+.ara-editorial-front-page__report {
+  padding: 13px 15px !important;
+}
+
+/* FEATURED PITCH badge: gold plate + ink type (fin theme only recolors number/label accents) */
+.ara-editorial-front-page__lead-label {
+  color: #161b2e !important;
+  background: var(--ara-news-gold, #e0a526) !important;
+  border: 1px solid #161b2e !important;
+  z-index: 5;
+}
+
+.ara-editorial-front-page__featured-number,
+.ara-editorial-front-page__quick-number {
+  color: var(--fin-acc) !important;
+}
+
+.ara-editorial-front-page__market-list,
+.ara-editorial-front-page__quick-list,
+.ara-editorial-front-page__report-grid {
+  display: grid;
+  gap: 10px !important;
+  border: 0 !important;
+}
+
+/* double-rule section mastheads */
+.ara-editorial-front-page__section-heading {
+  padding-bottom: 8px !important;
+  border-bottom: 2px solid #161b2e !important;
+  box-shadow: 0 3px 0 -1px #e0a526;
+}
+
+/* paper warmth by zone */
+.ara-editorial-front-page__lead,
+.ara-editorial-front-page__featured-story {
+  --paper: #fffdf6;
+}
+
+.ara-editorial-front-page__market-item,
+.ara-editorial-front-page__quick-item,
+.ara-editorial-front-page__report {
+  --paper: #f8f4e9;
+}
+
+/* gold corner brackets on hero blocks */
+.ara-editorial-front-page__lead::after,
+.ara-editorial-front-page__question::after {
+  content: "";
+  position: absolute;
+  right: 7px;
+  top: 7px;
+  width: 11px;
+  height: 11px;
+  border-right: 2px solid #e0a526;
+  border-top: 2px solid #e0a526;
+  opacity: 0.75;
+  z-index: 4;
+}
+
+/* lead meta / type on cream card */
+.ara-editorial-front-page__lead .ara-editorial-front-page__meta {
+  color: var(--ara-news-muted, #646575);
+}
+
+.ara-editorial-front-page__lead .ara-editorial-front-page__meta span:first-child {
+  color: var(--ara-news-mint, #176d5c);
+}
+
+.ara-editorial-front-page__lead h3 {
+  color: #161b2e;
+}
+
+.ara-editorial-front-page__lead h3 a {
+  color: inherit;
+}
+
+.ara-editorial-front-page__lead .ara-editorial-front-page__lead-copy > p {
+  color: var(--ara-news-muted, #646575);
+}
+
+/* band1: card sits next to strips, not as a magazine border rail */
+.ara-editorial-front-page .ara-nr-hero {
+  padding-bottom: 0 !important;
+  border-right: 0 !important;
+}
+
+@media (max-width: 989px) {
+  .ara-editorial-front-page__lead-media img {
+    max-height: 360px;
+  }
+}

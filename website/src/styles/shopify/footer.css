@@ -1,0 +1,176 @@
+
+  .ara-mintmark-footer {
+    background: var(--ara-footer-bg);
+    color: var(--ara-footer-text);
+  }
+
+  .ara-mintmark-footer .ara-mintmark-footer__inner {
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(380px, 0.8fr);
+    gap: clamp(50px, 8vw, 130px);
+    width: min(100%, var(--ara-footer-max));
+    margin: 0 auto;
+    padding: var(--ara-footer-top) 40px var(--ara-footer-bottom);
+  }
+
+  .ara-mintmark-footer .ara-mintmark-footer__brand {
+    max-width: 660px;
+  }
+
+  .ara-mintmark-footer .ara-mintmark-footer__brand-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 28px;
+    align-items: center;
+  }
+
+  .ara-mintmark-footer .ara-mintmark-footer__logo {
+    display: inline-flex;
+    align-items: center;
+    color: var(--ara-footer-text);
+    text-decoration: none;
+  }
+
+  .ara-mintmark-footer .ara-mintmark-footer__logo-image {
+    display: block;
+    width: min(100%, var(--ara-footer-logo-width));
+    height: auto;
+    max-height: 92px;
+    object-fit: contain;
+    object-position: left center;
+  }
+
+  .ara-mintmark-footer .ara-mintmark-footer__emblem {
+    display: grid;
+    width: var(--ara-footer-emblem-width);
+    flex: 0 0 var(--ara-footer-emblem-width);
+    place-items: center;
+    opacity: 0.9;
+  }
+
+  .ara-mintmark-footer .ara-mintmark-footer__emblem-image {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-height: 90px;
+    object-fit: contain;
+  }
+
+  .ara-mintmark-footer .ara-mintmark-footer__logo span {
+    font-family: var(--font-heading-family);
+    font-size: var(--ara-footer-logo-size);
+    font-style: var(--font-heading-style);
+    font-weight: 600;
+    line-height: 1;
+    letter-spacing: 0.18em;
+  }
+
+  .ara-mintmark-footer .ara-mintmark-footer__brand p {
+    max-width: 560px;
+    margin: 34px 0 0;
+    color: var(--ara-footer-text);
+    font-family: var(--font-heading-family);
+    font-size: var(--ara-footer-statement-size);
+    font-style: var(--font-heading-style);
+    font-weight: var(--font-heading-weight);
+    line-height: 1.05;
+    letter-spacing: -0.035em;
+  }
+
+  .ara-mintmark-footer .ara-mintmark-footer__links {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 30px;
+  }
+
+  .ara-mintmark-footer .ara-mintmark-footer__column h2 {
+    margin: 0 0 18px;
+    color: var(--ara-footer-gold);
+    font-family: var(--font-body-family);
+    font-size: var(--ara-footer-column-heading-size);
+    font-style: var(--font-body-style);
+    font-weight: 800;
+    line-height: 1.3;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .ara-mintmark-footer .ara-mintmark-footer__column nav {
+    display: grid;
+    gap: 12px;
+  }
+
+  .ara-mintmark-footer .ara-mintmark-footer__column a {
+    color: var(--ara-footer-muted);
+    font-family: var(--font-body-family);
+    font-size: var(--ara-footer-link-size);
+    font-style: var(--font-body-style);
+    font-weight: var(--font-body-weight);
+    line-height: 1.4;
+    text-decoration: none;
+  }
+
+  .ara-mintmark-footer .ara-mintmark-footer__column a:hover {
+    color: var(--ara-footer-accent);
+  }
+
+  .ara-mintmark-footer .ara-mintmark-footer__bottom {
+    display: flex;
+    grid-column: 1 / -1;
+    justify-content: space-between;
+    gap: 20px;
+    align-items: center;
+    margin-top: 34px;
+    padding-top: 22px;
+    border-top: 1px solid var(--ara-footer-border);
+    color: var(--ara-footer-muted);
+    font-family: var(--font-body-family);
+    font-size: var(--ara-footer-bottom-size);
+    font-style: var(--font-body-style);
+    font-weight: var(--font-body-weight);
+    line-height: 1.4;
+  }
+
+  @media screen and (max-width: 899px) {
+    .ara-mintmark-footer .ara-mintmark-footer__inner {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    .ara-mintmark-footer .ara-mintmark-footer__inner {
+      padding-right: 20px;
+      padding-left: 20px;
+    }
+
+    .ara-mintmark-footer .ara-mintmark-footer__logo-image {
+      width: min(100%, var(--ara-footer-mobile-logo-width));
+      max-height: 74px;
+    }
+
+    .ara-mintmark-footer .ara-mintmark-footer__logo span {
+      font-size: var(--ara-footer-mobile-logo-size);
+    }
+
+    .ara-mintmark-footer .ara-mintmark-footer__brand p {
+      font-size: var(--ara-footer-mobile-statement-size);
+    }
+
+    .ara-mintmark-footer .ara-mintmark-footer__links {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .ara-mintmark-footer .ara-mintmark-footer__column h2 {
+      font-size: var(--ara-footer-mobile-column-heading-size);
+    }
+
+    .ara-mintmark-footer .ara-mintmark-footer__column a {
+      font-size: var(--ara-footer-mobile-link-size);
+    }
+
+    .ara-mintmark-footer .ara-mintmark-footer__bottom {
+      align-items: flex-start;
+      flex-direction: column;
+      font-size: var(--ara-footer-mobile-bottom-size);
+    }
+  }

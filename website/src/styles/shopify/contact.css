@@ -1,0 +1,319 @@
+
+  .ara-contact {
+    position: relative;
+    overflow: hidden;
+    padding: var(--ara-contact-top) 0 var(--ara-contact-bottom);
+    background-color: var(--ara-contact-bg);
+    background-image: repeating-linear-gradient(to bottom, transparent 0 35px, color-mix(in srgb, var(--ara-contact-mint) 9%, transparent) 35px 36px);
+    color: var(--ara-contact-ink);
+  }
+
+  .ara-contact * {
+    box-sizing: border-box;
+  }
+
+  .ara-contact .ara-contact-editorial__inner {
+    width: min(100%, var(--ara-contact-max));
+    margin: 0 auto;
+    padding: 0 40px;
+  }
+
+  .ara-contact .ara-contact-editorial__intro {
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(330px, 0.9fr);
+    gap: 55px;
+    align-items: end;
+    padding: 25px 0 30px;
+    border-top: 4px solid var(--ara-contact-ink);
+    border-bottom: 1px solid var(--ara-contact-ink);
+  }
+
+  .ara-contact .ara-contact-editorial__eyebrow,
+  .ara-contact .ara-contact-editorial__desk-head span,
+  .ara-contact .ara-contact-editorial__form-head > span,
+  .ara-contact label > span {
+    margin: 0;
+    color: var(--ara-contact-mint);
+    font-family: var(--font-body-family);
+    font-size: var(--ara-contact-label-desktop);
+    font-weight: 900;
+    letter-spacing: 0.15em;
+    line-height: 1.25;
+    text-transform: uppercase;
+  }
+
+  .ara-contact .ara-contact-editorial__intro h1 {
+    margin: 12px 0 0;
+    font-family: var(--font-heading-family);
+    font-size: var(--ara-contact-heading-desktop);
+    font-style: var(--font-heading-style);
+    font-weight: var(--font-heading-weight);
+    letter-spacing: -0.055em;
+    line-height: 0.93;
+  }
+
+  .ara-contact .ara-contact-editorial__description {
+    color: var(--ara-contact-muted);
+    font-family: var(--font-body-family);
+    font-size: var(--ara-contact-body-desktop);
+    line-height: 1.65;
+  }
+
+  .ara-contact .ara-contact-editorial__description p {
+    margin: 0;
+  }
+
+  .ara-contact .ara-contact-editorial__layout {
+    display: grid;
+    grid-template-columns: minmax(280px, 0.72fr) minmax(0, 1.28fr);
+    gap: 24px;
+    margin-top: 35px;
+  }
+
+  .ara-contact .ara-contact-editorial__desk,
+  .ara-contact .ara-contact-editorial__form-panel {
+    border: 1px solid var(--ara-contact-ink);
+    border-radius: 14px;
+    background: var(--ara-contact-paper);
+  }
+
+  .ara-contact .ara-contact-editorial__desk {
+    display: flex;
+    flex-direction: column;
+    padding: 25px;
+    box-shadow: 7px 7px 0 color-mix(in srgb, var(--ara-contact-mint) 22%, transparent);
+  }
+
+  .ara-contact .ara-contact-editorial__desk-head {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    padding-bottom: 17px;
+    border-bottom: 1px solid var(--ara-contact-ink);
+  }
+
+  .ara-contact .ara-contact-editorial__desk-head strong {
+    font-family: var(--font-body-family);
+    font-size: var(--ara-contact-label-desktop);
+    font-weight: 900;
+    letter-spacing: 0.1em;
+    text-align: right;
+    text-transform: uppercase;
+  }
+
+  .ara-contact .ara-contact-editorial__channels {
+    display: grid;
+  }
+
+  .ara-contact .ara-contact-editorial__channel {
+    display: grid;
+    grid-template-columns: 38px minmax(0, 1fr);
+    gap: 15px;
+    padding: 24px 0;
+    border-bottom: 1px solid color-mix(in srgb, var(--ara-contact-ink) 22%, transparent);
+  }
+
+  .ara-contact .ara-contact-editorial__channel > span {
+    color: var(--ara-contact-gold);
+    font-family: var(--font-heading-family);
+    font-size: 21px;
+    line-height: 1;
+  }
+
+  .ara-contact .ara-contact-editorial__channel h2 {
+    margin: 0;
+    font-family: var(--font-heading-family);
+    font-size: 25px;
+    letter-spacing: -0.025em;
+    line-height: 1;
+  }
+
+  .ara-contact .ara-contact-editorial__channel p,
+  .ara-contact .ara-contact-editorial__note {
+    margin: 9px 0 0;
+    color: var(--ara-contact-muted);
+    font-family: var(--font-body-family);
+    font-size: var(--ara-contact-body-desktop);
+    line-height: 1.55;
+  }
+
+  .ara-contact .ara-contact-editorial__channel a {
+    display: inline-flex;
+    gap: 8px;
+    margin-top: 12px;
+    color: var(--ara-contact-ink);
+    font-family: var(--font-body-family);
+    font-size: var(--ara-contact-label-desktop);
+    font-weight: 900;
+    letter-spacing: 0.1em;
+    text-decoration: none;
+    text-transform: uppercase;
+  }
+
+  .ara-contact .ara-contact-editorial__note {
+    margin-top: auto;
+    padding-top: 23px;
+  }
+
+  .ara-contact .ara-contact-editorial__form-panel {
+    overflow: hidden;
+    box-shadow: 7px 7px 0 color-mix(in srgb, var(--ara-contact-gold) 26%, transparent);
+  }
+
+  .ara-contact .ara-contact-editorial__form-head {
+    padding: 24px 27px;
+    border-bottom: 1px solid var(--ara-contact-ink);
+    background: var(--ara-contact-ink);
+    color: #FFFFFF;
+  }
+
+  .ara-contact .ara-contact-editorial__form-head h2 {
+    margin: 8px 0 0;
+    font-family: var(--font-heading-family);
+    font-size: 35px;
+    letter-spacing: -0.035em;
+    line-height: 1;
+  }
+
+  .ara-contact .ara-contact-editorial__form {
+    display: grid;
+    gap: 19px;
+    padding: 28px;
+  }
+
+  .ara-contact .ara-contact-editorial__row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 17px;
+  }
+
+  .ara-contact label {
+    display: grid;
+    gap: 8px;
+  }
+
+  .ara-contact input,
+  .ara-contact select,
+  .ara-contact textarea {
+    width: 100%;
+    min-width: 0;
+    border: 1px solid var(--ara-contact-rule);
+    border-radius: 8px;
+    background: #FFFFFF;
+    color: var(--ara-contact-ink);
+    font: inherit;
+    font-family: var(--font-body-family);
+    font-size: var(--ara-contact-body-desktop);
+  }
+
+  .ara-contact input,
+  .ara-contact select {
+    min-height: 49px;
+    padding: 11px 13px;
+  }
+
+  .ara-contact textarea {
+    min-height: 170px;
+    padding: 13px;
+    resize: vertical;
+  }
+
+  .ara-contact input:focus-visible,
+  .ara-contact select:focus-visible,
+  .ara-contact textarea:focus-visible {
+    outline: 2px solid var(--ara-contact-mint);
+    outline-offset: 2px;
+  }
+
+  .ara-contact button {
+    display: inline-flex;
+    width: fit-content;
+    min-height: 47px;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 18px;
+    border: 1px solid var(--ara-contact-ink);
+    border-radius: 7px;
+    background: var(--ara-contact-ink);
+    color: #FFFFFF;
+    font-family: var(--font-body-family);
+    font-size: var(--ara-contact-label-desktop);
+    font-weight: 900;
+    letter-spacing: 0.1em;
+    cursor: pointer;
+    text-transform: uppercase;
+  }
+
+  .ara-contact .ara-contact-editorial__success,
+  .ara-contact .ara-contact-editorial__errors {
+    padding: 13px 15px;
+    border: 1px solid var(--ara-contact-ink);
+    border-radius: 8px;
+    font-family: var(--font-body-family);
+    font-size: var(--ara-contact-body-desktop);
+  }
+
+  .ara-contact .ara-contact-editorial__success {
+    background: color-mix(in srgb, var(--ara-contact-mint) 14%, #FFFFFF);
+  }
+
+  @media screen and (max-width: 989px) {
+    .ara-contact .ara-contact-editorial__intro,
+    .ara-contact .ara-contact-editorial__layout {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    .ara-contact .ara-contact-editorial__inner {
+      padding: 0 18px;
+    }
+
+    .ara-contact .ara-contact-editorial__intro {
+      gap: 19px;
+    }
+
+    .ara-contact .ara-contact-editorial__intro h1 {
+      font-size: var(--ara-contact-heading-mobile);
+    }
+
+    .ara-contact .ara-contact-editorial__description,
+    .ara-contact .ara-contact-editorial__channel p,
+    .ara-contact .ara-contact-editorial__note,
+    .ara-contact input,
+    .ara-contact select,
+    .ara-contact textarea,
+    .ara-contact .ara-contact-editorial__success,
+    .ara-contact .ara-contact-editorial__errors {
+      font-size: var(--ara-contact-body-mobile);
+    }
+
+    .ara-contact .ara-contact-editorial__eyebrow,
+    .ara-contact .ara-contact-editorial__desk-head span,
+    .ara-contact .ara-contact-editorial__desk-head strong,
+    .ara-contact .ara-contact-editorial__form-head > span,
+    .ara-contact label > span,
+    .ara-contact .ara-contact-editorial__channel a,
+    .ara-contact button {
+      font-size: var(--ara-contact-label-mobile);
+    }
+
+    .ara-contact .ara-contact-editorial__desk,
+    .ara-contact .ara-contact-editorial__form-panel {
+      border-radius: 10px;
+      box-shadow: 4px 4px 0 color-mix(in srgb, var(--ara-contact-mint) 18%, transparent);
+    }
+
+    .ara-contact .ara-contact-editorial__row {
+      grid-template-columns: 1fr;
+    }
+
+    .ara-contact .ara-contact-editorial__form {
+      padding: 20px;
+    }
+
+    .ara-contact button {
+      width: 100%;
+    }
+  }
