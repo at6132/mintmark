@@ -2208,14 +2208,7 @@
   .ara-editorial-front-page .ara-nr-sq,
   .ara-editorial-front-page .ara-nr-sq .ara-nr-flip__face,
   .ara-editorial-front-page .ara-nr-flip__inner { border-radius: 12px; }
-  /* lead / featured / company-question soft cards (from Shopify polish kit) */
-  .ara-editorial-front-page .ara-editorial-front-page__lead-media { border-radius: 14px; overflow: hidden; }
-  .ara-editorial-front-page .ara-editorial-front-page__featured-media { border-radius: 10px; overflow: hidden; }
-  .ara-editorial-front-page .ara-editorial-front-page__question {
-    border-radius: 16px;
-    overflow: hidden;
-    box-shadow: 0 16px 40px rgba(22, 27, 46, 0.1);
-  }
+  /* lead / featured media presentation lives in theme-overrides.css (theme.liquid Fin system) */
   .ara-editorial-front-page .ara-nr-map { border-radius: 14px; }
   .ara-editorial-front-page .ara-nr-map__chip { border-radius: 8px; }
 

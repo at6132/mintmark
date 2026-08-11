@@ -144,14 +144,5 @@
     }
   }
 
-  /* Contrast fix: force visible heading/description colors regardless of any
-     inherited fade/reveal animation state or theme-level heading color rules */
-  .ara-inline-email .ara-inline-email__intro h2 {
-    color: #161B2E !important;
-    opacity: 1 !important;
-  }
-
-  .ara-inline-email .ara-inline-email__intro p {
-    color: #4B4D5C !important;
-    opacity: 1 !important;
-  }
+  /* Navy contrast: live store (theme.liquid) forces light text on #161B2E —
+     handled in shopify/theme-overrides.css after this file loads. */

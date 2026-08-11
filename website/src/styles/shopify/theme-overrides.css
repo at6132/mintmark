@@ -1,0 +1,330 @@
+/* Ported from layout/theme.liquid global {% style %} (live store letterpress / paper / fin system) */
+/* mintmark — ruled line paper + gloss, site-wide.
+         Applied to the page body and to any section that opts in via .mm-paper.
+         Solid blocks (header, footer, navy panels) are untouched. */
+      body{
+        background-color:#EBF7F1 !important;
+        background-image:
+          radial-gradient(140% 68% at 50% -8%, rgba(255,255,255,.92) 0%, rgba(255,255,255,0) 58%),
+          linear-gradient(120deg, rgba(255,255,255,.44) 0%, rgba(255,255,255,.1) 24%, rgba(216,243,233,.18) 52%, rgba(255,255,255,.08) 74%, rgba(255,255,255,.34) 100%),
+          linear-gradient(180deg, rgba(255,255,255,.2) 0%, rgba(238,249,243,.52) 30%, rgba(219,242,233,.45) 100%),
+          repeating-linear-gradient(to bottom, transparent 0 33px, rgba(141,209,182,.18) 33px 34px, rgba(141,209,182,.38) 34px 37px) !important;
+        background-size:100% 100%, 100% 100%, 100% 100%, 100% 37px !important;
+        background-attachment:scroll, scroll, scroll, scroll !important;
+        background-blend-mode:screen, overlay, normal, normal;
+      }
+      .page-wrapper{ background:transparent !important; }
+      #MainContent.content-for-layout{
+        background-color:#F0FAF5 !important;
+        background-image:
+          radial-gradient(120% 58% at 50% -8%, rgba(255,255,255,.90) 0%, rgba(255,255,255,.18) 34%, rgba(255,255,255,0) 66%),
+          linear-gradient(112deg, rgba(255,255,255,0) 0 22%, rgba(255,255,255,.20) 30%, rgba(255,255,255,.54) 40%, rgba(255,255,255,.18) 50%, rgba(255,255,255,0) 61% 100%),
+          linear-gradient(180deg, rgba(255,255,255,.20), rgba(226,246,237,.24)),
+          repeating-linear-gradient(to bottom, transparent 0 34px, rgba(92,174,143,.14) 34px 35px, rgba(92,174,143,.34) 35px 38px, transparent 38px 40px) !important;
+        background-size:100% 100%, 160% 100%, 100% 100%, 100% 40px !important;
+        background-position:center top, 50% 0, center top, 0 0 !important;
+      }
+      #MainContent .section-background{
+        background-color:transparent !important;
+        background-image:none !important;
+      }
+      #MainContent :is(
+        [id^="AraMintmarkHero-"],
+        [id^="AraEditorialFrontPage-"],
+        [id^="AraShortTakes-"],
+        [id^="AraInlineEmail-"],
+        [id^="AraFeaturedReading-"],
+        [id^="AraBookshelfCatalog-"],
+        [id^="AraBookshelfPageHero-"],
+        [id^="AraBookshelfPreview-"],
+        [id^="AraMintMarketMaps-"],
+        [id^="AraDigestCoin-"],
+        [id^="AraMintDomains-"],
+        [id^="AraMissionLine-"],
+        [id^="AraMintCurriculum-"],
+        [id^="AraMintIntro-"],
+        [id^="AraMintHeatmap-"],
+        [id^="AraMintMap-"],
+        [id^="AraMissionHero-"],
+        [id^="AraMissionPurpose-"],
+        [id^="AraMission-"],
+        [id^="AraCompanyCatalog-"],
+        [id^="AraFeaturedCompany-"],
+        [id^="AraCompanyHero-"],
+        [id^="AraCompanyOverview-"],
+        [id^="AraCompanyRevenue-"],
+        [id^="AraCompanyStrengthRisk-"],
+        [id^="AraCompanyStories-"],
+        [id^="AraCompanyFinalCta-"],
+        [id^="AraArticleContent-"],
+        [id^="AraRelatedStoriesNav-"],
+        [id^="AraContactEditorial-"],
+        [id^="AraMapGrid-"],
+        [id^="AraMapShadow-"]
+      ){
+        background-color:#F0FAF5 !important;
+        background-image:
+          radial-gradient(120% 58% at 50% -8%, rgba(255,255,255,.82) 0%, rgba(255,255,255,.12) 36%, rgba(255,255,255,0) 68%),
+          linear-gradient(112deg, rgba(255,255,255,0) 0 22%, rgba(255,255,255,.16) 30%, rgba(255,255,255,.46) 40%, rgba(255,255,255,.14) 50%, rgba(255,255,255,0) 61% 100%),
+          repeating-linear-gradient(to bottom, transparent 0 34px, rgba(92,174,143,.12) 34px 35px, rgba(92,174,143,.31) 35px 38px, transparent 38px 40px) !important;
+        background-size:100% 100%, 160% 100%, 100% 40px !important;
+        background-position:center top, 50% 0, 0 0 !important;
+      }
+      #MainContent :is(
+        .ara-bookshelf-wall__rules,
+        .ara-mint-intro__lines,
+        .ara-mint-curriculum__lines,
+        .ara-mission-hero__lines,
+        .ara-mission-purpose__lines,
+        .ara-mission__rules,
+        .ara-article-content__lines,
+        .ara-related-stories-nav__lines
+      ){
+        background:none !important;
+        background-image:none !important;
+      }
+      /* one paper for the whole site: sections marked with the sentinel go transparent
+         so the single body paper (thick mint rules + gloss) shows through.
+         Navy/solid blocks never carry the sentinel, so they keep their fill. */
+      [style*="#d8f0e5" i],
+      [style*="#e6f4ec" i],
+      [style*="rgb(216, 240, 229)" i],
+      [style*="rgb(230, 244, 236)" i]{ background-color:transparent !important; background-image:none !important; }
+
+      /* remove the cream shell + cream overlays so the one paper shows through */
+      body:not(.template-index){
+        background-color:transparent !important;
+        background-image:none !important;
+      }
+      /* news / short-take slots — 1) background  2) trim */
+      .ara-short-takes__card{
+        --slot-acc:#176D5C;
+        position:relative;
+        background:linear-gradient(160deg,#FFFDF6,#FBF7EC 62%) !important;
+        border:2.5px solid #161B2E !important;
+        border-radius:12px !important;
+        box-shadow:0 6px 16px rgba(22,27,46,.10), inset 0 4px 0 var(--slot-acc), inset 0 -3px 0 rgba(224,165,38,.55) !important;
+        overflow:hidden;
+      }
+      .ara-short-takes__grid{ gap:12px !important; border:0 !important; }
+      .ara-short-takes__card:nth-child(2){ --slot-acc:#005288; }
+      .ara-short-takes__card:nth-child(3){ --slot-acc:#e0a526; }
+      .ara-short-takes__card:nth-child(4){ --slot-acc:#C74634; }
+      .ara-short-takes__card:nth-child(5){ --slot-acc:#141821; }
+      .ara-short-takes__card .ara-short-takes__meta{
+        padding-bottom:8px;
+        border-bottom:1px solid rgba(224,165,38,.45);
+      }
+      .ara-short-takes__card .ara-short-takes__number{ color:var(--slot-acc) !important; }
+      .ara-short-takes__card::after{
+        content:"";position:absolute;right:9px;bottom:9px;width:8px;height:8px;
+        border-right:1.5px solid #646575;border-bottom:1.5px solid #646575;opacity:.4;pointer-events:none;
+      }
+      .ara-short-takes__card:hover{
+        transform:translateY(-3px);
+        box-shadow:0 14px 28px rgba(22,27,46,.16), inset 0 4px 0 var(--slot-acc), inset 0 -3px 0 rgba(224,165,38,.55) !important;
+      }
+
+      /* Fin. by mintmark — hierarchy, letterpress trim, colour by zone */
+      .ara-editorial-front-page__lead,
+      .ara-editorial-front-page__featured-story,
+      .ara-editorial-front-page__question,
+      .ara-editorial-front-page__market-item,
+      .ara-editorial-front-page__quick-item,
+      .ara-editorial-front-page__report{
+        --fin-acc:#176D5C;
+        position:relative;overflow:hidden;
+        background:linear-gradient(160deg,#FFFDF6,#FBF7EC 62%) !important;
+        border:2px solid #161B2E !important;border-radius:10px !important;
+        box-shadow:4px 4px 0 color-mix(in srgb, var(--fin-acc) 26%, transparent) !important;
+        transition:box-shadow .22s ease;
+      }
+      /* 1 — hierarchy: weight scales with importance */
+      .ara-editorial-front-page__lead{ border-width:3px !important;border-radius:12px !important;
+        box-shadow:6px 6px 0 color-mix(in srgb, var(--fin-acc) 30%, transparent) !important; }
+      .ara-editorial-front-page__market-item,.ara-editorial-front-page__quick-item,.ara-editorial-front-page__report{
+        border-width:1.5px !important;border-radius:8px !important;
+        box-shadow:3px 3px 0 color-mix(in srgb, var(--fin-acc) 20%, transparent) !important; }
+      /* 3 — colour by zone, not per card */
+      .ara-editorial-front-page__lead,.ara-editorial-front-page__question{ --fin-acc:#005288; }
+      .ara-editorial-front-page__featured-story{ --fin-acc:#e0a526; }
+      .ara-editorial-front-page__market-item,.ara-editorial-front-page__quick-item,.ara-editorial-front-page__report{ --fin-acc:#176D5C; }
+      /* cap rule — grows on hover */
+      .ara-editorial-front-page__lead::before,.ara-editorial-front-page__featured-story::before,.ara-editorial-front-page__question::before,
+      .ara-editorial-front-page__market-item::before,.ara-editorial-front-page__quick-item::before,.ara-editorial-front-page__report::before{
+        content:"";position:absolute;top:0;left:0;height:4px;width:64px;background:var(--fin-acc);
+        z-index:3;transition:width .35s cubic-bezier(.3,.1,.2,1);}
+      .ara-editorial-front-page__lead::before{ height:5px;width:96px; }
+      .ara-editorial-front-page__market-item::before,.ara-editorial-front-page__quick-item::before,.ara-editorial-front-page__report::before{ height:3px;width:44px; }
+      /* 7 — hover reveals the trim */
+      .ara-editorial-front-page__lead:hover::before,.ara-editorial-front-page__featured-story:hover::before,.ara-editorial-front-page__question:hover::before,
+      .ara-editorial-front-page__market-item:hover::before,.ara-editorial-front-page__quick-item:hover::before,.ara-editorial-front-page__report:hover::before{ width:100%; }
+      .ara-editorial-front-page__lead:hover,.ara-editorial-front-page__featured-story:hover,.ara-editorial-front-page__question:hover,
+      .ara-editorial-front-page__market-item:hover,.ara-editorial-front-page__quick-item:hover,.ara-editorial-front-page__report:hover{
+        box-shadow:7px 7px 0 color-mix(in srgb, var(--fin-acc) 38%, transparent) !important; }
+      /* 5 — folio numbers */
+      .ara-editorial-front-page__featured-rail{ counter-reset:finrail; }
+      .ara-editorial-front-page__market-list,.ara-editorial-front-page__quick-list,.ara-editorial-front-page__report-grid{ counter-reset:findata; }
+      .ara-editorial-front-page__featured-story{ counter-increment:finrail; }
+      .ara-editorial-front-page__market-item,.ara-editorial-front-page__quick-item,.ara-editorial-front-page__report{ counter-increment:findata; }
+      .ara-editorial-front-page__featured-story::after,.ara-editorial-front-page__market-item::after,.ara-editorial-front-page__quick-item::after,.ara-editorial-front-page__report::after{
+        content:counter(finrail,decimal-leading-zero);position:absolute;right:10px;bottom:8px;
+        font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:9px;letter-spacing:.14em;
+        color:var(--fin-acc);opacity:.55;pointer-events:none;z-index:3;}
+      .ara-editorial-front-page__market-item::after,.ara-editorial-front-page__quick-item::after,.ara-editorial-front-page__report::after{ content:counter(findata,decimal-leading-zero); }
+      /* 6 — one dark card as punctuation */
+      .ara-editorial-front-page__question{ background:linear-gradient(157deg,#1c2236,#0e1220) !important;border-color:#161B2E !important; }
+      .ara-editorial-front-page__question :is(h2,h3,h4,p,a,span,div){ color:#F7F1E1 !important; }
+      .ara-editorial-front-page__question-label{ color:#e0a526 !important; }
+      /* 4 — photos mounted like prints */
+      .ara-editorial-front-page__lead-media,.ara-editorial-front-page__featured-media,.ara-editorial-front-page__question-media{ padding:7px 7px 0 !important;background:#FBF7EC; }
+      .ara-editorial-front-page__lead-media img,.ara-editorial-front-page__featured-media img,.ara-editorial-front-page__question-media img{
+        display:block;width:100%;border:1.5px solid #161B2E;border-radius:4px; }
+      .ara-editorial-front-page__question-media{ background:transparent !important; }
+      /* padding + labels */
+      .ara-editorial-front-page__lead-copy,.ara-editorial-front-page__featured-copy,.ara-editorial-front-page__question-copy{ padding:16px 17px !important; }
+      .ara-editorial-front-page__market-item,.ara-editorial-front-page__quick-item,.ara-editorial-front-page__report{ padding:13px 15px !important; }
+      .ara-editorial-front-page__lead-label,.ara-editorial-front-page__featured-number,.ara-editorial-front-page__quick-number{ color:var(--fin-acc) !important; }
+      .ara-editorial-front-page__market-list,.ara-editorial-front-page__quick-list,.ara-editorial-front-page__report-grid{ display:grid;gap:10px !important;border:0 !important; }
+
+      /* ===== tint ladder + company colour suite ===== */
+      .mm-tile{ --co:#176D5C; --co-bg:color-mix(in srgb,var(--co) 11%,#FFFDF6); --co-sh:color-mix(in srgb,var(--co) 26%,transparent); }
+      /* tabular figures everywhere numbers live */
+      .ara-short-takes__number,.ara-short-takes__change,.ara-editorial-front-page__change,.ara-editorial-front-page__quick-change,.ara-editorial-front-page__quick-number,.ara-editorial-front-page__featured-number,
+      .mm-tile .mm-b-chg,.mm-folio{ font-variant-numeric:tabular-nums; font-feature-settings:"tnum" 1; }
+      /* Fraunces display cut for big headlines */
+      .ara-editorial-front-page__lead h2,.ara-editorial-front-page__lead h1,.ara-short-takes__card h3,.ara-editorial-front-page__featured-copy h3{ font-variation-settings:"opsz" 120,"SOFT" 0,"WONK" 1; }
+      /* double-rule section mastheads */
+      .ara-editorial-front-page__section-heading,.ara-short-takes__head h2{ padding-bottom:8px !important;border-bottom:2px solid #161B2E !important;
+        box-shadow:0 3px 0 -1px #e0a526; }
+      /* paper warmth shift by zone */
+      .ara-editorial-front-page__lead,.ara-editorial-front-page__featured-story{ --paper:#FFFDF6; }
+      .ara-editorial-front-page__market-item,.ara-editorial-front-page__quick-item,.ara-editorial-front-page__report{ --paper:#F8F4E9; }
+      /* gold corner brackets on the two hero blocks */
+      .ara-editorial-front-page__lead::after,.ara-editorial-front-page__question::after{
+        content:"";position:absolute;right:7px;top:7px;width:11px;height:11px;
+        border-right:2px solid #e0a526;border-top:2px solid #e0a526;opacity:.75;z-index:4;}
+
+      /* ===== flippable company tiles: short takes + market news ===== */
+      .mm-tile{ position:relative;display:block;perspective:1100px;min-height:210px;text-decoration:none;
+        background:transparent !important;border:0 !important;box-shadow:none !important;padding:0 !important; }
+      .mm-tile .mm-3d{ position:relative;width:100%;height:100%;min-height:210px;
+        transform-style:preserve-3d;transition:transform .62s cubic-bezier(.35,.1,.25,1); }
+      .mm-tile:hover .mm-3d{ transform:rotateY(180deg); }
+      .mm-tile .mm-face{ position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;
+        overflow:hidden;display:flex;flex-direction:column;padding:15px 16px;
+        border:2.5px solid #161B2E;border-radius:11px;
+        background:linear-gradient(160deg,#FFFDF6,var(--co-bg) 70%);
+        box-shadow:5px 5px 0 var(--co-sh); }
+      .mm-tile .mm-front::before{ content:"";position:absolute;top:0;left:0;height:4px;width:70px;background:var(--co);z-index:3; }
+      .mm-tile .mm-front::after{ content:"";position:absolute;left:0;right:0;bottom:0;height:3px;
+        background:color-mix(in srgb,#e0a526 55%,transparent);z-index:3; }
+      .mm-tile .mm-back{ transform:rotateY(180deg);
+        background:linear-gradient(157deg,#1d2338,#0e1220);box-shadow:5px 5px 0 var(--co-sh); }
+      .mm-tile .mm-back::before{ content:"";position:absolute;top:0;left:0;height:4px;width:100%;background:#e0a526;z-index:3; }
+      /* company watermark */
+      .mm-tile .mm-wm{ position:absolute;right:-14px;bottom:-46px;font-family:'Fraunces',serif;font-weight:900;
+        font-size:150px;line-height:1;color:var(--co);opacity:.07;pointer-events:none;z-index:0; }
+      .mm-tile .mm-chip{ align-self:flex-start;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:9px;
+        letter-spacing:.07em;text-transform:uppercase;color:#fff;background:var(--co);
+        border:1.5px solid #161B2E;border-radius:5px;padding:2px 8px;position:relative;z-index:2; }
+      .mm-tile .mm-b-txt{ position:relative;z-index:2;font-family:'Lexend',sans-serif;font-weight:300;
+        font-size:13.5px;line-height:1.55;color:rgba(247,241,225,.92);margin:auto 0; }
+      .mm-tile .mm-b-lab{ font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:9px;letter-spacing:.16em;
+        text-transform:lowercase;color:#e0a526;display:flex;align-items:center;gap:7px; }
+      .mm-tile .mm-b-lab::before{ content:"";width:13px;height:2px;background:#e0a526; }
+      .mm-tile .mm-b-go{ font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:9.5px;letter-spacing:.12em;
+        text-transform:uppercase;color:#e0a526;position:relative;z-index:2; }
+      .mm-folio{ position:absolute;right:10px;bottom:8px;font-family:'Space Grotesk',sans-serif;font-weight:700;
+        font-size:9px;letter-spacing:.14em;color:var(--co);opacity:.6;z-index:3; }
+      .mm-cont{ font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:9px;letter-spacing:.1em;
+        color:var(--co);margin-top:auto;position:relative;z-index:2; }
+      .mm-cont::before{ content:"\25B8  "; }
+      @media (prefers-reduced-motion:reduce){ .mm-tile .mm-3d{transition:none;} .mm-tile:hover .mm-3d{transform:none;} }
+
+      /* highlighter plate is static; text swipe lives under .mm-hl__word in hero.css */
+      .mm-hl{position:relative;display:inline-block;z-index:0;color:inherit;padding:0 .1em;}
+      .mm-hl.is-swap{opacity:1;}
+      .mm-hl::after{content:"";position:absolute;left:-4%;right:-5%;top:12%;bottom:2%;z-index:-1;
+        pointer-events:none;mix-blend-mode:multiply;transform:rotate(-0.8deg);
+        background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 240 40' preserveAspectRatio='none'><path d='M3 8 L237 5 L236 34 L4 33 Z' fill='%23FFF23A' opacity='0.55'/><path d='M6 11 L120 9 L119 30 L7 31 Z' fill='%23FFF23A' opacity='0.22'/><path d='M0 20 L240 18' stroke='%23FFE800' stroke-width='16' opacity='0.30' fill='none'/></svg>") no-repeat center/100% 100%;}
+
+      /* ===== Fin. market news + quick list: horizontal strips that flip ===== */
+      /* words on the front, numbers on the back — strip geometry, never a tall box */
+      .mm-strip{
+        --co:#176D5C;
+        position:relative !important; display:block !important;
+        height:64px !important; min-height:64px !important; padding:0 !important;
+        margin:0 0 6px !important;
+        border:0 !important; border-radius:0 !important;
+        background:transparent !important; box-shadow:none !important;
+        perspective:900px; counter-increment:none;
+      }
+      .mm-strip::before,.mm-strip::after{ content:none !important; display:none !important; }
+      .mm-strip .mm-s3d{
+        position:relative; width:100%; height:100%;
+        transform-style:preserve-3d; transition:transform .5s cubic-bezier(.35,.1,.25,1);
+      }
+      .mm-strip:hover .mm-s3d,.mm-strip:focus-within .mm-s3d{ transform:rotateX(180deg); }
+      .mm-strip .mm-sface{
+        position:absolute; inset:0; display:flex; align-items:center; gap:12px;
+        padding:9px 14px; overflow:hidden;
+        backface-visibility:hidden; -webkit-backface-visibility:hidden;
+        border:1.5px solid #161B2E; border-left:4px solid var(--co); border-radius:8px;
+      }
+      .mm-strip .mm-sfront{
+        background:linear-gradient(120deg,#FFFDF6,color-mix(in srgb,var(--co) 9%,#FFFDF6));
+        box-shadow:3px 3px 0 color-mix(in srgb,var(--co) 18%,transparent);
+      }
+      .mm-strip .mm-sback{
+        transform:rotateX(180deg); justify-content:space-between;
+        background:linear-gradient(120deg,#1d2338,#0e1220);
+        box-shadow:3px 3px 0 color-mix(in srgb,var(--co) 26%,transparent);
+      }
+      /* front — the one-sentence headline, two lines max */
+      .mm-strip .mm-sfront :is(h3,h4,p){
+        margin:0 !important; font-family:'Lexend',sans-serif; font-weight:600;
+        font-size:13.5px; line-height:1.3; color:#161B2E;
+        display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;
+      }
+      .mm-strip .mm-sfront a{ color:#161B2E !important; text-decoration:none; }
+      .mm-strip .mm-sfront a:hover{ text-decoration:underline; text-underline-offset:2px; }
+      /* back — the numbers */
+      .mm-strip .mm-sback > *{
+        margin:0 !important; padding:0 !important; border:0 !important;
+        background:transparent !important; color:#F7F1E1 !important;
+        font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:12px;
+        letter-spacing:.06em; font-variant-numeric:tabular-nums; white-space:nowrap;
+      }
+      .mm-strip .mm-sback > span:first-child{ color:#e0a526 !important; letter-spacing:.12em; }
+      .mm-strip .mm-sback [class*="change--up"]{ color:#7EF08A !important; }
+      .mm-strip .mm-sback [class*="change--down"]{ color:#FFAF7A !important; }
+      @media (prefers-reduced-motion:reduce){
+        .mm-strip .mm-s3d{ transition:none; }
+        .mm-strip:hover .mm-s3d,.mm-strip:focus-within .mm-s3d{ transform:none; }
+      }
+
+      /* ===== "Understanding to your inbox" — solid navy, readable letters ===== */
+      .ara-inline-email{
+        background:#161B2E !important;
+        background-image:none !important;
+        color:#F7F1E1 !important;
+      }
+      .ara-inline-email .ara-inline-email__inner{
+        background:transparent !important;
+        border-color:#45506A !important;
+      }
+      .ara-inline-email .ara-inline-email__intro h2{ color:#F7F1E1 !important; }
+      .ara-inline-email .ara-inline-email__intro p{ color:#C6C3BA !important; }
+      .ara-inline-email .ara-inline-email__input{
+        background:#20273B !important; border-color:#45506A !important; color:#F7F1E1 !important;
+      }
+      .ara-inline-email .ara-inline-email__input::placeholder{ color:#9AA3B8 !important; }
+      .ara-inline-email .ara-inline-email__input:focus{
+        border-color:#1FA88F !important; box-shadow:inset 0 0 0 1px #1FA88F !important;
+      }
+      .ara-inline-email .ara-inline-email__button{
+        background:#E0A526 !important; border-color:#E0A526 !important; color:#161B2E !important;
+      }
+      .ara-inline-email .ara-inline-email__message{ color:#7FD9C4 !important; }
+      .ara-inline-email .ara-inline-email__message--error{ color:#FFAF7A !important; }

@@ -910,11 +910,59 @@
     padding: 0 0.06em;
     color: inherit;
     background: transparent;
-    transition: opacity 0.18s ease;
+    /* highlighter plate stays put — only the word animates */
+    transition: none;
+    opacity: 1 !important;
   }
 
   .ara-mintmark-hero .ara-mintmark-hero__heading .mm-hl.is-swap {
-    opacity: 0;
+    opacity: 1 !important;
+  }
+
+  .ara-mintmark-hero .ara-mintmark-hero__heading .mm-hl__clip {
+    position: relative;
+    display: block;
+    overflow: hidden;
+    line-height: 1.05;
+  }
+
+  .ara-mintmark-hero .ara-mintmark-hero__heading .mm-hl__word {
+    display: block;
+    white-space: nowrap;
+    text-align: center;
+    will-change: transform;
+  }
+
+  .ara-mintmark-hero .ara-mintmark-hero__heading .mm-hl__word--out {
+    position: absolute;
+    inset: 0;
+    animation: mm-hl-swipe-out 0.46s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  }
+
+  .ara-mintmark-hero .ara-mintmark-hero__heading .mm-hl__word--in {
+    animation: mm-hl-swipe-in 0.46s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  }
+
+  @keyframes mm-hl-swipe-out {
+    from {
+      transform: translateX(0);
+      opacity: 1;
+    }
+    to {
+      transform: translateX(110%);
+      opacity: 0;
+    }
+  }
+
+  @keyframes mm-hl-swipe-in {
+    from {
+      transform: translateX(-110%);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
   }
 
   .ara-mintmark-hero .ara-mintmark-hero__heading .mm-hl::before,
@@ -960,7 +1008,8 @@
       transform: none;
     }
 
-    .ara-mintmark-hero .ara-mintmark-hero__heading .mm-hl {
-      transition: none;
+    .ara-mintmark-hero .ara-mintmark-hero__heading .mm-hl__word--out,
+    .ara-mintmark-hero .ara-mintmark-hero__heading .mm-hl__word--in {
+      animation: none;
     }
   }
