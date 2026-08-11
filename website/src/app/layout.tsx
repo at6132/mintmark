@@ -42,7 +42,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${alegreya.variable} ${inter.variable}`}>
-      <body className={alegreya.className}>
+      <body className={`${alegreya.className} template-index`}>
         <SiteChrome>{children}</SiteChrome>
       </body>
     </html>

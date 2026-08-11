@@ -13,7 +13,7 @@ export function HomeHero() {
   const items = blocks.filter((b) => b.type === "market_item");
   const [dateLabel, setDateLabel] = useState("");
   const [highlightWord, setHighlightWord] = useState("read");
-  const [isSwapping, setIsSwapping] = useState(false);
+  const [outgoingWord, setOutgoingWord] = useState<string | null>(null);
   const [highlightMinWidth, setHighlightMinWidth] = useState<number | undefined>(undefined);
 
   useEffect(() => {
@@ -102,15 +102,17 @@ export function HomeHero() {
     if (max > 0) setHighlightMinWidth(max);
 
     let ix = 0;
+    let current = headingParts.original;
     const swapTimers: number[] = [];
     const iv = window.setInterval(() => {
-      const word = seq[ix % seq.length];
+      const next = seq[ix % seq.length];
       ix += 1;
-      setIsSwapping(true);
+      setOutgoingWord(current);
+      setHighlightWord(next);
+      current = next;
       const t = window.setTimeout(() => {
-        setHighlightWord(word);
-        setIsSwapping(false);
-      }, 220);
+        setOutgoingWord(null);
+      }, 480);
       swapTimers.push(t);
     }, 2400);
 
@@ -164,14 +166,26 @@ export function HomeHero() {
                   {renderHeadingLines(headingParts.before)}
                   <mark>
                     <span
-                      className={`mm-hl${isSwapping ? " is-swap" : ""}`}
+                      className="mm-hl"
                       style={
                         highlightMinWidth
                           ? { minWidth: highlightMinWidth, textAlign: "center" as const }
                           : undefined
                       }
                     >
-                      {highlightWord}
+                      <span className="mm-hl__clip">
+                        {outgoingWord ? (
+                          <span className="mm-hl__word mm-hl__word--out" aria-hidden="true">
+                            {outgoingWord}
+                          </span>
+                        ) : null}
+                        <span
+                          key={highlightWord}
+                          className={`mm-hl__word${outgoingWord ? " mm-hl__word--in" : ""}`}
+                        >
+                          {highlightWord}
+                        </span>
+                      </span>
                     </span>
                   </mark>
                   {renderHeadingLines(headingParts.after)}

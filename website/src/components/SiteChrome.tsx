@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { siteContent } from "@/data/site";
 import { assets, appHref } from "@/lib/assets";
 import { CartProvider, useCart } from "@/lib/cart";
+import { BodyTemplateClass } from "@/components/BodyTemplateClass";
 
 function TopBar() {
   const tb = siteContent.topBar as Record<string, unknown>;
@@ -289,6 +290,7 @@ function Footer() {
 export function SiteChrome({ children }: { children: React.ReactNode }) {
   return (
     <CartProvider>
+      <BodyTemplateClass />
       <TopBar />
       <Header />
       <main id="MainContent" className="content-for-layout">

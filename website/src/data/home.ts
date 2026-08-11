@@ -478,14 +478,14 @@
     "max_width": "1700px",
     "padding_top": 30,
     "padding_bottom": 30,
-    "background_color": "#f2f8f6",
-    "text_color": "#161b2e",
-    "muted_text_color": "#646575",
-    "accent_color": "#176d5c",
-    "border_color": "#176d5c",
-    "field_color": "#f7fcfa",
-    "button_color": "#176d5c",
-    "button_text_color": "#ffffff"
+    "background_color": "#161B2E",
+    "text_color": "#F7F1E1",
+    "muted_text_color": "#C6C3BA",
+    "accent_color": "#1FA88F",
+    "border_color": "#45506A",
+    "field_color": "#20273B",
+    "button_color": "#E0A526",
+    "button_text_color": "#161B2E"
   }
 };
 
