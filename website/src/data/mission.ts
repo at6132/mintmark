@@ -1,0 +1,60 @@
+﻿export const missionContent = {
+  "settings": {
+    "eyebrow": "ABOUT MINTMARK",
+    "heading_primary": "We manufacture understanding â€”",
+    "heading_accent": "and mint the next generation of capitalists.",
+    "intro_text": "<p>Mintmark turns real company stories into clear financial understanding, one company at a time.</p>",
+    "cta_eyebrow": "START HERE",
+    "cta_heading": "Start with one book.",
+    "cta_text": "Every book is $24.99. No subscriptions. No accounts required. Pick the company your child already knows.",
+    "cta_button_label": "BROWSE THE CATALOG",
+    "max_width": "1500px",
+    "reading_width": "980px",
+    "padding_top": 75,
+    "padding_bottom": 100,
+    "background_color": "#F5EFE1",
+    "paper_color": "#F3ECDC",
+    "text_color": "#161B2E",
+    "muted_text_color": "#646575",
+    "mint_color": "#A6DECB",
+    "gold_color": "#E0A526",
+    "navy_color": "#161B2E",
+    "border_color": "#C9BEA8",
+    "line_color": "#A6DECB"
+  },
+  "chapters": [
+    {
+      "id": "what_we_make",
+      "type": "chapter",
+      "heading": "What we make",
+      "text": "<p>Mintmark publishes the â€œLiving Company DNAâ€ series â€” books that dissect one real, publicly traded company per volume. The worldâ€™s most complicated ideas, taught the worldâ€™s simplest way. Each book delivers genuine financial depth in language a 10-year-old can follow without a dictionary. The standard is simple to state and hard to achieve: CEO-complete underneath, Khan-clear on top.</p>",
+      "show_graphic": true,
+      "graphic_style": "books"
+    },
+    {
+      "id": "who_its_for",
+      "type": "chapter",
+      "heading": "Who it's for",
+      "text": "<p>Children ages 10â€“13 who are curious about the companies they already interact with every day. Parents who want their children to understand â€” not just hold â€” the investments in their accounts. Anyone who believes that real financial literacy starts with understanding how businesses actually work, not with memorizing ticker symbols.</p>",
+      "show_graphic": true,
+      "graphic_style": "audience"
+    },
+    {
+      "id": "progression_system",
+      "type": "chapter",
+      "heading": "The progression system",
+      "text": "<p>Books are not just books. Each one ends with a minted coin â€” a numismatic collectible earned by demonstrating real understanding. Coins are collected in a Wallet. The Wallet grows as understanding does. The system is grounded in real numismatic tradition: a mintmark is the authenticating stamp on a coin that proves where and when it was struck. Here, it proves what you know.</p>",
+      "show_graphic": true,
+      "graphic_style": "progression"
+    },
+    {
+      "id": "the_company",
+      "type": "chapter",
+      "heading": "The company",
+      "text": "<p>We are a small team building a large catalog â€” toward the full S&P 500, one company at a time. The launch set covers nine flagship companies. The catalog grows from there.</p>",
+      "show_graphic": true,
+      "graphic_style": "building"
+    }
+  ]
+};
+
