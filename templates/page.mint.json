@@ -1,0 +1,584 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "disabled": true,
+      "settings": {}
+    },
+    "mint_curriculum": {
+      "type": "ara-mint-curriculum-map",
+      "blocks": {
+        "level_1": {
+          "type": "level",
+          "settings": {
+            "number": "I",
+            "metal": "COPPER",
+            "title": "Day One",
+            "subtitle": "Start with the first principles of ownership, product, customer, team, profit and advantage.",
+            "status": "LEVEL I",
+            "company_count": "",
+            "company_list": "",
+            "open_by_default": false,
+            "raise_title": "Your Own Pocket",
+            "raise_text": "Start with your own savings — skin in the game is your first capital.",
+            "build_title": "Make One Thing People Want",
+            "build_text": "A product only matters if it solves a real problem for someone willing to pay for it.",
+            "sell_title": "Your First Customer",
+            "sell_text": "Find the one person the thing is truly for, and make the first sale.",
+            "grow_title": "You Can’t Do It All",
+            "grow_text": "The first hire — letting go of a task so the thing can outgrow you.",
+            "allocate_title": "What Do You Do With Profit?",
+            "allocate_text": "The first fork: spend it, save it, or feed it back in.",
+            "defend_title": "Why You, Not Them?",
+            "defend_text": "The first reason a customer picks you over the next option on the shelf."
+          }
+        },
+        "level_2": {
+          "type": "level",
+          "settings": {
+            "number": "II",
+            "metal": "NICKEL",
+            "title": "Open the Doors",
+            "subtitle": "See how money enters the company, what one unit costs and how early systems begin to form.",
+            "status": "LEVEL II",
+            "company_count": "",
+            "company_list": "",
+            "open_by_default": false,
+            "raise_title": "Loan or a Slice",
+            "raise_text": "Two ways to get money: borrow it and pay it back, or sell part of the company and give ownership up.",
+            "build_title": "What One Costs",
+            "build_text": "Unit cost — the true price of making a single one before you ever sell it.",
+            "sell_title": "Name Your Price",
+            "sell_text": "Pricing is the strongest lever a company owns — a few cents can change everything.",
+            "grow_title": "Who Does What",
+            "grow_text": "Organizational roles split the work so it does not collapse onto one person.",
+            "allocate_title": "Feed the Winners",
+            "allocate_text": "Put each dollar where it earns the most — return on capital in plain language.",
+            "defend_title": "The Moat",
+            "defend_text": "The advantage that stops a copycat from taking your lunch."
+          }
+        },
+        "level_3": {
+          "type": "level",
+          "settings": {
+            "number": "III",
+            "metal": "BRASS",
+            "title": "Read the Machine",
+            "subtitle": "Follow cash, margins, acquisition cost, systems, reinvestment and the forces that keep customers in place.",
+            "status": "LEVEL III",
+            "company_count": "",
+            "company_list": "",
+            "open_by_default": false,
+            "raise_title": "Runway & Burn",
+            "raise_text": "How fast you spend cash, and how many months of life you have before it runs out.",
+            "build_title": "Margin on Every Sale",
+            "build_text": "Gross margin — price minus cost; the money left on each unit is the engine’s fuel.",
+            "sell_title": "Cost to Win a Buyer",
+            "sell_text": "Customer acquisition cost — what you spend to land a single customer.",
+            "grow_title": "Rules That Run Without You",
+            "grow_text": "Systems and processes turn heroics into a machine that repeats.",
+            "allocate_title": "Give It Back or Grow It",
+            "allocate_text": "Dividends versus reinvestment — the choice that defines capital allocation.",
+            "defend_title": "Hard to Leave",
+            "defend_text": "Switching costs and network effects explain why customers can become pleasantly stuck."
+          }
+        },
+        "level_4": {
+          "type": "level",
+          "settings": {
+            "number": "IV",
+            "metal": "SILVER",
+            "title": "Fuel & Fit",
+            "subtitle": "Connect funding, supply chains, lifetime value, incentives, buybacks and toll-booth economics.",
+            "status": "LEVEL IV",
+            "company_count": "20 BOOKS",
+            "company_list": "Boeing, Disney, McDonald’s, Nike, Meta, Amazon, Walmart, Starbucks, Deere, Nestlé, Pepsi, J&J, Pfizer, UnitedHealth, ExxonMobil, Chevron, Shell, Costco, IKEA, Zara",
+            "open_by_default": true,
+            "raise_title": "Giving Up Slices",
+            "raise_text": "Dilution — every new slice you sell to raise money shrinks everyone’s slice, yours included.",
+            "build_title": "The Chain",
+            "build_text": "Supply chain and inventory — parts in, stock held; when one link snaps the whole line stops.",
+            "sell_title": "Worth More Than One Sale",
+            "sell_text": "Lifetime value — a customer is worth every future purchase, not just today’s.",
+            "grow_title": "Pay People to Care",
+            "grow_text": "Incentives — what you reward is what you get; pay and equity shape behavior.",
+            "allocate_title": "Buy Back Your Slices",
+            "allocate_text": "Buybacks shrink the pie so every remaining slice is worth more.",
+            "defend_title": "The Toll Booth",
+            "defend_text": "The business that collects a fee on every transaction, no matter who wins."
+          }
+        },
+        "level_5": {
+          "type": "level",
+          "settings": {
+            "number": "V",
+            "metal": "GOLD",
+            "title": "Scale It",
+            "subtitle": "Understand valuation, economies of scale, customer economics, culture, acquisitions and constraints.",
+            "status": "LEVEL V",
+            "company_count": "",
+            "company_list": "",
+            "open_by_default": false,
+            "raise_title": "What’s It All Worth?",
+            "raise_text": "Valuation — why a company with zero profit can still be priced in the billions.",
+            "build_title": "Cheaper as You Grow",
+            "build_text": "Economies of scale — the cost of one unit drops as volume climbs.",
+            "sell_title": "The Growth Equation",
+            "sell_text": "A company can grow only while a customer is worth more than they cost to get.",
+            "grow_title": "Culture Shapes Execution",
+            "grow_text": "Culture is the invisible manager that scales when leaders cannot be everywhere.",
+            "allocate_title": "Buy Another Company",
+            "allocate_text": "Mergers and acquisitions — growth by acquisition, and why overpaying destroys value.",
+            "defend_title": "The Thing That Could Kill You",
+            "defend_text": "The binding constraint — the single limit or shock that ends the whole story."
+          }
+        },
+        "level_6": {
+          "type": "level",
+          "settings": {
+            "number": "VI",
+            "metal": "PATINA",
+            "title": "The Corner Office",
+            "subtitle": "Reach public markets, long-term investment, brand power, organization design, value and governance.",
+            "status": "LEVEL VI",
+            "company_count": "",
+            "company_list": "",
+            "open_by_default": false,
+            "raise_title": "Going Public",
+            "raise_text": "The IPO — selling slices to the whole world at once; the day private becomes public.",
+            "build_title": "Bet on What’s Not Built Yet",
+            "build_text": "Research, development and capital spending put real money behind a future that might not arrive.",
+            "sell_title": "The Brand Is a Promise",
+            "sell_text": "Pricing power — people pay more for the same thing when they trust the name.",
+            "grow_title": "Why Big Gets Slow",
+            "grow_text": "Organization design and layers create the coordination tax that slows large companies.",
+            "allocate_title": "Price vs. Value",
+            "allocate_text": "What your slice is truly worth against what it costs today — the verdict that mints the mark.",
+            "defend_title": "Who Watches the CEO?",
+            "defend_text": "Governance — the board, shareholders and the duty the CEO cannot escape."
+          }
+        }
+      },
+      "block_order": [
+        "level_1",
+        "level_2",
+        "level_3",
+        "level_4",
+        "level_5",
+        "level_6"
+      ],
+      "settings": {
+        "eyebrow": "THE MINT · CURRICULUM",
+        "heading": "Learn everything.",
+        "description": "<p>Six levels. Thirty-six concepts. The curriculum behind every Mintmark company file.</p>",
+        "progress_one": "Learn a concept",
+        "progress_two": "Pass its Framing Check — strike a mintmark",
+        "progress_three": "All six levels struck — the mark mints",
+        "search_label": "FIND A BOOK",
+        "search_placeholder": "Type a company name — Apple, Nike, Berkshire...",
+        "search_note": "Search levels, concepts and listed company books.",
+        "matrix_heading": "The whole map",
+        "matrix_description": "Read down a column for one level; read across a row to watch one job get harder from Day One to the corner office.",
+        "matrix_footer": "Six marks, thirty-six concepts. Fill the Mint and you’ve run the whole company in your head.",
+        "max_width": "1450px",
+        "padding_top": 70,
+        "padding_bottom": 100,
+        "background_color": "#F5EFE1",
+        "paper_color": "#F3ECDC",
+        "text_color": "#161B2E",
+        "muted_color": "#646575",
+        "mint_color": "#A6DECB",
+        "gold_color": "#E0A526",
+        "border_color": "#C9BEA8"
+      }
+    },
+    "market_maps": {
+      "type": "ara-mint-market-maps",
+      "blocks": {
+        "company_01_apple": {
+          "type": "company",
+          "settings": {
+            "ticker": "AAPL",
+            "company_name": "Apple",
+            "sector": "Technology",
+            "market_cap": "3300",
+            "daily_move": "0.6",
+            "longitude": "-122.0322",
+            "latitude": "37.3230",
+            "module_link": "/pages/apple"
+          }
+        },
+        "company_02_microsoft": {
+          "type": "company",
+          "settings": {
+            "ticker": "MSFT",
+            "company_name": "Microsoft",
+            "sector": "Technology",
+            "market_cap": "3100",
+            "daily_move": "1.1",
+            "longitude": "-122.1215",
+            "latitude": "47.6740",
+            "module_link": ""
+          }
+        },
+        "company_03_nvidia": {
+          "type": "company",
+          "settings": {
+            "ticker": "NVDA",
+            "company_name": "Nvidia",
+            "sector": "Technology",
+            "market_cap": "3200",
+            "daily_move": "2.1",
+            "longitude": "-121.9650",
+            "latitude": "37.3707",
+            "module_link": ""
+          }
+        },
+        "company_04_alphabet": {
+          "type": "company",
+          "settings": {
+            "ticker": "GOOGL",
+            "company_name": "Alphabet",
+            "sector": "Technology",
+            "market_cap": "2100",
+            "daily_move": "-0.4",
+            "longitude": "-122.0841",
+            "latitude": "37.4220",
+            "module_link": ""
+          }
+        },
+        "company_05_visa": {
+          "type": "company",
+          "settings": {
+            "ticker": "V",
+            "company_name": "Visa",
+            "sector": "Financials",
+            "market_cap": "600",
+            "daily_move": "1.4",
+            "longitude": "-122.2711",
+            "latitude": "37.5585",
+            "module_link": ""
+          }
+        },
+        "company_06_jpmorgan": {
+          "type": "company",
+          "settings": {
+            "ticker": "JPM",
+            "company_name": "JPMorgan",
+            "sector": "Financials",
+            "market_cap": "680",
+            "daily_move": "0.3",
+            "longitude": "-73.9787",
+            "latitude": "40.7557",
+            "module_link": ""
+          }
+        },
+        "company_07_mastercard": {
+          "type": "company",
+          "settings": {
+            "ticker": "MA",
+            "company_name": "Mastercard",
+            "sector": "Financials",
+            "market_cap": "460",
+            "daily_move": "0.9",
+            "longitude": "-73.7143",
+            "latitude": "41.0420",
+            "module_link": ""
+          }
+        },
+        "company_08_berkshire": {
+          "type": "company",
+          "settings": {
+            "ticker": "BRK.B",
+            "company_name": "Berkshire",
+            "sector": "Financials",
+            "market_cap": "950",
+            "daily_move": "0.2",
+            "longitude": "-95.9345",
+            "latitude": "41.2565",
+            "module_link": ""
+          }
+        },
+        "company_09_union-pacific": {
+          "type": "company",
+          "settings": {
+            "ticker": "UNP",
+            "company_name": "Union Pacific",
+            "sector": "Industrials",
+            "market_cap": "140",
+            "daily_move": "-0.4",
+            "longitude": "-95.9378",
+            "latitude": "41.2610",
+            "module_link": ""
+          }
+        },
+        "company_10_boeing": {
+          "type": "company",
+          "settings": {
+            "ticker": "BA",
+            "company_name": "Boeing",
+            "sector": "Industrials",
+            "market_cap": "130",
+            "daily_move": "-1.1",
+            "longitude": "-77.2106",
+            "latitude": "38.8709",
+            "module_link": ""
+          }
+        },
+        "company_11_caterpillar": {
+          "type": "company",
+          "settings": {
+            "ticker": "CAT",
+            "company_name": "Caterpillar",
+            "sector": "Industrials",
+            "market_cap": "170",
+            "daily_move": "0.5",
+            "longitude": "-96.9489",
+            "latitude": "32.8140",
+            "module_link": ""
+          }
+        },
+        "company_12_waste-mgmt": {
+          "type": "company",
+          "settings": {
+            "ticker": "WM",
+            "company_name": "Waste Mgmt",
+            "sector": "Industrials",
+            "market_cap": "90",
+            "daily_move": "0.6",
+            "longitude": "-95.3698",
+            "latitude": "29.7604",
+            "module_link": ""
+          }
+        },
+        "company_13_exxonmobil": {
+          "type": "company",
+          "settings": {
+            "ticker": "XOM",
+            "company_name": "ExxonMobil",
+            "sector": "Energy",
+            "market_cap": "520",
+            "daily_move": "-0.8",
+            "longitude": "-95.4103",
+            "latitude": "30.0966",
+            "module_link": ""
+          }
+        },
+        "company_14_chevron": {
+          "type": "company",
+          "settings": {
+            "ticker": "CVX",
+            "company_name": "Chevron",
+            "sector": "Energy",
+            "market_cap": "300",
+            "daily_move": "-0.3",
+            "longitude": "-95.3700",
+            "latitude": "29.7500",
+            "module_link": ""
+          }
+        },
+        "company_15_conocophillips": {
+          "type": "company",
+          "settings": {
+            "ticker": "COP",
+            "company_name": "ConocoPhillips",
+            "sector": "Energy",
+            "market_cap": "130",
+            "daily_move": "-1.4",
+            "longitude": "-95.4640",
+            "latitude": "29.7752",
+            "module_link": ""
+          }
+        },
+        "company_16_schlumberger": {
+          "type": "company",
+          "settings": {
+            "ticker": "SLB",
+            "company_name": "Schlumberger",
+            "sector": "Energy",
+            "market_cap": "70",
+            "daily_move": "0.7",
+            "longitude": "-95.5000",
+            "latitude": "29.7850",
+            "module_link": ""
+          }
+        },
+        "company_17_costco": {
+          "type": "company",
+          "settings": {
+            "ticker": "COST",
+            "company_name": "Costco",
+            "sector": "Consumer",
+            "market_cap": "400",
+            "daily_move": "0.8",
+            "longitude": "-122.0326",
+            "latitude": "47.5301",
+            "module_link": ""
+          }
+        },
+        "company_18_coca-cola": {
+          "type": "company",
+          "settings": {
+            "ticker": "KO",
+            "company_name": "Coca-Cola",
+            "sector": "Consumer",
+            "market_cap": "270",
+            "daily_move": "0.3",
+            "longitude": "-84.3921",
+            "latitude": "33.7663",
+            "module_link": ""
+          }
+        },
+        "company_19_walmart": {
+          "type": "company",
+          "settings": {
+            "ticker": "WMT",
+            "company_name": "Walmart",
+            "sector": "Consumer",
+            "market_cap": "620",
+            "daily_move": "0.5",
+            "longitude": "-94.2088",
+            "latitude": "36.3729",
+            "module_link": ""
+          }
+        },
+        "company_20_mcdonald-s": {
+          "type": "company",
+          "settings": {
+            "ticker": "MCD",
+            "company_name": "McDonald's",
+            "sector": "Consumer",
+            "market_cap": "210",
+            "daily_move": "-0.2",
+            "longitude": "-87.6503",
+            "latitude": "41.8858",
+            "module_link": ""
+          }
+        },
+        "company_21_unitedhealth": {
+          "type": "company",
+          "settings": {
+            "ticker": "UNH",
+            "company_name": "UnitedHealth",
+            "sector": "Healthcare",
+            "market_cap": "480",
+            "daily_move": "1.2",
+            "longitude": "-93.4687",
+            "latitude": "44.9211",
+            "module_link": ""
+          }
+        },
+        "company_22_j-j": {
+          "type": "company",
+          "settings": {
+            "ticker": "JNJ",
+            "company_name": "J&J",
+            "sector": "Healthcare",
+            "market_cap": "380",
+            "daily_move": "-0.5",
+            "longitude": "-74.4518",
+            "latitude": "40.4862",
+            "module_link": ""
+          }
+        },
+        "company_23_eli-lilly": {
+          "type": "company",
+          "settings": {
+            "ticker": "LLY",
+            "company_name": "Eli Lilly",
+            "sector": "Healthcare",
+            "market_cap": "780",
+            "daily_move": "1.8",
+            "longitude": "-86.1760",
+            "latitude": "39.7772",
+            "module_link": ""
+          }
+        },
+        "company_24_pfizer": {
+          "type": "company",
+          "settings": {
+            "ticker": "PFE",
+            "company_name": "Pfizer",
+            "sector": "Healthcare",
+            "market_cap": "160",
+            "daily_move": "-0.9",
+            "longitude": "-74.0060",
+            "latitude": "40.7127",
+            "module_link": ""
+          }
+        }
+      },
+      "block_order": [
+        "company_01_apple",
+        "company_02_microsoft",
+        "company_03_nvidia",
+        "company_04_alphabet",
+        "company_05_visa",
+        "company_06_jpmorgan",
+        "company_07_mastercard",
+        "company_08_berkshire",
+        "company_09_union-pacific",
+        "company_10_boeing",
+        "company_11_caterpillar",
+        "company_12_waste-mgmt",
+        "company_13_exxonmobil",
+        "company_14_chevron",
+        "company_15_conocophillips",
+        "company_16_schlumberger",
+        "company_17_costco",
+        "company_18_coca-cola",
+        "company_19_walmart",
+        "company_20_mcdonald-s",
+        "company_21_unitedhealth",
+        "company_22_j-j",
+        "company_23_eli-lilly",
+        "company_24_pfizer"
+      ],
+      "name": "Ara Market Maps",
+      "settings": {
+        "title": "U.S. companies",
+        "heat_subtitle": "exact U.S. outline · market weight & today's move",
+        "hq_subtitle": "headquarters · dodged so nothing overlaps",
+        "heat_button_label": "Heat map",
+        "hq_button_label": "Headquarters",
+        "default_view": "heat",
+        "reset_label": "Reset",
+        "legend_down_label": "down",
+        "legend_up_label": "up (today)",
+        "heat_size_label": "Cell size = market cap",
+        "heat_group_label": "Every company packed inside the U.S. — grouped by sector",
+        "data_note": "caps & moves illustrative",
+        "hq_size_label": "Dot = market cap · real HQ",
+        "hq_note": "dense cities collapse to a count — click to fan out, scroll to zoom",
+        "max_width": 1200,
+        "padding_top": 70,
+        "padding_bottom": 70,
+        "background_color": "#F5EFE1",
+        "paper_color": "#FBF7EC",
+        "text_color": "#161B2E",
+        "mint_color": "#1FA88F",
+        "gold_color": "#E0A526",
+        "technology_color": "#1FA88F",
+        "financials_color": "#E0A526",
+        "healthcare_color": "#9A5BA6",
+        "consumer_color": "#7A9E5B",
+        "energy_color": "#C25B3F",
+        "industrials_color": "#4C6B8A"
+      }
+    }
+  },
+  "order": [
+    "main",
+    "mint_curriculum",
+    "market_maps"
+  ]
+}

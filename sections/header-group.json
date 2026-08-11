@@ -1,0 +1,195 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "type": "header",
+  "name": "t:names.header",
+  "sections": {
+    "ara_mintmark_top_bar_49AABz": {
+      "type": "ara-mintmark-top-bar",
+      "name": "Ara Mintmark Top Bar",
+      "settings": {
+        "paper_label": "",
+        "issue_label": "",
+        "show_date": true,
+        "date_format": "%B %d, %Y",
+        "center_text": "",
+        "show_account": true,
+        "account_label": "MEMBER LOGIN",
+        "desktop_font_size": 12,
+        "mobile_font_size": 9,
+        "max_width": "1700px",
+        "vertical_padding": 11,
+        "background_color": "#F2F8F6",
+        "text_color": "#161b2e",
+        "muted_text_color": "#646575",
+        "accent_color": "#176d5c",
+        "rule_color": "#1fa88f"
+      }
+    },
+    "header_section": {
+      "type": "header",
+      "blocks": {
+        "header-logo": {
+          "type": "_header-logo",
+          "static": true,
+          "settings": {
+            "hide_logo_on_home_page": false,
+            "padding-block-start": 0,
+            "padding-block-end": 0
+          },
+          "blocks": {}
+        },
+        "header-menu": {
+          "type": "_header-menu",
+          "static": true,
+          "settings": {
+            "menu": "main-menu",
+            "background_color": "{{ settings.color_palette.background }}",
+            "text_color": "",
+            "type_font_primary_size": "0.875rem",
+            "menu_font_style": "inverse",
+            "type_font_primary_link": "body",
+            "type_case_primary_link": "none",
+            "menu_style": "featured_products",
+            "featured_products_aspect_ratio": "4 / 5",
+            "featured_collections_aspect_ratio": "16 / 9",
+            "image_border_radius": 0,
+            "navigation_bar": false,
+            "background_color_navigation_bar": "{{ settings.color_palette.background }}",
+            "text_color_navigation_bar": "",
+            "drawer_accordion": false,
+            "drawer_accordion_expand_first": false,
+            "drawer_dividers": false
+          },
+          "blocks": {}
+        }
+      },
+      "disabled": true,
+      "settings": {
+        "logo_position": "left",
+        "menu_position": "left",
+        "menu_row": "top",
+        "customer_account_menu": "customer-account-main-menu",
+        "show_search": true,
+        "search_position": "right",
+        "search_row": "top",
+        "show_country": true,
+        "country_selector_style": false,
+        "show_language": true,
+        "localization_font": "heading",
+        "localization_font_size": "0.875rem",
+        "localization_position": "right",
+        "localization_row": "top",
+        "section_width": "page-width",
+        "section_height": "standard",
+        "enable_sticky_header": "always",
+        "divider_width": 0,
+        "divider_size": "page-width",
+        "divider_color": "",
+        "border_width": 0,
+        "bottom_border_color": "",
+        "actions_display_style": "icon",
+        "actions_font_size": "0.875rem",
+        "actions_font": "body",
+        "actions_text_case": "none",
+        "background_color_top": "{{ settings.color_palette.background }}",
+        "text_color_top": "",
+        "background_color_bottom": "",
+        "text_color_bottom": "",
+        "bubble_style": "default",
+        "bubble_background_color": "",
+        "bubble_text_color": "",
+        "enable_transparent_header_home": false,
+        "home_inverse_logo": false,
+        "text_color_transparent_home": "",
+        "enable_transparent_header_product": false,
+        "product_inverse_logo": false,
+        "text_color_transparent_product": "",
+        "enable_transparent_header_collection": false,
+        "collection_inverse_logo": false,
+        "text_color_transparent_collection": ""
+      }
+    },
+    "ara_mintmark_header_HdqFgM": {
+      "type": "ara-mintmark-header",
+      "blocks": {
+        "menu_item_pDpC3x": {
+          "type": "menu_item",
+          "settings": {
+            "title": "MISSION",
+            "subtitle": "Financial Literacy & Empowerment",
+            "link": "shopify://pages/mission"
+          }
+        },
+        "menu_item_y8APBz": {
+          "type": "menu_item",
+          "settings": {
+            "title": "MINT",
+            "subtitle": "The Curriculum",
+            "link": "shopify://pages/mint"
+          }
+        },
+        "menu_item_cKt7Ye": {
+          "type": "menu_item",
+          "settings": {
+            "title": "BOOKSHELF",
+            "subtitle": "Manufacture Understanding",
+            "link": "shopify://pages/bookshelf"
+          }
+        },
+        "menu_item_rVT6Ud": {
+          "type": "menu_item",
+          "settings": {
+            "title": "COMPANIES",
+            "subtitle": "Catalog",
+            "link": "shopify://pages/catalog"
+          }
+        }
+      },
+      "block_order": [
+        "menu_item_pDpC3x",
+        "menu_item_y8APBz",
+        "menu_item_cKt7Ye",
+        "menu_item_rVT6Ud"
+      ],
+      "name": "Ara Mintmark Header",
+      "settings": {
+        "sticky_header": false,
+        "logo": "shopify://shop_images/998e0312-86aa-4378-93dc-880407058e09.png",
+        "action_label": "EXPLORE MINTMARK",
+        "action_link": "",
+        "mobile_menu_label": "EXPLORE MINTMARK",
+        "mobile_menu_note": "BUSINESS · MARKETS · MONEY",
+        "desktop_nav_size": 12,
+        "desktop_subtitle_size": 9,
+        "mobile_nav_size": 30,
+        "mobile_subtitle_size": 10,
+        "max_width": "1700px",
+        "logo_width": 220,
+        "mobile_logo_width": 180,
+        "vertical_padding": 18,
+        "background_color": "{{ settings.color_palette.foreground }}",
+        "paper_color": "{{ settings.color_palette.foreground }}",
+        "text_color": "{{ settings.color_palette.background }}",
+        "subtitle_color": "#c76b73",
+        "accent_color": "#176d5c",
+        "gold_color": "#e0a526",
+        "blue_color": "#3a5be0",
+        "rule_color": "#1fa88f",
+        "border_color": "#c9bea8"
+      }
+    }
+  },
+  "order": [
+    "ara_mintmark_top_bar_49AABz",
+    "header_section",
+    "ara_mintmark_header_HdqFgM"
+  ]
+}

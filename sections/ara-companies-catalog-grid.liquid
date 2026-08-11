@@ -1,0 +1,3265 @@
+<section
+  id="AraCompanyCatalog-{{ section.id }}"
+  class="ara-company-catalog"
+  style="
+    --ara-cc-bg: {{ section.settings.background_color }};
+    --ara-cc-card: {{ section.settings.card_color }};
+    --ara-cc-text: {{ section.settings.text_color }};
+    --ara-cc-muted: {{ section.settings.muted_text_color }};
+    --ara-cc-line: {{ section.settings.line_color }};
+    --ara-cc-border: {{ section.settings.border_color }};
+    --ara-cc-positive: {{ section.settings.positive_color }};
+    --ara-cc-negative: {{ section.settings.negative_color }};
+    --ara-cc-neutral: {{ section.settings.neutral_color }};
+    --ara-cc-gold: {{ section.settings.gold_color }};
+    --ara-cc-max: {{ section.settings.max_width }};
+    --ara-cc-columns: {{ section.settings.desktop_columns }};
+    --ara-cc-top: {{ section.settings.padding_top }}px;
+    --ara-cc-bottom: {{ section.settings.padding_bottom }}px;
+    --ara-cc-heading-desktop: {{ section.settings.desktop_heading_size }}px;
+    --ara-cc-category-desktop: {{ section.settings.desktop_category_size }}px;
+    --ara-cc-company-desktop: {{ section.settings.desktop_company_size }}px;
+    --ara-cc-meta-desktop: {{ section.settings.desktop_meta_size }}px;
+    --ara-cc-heading-mobile: {{ section.settings.mobile_heading_size }}px;
+    --ara-cc-category-mobile: {{ section.settings.mobile_category_size }}px;
+    --ara-cc-company-mobile: {{ section.settings.mobile_company_size }}px;
+    --ara-cc-meta-mobile: {{ section.settings.mobile_meta_size }}px;
+  "
+>
+  <div class="ara-company-catalog__inner">
+    <div class="ara-company-catalog__brand-masthead">
+      <div class="ara-company-catalog__brand-lockup">
+        <img
+          src="{{ 'mintmark-wordmark-ink.png' | asset_url }}"
+          alt="Mintmark"
+          width="488"
+          height="88"
+          loading="eager"
+        >
+      </div>
+      <div class="ara-company-catalog__brand-index">
+        <span>COMPANY CATALOG</span>
+        <small>REAL COMPANIES · COMPANY FILES · PHYSICAL DIGESTS</small>
+      </div>
+      <img
+        class="ara-company-catalog__brand-mark"
+        src="{{ 'mintmark-mark-app.png' | asset_url }}"
+        alt=""
+        width="285"
+        height="285"
+        loading="eager"
+      >
+    </div>
+    {% if section.settings.show_intro %}
+      <div class="ara-company-catalog__intro">
+        <div>
+          {% if section.settings.eyebrow != blank %}
+            <span class="ara-company-catalog__eyebrow">
+              {{ section.settings.eyebrow | escape }}
+            </span>
+          {% endif %}
+
+          {% if section.settings.heading != blank %}
+            <h1>{{ section.settings.heading | escape | newline_to_br }}</h1>
+          {% endif %}
+        </div>
+
+        {% if section.settings.description != blank %}
+          <div class="ara-company-catalog__description">
+            {{ section.settings.description }}
+          </div>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    {% if section.settings.show_search or section.settings.show_filters %}
+      <div class="ara-company-catalog__tools">
+        {% if section.settings.show_search %}
+          <label class="ara-company-catalog__search">
+            <span>{{ section.settings.search_label | escape }}</span>
+            <input
+              type="search"
+              placeholder="{{ section.settings.search_placeholder | escape }}"
+              autocomplete="off"
+              data-company-search
+            >
+          </label>
+        {% endif %}
+
+        {% if section.settings.show_filters %}
+          <div class="ara-company-catalog__filters" aria-label="Company category filters">
+            <button
+              type="button"
+              class="ara-company-catalog__filter is-active"
+              data-company-filter="all"
+              aria-pressed="true"
+            >
+              {{ section.settings.all_filter_label | escape }}
+            </button>
+
+            {% assign filter_values = 'classics,technology,consumer,industrials,food-beverage,financials,healthcare,energy,retail,other' | split: ',' %}
+
+            {% for filter_value in filter_values %}
+              {% assign filter_count = 0 %}
+
+              {% for block in section.blocks %}
+                {% if block.settings.sector == filter_value %}
+                  {% assign filter_count = filter_count | plus: 1 %}
+                {% endif %}
+              {% endfor %}
+
+              {% if filter_count > 0 %}
+                {% case filter_value %}
+                  {% when 'classics' %}
+                    {% assign filter_label = section.settings.classics_label %}
+                  {% when 'technology' %}
+                    {% assign filter_label = section.settings.technology_label %}
+                  {% when 'consumer' %}
+                    {% assign filter_label = section.settings.consumer_label %}
+                  {% when 'industrials' %}
+                    {% assign filter_label = section.settings.industrials_label %}
+                  {% when 'food-beverage' %}
+                    {% assign filter_label = section.settings.food_beverage_label %}
+                  {% when 'financials' %}
+                    {% assign filter_label = section.settings.financials_label %}
+                  {% when 'healthcare' %}
+                    {% assign filter_label = section.settings.healthcare_label %}
+                  {% when 'energy' %}
+                    {% assign filter_label = section.settings.energy_label %}
+                  {% when 'retail' %}
+                    {% assign filter_label = section.settings.retail_label %}
+                  {% else %}
+                    {% assign filter_label = section.settings.other_label %}
+                {% endcase %}
+
+                <button
+                  type="button"
+                  class="ara-company-catalog__filter"
+                  data-company-filter="{{ filter_value }}"
+                  aria-pressed="false"
+                >
+                  {{ filter_label | escape }}
+                </button>
+              {% endif %}
+            {% endfor %}
+          </div>
+        {% endif %}
+
+        <p class="ara-company-catalog__count">
+          <strong data-visible-count>{{ section.blocks.size }}</strong>
+          <span>{{ section.settings.visible_count_label | escape }}</span>
+        </p>
+      </div>
+    {% endif %}
+
+    {% assign category_values = 'classics,technology,consumer,industrials,food-beverage,financials,healthcare,energy,retail,other' | split: ',' %}
+
+    <div class="ara-company-catalog__groups">
+      {% for category_value in category_values %}
+        {% assign category_count = 0 %}
+
+        {% for block in section.blocks %}
+          {% if block.settings.sector == category_value %}
+            {% assign category_count = category_count | plus: 1 %}
+          {% endif %}
+        {% endfor %}
+
+        {% if category_count > 0 %}
+          {% case category_value %}
+            {% when 'classics' %}
+              {% assign category_label = section.settings.classics_label %}
+            {% when 'technology' %}
+              {% assign category_label = section.settings.technology_label %}
+            {% when 'consumer' %}
+              {% assign category_label = section.settings.consumer_label %}
+            {% when 'industrials' %}
+              {% assign category_label = section.settings.industrials_label %}
+            {% when 'food-beverage' %}
+              {% assign category_label = section.settings.food_beverage_label %}
+            {% when 'financials' %}
+              {% assign category_label = section.settings.financials_label %}
+            {% when 'healthcare' %}
+              {% assign category_label = section.settings.healthcare_label %}
+            {% when 'energy' %}
+              {% assign category_label = section.settings.energy_label %}
+            {% when 'retail' %}
+              {% assign category_label = section.settings.retail_label %}
+            {% else %}
+              {% assign category_label = section.settings.other_label %}
+          {% endcase %}
+
+          <section
+            class="ara-company-catalog__group"
+            data-company-group
+            data-company-group-sector="{{ category_value }}"
+          >
+            <div class="ara-company-catalog__group-heading">
+              <h2>{{ category_label | escape }}</h2>
+              <span aria-hidden="true"></span>
+              <small>{{ category_count }}</small>
+            </div>
+
+            <div class="ara-company-catalog__grid">
+              {% for block in section.blocks %}
+                {% if block.settings.sector == category_value %}
+                  {% assign search_text = block.settings.company_name | append: ' ' | append: block.settings.ticker | append: ' ' | append: block.settings.sector_label | append: ' ' | append: block.settings.business_model | append: ' ' | append: block.settings.headquarters | append: ' ' | append: block.settings.keywords | downcase %}
+
+                  {% liquid
+                    assign module_url = block.settings.module_link
+                    assign company_handle = block.settings.company_name | handleize
+                    assign company_status = block.settings.status | downcase
+                    assign available_module_handles = section.settings.available_module_handles | downcase | replace: ' ', '' | split: ','
+                    assign module_is_available = false
+                    assign effective_status = block.settings.status
+
+                    if available_module_handles contains company_handle
+                      assign module_is_available = true
+                    endif
+
+                    unless module_is_available
+                      assign module_url = blank
+                      assign effective_status = 'COMING SOON'
+                    endunless
+
+                    if module_url == blank and section.settings.enable_automatic_module_links and module_is_available
+                      assign module_url = routes.root_url | append: section.settings.module_path_prefix | append: company_handle
+                    endif
+
+                    assign popup_product = block.settings.popup_product
+                    assign popup_image = block.settings.popup_image
+                    assign popup_product_url = blank
+                    assign popup_price = block.settings.popup_price
+                    assign popup_tagline = block.settings.popup_tagline
+                    assign popup_chapter = block.settings.popup_chapter
+                    assign popup_cover_color = block.settings.popup_cover_color | default: block.settings.accent_color
+                    assign popup_cover_text = block.settings.popup_cover_text_color
+                    assign popup_level = block.settings.popup_level | default: 1
+
+                    if popup_tagline == blank
+                      assign popup_tagline = block.settings.business_model | capitalize
+                    endif
+
+                    if popup_chapter == blank
+                      assign popup_chapter = 'The company behind the numbers'
+                    endif
+
+                    if popup_product != blank
+                      assign popup_product_url = popup_product.url
+
+                      if popup_product.featured_image != blank
+                        assign popup_image = popup_product.featured_image
+                      endif
+
+                      if popup_price == blank
+                        assign popup_price = popup_product.price | money
+                      endif
+                    endif
+                  %}
+
+                  {% assign chart_path = 'M2 43 C20 39 31 42 46 36 C62 30 75 38 91 31 C107 25 121 29 137 23 C154 17 170 24 187 18 C205 12 222 17 238 10' %}
+
+                  {% case block.settings.sparkline_style %}
+                    {% when 'steady-up' %}
+                      {% assign chart_path = 'M2 46 C24 43 43 39 61 35 C82 30 101 31 121 25 C143 19 164 21 184 15 C205 10 222 11 238 7' %}
+                    {% when 'wave-up' %}
+                      {% assign chart_path = 'M2 42 C21 28 37 30 53 38 C69 46 82 25 99 28 C116 31 130 39 147 30 C165 21 181 25 198 19 C214 13 228 18 238 9' %}
+                    {% when 'volatile-up' %}
+                      {% assign chart_path = 'M2 48 C14 19 26 34 38 15 C51 35 63 24 76 42 C90 19 104 27 118 13 C132 33 147 18 161 25 C178 9 194 22 211 8 C224 19 232 13 238 5' %}
+                    {% when 'steady-down' %}
+                      {% assign chart_path = 'M2 10 C24 14 43 17 62 21 C82 26 102 24 122 31 C143 35 162 34 182 40 C203 44 222 46 238 50' %}
+                    {% when 'wave-down' %}
+                      {% assign chart_path = 'M2 12 C20 20 36 11 53 19 C70 28 84 18 101 27 C119 36 134 24 152 34 C171 43 185 31 203 40 C220 48 230 40 238 50' %}
+                    {% when 'volatile-down' %}
+                      {% assign chart_path = 'M2 7 C15 29 27 15 40 36 C53 20 66 44 79 27 C93 47 108 32 123 51 C139 34 154 50 170 39 C186 54 203 42 219 52 C230 44 235 48 238 54' %}
+                    {% when 'flat' %}
+                      {% assign chart_path = 'M2 31 C22 28 39 34 58 30 C78 27 97 34 116 29 C137 26 157 33 177 28 C198 25 218 31 238 26' %}
+                  {% endcase %}
+
+                  <a
+                    class="ara-company-catalog__card ara-company-catalog__card--{{ block.settings.direction }}"
+                    data-company-card
+                    data-company-sector="{{ block.settings.sector }}"
+                    data-company-search-text="{{ search_text | escape }}"
+                    style="--ara-company-marker: {{ block.settings.accent_color }};"
+                    {% if section.settings.enable_company_popup %}
+                      href="#AraCompanyPopup-{{ section.id }}"
+                      data-company-popup-trigger="{{ block.id }}"
+                      aria-haspopup="dialog"
+                    {% elsif module_url != blank %}
+                      href="{{ module_url }}"
+                    {% else %}
+                      role="link"
+                      aria-disabled="true"
+                    {% endif %}
+                    {{ block.shopify_attributes }}
+                  >
+                    <div class="ara-company-catalog__card-heading">
+                      <span class="ara-company-catalog__marker" aria-hidden="true"></span>
+
+                      <div>
+                        <strong>{{ block.settings.company_name | escape }}</strong>
+
+                        {% if section.settings.show_business_model and block.settings.business_model != blank %}
+                          <small>{{ block.settings.business_model | escape }}</small>
+                        {% endif %}
+                      </div>
+
+                      {% if section.settings.show_ticker and block.settings.ticker != blank %}
+                        <span class="ara-company-catalog__ticker">
+                          {{ block.settings.ticker | escape }}
+                        </span>
+                      {% endif %}
+                    </div>
+
+                    <div class="ara-company-catalog__chart" aria-hidden="true">
+                      <svg viewBox="0 0 240 62" preserveAspectRatio="none">
+                        <defs>
+                          <linearGradient
+                            id="AraChartGradient-{{ block.id }}"
+                            x1="0"
+                            y1="0"
+                            x2="0"
+                            y2="1"
+                          >
+                            <stop offset="0%" stop-color="currentColor" stop-opacity="0.22"/>
+                            <stop offset="100%" stop-color="currentColor" stop-opacity="0"/>
+                          </linearGradient>
+                        </defs>
+
+                        <line x1="0" y1="20" x2="240" y2="20" class="ara-company-catalog__guide"/>
+                        <line x1="0" y1="42" x2="240" y2="42" class="ara-company-catalog__guide"/>
+
+                        <path
+                          d="{{ chart_path }} L238 62 L2 62 Z"
+                          fill="url(#AraChartGradient-{{ block.id }})"
+                        ></path>
+
+                        <path
+                          d="{{ chart_path }}"
+                          class="ara-company-catalog__line"
+                        ></path>
+
+                        <circle
+                          cx="238"
+                          cy="{% if block.settings.direction == 'down' %}50{% elsif block.settings.direction == 'flat' %}26{% else %}9{% endif %}"
+                          r="2.8"
+                          class="ara-company-catalog__dot"
+                        ></circle>
+                      </svg>
+                    </div>
+
+                    <div class="ara-company-catalog__card-footer">
+                      <span class="ara-company-catalog__change">
+                        {{ block.settings.change | escape }}
+                      </span>
+
+                      {% if section.settings.show_status and block.settings.status != blank %}
+                        <span class="ara-company-catalog__status">
+                          {{ effective_status | escape }}
+                        </span>
+                      {% endif %}
+
+                      <span class="ara-company-catalog__period">
+                        {{ block.settings.period | escape }}
+                      </span>
+                    </div>
+
+                    <div class="ara-company-catalog__open">
+                      <span>{{ section.settings.open_label | escape }}</span>
+                      <span aria-hidden="true">↗</span>
+                    </div>
+                  </a>
+
+                  {% if section.settings.enable_company_popup %}
+                    <template data-company-popup-template="{{ block.id }}">
+                      <article
+                        class="ara-company-catalog__popup-card"
+                        style="
+                          --ara-popup-accent: {{ block.settings.accent_color }};
+                          --ara-popup-cover: {{ popup_cover_color }};
+                          --ara-popup-cover-text: {{ popup_cover_text }};
+                        "
+                      >
+                        <div class="ara-company-catalog__popup-folio">
+                          <span>{{ block.settings.company_name | escape }}</span>
+                          <span>{{ block.settings.ticker | escape }}</span>
+                        </div>
+
+                        <div class="ara-company-catalog__popup-layout">
+                          <div class="ara-company-catalog__popup-visual">
+                            <div class="ara-company-catalog__popup-book">
+                              {% if popup_image != blank %}
+                                {{
+                                  popup_image
+                                  | image_url: width: 900
+                                  | image_tag:
+                                    widths: '360, 540, 720, 900',
+                                    sizes: '(max-width: 749px) 72vw, 310px',
+                                    loading: 'lazy',
+                                    class: 'ara-company-catalog__popup-product-image',
+                                    alt: popup_image.alt
+                                }}
+                              {% else %}
+                                <div class="ara-company-catalog__popup-cover">
+                                  <span class="ara-company-catalog__popup-cover-kicker">
+                                    {{ section.settings.popup_cover_kicker | escape }}
+                                  </span>
+
+                                  <i aria-hidden="true"></i>
+
+                                  <strong>{{ block.settings.company_name | escape }}</strong>
+
+                                  <p>
+                                    {{ popup_tagline | escape }}
+                                  </p>
+
+                                  <img
+                                    class="ara-company-catalog__popup-cover-mark"
+                                    src="{{ 'mintmark-wordmark-mint.png' | asset_url }}"
+                                    alt=""
+                                    width="487"
+                                    height="88"
+                                    loading="lazy"
+                                  >
+                                </div>
+                              {% endif %}
+                            </div>
+
+                            <div
+                              class="ara-company-catalog__popup-chart ara-company-catalog__popup-chart--{{ block.settings.direction }}"
+                              aria-hidden="true"
+                            >
+                              <svg viewBox="0 0 240 62" preserveAspectRatio="none">
+                                <path
+                                  d="{{ chart_path }}"
+                                  class="ara-company-catalog__popup-chart-line"
+                                ></path>
+                                <circle
+                                  cx="238"
+                                  cy="{% if block.settings.direction == 'down' %}50{% elsif block.settings.direction == 'flat' %}26{% else %}9{% endif %}"
+                                  r="3"
+                                ></circle>
+                              </svg>
+                            </div>
+                          </div>
+
+                          <div class="ara-company-catalog__popup-copy">
+                            <div class="ara-company-catalog__popup-meta">
+                              <span>{{ block.settings.sector_label | escape }}</span>
+                              <span>{{ block.settings.headquarters | escape }}</span>
+                              <span>{{ effective_status | escape }}</span>
+                            </div>
+
+                            <img
+                              class="ara-company-catalog__popup-bookplate"
+                              src="{{ 'mintmark-bookplate.png' | asset_url }}"
+                              alt=""
+                              width="535"
+                              height="325"
+                              loading="lazy"
+                            >
+
+                            <p class="ara-company-catalog__popup-eyebrow">
+                              {{ section.settings.popup_eyebrow | escape }}
+                            </p>
+
+                            <h3>{{ block.settings.company_name | escape }}</h3>
+
+                            <p class="ara-company-catalog__popup-tagline">
+                              {{ popup_tagline | escape }}
+                            </p>
+
+                            <div class="ara-company-catalog__popup-chapter">
+                              <span>{{ section.settings.popup_chapter_label | escape }}</span>
+                              <strong>{{ popup_chapter | escape }}</strong>
+                            </div>
+
+                            <div class="ara-company-catalog__popup-index">
+                              <span>{{ section.settings.popup_level_label | escape }}</span>
+
+                              <div aria-label="Reading index {{ popup_level }} of 10">
+                                {% for level_index in (1..10) %}
+                                  <i
+                                    class="{% if level_index <= popup_level %}is-active{% endif %}"
+                                    aria-hidden="true"
+                                  ></i>
+                                {% endfor %}
+                              </div>
+
+                              {% if popup_price != blank %}
+                                <strong>{{ popup_price | escape }}</strong>
+                              {% endif %}
+                            </div>
+
+                            <div class="ara-company-catalog__popup-actions">
+                              {% if module_url != blank %}
+                                <a
+                                  class="ara-company-catalog__popup-button ara-company-catalog__popup-button--module"
+                                  href="{{ module_url }}"
+                                >
+                                  {{ section.settings.popup_module_label | escape }}
+                                  <span aria-hidden="true">→</span>
+                                </a>
+                              {% else %}
+                                <span
+                                  class="ara-company-catalog__popup-button ara-company-catalog__popup-button--disabled"
+                                >
+                                  {{ section.settings.popup_module_unavailable_label | escape }}
+                                </span>
+                              {% endif %}
+
+                              {% if popup_product_url != blank %}
+                                <a
+                                  class="ara-company-catalog__popup-button ara-company-catalog__popup-button--product"
+                                  href="{{ popup_product_url }}"
+                                >
+                                  {{ section.settings.popup_product_label | escape }}
+                                  {% if popup_price != blank %}
+                                    — {{ popup_price | escape }}
+                                  {% endif %}
+                                </a>
+                              {% else %}
+                                <span
+                                  class="ara-company-catalog__popup-button ara-company-catalog__popup-button--disabled"
+                                >
+                                  {{ section.settings.popup_product_unavailable_label | escape }}
+                                </span>
+                              {% endif %}
+                            </div>
+                          </div>
+                        </div>
+                      </article>
+                    </template>
+                  {% endif %}
+                {% endif %}
+              {% endfor %}
+            </div>
+          </section>
+        {% endif %}
+      {% endfor %}
+    </div>
+
+    <p class="ara-company-catalog__empty" data-empty-message hidden>
+      {{ section.settings.empty_message | escape }}
+    </p>
+  </div>
+
+  {% if section.settings.enable_company_popup %}
+    <div
+      id="AraCompanyPopup-{{ section.id }}"
+      class="ara-company-catalog__popup"
+      data-company-popup
+      hidden
+    >
+      <button
+        type="button"
+        class="ara-company-catalog__popup-backdrop"
+        data-company-popup-close
+        aria-label="{{ section.settings.popup_close_label | escape }}"
+      ></button>
+
+      <div
+        class="ara-company-catalog__popup-dialog"
+        role="dialog"
+        aria-modal="true"
+        aria-label="{{ section.settings.popup_dialog_label | escape }}"
+      >
+        <button
+          type="button"
+          class="ara-company-catalog__popup-close"
+          data-company-popup-close
+          aria-label="{{ section.settings.popup_close_label | escape }}"
+        >
+          <span aria-hidden="true">×</span>
+        </button>
+
+        <div data-company-popup-content></div>
+      </div>
+    </div>
+  {% endif %}
+</section>
+
+<style>
+  #AraCompanyCatalog-{{ section.id }} {
+    overflow: hidden;
+    padding: var(--ara-cc-top) 0 var(--ara-cc-bottom);
+    background-color: var(--ara-cc-bg);
+    background-image: repeating-linear-gradient(
+      to bottom,
+      transparent 0,
+      transparent 35px,
+      color-mix(in srgb, var(--ara-cc-line) 42%, transparent) 35px,
+      color-mix(in srgb, var(--ara-cc-line) 42%, transparent) 37px
+    );
+    color: var(--ara-cc-text);
+  }
+
+  #AraCompanyCatalog-{{ section.id }} * {
+    box-sizing: border-box;
+  }
+
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__inner {
+    width: min(100%, var(--ara-cc-max));
+    margin: 0 auto;
+    padding: 0 40px;
+  }
+
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__intro {
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) minmax(300px, 0.55fr);
+    gap: 50px;
+    align-items: end;
+    margin-bottom: 38px;
+  }
+
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__eyebrow,
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__search > span,
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__filter,
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__count,
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__group-heading small,
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__card-heading,
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__card-footer,
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__open {
+    font-family: var(--font-body-family);
+    font-style: var(--font-body-style);
+  }
+
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__eyebrow {
+    color: var(--ara-cc-neutral);
+    font-size: var(--ara-cc-meta-desktop);
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__intro h1 {
+    margin: 13px 0 0;
+    font-family: var(--font-heading-family);
+    font-size: var(--ara-cc-heading-desktop);
+    font-style: var(--font-heading-style);
+    font-weight: var(--font-heading-weight);
+    line-height: 0.96;
+    letter-spacing: -0.05em;
+  }
+
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__description {
+    color: var(--ara-cc-muted);
+    font-family: var(--font-body-family);
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__description p {
+    margin: 0;
+  }
+
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__tools {
+    display: grid;
+    grid-template-columns: minmax(250px, 0.72fr) minmax(0, 1.4fr) auto;
+    gap: 16px;
+    align-items: end;
+    margin-bottom: 47px;
+    padding: 15px;
+    border: 1px solid var(--ara-cc-border);
+    border-radius: 10px;
+    background: color-mix(in srgb, var(--ara-cc-card) 94%, transparent);
+    box-shadow: 0 8px 26px rgba(22, 27, 46, 0.055);
+  }
+
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__search {
+    display: grid;
+    gap: 7px;
+  }
+
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__search > span,
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__filter,
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__count {
+    font-size: var(--ara-cc-meta-desktop);
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__search input {
+    width: 100%;
+    min-height: 42px;
+    padding: 10px 12px;
+    border: 1px solid var(--ara-cc-border);
+    border-radius: 7px;
+    background: #FFFFFF;
+    color: var(--ara-cc-text);
+    font-family: var(--font-body-family);
+    font-size: 14px;
+  }
+
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__filter {
+    min-height: 34px;
+    padding: 7px 10px;
+    border: 1px solid var(--ara-cc-border);
+    border-radius: 999px;
+    background: transparent;
+    color: var(--ara-cc-text);
+    cursor: pointer;
+  }
+
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__filter:hover,
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__filter.is-active {
+    border-color: var(--ara-cc-text);
+    background: var(--ara-cc-text);
+    color: #FFFFFF;
+  }
+
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__count {
+    display: grid;
+    gap: 2px;
+    margin: 0;
+    color: var(--ara-cc-muted);
+    text-align: right;
+  }
+
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__count strong {
+    color: var(--ara-cc-text);
+    font-family: var(--font-heading-family);
+    font-size: 24px;
+    line-height: 1;
+  }
+
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__groups {
+    display: grid;
+    gap: 57px;
+  }
+
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__group[hidden] {
+    display: none;
+  }
+
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__group-heading {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    gap: 17px;
+    align-items: center;
+    margin-bottom: 17px;
+  }
+
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__group-heading h2 {
+    margin: 0;
+    font-family: var(--font-heading-family);
+    font-size: var(--ara-cc-category-desktop);
+    font-style: italic;
+    font-weight: 500;
+    line-height: 1;
+  }
+
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__group-heading > span {
+    height: 1px;
+    background: color-mix(in srgb, var(--ara-cc-text) 16%, transparent);
+  }
+
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__group-heading small {
+    color: var(--ara-cc-muted);
+    font-size: var(--ara-cc-meta-desktop);
+    font-weight: 800;
+  }
+
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__grid {
+    display: grid;
+    grid-template-columns: repeat(var(--ara-cc-columns), minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__card {
+    position: relative;
+    display: grid;
+    min-width: 0;
+    min-height: 172px;
+    grid-template-rows: auto 1fr auto;
+    overflow: hidden;
+    padding: 14px 14px 11px;
+    border: 1px solid var(--ara-cc-border);
+    border-radius: 9px;
+    background: color-mix(in srgb, var(--ara-cc-card) 97%, transparent);
+    color: var(--ara-cc-neutral);
+    text-decoration: none;
+    box-shadow: 0 6px 17px rgba(22, 27, 46, 0.06);
+    transition:
+      transform 0.2s ease,
+      box-shadow 0.2s ease,
+      border-color 0.2s ease;
+  }
+
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    height: 3px;
+    background: var(--ara-company-marker);
+  }
+
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__card--up {
+    color: var(--ara-cc-positive);
+  }
+
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__card--down {
+    color: var(--ara-cc-negative);
+  }
+
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__card[hidden] {
+    display: none;
+  }
+
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__card:hover {
+    z-index: 2;
+    transform: translateY(-4px);
+    border-color: color-mix(in srgb, var(--ara-company-marker) 65%, var(--ara-cc-border));
+    box-shadow: 0 13px 28px rgba(22, 27, 46, 0.12);
+  }
+
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__card-heading {
+    display: grid;
+    grid-template-columns: 5px minmax(0, 1fr) auto;
+    gap: 10px;
+    align-items: start;
+    color: var(--ara-cc-text);
+  }
+
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__marker {
+    display: block;
+    width: 5px;
+    height: 31px;
+    border-radius: 999px;
+    background: var(--ara-company-marker);
+  }
+
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__card-heading > div {
+    display: grid;
+    gap: 3px;
+    min-width: 0;
+  }
+
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__card-heading strong {
+    overflow: hidden;
+    font-size: var(--ara-cc-company-desktop);
+    font-weight: 800;
+    line-height: 1.15;
+    letter-spacing: 0.02em;
+    text-overflow: ellipsis;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__card-heading small,
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__ticker {
+    color: var(--ara-cc-muted);
+    font-size: var(--ara-cc-meta-desktop);
+    font-weight: 800;
+    letter-spacing: 0.07em;
+    line-height: 1.2;
+    text-transform: uppercase;
+  }
+
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__ticker {
+    padding: 4px 6px;
+    border: 1px solid var(--ara-cc-border);
+    border-radius: 5px;
+    background: #FFFFFF;
+  }
+
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__chart {
+    min-height: 71px;
+    margin-top: 7px;
+    padding: 3px 0 0;
+  }
+
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__chart svg {
+    display: block;
+    width: 100%;
+    height: 68px;
+    overflow: visible;
+  }
+
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__guide {
+    stroke: color-mix(in srgb, var(--ara-cc-border) 64%, transparent);
+    stroke-width: 1;
+    stroke-dasharray: 2 4;
+  }
+
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__line {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2.15;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    vector-effect: non-scaling-stroke;
+  }
+
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__dot {
+    fill: currentColor;
+    stroke: var(--ara-cc-card);
+    stroke-width: 1.6;
+  }
+
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__card-footer {
+    display: grid;
+    grid-template-columns: 1fr auto auto;
+    gap: 8px;
+    align-items: center;
+    margin-top: 3px;
+    font-size: var(--ara-cc-meta-desktop);
+    font-weight: 800;
+    letter-spacing: 0.03em;
+  }
+
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__change {
+    color: currentColor;
+  }
+
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__status {
+    color: var(--ara-cc-muted);
+    text-transform: uppercase;
+  }
+
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__period {
+    color: var(--ara-cc-muted);
+  }
+
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__open {
+    position: absolute;
+    right: 10px;
+    bottom: 8px;
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    padding: 5px 7px;
+    border-radius: 999px;
+    background: var(--ara-cc-text);
+    color: #FFFFFF;
+    font-size: var(--ara-cc-meta-desktop);
+    font-weight: 800;
+    letter-spacing: 0.07em;
+    opacity: 0;
+    text-transform: uppercase;
+    transform: translateY(5px);
+    transition:
+      opacity 0.2s ease,
+      transform 0.2s ease;
+  }
+
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__card:hover .ara-company-catalog__open {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__empty {
+    margin: 36px 0 0;
+    padding: 24px;
+    border: 1px solid var(--ara-cc-border);
+    border-radius: 8px;
+    background: var(--ara-cc-card);
+    color: var(--ara-cc-muted);
+    font-family: var(--font-heading-family);
+    font-size: 27px;
+    text-align: center;
+  }
+
+  @media screen and (max-width: 1249px) {
+    #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__tools {
+      grid-template-columns: 1fr;
+      align-items: start;
+    }
+
+    #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__count {
+      text-align: left;
+    }
+  }
+
+  @media screen and (max-width: 949px) {
+    #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__intro {
+      grid-template-columns: 1fr;
+    }
+
+    #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__inner {
+      padding: 0 20px;
+    }
+
+    #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__intro h1 {
+      font-size: var(--ara-cc-heading-mobile);
+    }
+
+    #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__filters {
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      padding-bottom: 5px;
+      scrollbar-width: none;
+    }
+
+    #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__filters::-webkit-scrollbar {
+      display: none;
+    }
+
+    #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__filter {
+      flex: 0 0 auto;
+    }
+
+    #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__groups {
+      gap: 43px;
+    }
+
+    #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__group-heading h2 {
+      font-size: var(--ara-cc-category-mobile);
+    }
+
+    #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 9px;
+    }
+
+    #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__card {
+      min-height: 164px;
+      padding: 12px 11px 9px;
+    }
+
+    #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__card-heading {
+      grid-template-columns: 4px minmax(0, 1fr);
+      gap: 8px;
+    }
+
+    #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__ticker {
+      grid-column: 2;
+      justify-self: start;
+      margin-top: 2px;
+    }
+
+    #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__card-heading strong {
+      font-size: var(--ara-cc-company-mobile);
+    }
+
+    #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__card-heading small,
+    #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__ticker,
+    #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__card-footer,
+    #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__group-heading small,
+    #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__search > span,
+    #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__filter,
+    #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__count {
+      font-size: var(--ara-cc-meta-mobile);
+    }
+
+    #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__chart svg {
+      height: 62px;
+    }
+
+    #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__open {
+      display: none;
+    }
+  }
+
+  @media screen and (max-width: 399px) {
+    #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__card,
+    #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__open {
+      transition: none;
+    }
+  }
+</style>
+
+
+<style>
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__popup[hidden] {
+    display: none;
+  }
+
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__popup {
+    position: fixed;
+    z-index: 9999;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    padding: 28px;
+  }
+
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__popup-backdrop {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+    background: rgba(10, 14, 25, 0.72);
+    cursor: pointer;
+    backdrop-filter: blur(7px);
+  }
+
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__popup-dialog {
+    position: relative;
+    z-index: 1;
+    width: min(100%, 860px);
+    max-height: calc(100vh - 56px);
+    overflow: auto;
+    border: 2px solid var(--ara-cc-text);
+    border-radius: 16px;
+    background:
+      repeating-linear-gradient(
+        to bottom,
+        transparent 0,
+        transparent 34px,
+        color-mix(in srgb, var(--ara-cc-line) 20%, transparent) 34px,
+        color-mix(in srgb, var(--ara-cc-line) 20%, transparent) 35px
+      ),
+      var(--ara-cc-bg);
+    box-shadow:
+      8px 8px 0 var(--ara-cc-gold),
+      0 32px 90px rgba(10, 14, 25, 0.34);
+  }
+
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__popup-close {
+    position: sticky;
+    z-index: 4;
+    top: 14px;
+    float: right;
+    display: grid;
+    width: 42px;
+    height: 42px;
+    margin: 14px 14px -56px 0;
+    place-items: center;
+    border: 1px solid var(--ara-cc-text);
+    border-radius: 50%;
+    background: var(--ara-cc-card);
+    color: var(--ara-cc-text);
+    cursor: pointer;
+    font-size: 27px;
+    line-height: 1;
+  }
+
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__popup-card {
+    padding: 26px;
+  }
+
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__popup-folio {
+    display: flex;
+    justify-content: space-between;
+    gap: 18px;
+    padding: 12px 58px 12px 16px;
+    border: 1px solid var(--ara-popup-accent);
+    background: var(--ara-popup-accent);
+    color: #FFFFFF;
+    font-family: var(--font-body-family);
+    font-size: 10px;
+    font-weight: 900;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__popup-layout {
+    display: grid;
+    grid-template-columns: minmax(260px, 0.76fr) minmax(0, 1.24fr);
+    gap: 32px;
+    align-items: center;
+    padding: 30px 8px 8px;
+  }
+
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__popup-visual {
+    min-width: 0;
+  }
+
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__popup-book {
+    width: min(100%, 310px);
+    margin: 0 auto;
+    filter: drop-shadow(13px 16px 13px rgba(22, 27, 46, 0.22));
+  }
+
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__popup-product-image,
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__popup-cover {
+    display: block;
+    width: 100%;
+    aspect-ratio: 0.69;
+    border: 2px solid var(--ara-cc-text);
+    border-left-width: 10px;
+    border-radius: 3px 10px 10px 3px;
+    object-fit: cover;
+  }
+
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__popup-cover {
+    position: relative;
+    overflow: hidden;
+    padding: 30px 23px 24px;
+    background:
+      repeating-linear-gradient(
+        to bottom,
+        transparent 0,
+        transparent 27px,
+        color-mix(in srgb, var(--ara-popup-cover-text) 14%, transparent) 27px,
+        color-mix(in srgb, var(--ara-popup-cover-text) 14%, transparent) 28px
+      ),
+      var(--ara-popup-cover);
+    color: var(--ara-popup-cover-text);
+    text-align: center;
+  }
+
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__popup-cover-kicker {
+    display: block;
+    font-family: var(--font-body-family);
+    font-size: 9px;
+    font-weight: 900;
+    letter-spacing: 0.23em;
+    text-transform: uppercase;
+  }
+
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__popup-cover > i {
+    display: block;
+    width: 100%;
+    height: 1px;
+    margin-top: 18px;
+    background: currentColor;
+    opacity: 0.24;
+  }
+
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__popup-cover > strong {
+    display: block;
+    margin-top: 72px;
+    font-family: var(--font-heading-family);
+    font-size: clamp(37px, 5vw, 55px);
+    font-style: italic;
+    font-weight: 500;
+    line-height: 0.98;
+    letter-spacing: -0.05em;
+  }
+
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__popup-cover > p {
+    max-width: 220px;
+    margin: 26px auto 0;
+    font-family: var(--font-body-family);
+    font-size: 13px;
+    line-height: 1.5;
+  }
+
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__popup-cover > b {
+    position: absolute;
+    bottom: 17px;
+    left: 50%;
+    display: grid;
+    width: 37px;
+    height: 37px;
+    place-items: center;
+    border: 2px solid var(--ara-cc-gold);
+    border-radius: 50%;
+    background: var(--ara-cc-gold);
+    color: var(--ara-cc-text);
+    font-family: var(--font-heading-family);
+    font-size: 18px;
+    transform: translateX(-50%);
+  }
+
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__popup-chart {
+    width: min(100%, 330px);
+    margin: 23px auto 0;
+    padding-top: 15px;
+    border-top: 1px solid var(--ara-cc-border);
+    color: var(--ara-cc-positive);
+  }
+
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__popup-chart--down {
+    color: var(--ara-cc-negative);
+  }
+
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__popup-chart--flat {
+    color: var(--ara-cc-neutral);
+  }
+
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__popup-chart svg {
+    display: block;
+    width: 100%;
+    height: 56px;
+  }
+
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__popup-chart-line {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2.2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__popup-chart circle {
+    fill: var(--ara-cc-gold);
+    stroke: var(--ara-cc-text);
+    stroke-width: 1.4;
+  }
+
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__popup-copy {
+    min-width: 0;
+  }
+
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__popup-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+  }
+
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__popup-meta span {
+    padding: 5px 7px;
+    border: 1px solid var(--ara-cc-border);
+    background: var(--ara-cc-card);
+    color: var(--ara-cc-muted);
+    font-family: var(--font-body-family);
+    font-size: 8px;
+    font-weight: 900;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__popup-eyebrow {
+    margin: 28px 0 0;
+    color: var(--ara-popup-accent);
+    font-family: var(--font-body-family);
+    font-size: 10px;
+    font-weight: 900;
+    letter-spacing: 0.17em;
+    text-transform: uppercase;
+  }
+
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__popup-copy h3 {
+    margin: 10px 0 0;
+    font-family: var(--font-heading-family);
+    font-size: clamp(46px, 6vw, 72px);
+    font-style: italic;
+    font-weight: 500;
+    line-height: 0.92;
+    letter-spacing: -0.055em;
+  }
+
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__popup-tagline {
+    max-width: 470px;
+    margin: 18px 0 0;
+    color: var(--ara-cc-muted);
+    font-family: var(--font-body-family);
+    font-size: 15px;
+    line-height: 1.55;
+  }
+
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__popup-chapter {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 14px;
+    align-items: center;
+    margin-top: 27px;
+    padding: 17px 0;
+    border-top: 1px solid var(--ara-cc-border);
+    border-bottom: 1px solid var(--ara-cc-border);
+  }
+
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__popup-chapter span,
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__popup-index > span {
+    color: var(--ara-cc-muted);
+    font-family: var(--font-body-family);
+    font-size: 8px;
+    font-weight: 900;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+  }
+
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__popup-chapter strong {
+    font-family: var(--font-heading-family);
+    font-size: 21px;
+    font-style: italic;
+    font-weight: 500;
+    line-height: 1.1;
+  }
+
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__popup-index {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    gap: 13px;
+    align-items: center;
+    padding: 17px 0;
+    border-bottom: 1px solid var(--ara-cc-border);
+  }
+
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__popup-index > div {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+  }
+
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__popup-index i {
+    display: block;
+    width: 21px;
+    height: 21px;
+    border: 1px solid var(--ara-cc-gold);
+    border-radius: 50%;
+    background: transparent;
+  }
+
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__popup-index i.is-active {
+    background: var(--ara-cc-gold);
+    box-shadow: inset 0 0 0 5px var(--ara-cc-bg);
+  }
+
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__popup-index > strong {
+    font-family: var(--font-heading-family);
+    font-size: 20px;
+    white-space: nowrap;
+  }
+
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__popup-actions {
+    display: grid;
+    gap: 10px;
+    margin-top: 23px;
+  }
+
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__popup-button {
+    display: flex;
+    min-height: 50px;
+    justify-content: center;
+    gap: 9px;
+    align-items: center;
+    padding: 12px 16px;
+    border: 1px solid var(--ara-cc-text);
+    font-family: var(--font-body-family);
+    font-size: 10px;
+    font-weight: 900;
+    letter-spacing: 0.07em;
+    text-align: center;
+    text-decoration: none;
+    text-transform: uppercase;
+  }
+
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__popup-button--module {
+    background: var(--ara-cc-text);
+    color: #FFFFFF;
+  }
+
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__popup-button--product {
+    border-color: var(--ara-cc-gold);
+    background: var(--ara-cc-gold);
+    color: var(--ara-cc-text);
+  }
+
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__popup-button--disabled {
+    border-color: var(--ara-cc-border);
+    background: color-mix(in srgb, var(--ara-cc-card) 76%, transparent);
+    color: var(--ara-cc-muted);
+    cursor: default;
+  }
+
+  body.ara-company-popup-open {
+    overflow: hidden;
+  }
+
+  @media screen and (max-width: 749px) {
+    #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__popup {
+      padding: 14px;
+    }
+
+    #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__popup-dialog {
+      max-height: calc(100vh - 28px);
+      border-radius: 12px;
+      box-shadow:
+        5px 5px 0 var(--ara-cc-gold),
+        0 24px 60px rgba(10, 14, 25, 0.33);
+    }
+
+    #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__popup-card {
+      padding: 16px;
+    }
+
+    #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__popup-layout {
+      grid-template-columns: 1fr;
+      gap: 24px;
+      padding-top: 22px;
+    }
+
+    #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__popup-book {
+      width: min(76vw, 300px);
+    }
+
+    #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__popup-copy h3 {
+      font-size: clamp(44px, 14vw, 64px);
+    }
+
+    #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__popup-index {
+      grid-template-columns: 1fr auto;
+    }
+
+    #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__popup-index > div {
+      grid-column: 1 / -1;
+      order: 3;
+      overflow-x: auto;
+      padding-bottom: 2px;
+    }
+
+    #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__popup-index i {
+      flex: 0 0 20px;
+      width: 20px;
+      height: 20px;
+    }
+  }
+</style>
+
+<script>
+  (() => {
+    const section = document.getElementById('AraCompanyCatalog-{{ section.id }}');
+
+    if (!section || section.dataset.catalogReady === 'true') return;
+
+    section.dataset.catalogReady = 'true';
+
+    const search = section.querySelector('[data-company-search]');
+    const filters = [...section.querySelectorAll('[data-company-filter]')];
+    const cards = [...section.querySelectorAll('[data-company-card]')];
+    const groups = [...section.querySelectorAll('[data-company-group]')];
+    const count = section.querySelector('[data-visible-count]');
+    const empty = section.querySelector('[data-empty-message]');
+
+    let activeFilter = 'all';
+    let searchTerm = '';
+
+    const update = () => {
+      let visibleCount = 0;
+
+      cards.forEach(card => {
+        const sectorMatch =
+          activeFilter === 'all' ||
+          card.dataset.companySector === activeFilter;
+
+        const searchText = card.dataset.companySearchText || '';
+        const searchMatch =
+          searchTerm === '' ||
+          searchText.includes(searchTerm);
+
+        const visible = sectorMatch && searchMatch;
+
+        card.hidden = !visible;
+
+        if (visible) visibleCount += 1;
+      });
+
+      groups.forEach(group => {
+        const hasVisibleCard = [...group.querySelectorAll('[data-company-card]')]
+          .some(card => !card.hidden);
+
+        group.hidden = !hasVisibleCard;
+      });
+
+      if (count) {
+        count.textContent = String(visibleCount);
+      }
+
+      if (empty) {
+        empty.hidden = visibleCount > 0;
+      }
+    };
+
+    filters.forEach(filter => {
+      filter.addEventListener('click', () => {
+        activeFilter = filter.dataset.companyFilter || 'all';
+
+        filters.forEach(item => {
+          const active = item === filter;
+          item.classList.toggle('is-active', active);
+          item.setAttribute('aria-pressed', String(active));
+        });
+
+        update();
+      });
+    });
+
+    if (search) {
+      search.addEventListener('input', event => {
+        searchTerm = event.target.value.trim().toLowerCase();
+        update();
+      });
+    }
+
+    const popup = section.querySelector('[data-company-popup]');
+    const popupContent = popup?.querySelector('[data-company-popup-content]');
+    const popupCloseButtons = popup
+      ? [...popup.querySelectorAll('[data-company-popup-close]')]
+      : [];
+    const popupTriggers = [
+      ...section.querySelectorAll('[data-company-popup-trigger]')
+    ];
+
+    let lastPopupTrigger = null;
+
+    const closePopup = () => {
+      if (!popup || popup.hidden) return;
+
+      popup.hidden = true;
+
+      if (popupContent) {
+        popupContent.innerHTML = '';
+      }
+
+      document.body.classList.remove('ara-company-popup-open');
+
+      if (lastPopupTrigger) {
+        lastPopupTrigger.focus();
+      }
+    };
+
+    const openPopup = trigger => {
+      if (!popup || !popupContent) return;
+
+      const blockId = trigger.dataset.companyPopupTrigger;
+      const template = section.querySelector(
+        `[data-company-popup-template="${blockId}"]`
+      );
+
+      if (!template) return;
+
+      lastPopupTrigger = trigger;
+      popupContent.innerHTML = '';
+      popupContent.appendChild(template.content.cloneNode(true));
+      popup.hidden = false;
+      document.body.classList.add('ara-company-popup-open');
+
+      window.requestAnimationFrame(() => {
+        popup.querySelector('.ara-company-catalog__popup-close')?.focus();
+      });
+    };
+
+    popupTriggers.forEach(trigger => {
+      trigger.addEventListener('click', event => {
+        event.preventDefault();
+        openPopup(trigger);
+      });
+    });
+
+    popupCloseButtons.forEach(button => {
+      button.addEventListener('click', closePopup);
+    });
+
+    document.addEventListener('keydown', event => {
+      if (event.key === 'Escape' && popup && !popup.hidden) {
+        closePopup();
+      }
+    });
+
+    update();
+  })();
+</script>
+
+
+<style>
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__card[data-module-unavailable="true"] {
+    cursor: default;
+  }
+
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__card[data-module-unavailable="true"]:hover {
+    transform: none;
+    border-color: var(--ara-cc-border);
+    box-shadow: 0 6px 17px rgba(22, 27, 46, 0.06);
+  }
+
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__card[data-module-unavailable="true"] .ara-company-catalog__open {
+    display: none;
+  }
+</style>
+
+<style>
+  #AraCompanyCatalog-{{ section.id }} {
+    --ara-cc-bg: #F5EFE1 !important;
+    --ara-cc-card: #FBF7EC !important;
+    --ara-cc-text: #161B2E !important;
+    --ara-cc-muted: #646575 !important;
+    --ara-cc-line: #1FA88F !important;
+    --ara-cc-border: #C9BEA8 !important;
+    --ara-cc-gold: #E0A526 !important;
+    background-image: repeating-linear-gradient(to bottom, transparent 0 35px, color-mix(in srgb, #1FA88F 8%, transparent) 35px 36px);
+  }
+
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__intro {
+    padding: 25px 0 30px;
+    border-top: 4px solid var(--ara-cc-text);
+    border-bottom: 1px solid var(--ara-cc-text);
+  }
+
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__tools {
+    margin-top: 24px;
+    padding: 18px;
+    border: 1px solid var(--ara-cc-text);
+    border-radius: 12px;
+    background: var(--ara-cc-card);
+    box-shadow: 5px 5px 0 color-mix(in srgb, var(--ara-cc-line) 22%, transparent);
+  }
+
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__search input {
+    border-radius: 8px;
+    background: #FFFFFF;
+  }
+
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__filter {
+    border-radius: 7px;
+  }
+
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__filter.is-active {
+    background: var(--ara-cc-gold);
+    color: var(--ara-cc-text);
+    box-shadow: 3px 3px 0 var(--ara-cc-text);
+  }
+
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__group-heading {
+    padding-top: 20px;
+    border-top: 2px solid var(--ara-cc-text);
+  }
+
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__card {
+    overflow: hidden;
+    border: 1px solid var(--ara-cc-border);
+    border-radius: 13px;
+    box-shadow: 4px 4px 0 color-mix(in srgb, var(--ara-cc-line) 16%, transparent);
+  }
+
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__card:hover,
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__card:focus-visible {
+    transform: translateY(-5px);
+    box-shadow: 7px 7px 0 color-mix(in srgb, var(--ara-cc-gold) 30%, transparent);
+  }
+
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__popup-dialog,
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__popup-card,
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__popup-cover {
+    border-radius: 14px;
+  }
+
+  @media screen and (max-width: 749px) {
+    #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__tools,
+    #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__card,
+    #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__popup-dialog {
+      border-radius: 10px;
+    }
+  }
+</style>
+
+
+<style>
+  #AraCompanyCatalog-{{ section.id }} {
+    --ara-brand-ink: #161B2E;
+    --ara-brand-mint: #A6DECB;
+    --ara-brand-cream: #F5EFE1;
+    --ara-brand-paper: #F3ECDC;
+    --ara-brand-rise: #12A67C;
+    --ara-brand-fall: #ED5C5C;
+    --ara-brand-verdigris: #274B44;
+    --ara-brand-accent: #F0796B;
+  }
+
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__brand-masthead {
+    display: grid;
+    grid-template-columns: minmax(210px, 360px) minmax(0, 1fr) 62px;
+    gap: 26px;
+    align-items: center;
+    margin-bottom: clamp(34px, 4vw, 62px);
+    padding: 16px 0 18px;
+    border-top: 3px solid var(--ara-brand-ink);
+    border-bottom: 1px solid var(--ara-brand-ink);
+  }
+
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__brand-lockup img {
+    display: block;
+    width: min(100%, 310px);
+    height: auto;
+  }
+
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__brand-index {
+    display: grid;
+    gap: 5px;
+    justify-items: end;
+    text-align: right;
+    font-family: var(--font-body-family);
+  }
+
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__brand-index span {
+    color: var(--ara-brand-ink);
+    font-size: 11px;
+    font-weight: 900;
+    letter-spacing: .18em;
+  }
+
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__brand-index small {
+    color: var(--ara-cc-muted);
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: .12em;
+  }
+
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__brand-mark {
+    display: block;
+    width: 52px;
+    height: 52px;
+    border-radius: 12px;
+    object-fit: cover;
+  }
+
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__intro {
+    position: relative;
+    padding: clamp(24px, 3vw, 42px);
+    border: 1px solid var(--ara-brand-ink);
+    border-radius: 8px;
+    background:
+      repeating-linear-gradient(
+        to bottom,
+        transparent 0 34px,
+        color-mix(in srgb, var(--ara-brand-mint) 22%, transparent) 34px 35px
+      ),
+      var(--ara-brand-cream);
+    box-shadow:
+      inset 0 0 0 5px var(--ara-brand-paper),
+      7px 7px 0 var(--ara-brand-mint);
+  }
+
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__tools {
+    border-radius: 8px;
+    border-color: var(--ara-brand-ink);
+    background: var(--ara-brand-paper);
+    box-shadow: none;
+  }
+
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__card {
+    border-radius: 6px;
+    border-color: color-mix(in srgb, var(--ara-brand-ink) 72%, transparent);
+    background: var(--ara-brand-paper);
+    box-shadow: 4px 4px 0 color-mix(in srgb, var(--ara-brand-mint) 54%, transparent);
+  }
+
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__card:hover,
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__card:focus-visible {
+    box-shadow:
+      0 0 0 2px var(--ara-cc-gold),
+      7px 7px 0 color-mix(in srgb, var(--ara-brand-mint) 66%, transparent);
+  }
+
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__card-heading {
+    border-bottom: 1px solid color-mix(in srgb, var(--ara-brand-ink) 18%, transparent);
+  }
+
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__popup-dialog {
+    border-radius: 8px;
+    border: 2px solid var(--ara-brand-ink);
+    background: var(--ara-brand-cream);
+    box-shadow:
+      0 0 0 4px var(--ara-brand-paper),
+      0 0 0 5px var(--ara-cc-gold);
+  }
+
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__popup-card,
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__popup-cover {
+    border-radius: 5px;
+  }
+
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__popup-cover-mark {
+    display: block;
+    width: min(84%, 220px);
+    height: auto;
+    margin-top: auto;
+    object-fit: contain;
+  }
+
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__popup-bookplate {
+    display: block;
+    width: min(100%, 180px);
+    height: auto;
+    margin: 0 0 18px;
+    border-radius: 6px;
+  }
+
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__popup-index {
+    border-top: 1px solid var(--ara-brand-ink);
+    border-bottom: 1px solid var(--ara-brand-ink);
+    background: color-mix(in srgb, var(--ara-brand-paper) 82%, white);
+  }
+
+  #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__filter.is-active {
+    background: var(--ara-brand-mint);
+  }
+
+  @media screen and (max-width: 749px) {
+    #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__brand-masthead {
+      grid-template-columns: minmax(0, 1fr) 48px;
+      gap: 14px;
+    }
+
+    #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__brand-index {
+      grid-column: 1 / -1;
+      grid-row: 2;
+      justify-items: start;
+      text-align: left;
+    }
+
+    #AraCompanyCatalog-{{ section.id }} .ara-company-catalog__brand-mark {
+      width: 44px;
+      height: 44px;
+      justify-self: end;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Ara Company Catalog",
+  "max_blocks": 40,
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_intro",
+      "label": "Show introduction",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Small heading",
+      "default": "COMPANY CATALOG"
+    },
+    {
+      "type": "textarea",
+      "id": "heading",
+      "label": "Main heading",
+      "default": "Companies worth understanding."
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description",
+      "default": "<p>Browse real companies by category and open the complete company file.</p>"
+    },
+    {
+      "type": "header",
+      "content": "Company file links"
+    },
+    {
+      "type": "textarea",
+      "id": "available_module_handles",
+      "label": "Completed company page handles",
+      "default": "apple",
+      "info": "Separate handles with commas. Only these companies show an active module button. Example: apple,nvidia,costco"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_automatic_module_links",
+      "label": "Create links automatically",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "module_path_prefix",
+      "label": "Automatic page path",
+      "default": "pages/"
+    },
+    {
+      "type": "header",
+      "content": "Company preview popup"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_company_popup",
+      "label": "Open company preview popup",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "popup_dialog_label",
+      "label": "Popup accessibility label",
+      "default": "Company preview"
+    },
+    {
+      "type": "text",
+      "id": "popup_close_label",
+      "label": "Close button label",
+      "default": "Close company preview"
+    },
+    {
+      "type": "text",
+      "id": "popup_eyebrow",
+      "label": "Popup small heading",
+      "default": "MINTMARK COMPANY FILE"
+    },
+    {
+      "type": "text",
+      "id": "popup_cover_kicker",
+      "label": "Book cover small heading",
+      "default": "THE MINTMARK COMPANY FILE"
+    },
+    {
+      "type": "text",
+      "id": "popup_chapter_label",
+      "label": "Chapter label",
+      "default": "CHAPTER 1"
+    },
+    {
+      "type": "text",
+      "id": "popup_level_label",
+      "label": "Level label",
+      "default": "READING INDEX"
+    },
+    {
+      "type": "text",
+      "id": "popup_module_label",
+      "label": "Company file button",
+      "default": "OPEN COMPANY FILE"
+    },
+    {
+      "type": "text",
+      "id": "popup_module_unavailable_label",
+      "label": "Unavailable module text",
+      "default": "COMPANY FILE COMING SOON"
+    },
+    {
+      "type": "text",
+      "id": "popup_product_label",
+      "label": "Product button",
+      "default": "VIEW THE DIGEST"
+    },
+    {
+      "type": "text",
+      "id": "popup_product_unavailable_label",
+      "label": "No product selected text",
+      "default": "BOOK COMING SOON"
+    },
+    {
+      "type": "header",
+      "content": "Search and filters"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_search",
+      "label": "Show search",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "search_label",
+      "label": "Search label",
+      "default": "SEARCH COMPANIES"
+    },
+    {
+      "type": "text",
+      "id": "search_placeholder",
+      "label": "Search placeholder",
+      "default": "Search company, ticker or category"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_filters",
+      "label": "Show category filters",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "all_filter_label",
+      "label": "All filter label",
+      "default": "ALL"
+    },
+    {
+      "type": "text",
+      "id": "visible_count_label",
+      "label": "Visible count label",
+      "default": "COMPANIES"
+    },
+    {
+      "type": "text",
+      "id": "empty_message",
+      "label": "No results message",
+      "default": "No companies match this search."
+    },
+    {
+      "type": "header",
+      "content": "Category names"
+    },
+    {
+      "type": "text",
+      "id": "classics_label",
+      "label": "Classics",
+      "default": "Classics"
+    },
+    {
+      "type": "text",
+      "id": "technology_label",
+      "label": "Technology",
+      "default": "Tech"
+    },
+    {
+      "type": "text",
+      "id": "consumer_label",
+      "label": "Consumer",
+      "default": "Consumer"
+    },
+    {
+      "type": "text",
+      "id": "industrials_label",
+      "label": "Industrials",
+      "default": "Industrials"
+    },
+    {
+      "type": "text",
+      "id": "food_beverage_label",
+      "label": "Food and beverage",
+      "default": "Food & Bev"
+    },
+    {
+      "type": "text",
+      "id": "financials_label",
+      "label": "Finance",
+      "default": "Finance"
+    },
+    {
+      "type": "text",
+      "id": "healthcare_label",
+      "label": "Healthcare",
+      "default": "Healthcare"
+    },
+    {
+      "type": "text",
+      "id": "energy_label",
+      "label": "Energy",
+      "default": "Energy"
+    },
+    {
+      "type": "text",
+      "id": "retail_label",
+      "label": "Retail",
+      "default": "Retail"
+    },
+    {
+      "type": "text",
+      "id": "other_label",
+      "label": "Other",
+      "default": "Other"
+    },
+    {
+      "type": "header",
+      "content": "Card display"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_ticker",
+      "label": "Show ticker",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_business_model",
+      "label": "Show business model",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_status",
+      "label": "Show status",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "open_label",
+      "label": "Card link label",
+      "default": "OPEN FILE"
+    },
+    {
+      "type": "range",
+      "id": "desktop_columns",
+      "min": 3,
+      "max": 6,
+      "step": 1,
+      "label": "Desktop cards per row",
+      "default": 5
+    },
+    {
+      "type": "header",
+      "content": "Desktop typography"
+    },
+    {
+      "type": "range",
+      "id": "desktop_heading_size",
+      "min": 42,
+      "max": 82,
+      "step": 2,
+      "unit": "px",
+      "label": "Page heading size",
+      "default": 62
+    },
+    {
+      "type": "range",
+      "id": "desktop_category_size",
+      "min": 20,
+      "max": 34,
+      "step": 1,
+      "unit": "px",
+      "label": "Category heading size",
+      "default": 25
+    },
+    {
+      "type": "range",
+      "id": "desktop_company_size",
+      "min": 11,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "label": "Company name size",
+      "default": 13
+    },
+    {
+      "type": "range",
+      "id": "desktop_meta_size",
+      "min": 7,
+      "max": 12,
+      "step": 1,
+      "unit": "px",
+      "label": "Small text size",
+      "default": 9
+    },
+    {
+      "type": "header",
+      "content": "Mobile typography"
+    },
+    {
+      "type": "range",
+      "id": "mobile_heading_size",
+      "min": 36,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "label": "Page heading size",
+      "default": 46
+    },
+    {
+      "type": "range",
+      "id": "mobile_category_size",
+      "min": 20,
+      "max": 32,
+      "step": 1,
+      "unit": "px",
+      "label": "Category heading size",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "mobile_company_size",
+      "min": 10,
+      "max": 17,
+      "step": 1,
+      "unit": "px",
+      "label": "Company name size",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "mobile_meta_size",
+      "min": 7,
+      "max": 11,
+      "step": 1,
+      "unit": "px",
+      "label": "Small text size",
+      "default": 8
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "max_width",
+      "label": "Content width",
+      "default": "1500px",
+      "options": [
+        {
+          "value": "1300px",
+          "label": "Narrow"
+        },
+        {
+          "value": "1500px",
+          "label": "Medium"
+        },
+        {
+          "value": "1700px",
+          "label": "Wide"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 30,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Top spacing",
+      "default": 45
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 50,
+      "max": 130,
+      "step": 5,
+      "unit": "px",
+      "label": "Bottom spacing",
+      "default": 95
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Page background",
+      "default": "#F5EFE1"
+    },
+    {
+      "type": "color",
+      "id": "card_color",
+      "label": "Card background",
+      "default": "#F3ECDC"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text",
+      "default": "#161B2E"
+    },
+    {
+      "type": "color",
+      "id": "muted_text_color",
+      "label": "Muted text",
+      "default": "#8D908F"
+    },
+    {
+      "type": "color",
+      "id": "line_color",
+      "label": "Ruled paper lines",
+      "default": "#A6DECB"
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Card border",
+      "default": "#C9BEA8"
+    },
+    {
+      "type": "color",
+      "id": "positive_color",
+      "label": "Rising chart",
+      "default": "#00C805"
+    },
+    {
+      "type": "color",
+      "id": "negative_color",
+      "label": "Falling chart",
+      "default": "#FF5000"
+    },
+    {
+      "type": "color",
+      "id": "neutral_color",
+      "label": "Neutral chart",
+      "default": "#176D5C"
+    },
+    {
+      "type": "color",
+      "id": "gold_color",
+      "label": "Gold detail",
+      "default": "#E0A526"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "company",
+      "name": "Company",
+      "settings": [
+        {
+          "type": "select",
+          "id": "sector",
+          "label": "Category",
+          "default": "classics",
+          "options": [
+            {
+              "value": "classics",
+              "label": "Classics"
+            },
+            {
+              "value": "technology",
+              "label": "Tech"
+            },
+            {
+              "value": "consumer",
+              "label": "Consumer"
+            },
+            {
+              "value": "industrials",
+              "label": "Industrials"
+            },
+            {
+              "value": "food-beverage",
+              "label": "Food & Beverage"
+            },
+            {
+              "value": "financials",
+              "label": "Finance"
+            },
+            {
+              "value": "healthcare",
+              "label": "Healthcare"
+            },
+            {
+              "value": "energy",
+              "label": "Energy"
+            },
+            {
+              "value": "retail",
+              "label": "Retail"
+            },
+            {
+              "value": "other",
+              "label": "Other"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "sector_label",
+          "label": "Visible category label",
+          "default": "CLASSICS"
+        },
+        {
+          "type": "text",
+          "id": "company_name",
+          "label": "Company name",
+          "default": "Apple"
+        },
+        {
+          "type": "text",
+          "id": "ticker",
+          "label": "Ticker",
+          "default": "AAPL"
+        },
+        {
+          "type": "text",
+          "id": "business_model",
+          "label": "Business model",
+          "default": "ECOSYSTEM"
+        },
+        {
+          "type": "text",
+          "id": "headquarters",
+          "label": "Headquarters"
+        },
+        {
+          "type": "text",
+          "id": "status",
+          "label": "Status",
+          "default": "AVAILABLE"
+        },
+        {
+          "type": "color",
+          "id": "accent_color",
+          "label": "Company marker",
+          "default": "#176D5C"
+        },
+        {
+          "type": "select",
+          "id": "direction",
+          "label": "Chart direction",
+          "default": "up",
+          "options": [
+            {
+              "value": "up",
+              "label": "Rising"
+            },
+            {
+              "value": "down",
+              "label": "Falling"
+            },
+            {
+              "value": "flat",
+              "label": "Neutral"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "sparkline_style",
+          "label": "Chart shape",
+          "default": "wave-up",
+          "options": [
+            {
+              "value": "steady-up",
+              "label": "Steady rise"
+            },
+            {
+              "value": "wave-up",
+              "label": "Wavy rise"
+            },
+            {
+              "value": "volatile-up",
+              "label": "Volatile rise"
+            },
+            {
+              "value": "steady-down",
+              "label": "Steady fall"
+            },
+            {
+              "value": "wave-down",
+              "label": "Wavy fall"
+            },
+            {
+              "value": "volatile-down",
+              "label": "Volatile fall"
+            },
+            {
+              "value": "flat",
+              "label": "Mostly flat"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "change",
+          "label": "Percentage change",
+          "default": "▲ 4.7%"
+        },
+        {
+          "type": "text",
+          "id": "period",
+          "label": "Period",
+          "default": "1Y"
+        },
+        {
+          "type": "text",
+          "id": "keywords",
+          "label": "Extra search keywords"
+        },
+        {
+          "type": "header",
+          "content": "Company preview popup"
+        },
+        {
+          "type": "product",
+          "id": "popup_product",
+          "label": "Book product"
+        },
+        {
+          "type": "image_picker",
+          "id": "popup_image",
+          "label": "Fallback book image"
+        },
+        {
+          "type": "text",
+          "id": "popup_tagline",
+          "label": "Company tagline"
+        },
+        {
+          "type": "text",
+          "id": "popup_chapter",
+          "label": "Chapter title"
+        },
+        {
+          "type": "text",
+          "id": "popup_price",
+          "label": "Fallback price"
+        },
+        {
+          "type": "range",
+          "id": "popup_level",
+          "min": 1,
+          "max": 10,
+          "step": 1,
+          "label": "Curriculum level",
+          "default": 1
+        },
+        {
+          "type": "color",
+          "id": "popup_cover_color",
+          "label": "Fallback cover color",
+          "default": "#176D5C"
+        },
+        {
+          "type": "color",
+          "id": "popup_cover_text_color",
+          "label": "Fallback cover text",
+          "default": "#FFFFFF"
+        },
+        {
+          "type": "url",
+          "id": "module_link",
+          "label": "Company page link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Ara Company Catalog",
+      "blocks": [
+        {
+          "type": "company",
+          "settings": {
+            "sector": "classics",
+            "sector_label": "CLASSICS",
+            "company_name": "Apple",
+            "ticker": "AAPL",
+            "headquarters": "CUPERTINO · USA",
+            "business_model": "ECOSYSTEM",
+            "keywords": "devices software services ecosystem loyalty",
+            "accent_color": "#54545C",
+            "direction": "up",
+            "sparkline_style": "wave-up",
+            "change": "▲ 4.7%",
+            "period": "1Y",
+            "status": "AVAILABLE"
+          }
+        },
+        {
+          "type": "company",
+          "settings": {
+            "sector": "classics",
+            "sector_label": "CLASSICS",
+            "company_name": "Boeing",
+            "ticker": "BA",
+            "headquarters": "USA",
+            "business_model": "AIRCRAFT",
+            "keywords": "aircraft aerospace defense manufacturing backlog",
+            "accent_color": "#1B4FA3",
+            "direction": "up",
+            "sparkline_style": "flat",
+            "change": "▲ 0.3%",
+            "period": "1Y",
+            "status": "COMING SOON"
+          }
+        },
+        {
+          "type": "company",
+          "settings": {
+            "sector": "classics",
+            "sector_label": "CLASSICS",
+            "company_name": "Caterpillar",
+            "ticker": "CAT",
+            "headquarters": "USA",
+            "business_model": "EQUIPMENT",
+            "keywords": "equipment dealers construction mining parts",
+            "accent_color": "#F2C300",
+            "direction": "up",
+            "sparkline_style": "steady-up",
+            "change": "▲ 0.1%",
+            "period": "1Y",
+            "status": "COMING SOON"
+          }
+        },
+        {
+          "type": "company",
+          "settings": {
+            "sector": "classics",
+            "sector_label": "CLASSICS",
+            "company_name": "Coca-Cola",
+            "ticker": "KO",
+            "headquarters": "ATLANTA · USA",
+            "business_model": "BRANDS & DISTRIBUTION",
+            "keywords": "beverages brands bottlers distribution pricing",
+            "accent_color": "#E51D2A",
+            "direction": "up",
+            "sparkline_style": "wave-up",
+            "change": "▲ 6.9%",
+            "period": "1Y",
+            "status": "COMING SOON"
+          }
+        },
+        {
+          "type": "company",
+          "settings": {
+            "sector": "classics",
+            "sector_label": "CLASSICS",
+            "company_name": "Disney",
+            "ticker": "DIS",
+            "headquarters": "USA",
+            "business_model": "MEDIA & EXPERIENCES",
+            "keywords": "media streaming parks intellectual property licensing",
+            "accent_color": "#2D55C7",
+            "direction": "up",
+            "sparkline_style": "steady-up",
+            "change": "▲ 1.1%",
+            "period": "1Y",
+            "status": "COMING SOON"
+          }
+        },
+        {
+          "type": "company",
+          "settings": {
+            "sector": "classics",
+            "sector_label": "CLASSICS",
+            "company_name": "Hershey",
+            "ticker": "HSY",
+            "headquarters": "USA",
+            "business_model": "BRANDED SNACKS",
+            "keywords": "chocolate snacks brands retail pricing",
+            "accent_color": "#6B4B3A",
+            "direction": "up",
+            "sparkline_style": "volatile-up",
+            "change": "▲ 8.2%",
+            "period": "1Y",
+            "status": "COMING SOON"
+          }
+        },
+        {
+          "type": "company",
+          "settings": {
+            "sector": "classics",
+            "sector_label": "CLASSICS",
+            "company_name": "Mattel",
+            "ticker": "MAT",
+            "headquarters": "USA",
+            "business_model": "TOYS & IP",
+            "keywords": "toys brands intellectual property entertainment",
+            "accent_color": "#E40046",
+            "direction": "up",
+            "sparkline_style": "flat",
+            "change": "▲ 0.1%",
+            "period": "1Y",
+            "status": "COMING SOON"
+          }
+        },
+        {
+          "type": "company",
+          "settings": {
+            "sector": "classics",
+            "sector_label": "CLASSICS",
+            "company_name": "McDonald's",
+            "ticker": "MCD",
+            "headquarters": "CHICAGO · USA",
+            "business_model": "FRANCHISE",
+            "keywords": "restaurants franchise real estate brand",
+            "accent_color": "#DA291C",
+            "direction": "up",
+            "sparkline_style": "wave-up",
+            "change": "▲ 9.0%",
+            "period": "1Y",
+            "status": "COMING SOON"
+          }
+        },
+        {
+          "type": "company",
+          "settings": {
+            "sector": "classics",
+            "sector_label": "CLASSICS",
+            "company_name": "Nike",
+            "ticker": "NKE",
+            "headquarters": "USA",
+            "business_model": "BRAND & WHOLESALE",
+            "keywords": "sportswear footwear brand wholesale direct",
+            "accent_color": "#161B2E",
+            "direction": "down",
+            "sparkline_style": "wave-down",
+            "change": "▼ 1.7%",
+            "period": "1Y",
+            "status": "COMING SOON"
+          }
+        },
+        {
+          "type": "company",
+          "settings": {
+            "sector": "technology",
+            "sector_label": "TECHNOLOGY",
+            "company_name": "Microsoft",
+            "ticker": "MSFT",
+            "headquarters": "USA",
+            "business_model": "SOFTWARE & CLOUD",
+            "keywords": "software cloud enterprise subscriptions",
+            "accent_color": "#2D9CDB",
+            "direction": "up",
+            "sparkline_style": "flat",
+            "change": "▲ 2.3%",
+            "period": "1Y",
+            "status": "COMING SOON"
+          }
+        },
+        {
+          "type": "company",
+          "settings": {
+            "sector": "technology",
+            "sector_label": "TECHNOLOGY",
+            "company_name": "NVIDIA",
+            "ticker": "NVDA",
+            "headquarters": "USA",
+            "business_model": "COMPUTE PLATFORM",
+            "keywords": "chips artificial intelligence compute software platform",
+            "accent_color": "#76B900",
+            "direction": "up",
+            "sparkline_style": "volatile-up",
+            "change": "▲ 3.0%",
+            "period": "1Y",
+            "status": "AVAILABLE"
+          }
+        },
+        {
+          "type": "company",
+          "settings": {
+            "sector": "technology",
+            "sector_label": "TECHNOLOGY",
+            "company_name": "Google",
+            "ticker": "GOOGL",
+            "headquarters": "USA",
+            "business_model": "ADS & CLOUD",
+            "keywords": "search advertising cloud youtube data",
+            "accent_color": "#4285F4",
+            "direction": "up",
+            "sparkline_style": "steady-up",
+            "change": "▲ 3.7%",
+            "period": "1Y",
+            "status": "COMING SOON"
+          }
+        },
+        {
+          "type": "company",
+          "settings": {
+            "sector": "technology",
+            "sector_label": "TECHNOLOGY",
+            "company_name": "Meta",
+            "ticker": "META",
+            "headquarters": "USA",
+            "business_model": "ADVERTISING",
+            "keywords": "social media advertising networks engagement",
+            "accent_color": "#2B6DE9",
+            "direction": "down",
+            "sparkline_style": "wave-down",
+            "change": "▼ 4.4%",
+            "period": "1Y",
+            "status": "COMING SOON"
+          }
+        },
+        {
+          "type": "company",
+          "settings": {
+            "sector": "technology",
+            "sector_label": "TECHNOLOGY",
+            "company_name": "Amazon",
+            "ticker": "AMZN",
+            "headquarters": "USA",
+            "business_model": "MARKETPLACE & CLOUD",
+            "keywords": "ecommerce marketplace logistics cloud subscriptions",
+            "accent_color": "#FF9900",
+            "direction": "up",
+            "sparkline_style": "wave-up",
+            "change": "▲ 5.1%",
+            "period": "1Y",
+            "status": "COMING SOON"
+          }
+        },
+        {
+          "type": "company",
+          "settings": {
+            "sector": "consumer",
+            "sector_label": "CONSUMER",
+            "company_name": "Walmart",
+            "ticker": "WMT",
+            "headquarters": "USA",
+            "business_model": "RETAIL SCALE",
+            "keywords": "retail stores ecommerce logistics scale",
+            "accent_color": "#2374C6",
+            "direction": "up",
+            "sparkline_style": "wave-up",
+            "change": "▲ 8.7%",
+            "period": "1Y",
+            "status": "COMING SOON"
+          }
+        },
+        {
+          "type": "company",
+          "settings": {
+            "sector": "consumer",
+            "sector_label": "CONSUMER",
+            "company_name": "Starbucks",
+            "ticker": "SBUX",
+            "headquarters": "USA",
+            "business_model": "RETAIL & LOYALTY",
+            "keywords": "coffee stores loyalty beverages",
+            "accent_color": "#00754A",
+            "direction": "down",
+            "sparkline_style": "wave-down",
+            "change": "▼ 8.0%",
+            "period": "1Y",
+            "status": "COMING SOON"
+          }
+        },
+        {
+          "type": "company",
+          "settings": {
+            "sector": "consumer",
+            "sector_label": "CONSUMER",
+            "company_name": "LEGO",
+            "ticker": "PRIVATE",
+            "headquarters": "DENMARK",
+            "business_model": "TOYS & IP",
+            "keywords": "toys bricks licensing media community",
+            "accent_color": "#E3000B",
+            "direction": "down",
+            "sparkline_style": "steady-down",
+            "change": "▼ 7.3%",
+            "period": "1Y",
+            "status": "COMING SOON"
+          }
+        },
+        {
+          "type": "company",
+          "settings": {
+            "sector": "industrials",
+            "sector_label": "INDUSTRIALS",
+            "company_name": "Ford",
+            "ticker": "F",
+            "headquarters": "USA",
+            "business_model": "AUTOMOTIVE",
+            "keywords": "automotive vehicles financing dealers",
+            "accent_color": "#123D7A",
+            "direction": "up",
+            "sparkline_style": "steady-up",
+            "change": "▲ 1.7%",
+            "period": "1Y",
+            "status": "COMING SOON"
+          }
+        },
+        {
+          "type": "company",
+          "settings": {
+            "sector": "industrials",
+            "sector_label": "INDUSTRIALS",
+            "company_name": "Deere",
+            "ticker": "DE",
+            "headquarters": "USA",
+            "business_model": "EQUIPMENT & PRECISION",
+            "keywords": "agriculture equipment machinery precision software",
+            "accent_color": "#367C2B",
+            "direction": "up",
+            "sparkline_style": "flat",
+            "change": "▲ 1.0%",
+            "period": "1Y",
+            "status": "PLANNED"
+          }
+        },
+        {
+          "type": "company",
+          "settings": {
+            "sector": "food-beverage",
+            "sector_label": "FOOD & BEVERAGE",
+            "company_name": "Nestlé",
+            "ticker": "NSRGY",
+            "headquarters": "SWITZERLAND",
+            "business_model": "FOOD PORTFOLIO",
+            "keywords": "food beverages brands portfolio global",
+            "accent_color": "#C5162E",
+            "direction": "down",
+            "sparkline_style": "wave-down",
+            "change": "▼ 5.3%",
+            "period": "1Y",
+            "status": "PLANNED"
+          }
+        },
+        {
+          "type": "company",
+          "settings": {
+            "sector": "food-beverage",
+            "sector_label": "FOOD & BEVERAGE",
+            "company_name": "Pepsi",
+            "ticker": "PEP",
+            "headquarters": "USA",
+            "business_model": "SNACKS & BEVERAGES",
+            "keywords": "snacks beverages distribution brands",
+            "accent_color": "#005CB4",
+            "direction": "up",
+            "sparkline_style": "flat",
+            "change": "▲ 6.0%",
+            "period": "1Y",
+            "status": "PLANNED"
+          }
+        },
+        {
+          "type": "company",
+          "settings": {
+            "sector": "food-beverage",
+            "sector_label": "FOOD & BEVERAGE",
+            "company_name": "Kraft Heinz",
+            "ticker": "KHC",
+            "headquarters": "USA",
+            "business_model": "BRANDED FOODS",
+            "keywords": "food brands grocery pricing portfolio",
+            "accent_color": "#D71920",
+            "direction": "up",
+            "sparkline_style": "steady-up",
+            "change": "▲ 4.7%",
+            "period": "1Y",
+            "status": "PLANNED"
+          }
+        },
+        {
+          "type": "company",
+          "settings": {
+            "sector": "financials",
+            "sector_label": "FINANCE",
+            "company_name": "Visa",
+            "ticker": "V",
+            "headquarters": "USA",
+            "business_model": "PAYMENT NETWORK",
+            "keywords": "payments network cards transactions",
+            "accent_color": "#1A1F71",
+            "direction": "down",
+            "sparkline_style": "wave-down",
+            "change": "▼ 5.7%",
+            "period": "1Y",
+            "status": "PLANNED"
+          }
+        },
+        {
+          "type": "company",
+          "settings": {
+            "sector": "financials",
+            "sector_label": "FINANCE",
+            "company_name": "Mastercard",
+            "ticker": "MA",
+            "headquarters": "USA",
+            "business_model": "PAYMENT NETWORK",
+            "keywords": "payments network cards cross border",
+            "accent_color": "#EB001B",
+            "direction": "down",
+            "sparkline_style": "wave-down",
+            "change": "▼ 5.0%",
+            "period": "1Y",
+            "status": "PLANNED"
+          }
+        },
+        {
+          "type": "company",
+          "settings": {
+            "sector": "financials",
+            "sector_label": "FINANCE",
+            "company_name": "JPMorgan",
+            "ticker": "JPM",
+            "headquarters": "USA",
+            "business_model": "BANKING",
+            "keywords": "banking credit markets asset management",
+            "accent_color": "#17365D",
+            "direction": "up",
+            "sparkline_style": "wave-up",
+            "change": "▲ 4.3%",
+            "period": "1Y",
+            "status": "PLANNED"
+          }
+        },
+        {
+          "type": "company",
+          "settings": {
+            "sector": "financials",
+            "sector_label": "FINANCE",
+            "company_name": "Berkshire",
+            "ticker": "BRK.B",
+            "headquarters": "USA",
+            "business_model": "HOLDING COMPANY",
+            "keywords": "insurance holding company capital allocation",
+            "accent_color": "#584C3B",
+            "direction": "up",
+            "sparkline_style": "steady-up",
+            "change": "▲ 3.6%",
+            "period": "1Y",
+            "status": "PLANNED"
+          }
+        },
+        {
+          "type": "company",
+          "settings": {
+            "sector": "healthcare",
+            "sector_label": "HEALTHCARE",
+            "company_name": "Johnson & Johnson",
+            "ticker": "JNJ",
+            "headquarters": "USA",
+            "business_model": "HEALTHCARE PORTFOLIO",
+            "keywords": "healthcare medicines medical technology",
+            "accent_color": "#D71920",
+            "direction": "up",
+            "sparkline_style": "steady-up",
+            "change": "▲ 1.3%",
+            "period": "1Y",
+            "status": "PLANNED"
+          }
+        },
+        {
+          "type": "company",
+          "settings": {
+            "sector": "healthcare",
+            "sector_label": "HEALTHCARE",
+            "company_name": "Pfizer",
+            "ticker": "PFE",
+            "headquarters": "USA",
+            "business_model": "PHARMACEUTICALS",
+            "keywords": "pharmaceuticals research pipeline patents",
+            "accent_color": "#0093D0",
+            "direction": "up",
+            "sparkline_style": "wave-up",
+            "change": "▲ 2.0%",
+            "period": "1Y",
+            "status": "PLANNED"
+          }
+        },
+        {
+          "type": "company",
+          "settings": {
+            "sector": "healthcare",
+            "sector_label": "HEALTHCARE",
+            "company_name": "UnitedHealth",
+            "ticker": "UNH",
+            "headquarters": "USA",
+            "business_model": "INSURANCE & SERVICES",
+            "keywords": "health insurance care services data",
+            "accent_color": "#002677",
+            "direction": "up",
+            "sparkline_style": "steady-up",
+            "change": "▲ 2.7%",
+            "period": "1Y",
+            "status": "PLANNED"
+          }
+        },
+        {
+          "type": "company",
+          "settings": {
+            "sector": "energy",
+            "sector_label": "ENERGY",
+            "company_name": "Exxon",
+            "ticker": "XOM",
+            "headquarters": "USA",
+            "business_model": "INTEGRATED ENERGY",
+            "keywords": "energy oil gas refining chemicals",
+            "accent_color": "#D9252A",
+            "direction": "up",
+            "sparkline_style": "wave-up",
+            "change": "▲ 8.3%",
+            "period": "1Y",
+            "status": "PLANNED"
+          }
+        },
+        {
+          "type": "company",
+          "settings": {
+            "sector": "energy",
+            "sector_label": "ENERGY",
+            "company_name": "Chevron",
+            "ticker": "CVX",
+            "headquarters": "USA",
+            "business_model": "INTEGRATED ENERGY",
+            "keywords": "energy oil gas refining production",
+            "accent_color": "#0066B2",
+            "direction": "up",
+            "sparkline_style": "volatile-up",
+            "change": "▲ 9.0%",
+            "period": "1Y",
+            "status": "PLANNED"
+          }
+        },
+        {
+          "type": "company",
+          "settings": {
+            "sector": "energy",
+            "sector_label": "ENERGY",
+            "company_name": "Shell",
+            "ticker": "SHEL",
+            "headquarters": "GLOBAL",
+            "business_model": "INTEGRATED ENERGY",
+            "keywords": "energy oil gas trading retail",
+            "accent_color": "#DD1D21",
+            "direction": "up",
+            "sparkline_style": "wave-up",
+            "change": "▲ 8.3%",
+            "period": "1Y",
+            "status": "PLANNED"
+          }
+        },
+        {
+          "type": "company",
+          "settings": {
+            "sector": "retail",
+            "sector_label": "RETAIL",
+            "company_name": "Costco",
+            "ticker": "COST",
+            "headquarters": "USA",
+            "business_model": "MEMBERSHIP RETAIL",
+            "keywords": "retail membership warehouse inventory",
+            "accent_color": "#2368A2",
+            "direction": "down",
+            "sparkline_style": "wave-down",
+            "change": "▼ 2.7%",
+            "period": "1Y",
+            "status": "AVAILABLE"
+          }
+        },
+        {
+          "type": "company",
+          "settings": {
+            "sector": "retail",
+            "sector_label": "RETAIL",
+            "company_name": "Target",
+            "ticker": "TGT",
+            "headquarters": "USA",
+            "business_model": "GENERAL MERCHANDISE",
+            "keywords": "retail stores brands fulfillment",
+            "accent_color": "#CC0000",
+            "direction": "up",
+            "sparkline_style": "flat",
+            "change": "▲ 2.0%",
+            "period": "1Y",
+            "status": "PLANNED"
+          }
+        },
+        {
+          "type": "company",
+          "settings": {
+            "sector": "retail",
+            "sector_label": "RETAIL",
+            "company_name": "IKEA",
+            "ticker": "PRIVATE",
+            "headquarters": "GLOBAL",
+            "business_model": "FURNITURE RETAIL",
+            "keywords": "furniture retail flat pack design sourcing",
+            "accent_color": "#0058A3",
+            "direction": "up",
+            "sparkline_style": "wave-up",
+            "change": "▲ 1.3%",
+            "period": "1Y",
+            "status": "PLANNED"
+          }
+        },
+        {
+          "type": "company",
+          "settings": {
+            "sector": "retail",
+            "sector_label": "RETAIL",
+            "company_name": "Zara",
+            "ticker": "ITX",
+            "headquarters": "SPAIN",
+            "business_model": "FAST FASHION",
+            "keywords": "fashion retail inventory supply chain",
+            "accent_color": "#161B2E",
+            "direction": "up",
+            "sparkline_style": "wave-up",
+            "change": "▲ 0.6%",
+            "period": "1Y",
+            "status": "PLANNED"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

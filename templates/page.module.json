@@ -1,0 +1,716 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "blocks": {
+        "heading": {
+          "type": "text",
+          "name": "t:names.title",
+          "settings": {
+            "text": "<h1>{{ closest.page.title }}</h1>",
+            "width": "100%",
+            "max_width": "normal",
+            "alignment": "left",
+            "type_preset": "h2",
+            "font": "var(--font-body--family)",
+            "font_size": "1rem",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "text_color": "#161B2E",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "page-content": {
+          "type": "page-content",
+          "settings": {
+            "text_color": "#161B2E"
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "heading",
+        "page-content"
+      ],
+      "disabled": true,
+      "settings": {
+        "content_direction": "column",
+        "gap": 32,
+        "background_color": "#F5EFE1",
+        "padding-block-start": 40,
+        "padding-block-end": 80
+      }
+    },
+    "ara_company_module_hero_VaE46c": {
+      "type": "ara-company-module-hero",
+      "blocks": {
+        "stat_RW84Hn": {
+          "type": "stat",
+          "settings": {
+            "label": "FOUNDED",
+            "value": "1976",
+            "note": "CALIFORNIA"
+          }
+        },
+        "stat_9PECcH": {
+          "type": "stat",
+          "settings": {
+            "label": "BUSINESS MODEL",
+            "value": "ECOSYSTEM",
+            "note": "HARDWARE + SERVICES"
+          }
+        },
+        "stat_KUUpWT": {
+          "type": "stat",
+          "settings": {
+            "label": "CUSTOMER",
+            "value": "GLOBAL",
+            "note": "CONSUMER + ENTERPRISE"
+          }
+        },
+        "stat_PgycLp": {
+          "type": "stat",
+          "settings": {
+            "label": "CORE ADVANTAGE",
+            "value": "LOYALTY",
+            "note": "INTEGRATION"
+          }
+        }
+      },
+      "block_order": [
+        "stat_RW84Hn",
+        "stat_9PECcH",
+        "stat_KUUpWT",
+        "stat_PgycLp"
+      ],
+      "name": "Ara Company Hero",
+      "settings": {
+        "eyebrow": "COMPANY FILE",
+        "folio": "COMPANY FILE · 01",
+        "company_logo": "shopify://shop_images/aa9f57b5-bb13-471c-9f31-aaf8905e82e4.png",
+        "company_name": "Apple",
+        "ticker": "NASDAQ: AAPL",
+        "sector": "Technology",
+        "location": "Cupertino, California",
+        "subtitle": "The machine that prints value.",
+        "summary": "<p>Apple combines hardware, software and services into one tightly controlled ecosystem. This company file explains how that system creates customer loyalty, recurring revenue and extraordinary financial strength.</p>",
+        "primary_button_label": "OPEN THE COMPANY FILE",
+        "primary_button_link": "",
+        "secondary_button_label": "READ COMPANY STORIES",
+        "secondary_button_link": "",
+        "hero_image": "shopify://shop_images/cf0b56c0-60fe-472e-932b-217282038403.png",
+        "image_label": "HEADQUARTERS · PRODUCT · SYSTEM",
+        "digest_product": "",
+        "use_product_title": true,
+        "use_product_price": true,
+        "digest_eyebrow": "THE PHYSICAL DIGEST",
+        "digest_cover": "shopify://shop_images/mintmark-digest-cover-reference.png",
+        "digest_title": "The Apple Digest",
+        "digest_price": "$24.00",
+        "digest_text": "A printed company guide designed for reading, annotation and return.",
+        "digest_button_label": "VIEW THE DIGEST",
+        "digest_link": "",
+        "desktop_title_size": 82,
+        "desktop_subtitle_size": 40,
+        "desktop_body_size": 16,
+        "desktop_label_size": 9,
+        "desktop_stat_size": 24,
+        "desktop_digest_title_size": 31,
+        "mobile_title_size": 52,
+        "mobile_subtitle_size": 32,
+        "mobile_body_size": 15,
+        "mobile_label_size": 9,
+        "mobile_stat_size": 22,
+        "mobile_digest_title_size": 27,
+        "max_width": "1600px",
+        "padding_top": 80,
+        "padding_bottom": 80,
+        "background_color": "#F5EFE1",
+        "paper_color": "#F3ECDC",
+        "text_color": "#161B2E",
+        "muted_text_color": "#646575",
+        "mint_color": "#A6DECB",
+        "gold_color": "#E0A526",
+        "blue_color": "#274B44",
+        "blue_deep_color": "#161B2E",
+        "border_color": "#C9BEA8"
+      }
+    },
+    "ara_company_overview_business_model_YN7iEn": {
+      "type": "ara-company-overview-business-model",
+      "blocks": {
+        "model_step_4XqnMp": {
+          "type": "model_step",
+          "settings": {
+            "style": "cream",
+            "kicker": "CREATE",
+            "title": "Design desirable products",
+            "text": "Apple combines industrial design, software and proprietary chips to create premium devices.",
+            "metric_label": "PRIMARY ENGINE",
+            "metric_value": "HARDWARE"
+          }
+        },
+        "model_step_Jp4h48": {
+          "type": "model_step",
+          "settings": {
+            "style": "gold",
+            "kicker": "CONNECT",
+            "title": "Link every product together",
+            "text": "Devices work better when customers use more than one Apple product and service.",
+            "metric_label": "SYSTEM EFFECT",
+            "metric_value": "ECOSYSTEM"
+          }
+        },
+        "model_step_7DcV8P": {
+          "type": "model_step",
+          "settings": {
+            "style": "mint",
+            "kicker": "RETAIN",
+            "title": "Increase switching costs",
+            "text": "Data, apps, accessories, services and familiarity make leaving the ecosystem inconvenient.",
+            "metric_label": "CUSTOMER EFFECT",
+            "metric_value": "LOYALTY"
+          }
+        },
+        "model_step_tJzH7y": {
+          "type": "model_step",
+          "settings": {
+            "style": "blue",
+            "kicker": "EXPAND",
+            "title": "Monetize the relationship again",
+            "text": "Services, subscriptions, payments and upgrades generate recurring and repeat revenue.",
+            "metric_label": "RECURRING ENGINE",
+            "metric_value": "SERVICES"
+          }
+        }
+      },
+      "block_order": [
+        "model_step_4XqnMp",
+        "model_step_Jp4h48",
+        "model_step_7DcV8P",
+        "model_step_tJzH7y"
+      ],
+      "name": "Ara Company Overview",
+      "settings": {
+        "eyebrow": "COMPANY OVERVIEW",
+        "heading": "What the company does.\nHow the system works.",
+        "description": "<p>Understand the company as a connected system: what it creates, who it serves, how it reaches customers and what keeps them inside the ecosystem.</p>",
+        "profile_heading": "COMPANY AT A GLANCE",
+        "profile_note": "WHAT IT IS",
+        "profile_image": "shopify://shop_images/02c045ff-7331-4798-a8b1-88192cb880b3.png",
+        "image_label": "PRODUCTS · CUSTOMERS · DISTRIBUTION",
+        "overview_text": "<p>Apple is a consumer technology company that designs devices, software and services as one integrated experience. The company controls the product, operating system, retail environment and a growing layer of recurring services.</p>",
+        "fact_one_label": "CORE CUSTOMER",
+        "fact_one_value": "GLOBAL CONSUMERS",
+        "fact_one_note": "Individuals, families, creators, professionals and enterprise teams.",
+        "fact_two_label": "CORE OFFERING",
+        "fact_two_value": "DEVICES + SERVICES",
+        "fact_two_note": "Hardware, operating systems, software, subscriptions and payments.",
+        "fact_three_label": "DISTRIBUTION",
+        "fact_three_value": "DIRECT + PARTNERS",
+        "fact_three_note": "Retail stores, online channels, carriers, resellers and enterprise sales.",
+        "fact_four_label": "RECURRING ENGINE",
+        "fact_four_value": "INSTALLED BASE",
+        "fact_four_note": "A large active-device base creates repeat purchases and service revenue.",
+        "model_heading": "HOW THE BUSINESS MODEL WORKS",
+        "model_note": "THE VALUE LOOP",
+        "model_badge": "CONNECTED SYSTEM",
+        "summary_label": "THE CORE IDEA",
+        "model_summary": "The product creates the customer relationship. The ecosystem extends it. Services monetize it again.",
+        "desktop_heading_size": 68,
+        "desktop_body_size": 16,
+        "desktop_label_size": 9,
+        "desktop_fact_title_size": 26,
+        "desktop_step_title_size": 30,
+        "desktop_step_text_size": 14,
+        "mobile_heading_size": 48,
+        "mobile_body_size": 15,
+        "mobile_label_size": 9,
+        "mobile_fact_title_size": 24,
+        "mobile_step_title_size": 27,
+        "mobile_step_text_size": 14,
+        "max_width": "1600px",
+        "padding_top": 80,
+        "padding_bottom": 80,
+        "background_color": "#F5EFE1",
+        "paper_color": "#F3ECDC",
+        "text_color": "#161B2E",
+        "muted_text_color": "#646575",
+        "mint_color": "#A6DECB",
+        "gold_color": "#E0A526",
+        "blue_color": "#274B44",
+        "blue_deep_color": "#161B2E",
+        "border_color": "#C9BEA8"
+      }
+    },
+    "ara_company_revenue_section_8cx84e": {
+      "type": "ara-company-revenue-section",
+      "blocks": {
+        "revenue_stream_aaVKqH": {
+          "type": "revenue_stream",
+          "settings": {
+            "style": "cream",
+            "percentage": 52,
+            "kicker": "PRODUCT CATEGORY",
+            "title": "iPhone",
+            "description": "The largest product category and the main entry point into the broader ecosystem.",
+            "driver_label": "WHAT DRIVES IT",
+            "driver_value": "UPGRADE CYCLE"
+          }
+        },
+        "revenue_stream_cKW6KL": {
+          "type": "revenue_stream",
+          "settings": {
+            "style": "blue",
+            "percentage": 25,
+            "kicker": "RECURRING CATEGORY",
+            "title": "Services",
+            "description": "Subscriptions, payments, advertising and digital distribution tied to the installed base.",
+            "driver_label": "WHAT DRIVES IT",
+            "driver_value": "ACTIVE DEVICES"
+          }
+        },
+        "revenue_stream_KFpTew": {
+          "type": "revenue_stream",
+          "settings": {
+            "style": "mint",
+            "percentage": 8,
+            "kicker": "PRODUCT CATEGORY",
+            "title": "Mac",
+            "description": "Personal computers serving consumers, creators, students and professional customers.",
+            "driver_label": "WHAT DRIVES IT",
+            "driver_value": "PRODUCT CYCLE"
+          }
+        },
+        "revenue_stream_x3K6J7": {
+          "type": "revenue_stream",
+          "settings": {
+            "style": "gold",
+            "percentage": 7,
+            "kicker": "PRODUCT CATEGORY",
+            "title": "iPad",
+            "description": "Tablet products spanning education, creativity, entertainment and professional use.",
+            "driver_label": "WHAT DRIVES IT",
+            "driver_value": "USE CASES"
+          }
+        },
+        "revenue_stream_nLbU3h": {
+          "type": "revenue_stream",
+          "settings": {
+            "style": "dark",
+            "percentage": 8,
+            "kicker": "PRODUCT CATEGORY",
+            "title": "Wearables & Home",
+            "description": "Watch, audio, accessories and connected-home products that extend the ecosystem.",
+            "driver_label": "WHAT DRIVES IT",
+            "driver_value": "ECOSYSTEM DEPTH"
+          }
+        }
+      },
+      "block_order": [
+        "revenue_stream_aaVKqH",
+        "revenue_stream_cKW6KL",
+        "revenue_stream_KFpTew",
+        "revenue_stream_x3K6J7",
+        "revenue_stream_nLbU3h"
+      ],
+      "name": "Ara Company Revenue",
+      "settings": {
+        "eyebrow": "HOW THE COMPANY MAKES MONEY",
+        "heading": "One ecosystem.\nSeveral revenue engines.",
+        "description": "<p>See which products and services generate revenue, how the mix is changing and why some streams are more valuable than others.</p>",
+        "mix_heading": "ILLUSTRATIVE REVENUE MIX",
+        "mix_note": "EDITABLE COMPANY SNAPSHOT",
+        "mix_badge": "TOTAL · 100%",
+        "bar_accessibility_label": "Illustrative company revenue mix",
+        "economics_heading": "WHY THE MIX MATTERS",
+        "economics_note": "BEYOND REVENUE",
+        "economic_one_title": "Hardware creates the relationship",
+        "economic_one_text": "The initial device sale brings a customer into the ecosystem and creates future opportunities.",
+        "economic_two_title": "Services deepen the value",
+        "economic_two_text": "Subscriptions, payments and digital services add recurring revenue to the installed base.",
+        "economic_three_title": "The mix changes profitability",
+        "economic_three_text": "Different revenue streams carry different margins, growth rates and levels of predictability.",
+        "key_idea_label": "KEY IDEA",
+        "key_idea": "The company does not need every category to grow equally. It needs the total ecosystem to become more valuable.",
+        "desktop_heading_size": 68,
+        "desktop_body_size": 16,
+        "desktop_label_size": 9,
+        "desktop_stream_title_size": 30,
+        "desktop_stream_value_size": 44,
+        "desktop_card_title_size": 27,
+        "mobile_heading_size": 48,
+        "mobile_body_size": 15,
+        "mobile_label_size": 9,
+        "mobile_stream_title_size": 27,
+        "mobile_stream_value_size": 38,
+        "mobile_card_title_size": 25,
+        "max_width": "1600px",
+        "padding_top": 80,
+        "padding_bottom": 80,
+        "background_color": "#F5EFE1",
+        "paper_color": "#F3ECDC",
+        "text_color": "#161B2E",
+        "muted_text_color": "#646575",
+        "mint_color": "#A6DECB",
+        "gold_color": "#E0A526",
+        "blue_color": "#274B44",
+        "blue_deep_color": "#161B2E",
+        "border_color": "#C9BEA8"
+      }
+    },
+    "ara_company_strengths_risks_section_DyHCN7": {
+      "type": "ara-company-strengths-risks-section",
+      "blocks": {
+        "metric_gjV8i8": {
+          "type": "metric",
+          "settings": {
+            "direction": "positive",
+            "label": "REVENUE",
+            "period": "FY 2024",
+            "value": "$391B",
+            "note": "Large global revenue base across products and services."
+          }
+        },
+        "metric_dWCCbB": {
+          "type": "metric",
+          "settings": {
+            "direction": "positive",
+            "label": "OPERATING CASH FLOW",
+            "period": "FY 2024",
+            "value": "$118B",
+            "note": "Strong internal cash generation supports investment and capital returns."
+          }
+        },
+        "metric_jGkgjJ": {
+          "type": "metric",
+          "settings": {
+            "direction": "positive",
+            "label": "GROSS MARGIN",
+            "period": "FY 2024",
+            "value": "46%",
+            "note": "Premium pricing and services support attractive overall economics."
+          }
+        },
+        "metric_4tXPLE": {
+          "type": "metric",
+          "settings": {
+            "direction": "neutral",
+            "label": "GROWTH",
+            "period": "RECENT",
+            "value": "MATURE",
+            "note": "Scale is exceptional, but growth depends on product cycles and services expansion."
+          }
+        },
+        "advantage_kFnihJ": {
+          "type": "advantage",
+          "settings": {
+            "title": "Integrated ecosystem",
+            "text": "Hardware, software and services reinforce one another and make the full experience difficult to copy.",
+            "proof_label": "EVIDENCE",
+            "proof": "HIGH CUSTOMER RETENTION"
+          }
+        },
+        "advantage_gJFxKa": {
+          "type": "advantage",
+          "settings": {
+            "title": "Brand and pricing power",
+            "text": "Customers associate the brand with design, reliability and status, supporting premium pricing.",
+            "proof_label": "EVIDENCE",
+            "proof": "PREMIUM AVERAGE PRICES"
+          }
+        },
+        "advantage_x4LjpM": {
+          "type": "advantage",
+          "settings": {
+            "title": "Installed base",
+            "text": "A large active-device population creates recurring opportunities for services, accessories and upgrades.",
+            "proof_label": "EVIDENCE",
+            "proof": "BILLIONS OF ACTIVE DEVICES"
+          }
+        },
+        "risk_BWdiRw": {
+          "type": "risk",
+          "settings": {
+            "title": "Product concentration",
+            "text": "A large share of revenue still depends on one product family and its replacement cycle.",
+            "watch_label": "WATCH",
+            "watch": "IPHONE DEMAND"
+          }
+        },
+        "risk_wTUUVk": {
+          "type": "risk",
+          "settings": {
+            "title": "Regulatory pressure",
+            "text": "App distribution, payments and platform rules face increasing scrutiny in major markets.",
+            "watch_label": "WATCH",
+            "watch": "PLATFORM RULE CHANGES"
+          }
+        },
+        "risk_6EVWCU": {
+          "type": "risk",
+          "settings": {
+            "title": "Supply-chain exposure",
+            "text": "The company relies on a complex global manufacturing network and concentrated production regions.",
+            "watch_label": "WATCH",
+            "watch": "PRODUCTION DISRUPTION"
+          }
+        }
+      },
+      "block_order": [
+        "metric_gjV8i8",
+        "metric_dWCCbB",
+        "metric_jGkgjJ",
+        "metric_4tXPLE",
+        "advantage_kFnihJ",
+        "advantage_gJFxKa",
+        "advantage_x4LjpM",
+        "risk_BWdiRw",
+        "risk_wTUUVk",
+        "risk_6EVWCU"
+      ],
+      "name": "Ara Strengths & Risks",
+      "settings": {
+        "eyebrow": "FINANCIAL STRENGTH · ADVANTAGES · RISKS",
+        "heading": "What makes the company strong.\nWhat could change the story.",
+        "description": "<p>Separate the company’s current financial position from the competitive advantages that support it—and the risks that could weaken either one.</p>",
+        "scorecard_heading": "FINANCIAL SCORECARD",
+        "scorecard_note": "EDITABLE COMPANY SNAPSHOT",
+        "scorecard_badge": "STRONG POSITION",
+        "scorecard_footer_label": "WHAT IT MEANS",
+        "scorecard_footer": "Strong cash generation gives the company flexibility to invest, return capital and absorb periods of weaker demand.",
+        "advantages_heading": "COMPETITIVE ADVANTAGES",
+        "advantages_note": "WHAT SUPPORTS THE BUSINESS",
+        "advantages_badge": "WHY IT CAN ENDURE",
+        "risks_heading": "RISKS TO WATCH",
+        "risks_note": "WHAT COULD WEAKEN THE STORY",
+        "risks_badge": "MONITOR OVER TIME",
+        "thesis_label": "THE COMPANY THESIS",
+        "thesis": "The company remains powerful while its ecosystem keeps customers engaged, its products stay differentiated and its financial discipline remains intact.",
+        "desktop_heading_size": 68,
+        "desktop_body_size": 16,
+        "desktop_label_size": 9,
+        "desktop_metric_size": 34,
+        "desktop_card_title_size": 28,
+        "mobile_heading_size": 48,
+        "mobile_body_size": 15,
+        "mobile_label_size": 9,
+        "mobile_metric_size": 31,
+        "mobile_card_title_size": 26,
+        "max_width": "1600px",
+        "padding_top": 80,
+        "padding_bottom": 80,
+        "background_color": "#F5EFE1",
+        "paper_color": "#F3ECDC",
+        "text_color": "#161B2E",
+        "muted_text_color": "#646575",
+        "mint_color": "#A6DECB",
+        "gold_color": "#E0A526",
+        "blue_color": "#274B44",
+        "blue_deep_color": "#161B2E",
+        "positive_color": "#12A67C",
+        "negative_color": "#ED5C5C",
+        "neutral_color": "#274B44"
+      }
+    },
+    "ara_company_stories_section_Vx6gxk": {
+      "type": "ara-company-stories-section",
+      "blocks": {
+        "story_HhD6L3": {
+          "type": "story",
+          "settings": {
+            "article": "",
+            "style": "cream",
+            "custom_image": "shopify://shop_images/1578feb4-371d-4659-ad7f-dfb586cca834.png",
+            "image_label": "THE COMPANY STORY",
+            "category": "COVER STORY",
+            "custom_date": "JANUARY 24, 2026",
+            "custom_title": "How Apple built a machine that prints value",
+            "custom_excerpt": "The company’s most important advantage is not a single product. It is the system that connects devices, software, services and customer loyalty.",
+            "button_label": "READ THE COVER STORY",
+            "custom_link": ""
+          }
+        },
+        "story_fApeTH": {
+          "type": "story",
+          "settings": {
+            "article": "",
+            "style": "blue",
+            "custom_image": "shopify://shop_images/6da5d4e6-7adf-4e36-b763-911a55e68cc1.png",
+            "image_label": "COMPANY STORY",
+            "category": "BUSINESS MODEL",
+            "custom_date": "JANUARY 18, 2026",
+            "custom_title": "Why services changed Apple’s economics",
+            "custom_excerpt": "Recurring digital revenue added a new layer of value to an already powerful installed base.",
+            "button_label": "READ THE STORY",
+            "custom_link": ""
+          }
+        },
+        "story_gQcAhA": {
+          "type": "story",
+          "settings": {
+            "article": "",
+            "style": "gold",
+            "custom_image": "shopify://shop_images/55eace5d-42cd-46b4-82bf-ee65a04ea59e.png",
+            "image_label": "COMPANY STORY",
+            "category": "PRODUCT",
+            "custom_date": "JANUARY 11, 2026",
+            "custom_title": "The product decision that deepened the ecosystem",
+            "custom_excerpt": "A look at how product integration can increase convenience, loyalty and switching costs.",
+            "button_label": "READ THE STORY",
+            "custom_link": ""
+          }
+        },
+        "story_QwkzTi": {
+          "type": "story",
+          "settings": {
+            "article": "",
+            "style": "mint",
+            "custom_image": "shopify://shop_images/63b3241e-b3b6-4456-bc3e-6b910f9c94c3.png",
+            "image_label": "COMPANY STORY",
+            "category": "FINANCIALS",
+            "custom_date": "JANUARY 04, 2026",
+            "custom_title": "What Apple’s cash generation makes possible",
+            "custom_excerpt": "Strong internal cash flow gives the company unusual flexibility across investment and capital returns.",
+            "button_label": "READ THE STORY",
+            "custom_link": ""
+          }
+        }
+      },
+      "block_order": [
+        "story_HhD6L3",
+        "story_fApeTH",
+        "story_gQcAhA",
+        "story_QwkzTi"
+      ],
+      "name": "Ara Company Stories",
+      "settings": {
+        "eyebrow": "COMPANY STORIES",
+        "heading": "The company story,\none chapter at a time.",
+        "description": "<p>Read the launches, decisions, turning points and financial developments that shaped the company over time.</p>",
+        "all_articles_label": "VIEW ALL COMPANY STORIES",
+        "all_articles_link": "",
+        "date_format": "%B %d, %Y",
+        "desktop_heading_size": 68,
+        "desktop_body_size": 16,
+        "desktop_label_size": 9,
+        "desktop_feature_title_size": 48,
+        "desktop_card_title_size": 29,
+        "mobile_heading_size": 48,
+        "mobile_body_size": 15,
+        "mobile_label_size": 9,
+        "mobile_feature_title_size": 38,
+        "mobile_card_title_size": 27,
+        "max_width": "1600px",
+        "padding_top": 80,
+        "padding_bottom": 80,
+        "background_color": "#F5EFE1",
+        "paper_color": "#F3ECDC",
+        "text_color": "#161B2E",
+        "muted_text_color": "#646575",
+        "mint_color": "#A6DECB",
+        "gold_color": "#E0A526",
+        "blue_color": "#274B44",
+        "blue_deep_color": "#161B2E"
+      }
+    },
+    "ara_company_final_cta_section_44MpNa": {
+      "type": "ara-company-final-cta-section",
+      "blocks": {
+        "pathway_TTe8jK": {
+          "type": "pathway",
+          "settings": {
+            "style": "cream",
+            "title": "Return to the Bookshelf",
+            "text": "Browse every available company file and physical digest from the full library.",
+            "link_label": "VIEW THE BOOKSHELF",
+            "link": ""
+          }
+        },
+        "pathway_3nmVJt": {
+          "type": "pathway",
+          "settings": {
+            "style": "gold",
+            "title": "Read Company Stories",
+            "text": "Continue through the latest articles, decisions and turning points connected to this company.",
+            "link_label": "VIEW COMPANY STORIES",
+            "link": ""
+          }
+        },
+        "pathway_nWUVqw": {
+          "type": "pathway",
+          "settings": {
+            "style": "mint",
+            "title": "Return to My Paper",
+            "text": "Go back to the latest editorial stories, short takes and company questions.",
+            "link_label": "OPEN MY PAPER",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "pathway_TTe8jK",
+        "pathway_3nmVJt",
+        "pathway_nWUVqw"
+      ],
+      "name": "Ara Company Final CTA",
+      "settings": {
+        "eyebrow": "CONTINUE EXPLORING",
+        "folio": "COMPANY FILE · COMPLETE",
+        "heading": "One company understood.\nMany more to explore.",
+        "description": "<p>Return to the Bookshelf, continue into another company or revisit the physical digest whenever you want the full story in one place.</p>",
+        "primary_button_label": "RETURN TO THE BOOKSHELF",
+        "primary_button_link": "",
+        "secondary_button_label": "VIEW THE PHYSICAL DIGEST",
+        "secondary_button_link": "",
+        "bottom_note": "READ · UNDERSTAND · COMPARE · RETURN",
+        "next_label": "NEXT COMPANY",
+        "next_note": "CONTINUE THE CURRICULUM",
+        "next_company_name": "JPMorgan Chase",
+        "next_company_meta": "FINANCIALS · BANKING · USA",
+        "next_company_description": "Explore how a global bank earns money, manages risk and turns deposits, lending and financial services into a durable business.",
+        "next_company_button_label": "OPEN THE NEXT FILE",
+        "next_company_link": "",
+        "desktop_heading_size": 68,
+        "desktop_body_size": 16,
+        "desktop_label_size": 9,
+        "desktop_next_title_size": 34,
+        "desktop_path_title_size": 28,
+        "mobile_heading_size": 48,
+        "mobile_body_size": 15,
+        "mobile_label_size": 9,
+        "mobile_next_title_size": 30,
+        "mobile_path_title_size": 26,
+        "max_width": "1600px",
+        "padding_top": 80,
+        "padding_bottom": 80,
+        "background_color": "#F5EFE1",
+        "panel_color": "#F3ECDC",
+        "paper_color": "#F3ECDC",
+        "text_color": "#161B2E",
+        "muted_text_color": "#646575",
+        "mint_color": "#A6DECB",
+        "gold_color": "#E0A526",
+        "blue_color": "#274B44"
+      }
+    }
+  },
+  "order": [
+    "main",
+    "ara_company_module_hero_VaE46c",
+    "ara_company_overview_business_model_YN7iEn",
+    "ara_company_revenue_section_8cx84e",
+    "ara_company_strengths_risks_section_DyHCN7",
+    "ara_company_stories_section_Vx6gxk",
+    "ara_company_final_cta_section_44MpNa"
+  ]
+}

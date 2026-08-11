@@ -1,0 +1,1445 @@
+<section
+  id="AraMintDomains-{{ section.id }}"
+  class="ara-mint-domains"
+  style="
+    --ara-mint-bg: {{ section.settings.background_color }};
+    --ara-mint-deep-bg: {{ section.settings.deep_background_color }};
+    --ara-mint-card: {{ section.settings.card_color }};
+    --ara-mint-text: {{ section.settings.text_color }};
+    --ara-mint-muted: {{ section.settings.muted_text_color }};
+    --ara-mint-accent: {{ section.settings.accent_color }};
+    --ara-mint-gold: {{ section.settings.gold_color }};
+    --ara-mint-blue: {{ section.settings.blue_color }};
+    --ara-mint-blue-deep: {{ section.settings.blue_deep_color }};
+    --ara-mint-border: {{ section.settings.border_color }};
+    --ara-mint-line: {{ section.settings.line_color }};
+    --ara-mint-max: {{ section.settings.max_width }};
+    --ara-mint-top: {{ section.settings.padding_top }}px;
+    --ara-mint-bottom: {{ section.settings.padding_bottom }}px;
+    --ara-card-min-height: {{ section.settings.card_height }}px;
+    --ara-card-gap: {{ section.settings.card_gap }}px;
+    --ara-icon-height: {{ section.settings.icon_height }}px;
+    --ara-mint-columns: {{ section.settings.desktop_columns }};
+    --ara-mint-eyebrow-size: {{ section.settings.desktop_eyebrow_size }}px;
+    --ara-mint-heading-size: {{ section.settings.desktop_heading_size }}px;
+    --ara-mint-description-size: {{ section.settings.desktop_description_size }}px;
+    --ara-mint-link-size: {{ section.settings.desktop_link_size }}px;
+    --ara-domain-title-size: {{ section.settings.desktop_card_title_size }}px;
+    --ara-domain-description-size: {{ section.settings.desktop_card_description_size }}px;
+    --ara-domain-number-size: {{ section.settings.desktop_card_number_size }}px;
+    --ara-domain-placeholder-size: {{ section.settings.desktop_placeholder_size }}px;
+    --ara-domain-tab-size: {{ section.settings.desktop_tab_size }}px;
+    --ara-domain-footer-size: {{ section.settings.desktop_footer_size }}px;
+    --ara-mint-mobile-eyebrow-size: {{ section.settings.mobile_eyebrow_size }}px;
+    --ara-mint-mobile-heading-size: {{ section.settings.mobile_heading_size }}px;
+    --ara-mint-mobile-description-size: {{ section.settings.mobile_description_size }}px;
+    --ara-mint-mobile-link-size: {{ section.settings.mobile_link_size }}px;
+    --ara-mint-eyebrow-media-width: {{ section.settings.desktop_small_heading_media_width }}px;
+    --ara-mint-mobile-eyebrow-media-width: {{ section.settings.mobile_small_heading_media_width }}px;
+    --ara-domain-mobile-title-size: {{ section.settings.mobile_card_title_size }}px;
+    --ara-domain-mobile-description-size: {{ section.settings.mobile_card_description_size }}px;
+    --ara-domain-mobile-number-size: {{ section.settings.mobile_card_number_size }}px;
+    --ara-domain-mobile-placeholder-size: {{ section.settings.mobile_placeholder_size }}px;
+    --ara-domain-mobile-tab-size: {{ section.settings.mobile_tab_size }}px;
+    --ara-domain-mobile-footer-size: {{ section.settings.mobile_footer_size }}px;
+  "
+>
+  <div class="ara-mint-domains__inner">
+    <div class="ara-mint-domains__intro-frame">
+      <div class="ara-mint-domains__intro">
+        {% case section.settings.small_heading_type %}
+          {% when 'image' %}
+            {% if section.settings.small_heading_image != blank %}
+              <div class="ara-mint-domains__eyebrow-media ara-mint-domains__eyebrow-media--image">
+                {{
+                  section.settings.small_heading_image
+                  | image_url: width: 700
+                  | image_tag:
+                    widths: '120, 180, 240, 360, 500, 700',
+                    sizes: '(max-width: 749px) var(--ara-mint-mobile-eyebrow-media-width), var(--ara-mint-eyebrow-media-width)',
+                    loading: 'lazy',
+                    class: 'ara-mint-domains__eyebrow-image',
+                    alt: section.settings.small_heading_image.alt
+                }}
+              </div>
+            {% elsif section.settings.eyebrow != blank %}
+              <p class="ara-mint-domains__eyebrow">
+                {{ section.settings.eyebrow | escape }}
+              </p>
+            {% endif %}
+
+          {% when 'svg' %}
+            {% if section.settings.small_heading_svg != blank %}
+              <div
+                class="ara-mint-domains__eyebrow-media ara-mint-domains__eyebrow-media--svg"
+                role="img"
+                aria-label="{{ section.settings.small_heading_alt | default: section.settings.eyebrow | escape }}"
+              >
+                {{ section.settings.small_heading_svg }}
+              </div>
+            {% elsif section.settings.eyebrow != blank %}
+              <p class="ara-mint-domains__eyebrow">
+                {{ section.settings.eyebrow | escape }}
+              </p>
+            {% endif %}
+
+          {% else %}
+            {% if section.settings.eyebrow != blank %}
+              <p class="ara-mint-domains__eyebrow">
+                {{ section.settings.eyebrow | escape }}
+              </p>
+            {% endif %}
+        {% endcase %}
+
+        {% if section.settings.heading != blank %}
+          <h2>{{ section.settings.heading | escape | newline_to_br }}</h2>
+        {% endif %}
+
+        {% if section.settings.description != blank %}
+          <div class="ara-mint-domains__description">
+            {{ section.settings.description }}
+          </div>
+        {% endif %}
+
+        {% if section.settings.button_label != blank %}
+          <a
+            class="ara-mint-domains__link"
+            {% if section.settings.button_link != blank %}
+              href="{{ section.settings.button_link }}"
+            {% else %}
+              role="link"
+              aria-disabled="true"
+            {% endif %}
+          >
+            {{ section.settings.button_label | escape }}
+          </a>
+        {% endif %}
+
+        {% if section.settings.intro_note != blank %}
+          <span class="ara-mint-domains__intro-note">
+            {{ section.settings.intro_note | escape }}
+          </span>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="ara-mint-domains__cards">
+      {% for block in section.blocks %}
+        {% liquid
+          assign card_background = section.settings.card_color
+          assign card_text = section.settings.text_color
+          assign card_muted = section.settings.muted_text_color
+          assign card_accent = block.settings.domain_color
+          assign card_trim = block.settings.rule_color
+
+          case block.settings.card_style
+            when 'gold'
+              assign card_background = section.settings.gold_color
+              assign card_text = section.settings.text_color
+              assign card_muted = section.settings.text_color
+              assign card_accent = section.settings.text_color
+              assign card_trim = block.settings.rule_color
+            when 'blue'
+              assign card_background = section.settings.blue_color
+              assign card_text = '#FFFFFF'
+              assign card_muted = '#FFFFFF'
+              assign card_accent = section.settings.gold_color
+              assign card_trim = section.settings.blue_deep_color
+            when 'ink'
+              assign card_background = section.settings.text_color
+              assign card_text = section.settings.background_color
+              assign card_muted = section.settings.background_color
+              assign card_accent = section.settings.gold_color
+              assign card_trim = section.settings.accent_color
+            when 'mint'
+              assign card_background = section.settings.accent_color
+              assign card_text = '#FFFFFF'
+              assign card_muted = '#FFFFFF'
+              assign card_accent = section.settings.gold_color
+              assign card_trim = section.settings.text_color
+            when 'custom'
+              assign card_background = block.settings.card_background
+              assign card_text = block.settings.card_text_color
+              assign card_muted = block.settings.card_text_color
+              assign card_accent = block.settings.domain_color
+              assign card_trim = block.settings.rule_color
+          endcase
+        %}
+
+        {% if block.settings.link != blank %}
+          <a
+            href="{{ block.settings.link }}"
+            class="ara-mint-domains__card-shell ara-mint-domains__card-shell--{{ block.settings.card_style }}"
+            style="
+              --ara-domain-bg: {{ card_background }};
+              --ara-domain-text: {{ card_text }};
+              --ara-domain-muted: {{ card_muted }};
+              --ara-domain-color: {{ card_accent }};
+              --ara-domain-rule: {{ card_trim }};
+            "
+            {{ block.shopify_attributes }}
+          >
+        {% else %}
+          <article
+            class="ara-mint-domains__card-shell ara-mint-domains__card-shell--{{ block.settings.card_style }}"
+            style="
+              --ara-domain-bg: {{ card_background }};
+              --ara-domain-text: {{ card_text }};
+              --ara-domain-muted: {{ card_muted }};
+              --ara-domain-color: {{ card_accent }};
+              --ara-domain-rule: {{ card_trim }};
+            "
+            {{ block.shopify_attributes }}
+          >
+        {% endif %}
+
+          <div class="ara-mint-domains__card">
+            {% if block.settings.tab_label != blank %}
+              <span class="ara-mint-domains__tab">
+                {{ block.settings.tab_label | escape }}
+              </span>
+            {% endif %}
+
+            <span class="ara-mint-domains__corner-trim" aria-hidden="true"></span>
+
+            <div class="ara-mint-domains__icon-frame">
+              <div class="ara-mint-domains__icon-wrap">
+                {% if block.settings.image != blank %}
+                  {{
+                    block.settings.image
+                    | image_url: width: 700
+                    | image_tag:
+                      widths: '180, 260, 360, 520, 700',
+                      sizes: '(max-width: 749px) 110px, 140px',
+                      loading: 'lazy',
+                      class: 'ara-mint-domains__icon',
+                      alt: block.settings.image.alt
+                  }}
+                {% else %}
+                  <div class="ara-mint-domains__icon-placeholder">
+                    <span>Upload image</span>
+                  </div>
+                {% endif %}
+              </div>
+            </div>
+
+            <div class="ara-mint-domains__card-copy">
+              <span class="ara-mint-domains__card-rule" aria-hidden="true"></span>
+
+              <h3>{{ block.settings.title | escape }}</h3>
+
+              {% if block.settings.description != blank %}
+                <p>{{ block.settings.description | escape }}</p>
+              {% endif %}
+            </div>
+
+            <div class="ara-mint-domains__footer">
+              <span class="ara-mint-domains__number">
+                {{ block.settings.number | escape }}
+              </span>
+
+              {% if block.settings.footer_label != blank %}
+                <span class="ara-mint-domains__footer-label">
+                  {{ block.settings.footer_label | escape }}
+                </span>
+              {% endif %}
+            </div>
+          </div>
+
+        {% if block.settings.link != blank %}
+          </a>
+        {% else %}
+          </article>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<style>
+  #AraMintDomains-{{ section.id }} {
+    overflow: hidden;
+    border-top: 1px solid var(--ara-mint-border);
+    border-bottom: 1px solid var(--ara-mint-border);
+    background-color: var(--ara-mint-bg);
+    background-image:
+      linear-gradient(
+        90deg,
+        transparent 0,
+        transparent 31px,
+        color-mix(in srgb, var(--ara-mint-line) 15%, transparent) 31px,
+        color-mix(in srgb, var(--ara-mint-line) 15%, transparent) 32px
+      ),
+      repeating-linear-gradient(
+        to bottom,
+        transparent 0,
+        transparent 34px,
+        color-mix(in srgb, var(--ara-mint-line) 34%, transparent) 34px,
+        color-mix(in srgb, var(--ara-mint-line) 34%, transparent) 35px
+      );
+    color: var(--ara-mint-text);
+  }
+
+  #AraMintDomains-{{ section.id }} * {
+    box-sizing: border-box;
+  }
+
+  #AraMintDomains-{{ section.id }} .ara-mint-domains__inner {
+    display: grid;
+    grid-template-columns: minmax(300px, 0.72fr) minmax(0, 2.28fr);
+    gap: clamp(38px, 4.5vw, 76px);
+    align-items: stretch;
+    width: min(100%, var(--ara-mint-max));
+    margin: 0 auto;
+    padding: var(--ara-mint-top) 40px var(--ara-mint-bottom);
+  }
+
+  #AraMintDomains-{{ section.id }} .ara-mint-domains__intro-frame {
+    position: relative;
+    align-self: start;
+    padding: 7px;
+    border: 2px solid var(--ara-mint-text);
+    border-radius: 22px;
+    background: var(--ara-mint-bg);
+    box-shadow:
+      8px 8px 0 var(--ara-mint-gold),
+      14px 14px 0 color-mix(in srgb, var(--ara-mint-accent) 70%, transparent);
+  }
+
+  #AraMintDomains-{{ section.id }} .ara-mint-domains__intro {
+    position: relative;
+    display: flex;
+    min-height: 100%;
+    flex-direction: column;
+    justify-content: center;
+    overflow: hidden;
+    padding: clamp(34px, 4vw, 58px);
+    border: 3px solid var(--ara-mint-text);
+    border-radius: 15px;
+    background:
+      radial-gradient(
+        circle at 105% 110%,
+        color-mix(in srgb, var(--ara-mint-accent) 16%, transparent) 0 30%,
+        transparent 31%
+      ),
+      linear-gradient(
+        145deg,
+        color-mix(in srgb, var(--ara-mint-deep-bg) 82%, white),
+        var(--ara-mint-bg)
+      );
+  }
+
+  #AraMintDomains-{{ section.id }} .ara-mint-domains__intro::before {
+    content: "";
+    position: absolute;
+    top: 17px;
+    right: 17px;
+    width: 58px;
+    height: 9px;
+    border-top: 2px solid var(--ara-mint-text);
+    border-bottom: 2px solid var(--ara-mint-text);
+    opacity: 0.55;
+  }
+
+  #AraMintDomains-{{ section.id }} .ara-mint-domains__intro::after {
+    content: "";
+    position: absolute;
+    right: 22px;
+    bottom: 22px;
+    width: 36px;
+    height: 36px;
+    border-right: 3px solid var(--ara-mint-accent);
+    border-bottom: 3px solid var(--ara-mint-accent);
+  }
+
+  #AraMintDomains-{{ section.id }} .ara-mint-domains__eyebrow {
+    position: relative;
+    z-index: 1;
+    display: inline-flex;
+    align-self: flex-start;
+    margin: 0 0 22px;
+    padding: 6px 11px;
+    border: 2px solid var(--ara-mint-text);
+    border-radius: 8px;
+    background: var(--ara-mint-gold);
+    color: var(--ara-mint-text);
+    font-family: var(--font-body-family);
+    font-size: var(--ara-mint-eyebrow-size);
+    font-style: var(--font-body-style);
+    font-weight: 800;
+    line-height: 1.2;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    box-shadow: 3px 3px 0 var(--ara-mint-text);
+  }
+
+  #AraMintDomains-{{ section.id }} .ara-mint-domains__eyebrow-media {
+    position: relative;
+    z-index: 1;
+    display: block;
+    width: var(--ara-mint-eyebrow-media-width);
+    max-width: 100%;
+    margin: 0 0 22px;
+  }
+
+  #AraMintDomains-{{ section.id }} .ara-mint-domains__eyebrow-image,
+  #AraMintDomains-{{ section.id }} .ara-mint-domains__eyebrow-media svg {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+  }
+
+  #AraMintDomains-{{ section.id }} .ara-mint-domains__eyebrow-media--svg svg {
+    overflow: visible;
+  }
+
+  #AraMintDomains-{{ section.id }} .ara-mint-domains__intro h2 {
+    position: relative;
+    z-index: 1;
+    max-width: 470px;
+    margin: 0;
+    color: var(--ara-mint-text);
+    font-family: var(--font-heading-family);
+    font-size: var(--ara-mint-heading-size);
+    font-style: var(--font-heading-style);
+    font-weight: var(--font-heading-weight);
+    line-height: 0.94;
+    letter-spacing: -0.05em;
+  }
+
+  #AraMintDomains-{{ section.id }} .ara-mint-domains__description {
+    position: relative;
+    z-index: 1;
+    max-width: 390px;
+    margin-top: 25px;
+    color: var(--ara-mint-muted);
+    font-family: var(--font-body-family);
+    font-size: var(--ara-mint-description-size);
+    font-style: var(--font-body-style);
+    font-weight: var(--font-body-weight);
+    line-height: 1.65;
+  }
+
+  #AraMintDomains-{{ section.id }} .ara-mint-domains__description p {
+    margin: 0;
+  }
+
+  #AraMintDomains-{{ section.id }} .ara-mint-domains__link {
+    position: relative;
+    z-index: 1;
+    display: inline-flex;
+    align-self: flex-start;
+    margin-top: 31px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--ara-mint-accent);
+    color: var(--ara-mint-accent);
+    font-family: var(--font-body-family);
+    font-size: var(--ara-mint-link-size);
+    font-style: var(--font-body-style);
+    font-weight: 800;
+    line-height: 1.3;
+    letter-spacing: 0.13em;
+    text-decoration: none;
+    text-transform: uppercase;
+  }
+
+  #AraMintDomains-{{ section.id }} .ara-mint-domains__intro-note {
+    position: relative;
+    z-index: 1;
+    display: block;
+    margin-top: 60px;
+    padding-top: 16px;
+    border-top: 1px dashed color-mix(in srgb, var(--ara-mint-text) 35%, transparent);
+    color: var(--ara-mint-muted);
+    font-family: var(--font-body-family);
+    font-size: var(--ara-domain-footer-size);
+    font-style: var(--font-body-style);
+    font-weight: 800;
+    line-height: 1.3;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  #AraMintDomains-{{ section.id }} .ara-mint-domains__cards {
+    display: grid;
+    grid-template-columns: repeat(var(--ara-mint-columns), minmax(0, 1fr));
+    gap: var(--ara-card-gap);
+    align-content: start;
+    min-width: 0;
+  }
+
+  #AraMintDomains-{{ section.id }} .ara-mint-domains__card-shell {
+    position: relative;
+    min-width: 0;
+    padding: 6px;
+    border: 2px solid var(--ara-mint-text);
+    border-radius: 19px;
+    background: var(--ara-mint-bg);
+    color: var(--ara-domain-text);
+    text-decoration: none;
+    box-shadow: 7px 7px 0 var(--ara-domain-rule);
+    transition:
+      transform 0.2s ease,
+      box-shadow 0.2s ease;
+  }
+
+  #AraMintDomains-{{ section.id }} .ara-mint-domains__card-shell:hover {
+    transform: translate(-3px, -3px);
+    box-shadow: 10px 10px 0 var(--ara-domain-rule);
+  }
+
+  #AraMintDomains-{{ section.id }} .ara-mint-domains__card {
+    position: relative;
+    display: flex;
+    min-height: var(--ara-card-min-height);
+    flex-direction: column;
+    overflow: hidden;
+    padding: 46px 24px 22px;
+    border: 3px solid var(--ara-mint-text);
+    border-radius: 13px;
+    background:
+      linear-gradient(
+        135deg,
+        color-mix(in srgb, var(--ara-domain-color) 10%, transparent),
+        transparent 42%
+      ),
+      var(--ara-domain-bg);
+    color: var(--ara-domain-text);
+  }
+
+  #AraMintDomains-{{ section.id }} .ara-mint-domains__card::before {
+    content: "";
+    position: absolute;
+    inset: 10px;
+    border: 1px solid color-mix(in srgb, var(--ara-domain-text) 18%, transparent);
+    border-radius: 7px;
+    pointer-events: none;
+  }
+
+  #AraMintDomains-{{ section.id }} .ara-mint-domains__tab {
+    position: absolute;
+    z-index: 3;
+    top: -1px;
+    right: 20px;
+    padding: 6px 12px 7px;
+    border: 2px solid var(--ara-mint-text);
+    border-top: 0;
+    border-radius: 0 0 8px 8px;
+    background: var(--ara-domain-color);
+    color: var(--ara-domain-text);
+    font-family: var(--font-body-family);
+    font-size: var(--ara-domain-tab-size);
+    font-style: var(--font-body-style);
+    font-weight: 800;
+    line-height: 1.2;
+    letter-spacing: 0.11em;
+    text-transform: uppercase;
+  }
+
+  #AraMintDomains-{{ section.id }} .ara-mint-domains__card-shell--paper .ara-mint-domains__tab,
+  #AraMintDomains-{{ section.id }} .ara-mint-domains__card-shell--gold .ara-mint-domains__tab {
+    color: var(--ara-mint-text);
+  }
+
+  #AraMintDomains-{{ section.id }} .ara-mint-domains__card-shell--blue .ara-mint-domains__tab,
+  #AraMintDomains-{{ section.id }} .ara-mint-domains__card-shell--ink .ara-mint-domains__tab,
+  #AraMintDomains-{{ section.id }} .ara-mint-domains__card-shell--mint .ara-mint-domains__tab {
+    color: var(--ara-mint-text);
+    background: var(--ara-mint-gold);
+  }
+
+  #AraMintDomains-{{ section.id }} .ara-mint-domains__corner-trim {
+    position: absolute;
+    z-index: 2;
+    top: 17px;
+    left: 17px;
+    width: 35px;
+    height: 35px;
+    border-top: 3px solid var(--ara-domain-color);
+    border-left: 3px solid var(--ara-domain-color);
+  }
+
+  #AraMintDomains-{{ section.id }} .ara-mint-domains__icon-frame {
+    position: relative;
+    z-index: 1;
+    padding: 5px;
+    border: 2px solid var(--ara-mint-text);
+    border-radius: 15px;
+    background: color-mix(in srgb, var(--ara-domain-bg) 85%, white);
+  }
+
+  #AraMintDomains-{{ section.id }} .ara-mint-domains__icon-wrap {
+    display: grid;
+    min-height: calc(var(--ara-icon-height) + 28px);
+    place-items: center;
+    padding: 14px;
+    border: 2px dashed color-mix(in srgb, var(--ara-domain-text) 45%, transparent);
+    border-radius: 10px;
+    background:
+      repeating-linear-gradient(
+        45deg,
+        color-mix(in srgb, var(--ara-domain-color) 9%, transparent) 0 1px,
+        transparent 1px 12px
+      );
+  }
+
+  #AraMintDomains-{{ section.id }} .ara-mint-domains__icon {
+    display: block;
+    width: auto;
+    max-width: 140px;
+    height: var(--ara-icon-height);
+    object-fit: contain;
+    object-position: center;
+  }
+
+  #AraMintDomains-{{ section.id }} .ara-mint-domains__icon-placeholder {
+    display: grid;
+    width: 110px;
+    height: var(--ara-icon-height);
+    place-items: center;
+    border: 1px dashed var(--ara-domain-color);
+    border-radius: 6px;
+    color: var(--ara-domain-color);
+    font-family: var(--font-body-family);
+    font-size: var(--ara-domain-placeholder-size);
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-align: center;
+    text-transform: uppercase;
+  }
+
+  #AraMintDomains-{{ section.id }} .ara-mint-domains__card-copy {
+    position: relative;
+    z-index: 1;
+    padding: 0 4px;
+  }
+
+  #AraMintDomains-{{ section.id }} .ara-mint-domains__card-rule {
+    display: block;
+    width: 74px;
+    height: 3px;
+    margin: 23px 0 18px;
+    border-radius: 4px;
+    background: var(--ara-domain-color);
+  }
+
+  #AraMintDomains-{{ section.id }} .ara-mint-domains__card h3 {
+    margin: 0;
+    color: var(--ara-domain-text);
+    font-family: var(--font-body-family);
+    font-size: var(--ara-domain-title-size);
+    font-style: var(--font-body-style);
+    font-weight: 900;
+    line-height: 1.25;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  #AraMintDomains-{{ section.id }} .ara-mint-domains__card p {
+    margin: 14px 0 0;
+    color: var(--ara-domain-muted);
+    font-family: var(--font-body-family);
+    font-size: var(--ara-domain-description-size);
+    font-style: var(--font-body-style);
+    font-weight: var(--font-body-weight);
+    line-height: 1.55;
+    opacity: 0.78;
+  }
+
+  #AraMintDomains-{{ section.id }} .ara-mint-domains__footer {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    align-items: flex-end;
+    margin-top: auto;
+    padding: 25px 4px 0;
+    border-top: 1px dashed color-mix(in srgb, var(--ara-domain-text) 38%, transparent);
+  }
+
+  #AraMintDomains-{{ section.id }} .ara-mint-domains__number {
+    color: var(--ara-domain-color);
+    font-family: var(--font-heading-family);
+    font-size: var(--ara-domain-number-size);
+    font-style: var(--font-heading-style);
+    font-weight: 800;
+    line-height: 0.9;
+  }
+
+  #AraMintDomains-{{ section.id }} .ara-mint-domains__footer-label {
+    max-width: 120px;
+    color: var(--ara-domain-muted);
+    font-family: var(--font-body-family);
+    font-size: var(--ara-domain-footer-size);
+    font-style: var(--font-body-style);
+    font-weight: 800;
+    line-height: 1.25;
+    letter-spacing: 0.1em;
+    text-align: right;
+    text-transform: uppercase;
+    opacity: 0.72;
+  }
+
+  @media screen and (max-width: 1240px) {
+    #AraMintDomains-{{ section.id }} .ara-mint-domains__inner {
+      grid-template-columns: 1fr;
+    }
+
+    #AraMintDomains-{{ section.id }} .ara-mint-domains__intro-frame {
+      max-width: 720px;
+    }
+  }
+
+  @media screen and (max-width: 989px) {
+    #AraMintDomains-{{ section.id }} .ara-mint-domains__cards {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    #AraMintDomains-{{ section.id }} .ara-mint-domains__inner {
+      gap: 38px;
+      padding-right: 20px;
+      padding-left: 20px;
+    }
+
+    #AraMintDomains-{{ section.id }} .ara-mint-domains__intro-frame {
+      box-shadow:
+        5px 5px 0 var(--ara-mint-gold),
+        10px 10px 0 color-mix(in srgb, var(--ara-mint-accent) 65%, transparent);
+    }
+
+    #AraMintDomains-{{ section.id }} .ara-mint-domains__intro {
+      padding: 34px 26px 38px;
+    }
+
+    #AraMintDomains-{{ section.id }} .ara-mint-domains__eyebrow {
+      font-size: var(--ara-mint-mobile-eyebrow-size);
+    }
+
+    #AraMintDomains-{{ section.id }} .ara-mint-domains__eyebrow-media {
+      width: var(--ara-mint-mobile-eyebrow-media-width);
+    }
+
+    #AraMintDomains-{{ section.id }} .ara-mint-domains__intro h2 {
+      font-size: var(--ara-mint-mobile-heading-size);
+    }
+
+    #AraMintDomains-{{ section.id }} .ara-mint-domains__description {
+      font-size: var(--ara-mint-mobile-description-size);
+    }
+
+    #AraMintDomains-{{ section.id }} .ara-mint-domains__link {
+      font-size: var(--ara-mint-mobile-link-size);
+    }
+
+    #AraMintDomains-{{ section.id }} .ara-mint-domains__intro-note {
+      margin-top: 44px;
+      font-size: var(--ara-domain-mobile-footer-size);
+    }
+
+    #AraMintDomains-{{ section.id }} .ara-mint-domains__cards {
+      grid-template-columns: 1fr;
+      gap: 18px;
+    }
+
+    #AraMintDomains-{{ section.id }} .ara-mint-domains__card-shell {
+      box-shadow: 5px 5px 0 var(--ara-domain-rule);
+    }
+
+    #AraMintDomains-{{ section.id }} .ara-mint-domains__card {
+      min-height: 0;
+      padding: 44px 21px 21px;
+    }
+
+    #AraMintDomains-{{ section.id }} .ara-mint-domains__icon {
+      max-width: 120px;
+    }
+
+    #AraMintDomains-{{ section.id }} .ara-mint-domains__icon-placeholder {
+      font-size: var(--ara-domain-mobile-placeholder-size);
+    }
+
+    #AraMintDomains-{{ section.id }} .ara-mint-domains__tab {
+      font-size: var(--ara-domain-mobile-tab-size);
+    }
+
+    #AraMintDomains-{{ section.id }} .ara-mint-domains__card h3 {
+      font-size: var(--ara-domain-mobile-title-size);
+    }
+
+    #AraMintDomains-{{ section.id }} .ara-mint-domains__card p {
+      font-size: var(--ara-domain-mobile-description-size);
+    }
+
+    #AraMintDomains-{{ section.id }} .ara-mint-domains__number {
+      font-size: var(--ara-domain-mobile-number-size);
+    }
+
+    #AraMintDomains-{{ section.id }} .ara-mint-domains__footer-label {
+      font-size: var(--ara-domain-mobile-footer-size);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #AraMintDomains-{{ section.id }} .ara-mint-domains__card-shell {
+      transition: none;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Ara Mint Domains",
+  "max_blocks": 6,
+  "settings": [
+    {
+      "type": "select",
+      "id": "small_heading_type",
+      "label": "Small heading display",
+      "default": "text",
+      "options": [
+        {
+          "value": "text",
+          "label": "Text"
+        },
+        {
+          "value": "image",
+          "label": "Uploaded image"
+        },
+        {
+          "value": "svg",
+          "label": "Custom SVG code"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Small heading",
+      "default": "THE MINT"
+    },
+    {
+      "type": "image_picker",
+      "id": "small_heading_image",
+      "label": "Small heading image"
+    },
+    {
+      "type": "textarea",
+      "id": "small_heading_svg",
+      "label": "Small heading SVG code",
+      "info": "Paste the complete SVG markup. Used only when Small heading display is Custom SVG code."
+    },
+    {
+      "type": "text",
+      "id": "small_heading_alt",
+      "label": "Logo accessibility label",
+      "default": "Mintmark"
+    },
+    {
+      "type": "range",
+      "id": "desktop_small_heading_media_width",
+      "min": 50,
+      "max": 300,
+      "step": 5,
+      "unit": "px",
+      "label": "Desktop logo width",
+      "default": 120
+    },
+    {
+      "type": "range",
+      "id": "mobile_small_heading_media_width",
+      "min": 40,
+      "max": 220,
+      "step": 5,
+      "unit": "px",
+      "label": "Mobile logo width",
+      "default": 100
+    },
+    {
+      "type": "textarea",
+      "id": "heading",
+      "label": "Main heading",
+      "default": "Six domains.\nOne framework."
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description",
+      "default": "<p>Understand any company through the six forces that drive every business.</p>"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Link text",
+      "default": "EXPLORE THE CURRICULUM"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Link"
+    },
+    {
+      "type": "text",
+      "id": "intro_note",
+      "label": "Bottom note",
+      "default": "THE SIX FORCES BEHIND EVERY COMPANY"
+    },
+    {
+      "type": "header",
+      "content": "Typography"
+    },
+    {
+      "type": "range",
+      "id": "desktop_eyebrow_size",
+      "min": 8,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "label": "Desktop small heading size",
+      "default": 10
+    },
+    {
+      "type": "range",
+      "id": "desktop_heading_size",
+      "min": 36,
+      "max": 84,
+      "step": 2,
+      "unit": "px",
+      "label": "Desktop main heading size",
+      "default": 64
+    },
+    {
+      "type": "range",
+      "id": "desktop_description_size",
+      "min": 11,
+      "max": 22,
+      "step": 1,
+      "unit": "px",
+      "label": "Desktop description size",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "desktop_link_size",
+      "min": 8,
+      "max": 16,
+      "step": 1,
+      "unit": "px",
+      "label": "Desktop link size",
+      "default": 10
+    },
+    {
+      "type": "range",
+      "id": "desktop_card_title_size",
+      "min": 9,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Desktop card title size",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "desktop_card_description_size",
+      "min": 10,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Desktop card description size",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "desktop_card_number_size",
+      "min": 16,
+      "max": 38,
+      "step": 1,
+      "unit": "px",
+      "label": "Desktop card number size",
+      "default": 28
+    },
+    {
+      "type": "range",
+      "id": "desktop_placeholder_size",
+      "min": 7,
+      "max": 15,
+      "step": 1,
+      "unit": "px",
+      "label": "Desktop image placeholder size",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "desktop_tab_size",
+      "min": 7,
+      "max": 14,
+      "step": 1,
+      "unit": "px",
+      "label": "Desktop card tab size",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "desktop_footer_size",
+      "min": 7,
+      "max": 14,
+      "step": 1,
+      "unit": "px",
+      "label": "Desktop bottom note size",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "mobile_eyebrow_size",
+      "min": 8,
+      "max": 16,
+      "step": 1,
+      "unit": "px",
+      "label": "Mobile small heading size",
+      "default": 10
+    },
+    {
+      "type": "range",
+      "id": "mobile_heading_size",
+      "min": 32,
+      "max": 68,
+      "step": 2,
+      "unit": "px",
+      "label": "Mobile main heading size",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "mobile_description_size",
+      "min": 11,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Mobile description size",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "mobile_link_size",
+      "min": 8,
+      "max": 15,
+      "step": 1,
+      "unit": "px",
+      "label": "Mobile link size",
+      "default": 10
+    },
+    {
+      "type": "range",
+      "id": "mobile_card_title_size",
+      "min": 9,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "label": "Mobile card title size",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "mobile_card_description_size",
+      "min": 10,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "label": "Mobile card description size",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "mobile_card_number_size",
+      "min": 16,
+      "max": 34,
+      "step": 1,
+      "unit": "px",
+      "label": "Mobile card number size",
+      "default": 26
+    },
+    {
+      "type": "range",
+      "id": "mobile_placeholder_size",
+      "min": 7,
+      "max": 14,
+      "step": 1,
+      "unit": "px",
+      "label": "Mobile image placeholder size",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "mobile_tab_size",
+      "min": 7,
+      "max": 13,
+      "step": 1,
+      "unit": "px",
+      "label": "Mobile card tab size",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "mobile_footer_size",
+      "min": 7,
+      "max": 13,
+      "step": 1,
+      "unit": "px",
+      "label": "Mobile bottom note size",
+      "default": 8
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "max_width",
+      "label": "Content width",
+      "default": "1700px",
+      "options": [
+        {
+          "value": "1300px",
+          "label": "Narrow"
+        },
+        {
+          "value": "1500px",
+          "label": "Medium"
+        },
+        {
+          "value": "1700px",
+          "label": "Wide"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "desktop_columns",
+      "label": "Desktop cards per row",
+      "default": "3",
+      "options": [
+        {
+          "value": "2",
+          "label": "Two"
+        },
+        {
+          "value": "3",
+          "label": "Three"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "card_height",
+      "min": 340,
+      "max": 540,
+      "step": 10,
+      "unit": "px",
+      "label": "Card height",
+      "default": 410
+    },
+    {
+      "type": "range",
+      "id": "card_gap",
+      "min": 12,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "label": "Space between cards",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "icon_height",
+      "min": 70,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "label": "Image height",
+      "default": 105
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 50,
+      "max": 120,
+      "step": 5,
+      "unit": "px",
+      "label": "Top spacing",
+      "default": 75
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 50,
+      "max": 120,
+      "step": 5,
+      "unit": "px",
+      "label": "Bottom spacing",
+      "default": 75
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background",
+      "default": "#F2F8F6"
+    },
+    {
+      "type": "color",
+      "id": "deep_background_color",
+      "label": "Deep paper background",
+      "default": "#EFE7D2"
+    },
+    {
+      "type": "color",
+      "id": "card_color",
+      "label": "Cream card background",
+      "default": "#F7FCFA"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text",
+      "default": "#161B2E"
+    },
+    {
+      "type": "color",
+      "id": "muted_text_color",
+      "label": "Secondary text",
+      "default": "#646575"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Mint accent",
+      "default": "#176D5C"
+    },
+    {
+      "type": "color",
+      "id": "gold_color",
+      "label": "Gold accent",
+      "default": "#E0A526"
+    },
+    {
+      "type": "color",
+      "id": "blue_color",
+      "label": "Blue card",
+      "default": "#3A5BE0"
+    },
+    {
+      "type": "color",
+      "id": "blue_deep_color",
+      "label": "Deep blue",
+      "default": "#22389A"
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Soft borders",
+      "default": "#C9BEA8"
+    },
+    {
+      "type": "color",
+      "id": "line_color",
+      "label": "Paper lines",
+      "default": "#1FA88F"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "domain",
+      "name": "Mint domain",
+      "settings": [
+        {
+          "type": "select",
+          "id": "card_style",
+          "label": "Card style",
+          "default": "paper",
+          "options": [
+            {
+              "value": "paper",
+              "label": "Cream"
+            },
+            {
+              "value": "gold",
+              "label": "Gold"
+            },
+            {
+              "value": "blue",
+              "label": "Blue"
+            },
+            {
+              "value": "ink",
+              "label": "Dark"
+            },
+            {
+              "value": "mint",
+              "label": "Mint"
+            },
+            {
+              "value": "custom",
+              "label": "Custom colors"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "tab_label",
+          "label": "Top tab",
+          "default": "MINT DOMAIN"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Domain image"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Domain name",
+          "default": "MEASURE"
+        },
+        {
+          "type": "text",
+          "id": "description",
+          "label": "Short description",
+          "default": "Read the numbers clearly."
+        },
+        {
+          "type": "text",
+          "id": "number",
+          "label": "Number",
+          "default": "01"
+        },
+        {
+          "type": "text",
+          "id": "footer_label",
+          "label": "Bottom note",
+          "default": "READ THE NUMBERS"
+        },
+        {
+          "type": "color",
+          "id": "domain_color",
+          "label": "Accent color",
+          "default": "#176D5C"
+        },
+        {
+          "type": "color",
+          "id": "rule_color",
+          "label": "Trim color",
+          "default": "#176D5C"
+        },
+        {
+          "type": "color",
+          "id": "card_background",
+          "label": "Custom background",
+          "default": "#F7FCFA"
+        },
+        {
+          "type": "color",
+          "id": "card_text_color",
+          "label": "Custom text",
+          "default": "#161B2E"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Domain link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Ara Mint Domains",
+      "blocks": [
+        {
+          "type": "domain",
+          "settings": {
+            "card_style": "paper",
+            "tab_label": "MINT DOMAIN",
+            "title": "MEASURE",
+            "description": "Read the numbers clearly.",
+            "number": "01",
+            "footer_label": "READ THE NUMBERS",
+            "domain_color": "#176D5C",
+            "rule_color": "#176D5C"
+          }
+        },
+        {
+          "type": "domain",
+          "settings": {
+            "card_style": "gold",
+            "tab_label": "MINT DOMAIN",
+            "title": "EARN",
+            "description": "See where the money comes from.",
+            "number": "02",
+            "footer_label": "FOLLOW THE MONEY",
+            "domain_color": "#161B2E",
+            "rule_color": "#B88332"
+          }
+        },
+        {
+          "type": "domain",
+          "settings": {
+            "card_style": "mint",
+            "tab_label": "MINT DOMAIN",
+            "title": "GROW",
+            "description": "Understand how a company expands.",
+            "number": "03",
+            "footer_label": "FIND THE ENGINE",
+            "domain_color": "#E0A526",
+            "rule_color": "#161B2E"
+          }
+        },
+        {
+          "type": "domain",
+          "settings": {
+            "card_style": "blue",
+            "tab_label": "MINT DOMAIN",
+            "title": "DEFEND",
+            "description": "Find what keeps competitors out.",
+            "number": "04",
+            "footer_label": "MAP THE MOAT",
+            "domain_color": "#E0A526",
+            "rule_color": "#22389A"
+          }
+        },
+        {
+          "type": "domain",
+          "settings": {
+            "card_style": "paper",
+            "tab_label": "MINT DOMAIN",
+            "title": "PRICE",
+            "description": "Ask what the business may be worth.",
+            "number": "05",
+            "footer_label": "WEIGH THE VALUE",
+            "domain_color": "#B4232E",
+            "rule_color": "#B4232E"
+          }
+        },
+        {
+          "type": "domain",
+          "settings": {
+            "card_style": "ink",
+            "tab_label": "MINT DOMAIN",
+            "title": "OWN",
+            "description": "See how capital and control move.",
+            "number": "06",
+            "footer_label": "TRACE CONTROL",
+            "domain_color": "#E0A526",
+            "rule_color": "#176D5C"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,891 @@
+<section
+  id="AraShortTakes-{{ section.id }}"
+  class="ara-short-takes"
+  style="
+    --ara-takes-bg: {{ section.settings.background_color }};
+    --ara-takes-card: {{ section.settings.card_color }};
+    --ara-takes-text: {{ section.settings.text_color }};
+    --ara-takes-muted: {{ section.settings.muted_text_color }};
+    --ara-takes-accent: {{ section.settings.accent_color }};
+    --ara-takes-border: {{ section.settings.border_color }};
+    --ara-takes-line: {{ section.settings.line_color }};
+    --ara-takes-rise: {{ section.settings.rise_color }};
+    --ara-takes-fall: {{ section.settings.fall_color }};
+    --ara-takes-max: {{ section.settings.max_width }};
+    --ara-takes-top: {{ section.settings.padding_top }}px;
+    --ara-takes-bottom: {{ section.settings.padding_bottom }}px;
+    --ara-takes-head-size: {{ section.settings.desktop_section_heading_size }}px;
+    --ara-takes-link-size: {{ section.settings.desktop_section_link_size }}px;
+    --ara-takes-number-size: {{ section.settings.desktop_number_size }}px;
+    --ara-takes-logo-text-size: {{ section.settings.desktop_logo_text_size }}px;
+    --ara-takes-meta-size: {{ section.settings.desktop_meta_size }}px;
+    --ara-takes-card-heading-size: {{ section.settings.desktop_card_heading_size }}px;
+    --ara-takes-footer-size: {{ section.settings.desktop_footer_size }}px;
+    --ara-takes-mobile-head-size: {{ section.settings.mobile_section_heading_size }}px;
+    --ara-takes-mobile-link-size: {{ section.settings.mobile_section_link_size }}px;
+    --ara-takes-mobile-number-size: {{ section.settings.mobile_number_size }}px;
+    --ara-takes-mobile-logo-text-size: {{ section.settings.mobile_logo_text_size }}px;
+    --ara-takes-mobile-meta-size: {{ section.settings.mobile_meta_size }}px;
+    --ara-takes-mobile-card-heading-size: {{ section.settings.mobile_card_heading_size }}px;
+    --ara-takes-mobile-footer-size: {{ section.settings.mobile_footer_size }}px;
+  "
+>
+  <div class="ara-short-takes__inner">
+    <div class="ara-short-takes__head">
+      <h2>{{ section.settings.heading | escape }}</h2>
+
+      {% if section.settings.link_label != blank %}
+        <a
+          {% if section.settings.link != blank %}
+            href="{{ section.settings.link }}"
+          {% else %}
+            role="link"
+            aria-disabled="true"
+          {% endif %}
+        >
+          {{ section.settings.link_label | escape }}
+        </a>
+      {% endif %}
+    </div>
+
+    <div class="ara-short-takes__viewport">
+      <div class="ara-short-takes__grid">
+        {% for block in section.blocks %}
+          {% if block.settings.link != blank %}
+            <a
+              href="{{ block.settings.link }}"
+              class="ara-short-takes__card"
+              {{ block.shopify_attributes }}
+            >
+          {% else %}
+            <article
+              class="ara-short-takes__card"
+              {{ block.shopify_attributes }}
+            >
+          {% endif %}
+
+            <div class="ara-short-takes__top">
+              <span class="ara-short-takes__number">
+                {{ block.settings.number | escape }}
+              </span>
+
+              {% if block.settings.logo != blank %}
+                {{
+                  block.settings.logo
+                  | image_url: width: 220
+                  | image_tag:
+                    widths: '80, 120, 180, 220',
+                    sizes: '60px',
+                    loading: 'lazy',
+                    class: 'ara-short-takes__logo',
+                    alt: block.settings.logo.alt
+                }}
+              {% else %}
+                <span class="ara-short-takes__logo-text">
+                  {{ block.settings.logo_text | escape }}
+                </span>
+              {% endif %}
+            </div>
+
+            <div class="ara-short-takes__meta">
+              <span>{{ block.settings.ticker | escape }}</span>
+              <span>{{ block.settings.company | escape }}</span>
+            </div>
+
+            <h3>{{ block.settings.heading | escape }}</h3>
+
+            <div class="ara-short-takes__sparkline ara-short-takes__sparkline--{{ block.settings.sparkline_style }}" aria-hidden="true">
+              <svg viewBox="0 0 240 58" preserveAspectRatio="none">
+                <path class="ara-short-takes__sparkline-fill" d="M0,44 C18,40 22,46 39,39 C55,32 68,42 86,34 C102,27 116,31 131,27 C151,21 165,31 182,24 C199,16 216,20 240,13 L240,58 L0,58 Z"></path>
+                <path class="ara-short-takes__sparkline-line" d="M0,44 C18,40 22,46 39,39 C55,32 68,42 86,34 C102,27 116,31 131,27 C151,21 165,31 182,24 C199,16 216,20 240,13"></path>
+              </svg>
+            </div>
+
+            <div class="ara-short-takes__footer">
+              <span class="ara-short-takes__change ara-short-takes__change--{{ block.settings.direction }}">
+                {{ block.settings.change | escape }}
+              </span>
+
+              <span>{{ block.settings.period | escape }}</span>
+            </div>
+
+          {% if block.settings.link != blank %}
+            </a>
+          {% else %}
+            </article>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  #AraShortTakes-{{ section.id }} {
+    overflow: hidden;
+    border-bottom: 1px solid var(--ara-takes-border);
+    background-color: var(--ara-takes-bg);
+    background-image: repeating-linear-gradient(
+      to bottom,
+      transparent 0,
+      transparent 34px,
+      color-mix(in srgb, var(--ara-takes-line) 18%, transparent) 34px,
+      color-mix(in srgb, var(--ara-takes-line) 18%, transparent) 35px
+    );
+    color: var(--ara-takes-text);
+  }
+
+  #AraShortTakes-{{ section.id }} .ara-short-takes__inner {
+    width: min(100%, var(--ara-takes-max));
+    margin: 0 auto;
+    padding: var(--ara-takes-top) 40px var(--ara-takes-bottom);
+  }
+
+  #AraShortTakes-{{ section.id }} .ara-short-takes__head {
+    display: flex;
+    justify-content: space-between;
+    gap: 24px;
+    align-items: center;
+    margin-bottom: 18px;
+  }
+
+  #AraShortTakes-{{ section.id }} .ara-short-takes__head h2,
+  #AraShortTakes-{{ section.id }} .ara-short-takes__head a {
+    font-family: var(--font-body-family);
+    font-style: var(--font-body-style);
+    font-weight: 800;
+    line-height: 1.3;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  #AraShortTakes-{{ section.id }} .ara-short-takes__head h2 {
+    margin: 0;
+    font-size: var(--ara-takes-head-size);
+    color: var(--ara-takes-text);
+  }
+
+  #AraShortTakes-{{ section.id }} .ara-short-takes__head a {
+    display: inline-flex;
+    font-size: var(--ara-takes-link-size);
+    gap: 10px;
+    align-items: center;
+    color: var(--ara-takes-accent);
+    text-decoration: none;
+  }
+
+  #AraShortTakes-{{ section.id }} .ara-short-takes__grid {
+    display: grid;
+    grid-template-columns: repeat({{ section.blocks.size | at_most: 5 }}, minmax(0, 1fr));
+    gap: 0;
+    border-top: 1px solid var(--ara-takes-border);
+    border-left: 1px solid var(--ara-takes-border);
+  }
+
+  #AraShortTakes-{{ section.id }} .ara-short-takes__card {
+    display: flex;
+    min-height: 330px;
+    flex-direction: column;
+    padding: 22px 20px 18px;
+    border-right: 1px solid var(--ara-takes-border);
+    border-bottom: 1px solid var(--ara-takes-border);
+    background: color-mix(in srgb, var(--ara-takes-card) 94%, transparent);
+    color: var(--ara-takes-text);
+    text-decoration: none;
+    transition:
+      background-color 0.2s ease,
+      transform 0.2s ease;
+  }
+
+  #AraShortTakes-{{ section.id }} .ara-short-takes__card:hover {
+    background: var(--ara-takes-card);
+    transform: translateY(-3px);
+  }
+
+  #AraShortTakes-{{ section.id }} .ara-short-takes__top {
+    display: flex;
+    min-height: 55px;
+    justify-content: space-between;
+    gap: 16px;
+    align-items: flex-start;
+  }
+
+  #AraShortTakes-{{ section.id }} .ara-short-takes__number {
+    font-family: var(--font-heading-family);
+    font-size: var(--ara-takes-number-size);
+    font-style: var(--font-heading-style);
+    font-weight: var(--font-heading-weight);
+    line-height: 1;
+  }
+
+  #AraShortTakes-{{ section.id }} .ara-short-takes__logo {
+    display: block;
+    width: auto;
+    max-width: 74px;
+    height: 42px;
+    object-fit: contain;
+    object-position: right top;
+  }
+
+  #AraShortTakes-{{ section.id }} .ara-short-takes__logo-text {
+    max-width: 84px;
+    color: var(--ara-takes-accent);
+    font-family: var(--font-body-family);
+    font-size: var(--ara-takes-logo-text-size);
+    font-style: var(--font-body-style);
+    font-weight: 900;
+    line-height: 1.1;
+    text-align: right;
+    text-transform: uppercase;
+  }
+
+  #AraShortTakes-{{ section.id }} .ara-short-takes__meta {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-top: 10px;
+    font-family: var(--font-body-family);
+    font-size: var(--ara-takes-meta-size);
+    font-style: var(--font-body-style);
+    font-weight: 800;
+    line-height: 1.2;
+    letter-spacing: 0.11em;
+    text-transform: uppercase;
+  }
+
+  #AraShortTakes-{{ section.id }} .ara-short-takes__meta span:first-child {
+    color: var(--ara-takes-accent);
+  }
+
+  #AraShortTakes-{{ section.id }} .ara-short-takes__meta span:last-child {
+    color: var(--ara-takes-muted);
+  }
+
+  #AraShortTakes-{{ section.id }} .ara-short-takes__card h3 {
+    margin: 24px 0 0;
+    color: var(--ara-takes-text);
+    font-family: var(--font-heading-family);
+    font-size: var(--ara-takes-card-heading-size);
+    font-style: var(--font-heading-style);
+    font-weight: var(--font-heading-weight);
+    line-height: 1.08;
+    letter-spacing: -0.035em;
+  }
+
+  #AraShortTakes-{{ section.id }} .ara-short-takes__sparkline {
+    margin-top: auto;
+    padding-top: 24px;
+  }
+
+  #AraShortTakes-{{ section.id }} .ara-short-takes__sparkline svg {
+    display: block;
+    width: 100%;
+    height: 46px;
+    overflow: visible;
+  }
+
+  #AraShortTakes-{{ section.id }} .ara-short-takes__sparkline-fill {
+    fill: color-mix(in srgb, var(--ara-takes-rise) 13%, transparent);
+  }
+
+  #AraShortTakes-{{ section.id }} .ara-short-takes__sparkline-line {
+    fill: none;
+    stroke: var(--ara-takes-rise);
+    stroke-width: 2;
+    vector-effect: non-scaling-stroke;
+  }
+
+  #AraShortTakes-{{ section.id }} .ara-short-takes__sparkline--down {
+    transform: scaleY(-1);
+  }
+
+  #AraShortTakes-{{ section.id }} .ara-short-takes__sparkline--down .ara-short-takes__sparkline-fill {
+    fill: color-mix(in srgb, var(--ara-takes-fall) 13%, transparent);
+  }
+
+  #AraShortTakes-{{ section.id }} .ara-short-takes__sparkline--down .ara-short-takes__sparkline-line {
+    stroke: var(--ara-takes-fall);
+  }
+
+  #AraShortTakes-{{ section.id }} .ara-short-takes__sparkline--flat {
+    opacity: 0.68;
+  }
+
+  #AraShortTakes-{{ section.id }} .ara-short-takes__footer {
+    display: flex;
+    justify-content: space-between;
+    gap: 18px;
+    align-items: center;
+    margin-top: 10px;
+    color: var(--ara-takes-muted);
+    font-family: var(--font-body-family);
+    font-size: var(--ara-takes-footer-size);
+    font-style: var(--font-body-style);
+    font-weight: 700;
+    line-height: 1.2;
+    text-transform: uppercase;
+  }
+
+  #AraShortTakes-{{ section.id }} .ara-short-takes__change--up {
+    color: var(--ara-takes-rise);
+  }
+
+  #AraShortTakes-{{ section.id }} .ara-short-takes__change--down {
+    color: var(--ara-takes-fall);
+  }
+
+  #AraShortTakes-{{ section.id }} .ara-short-takes__change--flat {
+    color: var(--ara-takes-muted);
+  }
+
+  @media screen and (max-width: 1100px) {
+    #AraShortTakes-{{ section.id }} .ara-short-takes__viewport {
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+
+    #AraShortTakes-{{ section.id }} .ara-short-takes__viewport::-webkit-scrollbar {
+      display: none;
+    }
+
+    #AraShortTakes-{{ section.id }} .ara-short-takes__grid {
+      grid-template-columns: repeat({{ section.blocks.size }}, minmax(260px, 1fr));
+      width: max-content;
+      min-width: 100%;
+    }
+
+    #AraShortTakes-{{ section.id }} .ara-short-takes__card {
+      width: 280px;
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    #AraShortTakes-{{ section.id }} .ara-short-takes__inner {
+      padding-right: 20px;
+      padding-left: 20px;
+    }
+
+    #AraShortTakes-{{ section.id }} .ara-short-takes__viewport {
+      margin-right: -20px;
+    }
+
+    #AraShortTakes-{{ section.id }} .ara-short-takes__grid {
+      padding-right: 20px;
+    }
+
+    #AraShortTakes-{{ section.id }} .ara-short-takes__card {
+      width: 255px;
+    }
+
+    #AraShortTakes-{{ section.id }} .ara-short-takes__head h2 {
+      font-size: var(--ara-takes-mobile-head-size);
+    }
+
+    #AraShortTakes-{{ section.id }} .ara-short-takes__head a {
+      font-size: var(--ara-takes-mobile-link-size);
+    }
+
+    #AraShortTakes-{{ section.id }} .ara-short-takes__number {
+      font-size: var(--ara-takes-mobile-number-size);
+    }
+
+    #AraShortTakes-{{ section.id }} .ara-short-takes__logo-text {
+      font-size: var(--ara-takes-mobile-logo-text-size);
+    }
+
+    #AraShortTakes-{{ section.id }} .ara-short-takes__meta {
+      font-size: var(--ara-takes-mobile-meta-size);
+    }
+
+    #AraShortTakes-{{ section.id }} .ara-short-takes__card h3 {
+      font-size: var(--ara-takes-mobile-card-heading-size);
+    }
+
+    #AraShortTakes-{{ section.id }} .ara-short-takes__footer {
+      font-size: var(--ara-takes-mobile-footer-size);
+    }
+
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #AraShortTakes-{{ section.id }} .ara-short-takes__card {
+      transition: none;
+    }
+  }
+</style>
+
+
+<style>
+  @media screen and (max-width: 749px) {
+    #AraShortTakes-{{ section.id }} .ara-short-takes__viewport {
+      width: auto;
+      max-width: none;
+      overflow-x: auto;
+      overflow-y: hidden;
+      margin-right: -20px;
+      scroll-snap-type: x mandatory;
+      overscroll-behavior-x: contain;
+      touch-action: pan-x;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+
+    #AraShortTakes-{{ section.id }} .ara-short-takes__grid {
+      display: flex;
+      width: max-content;
+      min-width: 100%;
+      gap: 0;
+      padding-right: 20px;
+    }
+
+    #AraShortTakes-{{ section.id }} .ara-short-takes__card {
+      flex: 0 0 min(82vw, 300px);
+      width: min(82vw, 300px);
+      min-width: 0;
+      max-width: min(82vw, 300px);
+      scroll-snap-align: start;
+      scroll-snap-stop: always;
+    }
+
+    #AraShortTakes-{{ section.id }} .ara-short-takes__card h3 {
+      max-width: 100%;
+      white-space: normal;
+      overflow-wrap: anywhere;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Ara Short Takes",
+  "max_blocks": 5,
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "SHORT TAKES"
+    },
+    {
+      "type": "text",
+      "id": "link_label",
+      "label": "Link text",
+      "default": "MORE SHORT TAKES"
+    },
+    {
+      "type": "url",
+      "id": "link",
+      "label": "Link"
+    },
+    {
+      "type": "header",
+      "content": "Typography"
+    },
+    {
+      "type": "range",
+      "id": "desktop_section_heading_size",
+      "min": 8,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "label": "Desktop section heading size",
+      "default": 10
+    },
+    {
+      "type": "range",
+      "id": "desktop_section_link_size",
+      "min": 8,
+      "max": 16,
+      "step": 1,
+      "unit": "px",
+      "label": "Desktop section link size",
+      "default": 10
+    },
+    {
+      "type": "range",
+      "id": "desktop_number_size",
+      "min": 18,
+      "max": 36,
+      "step": 1,
+      "unit": "px",
+      "label": "Desktop number size",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "desktop_logo_text_size",
+      "min": 8,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "label": "Desktop fallback logo text size",
+      "default": 11
+    },
+    {
+      "type": "range",
+      "id": "desktop_meta_size",
+      "min": 7,
+      "max": 14,
+      "step": 1,
+      "unit": "px",
+      "label": "Desktop ticker and company size",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "desktop_card_heading_size",
+      "min": 20,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "label": "Desktop card heading size",
+      "default": 28
+    },
+    {
+      "type": "range",
+      "id": "desktop_footer_size",
+      "min": 7,
+      "max": 14,
+      "step": 1,
+      "unit": "px",
+      "label": "Desktop movement text size",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "mobile_section_heading_size",
+      "min": 8,
+      "max": 16,
+      "step": 1,
+      "unit": "px",
+      "label": "Mobile section heading size",
+      "default": 10
+    },
+    {
+      "type": "range",
+      "id": "mobile_section_link_size",
+      "min": 8,
+      "max": 15,
+      "step": 1,
+      "unit": "px",
+      "label": "Mobile section link size",
+      "default": 9
+    },
+    {
+      "type": "range",
+      "id": "mobile_number_size",
+      "min": 18,
+      "max": 34,
+      "step": 1,
+      "unit": "px",
+      "label": "Mobile number size",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "mobile_logo_text_size",
+      "min": 8,
+      "max": 16,
+      "step": 1,
+      "unit": "px",
+      "label": "Mobile fallback logo text size",
+      "default": 10
+    },
+    {
+      "type": "range",
+      "id": "mobile_meta_size",
+      "min": 7,
+      "max": 13,
+      "step": 1,
+      "unit": "px",
+      "label": "Mobile ticker and company size",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "mobile_card_heading_size",
+      "min": 20,
+      "max": 36,
+      "step": 1,
+      "unit": "px",
+      "label": "Mobile card heading size",
+      "default": 26
+    },
+    {
+      "type": "range",
+      "id": "mobile_footer_size",
+      "min": 7,
+      "max": 13,
+      "step": 1,
+      "unit": "px",
+      "label": "Mobile movement text size",
+      "default": 8
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "max_width",
+      "label": "Content width",
+      "default": "1700px",
+      "options": [
+        {
+          "value": "1300px",
+          "label": "Narrow"
+        },
+        {
+          "value": "1500px",
+          "label": "Medium"
+        },
+        {
+          "value": "1700px",
+          "label": "Wide"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 40,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Top spacing",
+      "default": 55
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 40,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Bottom spacing",
+      "default": 55
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background",
+      "default": "#F2F8F6"
+    },
+    {
+      "type": "color",
+      "id": "card_color",
+      "label": "Cards",
+      "default": "#F7FCFA"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text",
+      "default": "#161B2E"
+    },
+    {
+      "type": "color",
+      "id": "muted_text_color",
+      "label": "Secondary text",
+      "default": "#646575"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Mint accent",
+      "default": "#176D5C"
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Borders",
+      "default": "#C9BEA8"
+    },
+    {
+      "type": "color",
+      "id": "line_color",
+      "label": "Paper lines",
+      "default": "#1FA88F"
+    },
+    {
+      "type": "color",
+      "id": "rise_color",
+      "label": "Rising values",
+      "default": "#00C805"
+    },
+    {
+      "type": "color",
+      "id": "fall_color",
+      "label": "Falling values",
+      "default": "#FF5000"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "take",
+      "name": "Short take",
+      "settings": [
+        {
+          "type": "text",
+          "id": "number",
+          "label": "Number",
+          "default": "01"
+        },
+        {
+          "type": "text",
+          "id": "ticker",
+          "label": "Ticker",
+          "default": "NVDA"
+        },
+        {
+          "type": "text",
+          "id": "company",
+          "label": "Company",
+          "default": "NVIDIA"
+        },
+        {
+          "type": "image_picker",
+          "id": "logo",
+          "label": "Company logo"
+        },
+        {
+          "type": "text",
+          "id": "logo_text",
+          "label": "Fallback logo text",
+          "default": "NVIDIA"
+        },
+        {
+          "type": "textarea",
+          "id": "heading",
+          "label": "Short take",
+          "default": "NVIDIA’s chips power AI models with over 1.5 trillion parameters."
+        },
+        {
+          "type": "select",
+          "id": "sparkline_style",
+          "label": "Chart shape",
+          "default": "up",
+          "options": [
+            {
+              "value": "up",
+              "label": "Rising"
+            },
+            {
+              "value": "down",
+              "label": "Falling"
+            },
+            {
+              "value": "flat",
+              "label": "Mostly flat"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "direction",
+          "label": "Movement direction",
+          "default": "up",
+          "options": [
+            {
+              "value": "up",
+              "label": "Rising"
+            },
+            {
+              "value": "down",
+              "label": "Falling"
+            },
+            {
+              "value": "flat",
+              "label": "Unchanged"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "change",
+          "label": "Movement",
+          "default": "2.39%"
+        },
+        {
+          "type": "text",
+          "id": "period",
+          "label": "Period",
+          "default": "1Y"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Article link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Ara Short Takes",
+      "blocks": [
+        {
+          "type": "take",
+          "settings": {
+            "number": "01",
+            "ticker": "NVDA",
+            "company": "NVIDIA",
+            "logo_text": "NVIDIA",
+            "heading": "NVIDIA’s chips power AI models with over 1.5 trillion parameters.",
+            "sparkline_style": "up",
+            "direction": "up",
+            "change": "2.39%",
+            "period": "1Y"
+          }
+        },
+        {
+          "type": "take",
+          "settings": {
+            "number": "02",
+            "ticker": "AAPL",
+            "company": "APPLE",
+            "logo_text": "APPLE",
+            "heading": "Apple now makes more from Services than from iPhones.",
+            "sparkline_style": "up",
+            "direction": "up",
+            "change": "1.75%",
+            "period": "1Y"
+          }
+        },
+        {
+          "type": "take",
+          "settings": {
+            "number": "03",
+            "ticker": "COST",
+            "company": "COSTCO",
+            "logo_text": "COSTCO",
+            "heading": "Costco pays its CEO less than $1M — less than many managers.",
+            "sparkline_style": "up",
+            "direction": "up",
+            "change": "0.81%",
+            "period": "1Y"
+          }
+        },
+        {
+          "type": "take",
+          "settings": {
+            "number": "04",
+            "ticker": "KO",
+            "company": "COCA-COLA",
+            "logo_text": "COCA-COLA",
+            "heading": "Coca-Cola sells over 1.9 billion drinks every single day.",
+            "sparkline_style": "down",
+            "direction": "down",
+            "change": "0.61%",
+            "period": "1Y"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

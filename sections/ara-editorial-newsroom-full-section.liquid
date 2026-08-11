@@ -1,0 +1,3986 @@
+{% liquid
+  assign lead_blocks = section.blocks | where: 'type', 'lead_story'
+  assign lead_block = lead_blocks.first
+  assign featured_blocks = section.blocks | where: 'type', 'featured_story'
+  assign market_blocks = section.blocks | where: 'type', 'market_news'
+  assign quick_blocks = section.blocks | where: 'type', 'quick_take'
+  assign report_blocks = section.blocks | where: 'type', 'stock_report'
+  assign question_blocks = section.blocks | where: 'type', 'question'
+  assign question_block = question_blocks.first
+
+  # Auto-fill from blog if requested
+  if section.settings.auto_fill_from_blog != blank
+    assign auto_blog = blogs[section.settings.auto_fill_from_blog]
+    if auto_blog != blank
+      assign auto_articles = auto_blog.articles
+    endif
+  endif
+%}
+
+<section
+  id="AraEditorialFrontPage-{{ section.id }}"
+  class="ara-editorial-front-page"
+  style="
+    --ara-news-bg: {{ section.settings.background_color }};
+    --ara-news-paper: {{ section.settings.paper_color }};
+    --ara-news-text: {{ section.settings.text_color }};
+    --ara-news-muted: {{ section.settings.muted_text_color }};
+    --ara-news-mint: {{ section.settings.mint_color }};
+    --ara-news-gold: {{ section.settings.gold_color }};
+    --ara-news-blue: {{ section.settings.blue_color }};
+    --ara-news-border: {{ section.settings.border_color }};
+    --ara-news-line: {{ section.settings.line_color }};
+    --ara-news-rise: {{ section.settings.rise_color }};
+    --ara-news-fall: {{ section.settings.fall_color }};
+    --ara-news-max: {{ section.settings.max_width }};
+    --ara-news-top: {{ section.settings.padding_top }}px;
+    --ara-news-bottom: {{ section.settings.padding_bottom }}px;
+    --ara-news-lead-title: {{ section.settings.desktop_main_title_size }}px;
+    --ara-news-feature-title: {{ section.settings.desktop_side_title_size }}px;
+    --ara-news-row-title: {{ section.settings.desktop_row_title_size }}px;
+    --ara-news-body: {{ section.settings.desktop_body_size }}px;
+    --ara-news-label: {{ section.settings.desktop_label_size }}px;
+    --ara-news-mobile-lead-title: {{ section.settings.mobile_main_title_size }}px;
+    --ara-news-mobile-feature-title: {{ section.settings.mobile_side_title_size }}px;
+    --ara-news-mobile-row-title: {{ section.settings.mobile_row_title_size }}px;
+    --ara-news-mobile-body: {{ section.settings.mobile_body_size }}px;
+    --ara-news-mobile-label: {{ section.settings.mobile_label_size }}px;
+  "
+>
+  <div class="ara-editorial-front-page__inner">
+
+    {% assign mp = section.settings.masthead_position | default: 'above_ticker' %}
+    {% capture ara_masthead %}
+    <header class="ara-editorial-front-page__masthead">
+      <div class="ara-editorial-front-page__edition">
+        <span>{{ section.settings.edition_label | escape }}</span>
+        <span>{{ 'now' | date: '%A, %B %d, %Y' }}</span>
+        <span>{{ section.settings.edition_note | escape }}</span>
+      </div>
+
+      <div class="ara-editorial-front-page__title-row">
+        <div>
+          {% if section.settings.eyebrow != blank %}
+            <p class="ara-editorial-front-page__eyebrow">
+              {{ section.settings.eyebrow | escape }}
+            </p>
+          {% endif %}
+
+          {% if section.settings.heading != blank %}
+            <h2>{{ section.settings.heading | escape }}</h2>
+          {% endif %}
+        </div>
+
+        {% if section.settings.header_note != blank %}
+          <p class="ara-editorial-front-page__intro">
+            {{ section.settings.header_note | escape }}
+          </p>
+        {% endif %}
+      </div>
+    </header>
+    {% endcapture %}
+    {% if mp == 'above_ticker' %}{{ ara_masthead }}{% endif %}
+
+    {% if section.settings.show_ticker != false %}
+      {% capture ara_ticker_items %}
+        {% if lead_block != blank %}
+          {% assign tk_lead_title = lead_block.settings.heading %}
+          {% assign tk_lead_url = lead_block.settings.link %}
+          {% if lead_block.settings.article != blank %}
+            {% assign tk_lead_title = lead_block.settings.article.title %}
+            {% assign tk_lead_url = lead_block.settings.article.url %}
+          {% endif %}
+          {% if tk_lead_title != blank %}
+            <a class="ara-nr-ticker__item"{% if tk_lead_url != blank %} href="{{ tk_lead_url }}"{% endif %}><b>LEAD</b><span>{{ tk_lead_title | escape }}</span></a>
+          {% endif %}
+        {% endif %}
+        {% for block in market_blocks %}
+          {% assign tk_t = block.settings.ticker %}
+          {% assign tk_h = block.settings.heading %}
+          {% assign tk_u = block.settings.link %}
+          {% if block.settings.article != blank %}
+            {% assign tk_h = block.settings.article.title %}
+            {% assign tk_u = block.settings.article.url %}
+            {% for tag in block.settings.article.tags %}{% assign tv = tag | downcase %}{% if tv contains 'ticker-' %}{% assign tk_t = tv | remove_first: 'ticker-' | upcase %}{% endif %}{% endfor %}
+          {% endif %}
+          {% if tk_h != blank %}
+            <a class="ara-nr-ticker__item"{% if tk_u != blank %} href="{{ tk_u }}"{% endif %}>{% if tk_t != blank %}<b>{{ tk_t | escape }}</b>{% endif %}<span>{{ tk_h | escape }}</span></a>
+          {% endif %}
+        {% endfor %}
+      {% endcapture %}
+
+      {% if ara_ticker_items != blank %}
+        <div class="ara-nr-ticker" style="--ara-ticker-speed: {{ section.settings.ticker_speed | default: 45 }}s;" role="marquee" aria-label="Latest headlines">
+          <div class="ara-nr-ticker__label"><span class="ara-nr-ticker__dot" aria-hidden="true"></span>{{ section.settings.ticker_label | default: 'LATEST' | escape }}</div>
+          <div class="ara-nr-ticker__win">
+            <div class="ara-nr-ticker__track">
+              <div class="ara-nr-ticker__set">{{ ara_ticker_items }}</div>
+              <div class="ara-nr-ticker__set" aria-hidden="true">{{ ara_ticker_items }}</div>
+            </div>
+          </div>
+        </div>
+      {% endif %}
+    {% endif %}
+
+    {% if mp == 'below_ticker' %}{{ ara_masthead }}{% endif %}
+
+    <!-- ============ BAND 1: lead hero + market-news flip strips ============ -->
+    <section class="ara-nr-band1">
+      {% if lead_block != blank %}
+        {% liquid
+          assign lead_article = lead_block.settings.article
+          if lead_article == blank and auto_articles != blank
+            assign lead_article = auto_articles[0]
+          endif
+          assign lead_title = lead_block.settings.heading
+          assign lead_url = lead_block.settings.link
+          assign lead_image = lead_block.settings.image
+          assign lead_mobile_image = lead_block.settings.mobile_image
+          assign lead_excerpt = lead_block.settings.description
+          assign lead_company = lead_block.settings.company
+          assign lead_ticker = lead_block.settings.ticker
+          assign lead_type = lead_block.settings.story_type
+          assign lead_domain = lead_block.settings.domain
+          assign lead_date = blank
+          if lead_article != blank
+            assign lead_title = lead_article.title
+            assign lead_url = lead_article.url
+            assign lead_image = lead_article.image
+            assign lead_mobile_image = lead_article.image
+            assign lead_excerpt = lead_article.excerpt_or_content
+            assign lead_date = lead_article.published_at | date: '%B %d, %Y'
+            for tag in lead_article.tags
+              assign tag_value = tag | downcase
+              if tag_value contains 'company-'
+                assign lead_company = tag_value | remove_first: 'company-' | replace: '-', ' ' | capitalize
+              elsif tag_value contains 'ticker-'
+                assign lead_ticker = tag_value | remove_first: 'ticker-' | upcase
+              elsif tag_value contains 'type-'
+                assign lead_type = tag_value | remove_first: 'type-' | replace: '-', ' ' | upcase
+              elsif tag_value contains 'domain-'
+                assign lead_domain = tag_value | remove_first: 'domain-' | replace: '-', ' ' | upcase
+              endif
+            endfor
+          endif
+        %}
+
+        <article
+          class="ara-editorial-front-page__lead ara-nr-hero"
+          style="--ara-story-accent: {{ lead_block.settings.accent_color }};"
+          {{ lead_block.shopify_attributes }}
+        >
+          <a
+            class="ara-editorial-front-page__lead-media"
+            {% if lead_url != blank %}href="{{ lead_url }}"{% else %}role="link" aria-disabled="true"{% endif %}
+          >
+            {% if lead_image != blank %}
+              <picture>
+                {% if lead_mobile_image != blank %}
+                  <source media="(max-width: 749px)" srcset="{{ lead_mobile_image | image_url: width: 700 }} 700w, {{ lead_mobile_image | image_url: width: 1100 }} 1100w">
+                {% endif %}
+                {{ lead_image | image_url: width: 1800 | image_tag: widths: '720, 1000, 1400, 1800', sizes: '(max-width: 989px) calc(100vw - 40px), 58vw', loading: 'lazy', class: 'ara-editorial-front-page__lead-image', alt: lead_image.alt }}
+              </picture>
+            {% else %}
+              <div class="ara-editorial-front-page__lead-placeholder">
+                <span>{{ lead_block.settings.placeholder_text | escape }}</span>
+              </div>
+            {% endif %}
+            <span class="ara-editorial-front-page__lead-label">{{ lead_block.settings.article_number | escape }}</span>
+          </a>
+
+          <div class="ara-editorial-front-page__lead-copy">
+            <div class="ara-editorial-front-page__meta">
+              {% if lead_type != blank %}<span>{{ lead_type | escape }}</span>{% endif %}
+              {% if lead_company != blank %}<span>{{ lead_company | escape }}</span>{% endif %}
+              {% if lead_ticker != blank %}<span>{{ lead_ticker | escape }}</span>{% endif %}
+              {% if lead_domain != blank %}<span>{{ lead_domain | escape }}</span>{% endif %}
+              {% if lead_date != blank %}<span>{{ lead_date }}</span>{% endif %}
+            </div>
+            {% if lead_title != blank %}
+              <h3><a {% if lead_url != blank %}href="{{ lead_url }}"{% else %}role="link" aria-disabled="true"{% endif %}>{{ lead_title | escape }}</a></h3>
+            {% endif %}
+            {% if lead_excerpt != blank %}
+              <p>{{ lead_excerpt | strip_html | truncatewords: 42 }}</p>
+            {% endif %}
+            <div class="ara-editorial-front-page__lead-links">
+              <a {% if lead_url != blank %}href="{{ lead_url }}"{% else %}role="link" aria-disabled="true"{% endif %}>{{ lead_block.settings.link_label | escape }} <span aria-hidden="true">→</span></a>
+              {% if lead_block.settings.company_module_link != blank %}
+                <a href="{{ lead_block.settings.company_module_link }}">{{ lead_block.settings.company_module_label | escape }}</a>
+              {% endif %}
+            </div>
+          </div>
+        </article>
+      {% endif %}
+
+      <div class="ara-nr-strips" style="--sec: #176d5c;">
+        <div class="ara-editorial-front-page__section-heading">
+          <div>
+            <h3>{{ section.settings.market_heading | escape }}</h3>
+            <span>{{ section.settings.market_note | escape }}</span>
+          </div>
+          <i></i>
+        </div>
+
+        {% assign strip_max = section.settings.market_strip_count | default: 5 %}
+        {% for block in market_blocks limit: strip_max %}
+          {% liquid
+            assign market_article = block.settings.article
+            assign market_title = block.settings.heading
+            assign market_url = block.settings.link
+            assign market_ticker = block.settings.ticker
+            assign market_time = block.settings.time_label
+            assign market_summary = block.settings.summary
+            if market_article != blank
+              assign market_title = market_article.title
+              assign market_url = market_article.url
+              assign market_time = market_article.published_at | date: '%b %d'
+              if market_article.excerpt_or_content != blank
+                assign market_summary = market_article.excerpt_or_content | strip_html | truncatewords: 22
+              endif
+              for tag in market_article.tags
+                assign tag_value = tag | downcase
+                if tag_value contains 'ticker-'
+                  assign market_ticker = tag_value | remove_first: 'ticker-' | upcase
+                endif
+              endfor
+            endif
+          %}
+          <div class="ara-nr-flip ara-nr-strip" tabindex="0" role="button" aria-label="Flip market news tile" {{ block.shopify_attributes }}>
+            <div class="ara-nr-flip__inner">
+              <div class="ara-nr-flip__face ara-nr-flip__front">
+                <div class="ara-nr-strip__tick">
+                  {% if market_ticker != blank %}<b>{{ market_ticker | escape }}</b>{% endif %}
+                  {% if market_time != blank %}<small>{{ market_time | escape }}</small>{% endif %}
+                </div>
+                <h4>{{ market_title | escape }}</h4>
+              </div>
+              <div class="ara-nr-flip__face ara-nr-flip__back">
+                <div class="ara-nr-strip__tick">{% if market_ticker != blank %}<b>{{ market_ticker | escape }}</b>{% endif %}</div>
+                <p>{% if market_summary != blank %}{{ market_summary | escape }}{% else %}Tap to read the full story.{% endif %}</p>
+                <a class="ara-nr-strip__go" {% if market_url != blank %}href="{{ market_url }}"{% else %}role="link" aria-disabled="true"{% endif %}>Read <span aria-hidden="true">→</span></a>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </section>
+
+    <!-- ============ BAND 2: company question (full width) ============ -->
+    {% if question_block != blank %}
+      {% liquid
+        assign question_article = question_block.settings.article
+        assign question_title = question_block.settings.heading
+        assign question_url = question_block.settings.link
+        assign question_text = question_block.settings.description
+        assign question_image = question_block.settings.image
+        assign question_mobile_image = question_block.settings.mobile_image
+        if question_article != blank
+          assign question_title = question_article.title
+          assign question_url = question_article.url
+          assign question_text = question_article.excerpt_or_content
+          if question_article.image != blank
+            assign question_image = question_article.image
+            assign question_mobile_image = question_article.image
+          endif
+        endif
+      %}
+      <section class="ara-nr-band2">
+        <article
+          class="ara-editorial-front-page__question"
+          style="--ara-question-bg: {{ question_block.settings.background_color }}; --ara-question-text: {{ question_block.settings.text_color }}; --ara-question-ratio: {{ question_block.settings.image_ratio }};"
+          {{ question_block.shopify_attributes }}
+        >
+          <div class="ara-editorial-front-page__question-copy">
+            <div class="ara-editorial-front-page__question-label">
+              <span>{{ question_block.settings.label | escape }}</span>
+              <i></i>
+            </div>
+            {% if question_title != blank %}<h3>{{ question_title | escape | newline_to_br }}</h3>{% endif %}
+            {% if question_text != blank %}<p>{{ question_text | strip_html | truncatewords: 30 }}</p>{% endif %}
+            <a class="ara-editorial-front-page__question-link" {% if question_url != blank %}href="{{ question_url }}"{% else %}role="link" aria-disabled="true"{% endif %}>{{ question_block.settings.link_label | escape }} <span aria-hidden="true">→</span></a>
+          </div>
+          <a class="ara-editorial-front-page__question-media" {% if question_url != blank %}href="{{ question_url }}"{% else %}role="link" aria-disabled="true"{% endif %} aria-label="{{ question_block.settings.link_label | escape }}">
+            {% if question_image != blank %}
+              <picture>
+                {% if question_mobile_image != blank %}
+                  <source media="(max-width: 749px)" srcset="{{ question_mobile_image | image_url: width: 700 }} 700w, {{ question_mobile_image | image_url: width: 1000 }} 1000w">
+                {% endif %}
+                {{ question_image | image_url: width: 1500 | image_tag: widths: '600, 900, 1200, 1500', sizes: '(max-width: 749px) calc(100vw - 40px), 35vw', loading: 'lazy', class: 'ara-editorial-front-page__question-image', alt: question_image.alt }}
+              </picture>
+            {% else %}
+              <div class="ara-editorial-front-page__question-placeholder" aria-hidden="true">
+                <span>?</span>
+                <svg viewBox="0 0 260 110" preserveAspectRatio="none"><path d="M0 86 C28 76 45 88 69 69 C95 49 118 61 141 42 C166 22 190 38 216 19 C230 9 244 13 260 5"></path></svg>
+              </div>
+            {% endif %}
+          </a>
+        </article>
+      </section>
+    {% endif %}
+
+    {% if mp == 'under_question' %}{{ ara_masthead }}{% endif %}
+
+    <!-- ============ BAND 3: short-take flip squares | pitch flip squares ============ -->
+    <section class="ara-nr-band3">
+      <div class="ara-nr-col" style="--sec: #c15a3c;">
+        <div class="ara-editorial-front-page__section-heading">
+          <div>
+            <h3>{{ section.settings.quick_heading | escape }}</h3>
+            <span>{{ section.settings.quick_note | escape }}</span>
+          </div>
+          <i></i>
+        </div>
+        <div class="ara-nr-sqgrid">
+          {% for block in quick_blocks limit: 4 %}
+            {% liquid
+              assign quick_article = block.settings.article
+              assign quick_title = block.settings.heading
+              assign quick_url = block.settings.link
+              assign quick_text = block.settings.summary
+              assign quick_ticker = block.settings.ticker
+              if quick_article != blank
+                assign quick_title = quick_article.title
+                assign quick_url = quick_article.url
+                assign quick_text = quick_article.excerpt_or_content
+                for tag in quick_article.tags
+                  assign tag_value = tag | downcase
+                  if tag_value contains 'ticker-'
+                    assign quick_ticker = tag_value | remove_first: 'ticker-' | upcase
+                  endif
+                endfor
+              endif
+            %}
+            <div class="ara-nr-flip ara-nr-sq" tabindex="0" role="button" aria-label="Flip short take tile" {{ block.shopify_attributes }}>
+              <div class="ara-nr-flip__inner">
+                <div class="ara-nr-flip__face ara-nr-flip__front">
+                  <div class="ara-nr-sq__num">
+                    <span>{{ block.settings.number | escape }}</span>
+                    {% if quick_ticker != blank %}<b>{{ quick_ticker | escape }}</b>{% endif %}
+                  </div>
+                  {% if quick_title != blank %}<h4>{{ quick_title | escape }}</h4>{% endif %}
+                  <div class="ara-nr-sq__foot">
+                    {% if block.settings.change != blank %}<span class="ara-nr-sq__chg ara-nr-sq__chg--{{ block.settings.direction }}">{{ block.settings.change | escape }}</span>{% else %}<span></span>{% endif %}
+                    <span>Tap</span>
+                  </div>
+                </div>
+                <div class="ara-nr-flip__face ara-nr-flip__back">
+                  {% if quick_text != blank %}<p>{{ quick_text | strip_html | truncatewords: 24 }}</p>{% endif %}
+                  <a class="ara-nr-sq__go" {% if quick_url != blank %}href="{{ quick_url }}"{% else %}role="link" aria-disabled="true"{% endif %}>Read <span aria-hidden="true">→</span></a>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+
+      <div class="ara-nr-col" style="--sec: #c0881e;">
+        <div class="ara-editorial-front-page__section-heading">
+          <div>
+            <h3>{{ section.settings.reports_heading | escape }}</h3>
+            <span>{{ section.settings.reports_note | escape }}</span>
+          </div>
+          <i></i>
+        </div>
+        <div class="ara-nr-sqgrid">
+          {% for block in report_blocks limit: 4 %}
+            {% liquid
+              assign report_article = block.settings.article
+              assign report_title = block.settings.heading
+              assign report_url = block.settings.link
+              assign report_text = block.settings.summary
+              assign report_ticker = block.settings.ticker
+              if report_article != blank
+                assign report_title = report_article.title
+                assign report_url = report_article.url
+                assign report_text = report_article.excerpt_or_content
+                for tag in report_article.tags
+                  assign tag_value = tag | downcase
+                  if tag_value contains 'ticker-'
+                    assign report_ticker = tag_value | remove_first: 'ticker-' | upcase
+                  endif
+                endfor
+              endif
+            %}
+            <div class="ara-nr-flip ara-nr-sq ara-nr-sq--pitch" tabindex="0" role="button" aria-label="Flip pitch tile" {{ block.shopify_attributes }}>
+              <div class="ara-nr-flip__inner">
+                <div class="ara-nr-flip__face ara-nr-flip__front">
+                  <div class="ara-nr-sq__num">
+                    <span>{{ forloop.index | prepend: '0' }}</span>
+                    {% if report_ticker != blank %}<b>{{ report_ticker | escape }}</b>{% endif %}
+                  </div>
+                  {% if report_title != blank %}<h4>{{ report_title | escape }}</h4>{% endif %}
+                  <div class="ara-nr-sq__foot"><span>Pitch</span><span>Tap</span></div>
+                </div>
+                <div class="ara-nr-flip__face ara-nr-flip__back">
+                  {% if report_text != blank %}<p>{{ report_text | strip_html | truncatewords: 24 }}</p>{% endif %}
+                  <a class="ara-nr-sq__go" {% if report_url != blank %}href="{{ report_url }}"{% else %}role="link" aria-disabled="true"{% endif %}>Read the pitch <span aria-hidden="true">→</span></a>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ BAND 4: featured module | market map ============ -->
+    <section class="ara-nr-band4">
+      <div class="ara-nr-col" style="--sec: #7a4e86;">
+        <div class="ara-editorial-front-page__section-heading">
+          <div>
+            <h3>{{ section.settings.featured_heading | default: 'More Stories' | escape }}</h3>
+            <span>{{ section.settings.featured_note | escape }}</span>
+          </div>
+          <i></i>
+        </div>
+        <div class="ara-nr-featcol">
+          {% for block in featured_blocks limit: 3 %}
+            {% liquid
+              assign featured_article = block.settings.article
+              if featured_article == blank and auto_articles != blank
+                assign article_index = forloop.index
+                assign featured_article = auto_articles[article_index]
+              endif
+              assign featured_title = block.settings.heading
+              assign featured_url = block.settings.link
+              assign featured_excerpt = block.settings.summary
+              assign featured_image = block.settings.image
+              assign featured_company = block.settings.company
+              assign featured_ticker = block.settings.ticker
+              assign featured_type = block.settings.story_type
+              assign featured_date = blank
+              if featured_article != blank
+                assign featured_title = featured_article.title
+                assign featured_url = featured_article.url
+                assign featured_excerpt = featured_article.excerpt_or_content
+                assign featured_image = featured_article.image
+                assign featured_date = featured_article.published_at | date: '%b %d, %Y'
+                for tag in featured_article.tags
+                  assign tag_value = tag | downcase
+                  if tag_value contains 'company-'
+                    assign featured_company = tag_value | remove_first: 'company-' | replace: '-', ' ' | capitalize
+                  elsif tag_value contains 'ticker-'
+                    assign featured_ticker = tag_value | remove_first: 'ticker-' | upcase
+                  elsif tag_value contains 'type-'
+                    assign featured_type = tag_value | remove_first: 'type-' | replace: '-', ' ' | upcase
+                  endif
+                endfor
+              endif
+            %}
+            <article class="ara-editorial-front-page__featured-story" style="--ara-story-accent: {{ block.settings.accent_color }};" {{ block.shopify_attributes }}>
+              {% if block.settings.show_image %}
+                <a class="ara-editorial-front-page__featured-media" {% if featured_url != blank %}href="{{ featured_url }}"{% else %}role="link" aria-disabled="true"{% endif %}>
+                  {% if featured_image != blank %}
+                    {{ featured_image | image_url: width: 900 | image_tag: widths: '360, 540, 720, 900', sizes: '(max-width: 989px) calc(100vw - 40px), 30vw', loading: 'lazy', class: 'ara-editorial-front-page__featured-image', alt: featured_image.alt }}
+                  {% else %}
+                    <div class="ara-editorial-front-page__featured-placeholder">{{ block.settings.number | escape }}</div>
+                  {% endif %}
+                </a>
+              {% endif %}
+              <div class="ara-editorial-front-page__featured-copy">
+                <div class="ara-editorial-front-page__featured-number">
+                  <span>{{ block.settings.number | escape }}</span>
+                  {% if featured_ticker != blank %}<strong>{{ featured_ticker | escape }}</strong>{% endif %}
+                </div>
+                <div class="ara-editorial-front-page__meta">
+                  {% if featured_type != blank %}<span>{{ featured_type | escape }}</span>{% endif %}
+                  {% if featured_company != blank %}<span>{{ featured_company | escape }}</span>{% endif %}
+                  {% if featured_date != blank %}<span>{{ featured_date }}</span>{% endif %}
+                </div>
+                {% if featured_title != blank %}
+                  <h4><a {% if featured_url != blank %}href="{{ featured_url }}"{% else %}role="link" aria-disabled="true"{% endif %}>{{ featured_title | escape }}</a></h4>
+                {% endif %}
+                {% if featured_excerpt != blank and block.settings.show_excerpt %}
+                  <p>{{ featured_excerpt | strip_html | truncatewords: 18 }}</p>
+                {% endif %}
+                <div class="ara-editorial-front-page__story-links">
+                  <a {% if featured_url != blank %}href="{{ featured_url }}"{% else %}role="link" aria-disabled="true"{% endif %}>{{ block.settings.link_label | escape }} <span aria-hidden="true">→</span></a>
+                  {% if block.settings.company_module_link != blank %}
+                    <a href="{{ block.settings.company_module_link }}">{{ block.settings.company_module_label | escape }}</a>
+                  {% endif %}
+                </div>
+              </div>
+            </article>
+          {% endfor %}
+        </div>
+      </div>
+
+      <div class="ara-nr-col" style="--sec: #2f7e8c;">
+        <div class="ara-editorial-front-page__section-heading">
+          <div>
+            <h3>{{ section.settings.map_heading | default: 'Market Map' | escape }}</h3>
+            <span>{{ section.settings.map_note | escape }}</span>
+          </div>
+          <i></i>
+        </div>
+        <div class="ara-nr-map">
+          <div class="ara-nr-map__grid">
+            {% assign map_blocks = quick_blocks | concat: report_blocks %}
+            {% assign map_count = 0 %}
+            {% for block in map_blocks %}
+              {% if map_count >= 9 %}{% break %}{% endif %}
+              {% assign chip_ticker = block.settings.ticker %}
+              {% if chip_ticker == blank and block.settings.article != blank %}
+                {% for tag in block.settings.article.tags %}
+                  {% assign tv = tag | downcase %}
+                  {% if tv contains 'ticker-' %}{% assign chip_ticker = tv | remove_first: 'ticker-' | upcase %}{% endif %}
+                {% endfor %}
+              {% endif %}
+              {% if chip_ticker == blank %}{% continue %}{% endif %}
+              {% assign map_count = map_count | plus: 1 %}
+              <a class="ara-nr-map__chip ara-nr-map__chip--{{ block.settings.direction | default: 'up' }}" {% if block.settings.link != blank %}href="{{ block.settings.link }}"{% else %}role="link" aria-disabled="true"{% endif %}>
+                <b>{{ chip_ticker | escape }}</b>
+                {% if block.settings.change != blank %}<small>{{ block.settings.change | escape }}</small>{% endif %}
+              </a>
+            {% endfor %}
+          </div>
+          <div class="ara-nr-map__foot">
+            <span class="ara-editorial-front-page__eyebrow">{{ section.settings.map_caption | default: 'U.S. companies' | escape }}</span>
+            {% if section.settings.map_link != blank %}
+              <a href="{{ section.settings.map_link }}">{{ section.settings.map_link_label | default: 'Open the full map' | escape }} <span aria-hidden="true">→</span></a>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</section>
+
+<style>
+  /* ===== Newsroom 4-band redesign (ara-nr-*) ===== */
+  #AraEditorialFrontPage-{{ section.id }} .ara-nr-band1 {
+    display: grid;
+    grid-template-columns: minmax(0, 1.62fr) minmax(300px, 1fr);
+    gap: 30px;
+    padding: 30px 0;
+    border-bottom: 2px solid var(--ara-news-text);
+  }
+  #AraEditorialFrontPage-{{ section.id }} .ara-nr-hero { padding-bottom: 0; }
+  #AraEditorialFrontPage-{{ section.id }} .ara-nr-strips { display: flex; flex-direction: column; min-width: 0; }
+
+  /* ---- CNBC / SportsCenter-style headline ticker ---- */
+  #AraEditorialFrontPage-{{ section.id }} .ara-nr-ticker { position: relative; display: flex; align-items: stretch; overflow: hidden; background: var(--ara-news-text); color: var(--ara-news-paper); }
+  #AraEditorialFrontPage-{{ section.id }} .ara-nr-ticker__label { position: relative; z-index: 2; flex: 0 0 auto; display: flex; align-items: center; gap: 8px; padding: 0 18px; background: var(--ara-news-mint); color: #fff; font-family: var(--font-body-family); font-size: var(--ara-news-label); font-weight: 800; letter-spacing: .16em; text-transform: uppercase; }
+  #AraEditorialFrontPage-{{ section.id }} .ara-nr-ticker__dot { width: 7px; height: 7px; border-radius: 50%; background: var(--ara-news-gold); animation: ara-nr-pulse 1.6s ease-out infinite; }
+  #AraEditorialFrontPage-{{ section.id }} .ara-nr-ticker__win { position: relative; flex: 1 1 auto; overflow: hidden; -webkit-mask-image: linear-gradient(to right, transparent 0, #000 26px, #000 calc(100% - 26px), transparent 100%); mask-image: linear-gradient(to right, transparent 0, #000 26px, #000 calc(100% - 26px), transparent 100%); }
+  #AraEditorialFrontPage-{{ section.id }} .ara-nr-ticker__track { display: flex; width: max-content; animation: ara-nr-scroll var(--ara-ticker-speed, 45s) linear infinite; }
+  #AraEditorialFrontPage-{{ section.id }} .ara-nr-ticker:hover .ara-nr-ticker__track { animation-play-state: paused; }
+  #AraEditorialFrontPage-{{ section.id }} .ara-nr-ticker__set { display: flex; flex: 0 0 auto; }
+  #AraEditorialFrontPage-{{ section.id }} .ara-nr-ticker__item { display: inline-flex; align-items: center; gap: 9px; padding: 12px 22px; white-space: nowrap; text-decoration: none; color: var(--ara-news-paper); font-family: var(--font-body-family); font-size: 14px; font-weight: 600; border-right: 1px solid rgba(255,255,255,.13); }
+  #AraEditorialFrontPage-{{ section.id }} .ara-nr-ticker__item b { color: var(--ara-news-gold); font-weight: 900; letter-spacing: .06em; }
+  #AraEditorialFrontPage-{{ section.id }} .ara-nr-ticker__item span { opacity: .94; }
+  @keyframes ara-nr-scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+  @keyframes ara-nr-pulse { 0% { box-shadow: 0 0 0 0 rgba(231,194,75,.7); } 70% { box-shadow: 0 0 0 7px rgba(231,194,75,0); } 100% { box-shadow: 0 0 0 0 rgba(231,194,75,0); } }
+  @media (prefers-reduced-motion: reduce) {
+    #AraEditorialFrontPage-{{ section.id }} .ara-nr-ticker__track { animation: none; }
+    #AraEditorialFrontPage-{{ section.id }} .ara-nr-ticker__win { overflow-x: auto; }
+    #AraEditorialFrontPage-{{ section.id }} .ara-nr-ticker__dot { animation: none; }
+  }
+  @media (max-width: 749px) {
+    #AraEditorialFrontPage-{{ section.id }} .ara-nr-ticker__item { font-size: 13px; padding: 11px 16px; }
+    #AraEditorialFrontPage-{{ section.id }} .ara-nr-ticker__label { padding: 0 12px; }
+  }
+
+  /* ---- flip mechanics (shared) ---- */
+  #AraEditorialFrontPage-{{ section.id }} .ara-nr-flip { background: transparent; perspective: 1200px; }
+  #AraEditorialFrontPage-{{ section.id }} .ara-nr-flip__inner {
+    position: relative; width: 100%; height: 100%;
+    transition: transform .55s cubic-bezier(.2,.7,.2,1);
+    transform-style: preserve-3d;
+  }
+  #AraEditorialFrontPage-{{ section.id }} .ara-nr-flip.is-flipped .ara-nr-flip__inner,
+  #AraEditorialFrontPage-{{ section.id }} .ara-nr-flip:hover .ara-nr-flip__inner { transform: rotateY(180deg); }
+  #AraEditorialFrontPage-{{ section.id }} .ara-nr-flip__face {
+    position: absolute; inset: 0;
+    backface-visibility: hidden; -webkit-backface-visibility: hidden;
+    display: flex; overflow: hidden; text-decoration: none;
+  }
+  #AraEditorialFrontPage-{{ section.id }} .ara-nr-flip__back { transform: rotateY(180deg); }
+
+  /* ---- market-news flip strips ---- */
+  #AraEditorialFrontPage-{{ section.id }} .ara-nr-strip { height: 84px; margin-bottom: 11px; }
+  #AraEditorialFrontPage-{{ section.id }} .ara-nr-strip:last-child { margin-bottom: 0; }
+  #AraEditorialFrontPage-{{ section.id }} .ara-nr-strip .ara-nr-flip__face {
+    flex-direction: column; justify-content: center; gap: 6px; padding: 14px 16px;
+    border: 1px solid var(--ara-news-border); background: var(--ara-news-paper);
+  }
+  #AraEditorialFrontPage-{{ section.id }} .ara-nr-strip__tick { display: flex; gap: 10px; align-items: center; }
+  #AraEditorialFrontPage-{{ section.id }} .ara-nr-strip__tick b { font-family: var(--font-body-family); font-size: var(--ara-news-label); font-weight: 900; letter-spacing: .09em; color: var(--ara-news-mint); }
+  #AraEditorialFrontPage-{{ section.id }} .ara-nr-strip__tick small { color: var(--ara-news-muted); font-family: var(--font-body-family); font-size: var(--ara-news-label); font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+  #AraEditorialFrontPage-{{ section.id }} .ara-nr-strip h4 { margin: 0; font-family: var(--font-heading-family); font-size: 16px; font-weight: 700; line-height: 1.15; letter-spacing: -.01em; }
+  #AraEditorialFrontPage-{{ section.id }} .ara-nr-strip .ara-nr-flip__back { background: var(--ara-news-text); color: var(--ara-news-paper); }
+  #AraEditorialFrontPage-{{ section.id }} .ara-nr-strip .ara-nr-flip__back .ara-nr-strip__tick b { color: var(--ara-news-gold); }
+  #AraEditorialFrontPage-{{ section.id }} .ara-nr-strip .ara-nr-flip__back p { margin: 0; font-family: var(--font-body-family); font-size: 13px; line-height: 1.35; color: var(--ara-news-paper); }
+  #AraEditorialFrontPage-{{ section.id }} .ara-nr-strip__go { margin-top: 2px; font-family: var(--font-body-family); font-size: var(--ara-news-label); font-weight: 800; letter-spacing: .09em; text-transform: uppercase; color: var(--ara-news-gold); text-decoration: none; }
+
+  /* ---- BAND 2: question wrapper ---- */
+  #AraEditorialFrontPage-{{ section.id }} .ara-nr-band2 { padding: 26px 0; border-bottom: 2px solid var(--ara-news-text); }
+
+  /* ---- BAND 3 & 4 shared column ---- */
+  #AraEditorialFrontPage-{{ section.id }} .ara-nr-band3 { display: grid; grid-template-columns: 1fr 1fr; gap: 34px; padding: 30px 0; border-bottom: 2px solid var(--ara-news-text); }
+  #AraEditorialFrontPage-{{ section.id }} .ara-nr-band4 { display: grid; grid-template-columns: 1fr 1fr; gap: 34px; padding: 30px 0 0; }
+  #AraEditorialFrontPage-{{ section.id }} .ara-nr-col { min-width: 0; }
+
+  /* ---- square flip tiles ---- */
+  #AraEditorialFrontPage-{{ section.id }} .ara-nr-sqgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  #AraEditorialFrontPage-{{ section.id }} .ara-nr-sq { aspect-ratio: 1 / 1; }
+  #AraEditorialFrontPage-{{ section.id }} .ara-nr-sq .ara-nr-flip__face { flex-direction: column; padding: 16px; border: 1px solid var(--ara-news-border); background: var(--ara-news-paper); }
+  #AraEditorialFrontPage-{{ section.id }} .ara-nr-sq__num { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+  #AraEditorialFrontPage-{{ section.id }} .ara-nr-sq__num span { font-family: var(--font-heading-family); font-style: italic; font-size: 19px; color: var(--ara-news-mint); }
+  #AraEditorialFrontPage-{{ section.id }} .ara-nr-sq__num b { padding: 3px 6px; border: 1px solid var(--ara-news-border); font-family: var(--font-body-family); font-size: var(--ara-news-label); font-weight: 900; letter-spacing: .08em; }
+  #AraEditorialFrontPage-{{ section.id }} .ara-nr-sq h4 { margin: 6px 0 0; font-family: var(--font-heading-family); font-size: 19px; font-weight: 700; line-height: 1.12; letter-spacing: -.015em; }
+  #AraEditorialFrontPage-{{ section.id }} .ara-nr-sq h4 a { text-decoration: none; }
+  #AraEditorialFrontPage-{{ section.id }} .ara-nr-sq__foot { margin-top: auto; display: flex; justify-content: space-between; align-items: center; font-family: var(--font-body-family); font-size: var(--ara-news-label); font-weight: 800; letter-spacing: .07em; text-transform: uppercase; color: var(--ara-news-muted); }
+  #AraEditorialFrontPage-{{ section.id }} .ara-nr-sq__chg--up { color: var(--ara-news-rise); }
+  #AraEditorialFrontPage-{{ section.id }} .ara-nr-sq__chg--down { color: var(--ara-news-fall); }
+  #AraEditorialFrontPage-{{ section.id }} .ara-nr-sq .ara-nr-flip__back { background: var(--ara-news-text); color: var(--ara-news-paper); }
+  #AraEditorialFrontPage-{{ section.id }} .ara-nr-sq .ara-nr-flip__back p { margin: 0; font-family: var(--font-body-family); font-size: 13px; line-height: 1.4; color: var(--ara-news-paper); }
+  #AraEditorialFrontPage-{{ section.id }} .ara-nr-sq__go { margin-top: auto; color: var(--ara-news-gold); font-family: var(--font-body-family); font-size: var(--ara-news-label); font-weight: 800; letter-spacing: .09em; text-transform: uppercase; text-decoration: none; }
+  #AraEditorialFrontPage-{{ section.id }} .ara-nr-sq--pitch .ara-nr-flip__front { background: color-mix(in srgb, var(--ara-news-gold) 10%, var(--ara-news-paper)); }
+  #AraEditorialFrontPage-{{ section.id }} .ara-nr-sq--pitch .ara-nr-sq__num span { color: var(--ara-news-blue); }
+
+  /* ---- BAND 4: featured column ---- */
+  #AraEditorialFrontPage-{{ section.id }} .ara-nr-featcol { display: flex; flex-direction: column; }
+
+  /* ---- BAND 4: market map ---- */
+  #AraEditorialFrontPage-{{ section.id }} .ara-nr-map { border: 1px solid var(--ara-news-border); background: var(--ara-news-paper); padding: 18px; }
+  #AraEditorialFrontPage-{{ section.id }} .ara-nr-map__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  #AraEditorialFrontPage-{{ section.id }} .ara-nr-map__chip { border: 1px solid var(--ara-news-border); padding: 10px; display: flex; flex-direction: column; gap: 3px; background: var(--ara-news-bg); text-decoration: none; }
+  #AraEditorialFrontPage-{{ section.id }} .ara-nr-map__chip b { font-family: var(--font-body-family); font-size: 13px; font-weight: 900; letter-spacing: .06em; }
+  #AraEditorialFrontPage-{{ section.id }} .ara-nr-map__chip small { font-family: var(--font-body-family); font-size: var(--ara-news-label); font-weight: 800; letter-spacing: .05em; }
+  #AraEditorialFrontPage-{{ section.id }} .ara-nr-map__chip--up small { color: var(--ara-news-rise); }
+  #AraEditorialFrontPage-{{ section.id }} .ara-nr-map__chip--down small { color: var(--ara-news-fall); }
+  #AraEditorialFrontPage-{{ section.id }} .ara-nr-map__foot { margin-top: 14px; display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+  #AraEditorialFrontPage-{{ section.id }} .ara-nr-map__foot a { color: var(--ara-news-mint); font-family: var(--font-body-family); font-size: var(--ara-news-label); font-weight: 800; letter-spacing: .09em; text-transform: uppercase; text-decoration: none; }
+
+  /* ---- responsive ---- */
+  @media (max-width: 989px) {
+    #AraEditorialFrontPage-{{ section.id }} .ara-nr-band1,
+    #AraEditorialFrontPage-{{ section.id }} .ara-nr-band3,
+    #AraEditorialFrontPage-{{ section.id }} .ara-nr-band4 { grid-template-columns: 1fr; gap: 26px; }
+    #AraEditorialFrontPage-{{ section.id }} .ara-nr-hero { border-right: 0 !important; padding-right: 0 !important; }
+    #AraEditorialFrontPage-{{ section.id }} .ara-nr-map__grid { grid-template-columns: repeat(2, 1fr); }
+    /* touch: flip on tap only */
+    #AraEditorialFrontPage-{{ section.id }} .ara-nr-flip:hover .ara-nr-flip__inner { transform: none; }
+    #AraEditorialFrontPage-{{ section.id }} .ara-nr-flip.is-flipped .ara-nr-flip__inner { transform: rotateY(180deg); }
+  }
+  @media (max-width: 749px) {
+    #AraEditorialFrontPage-{{ section.id }} .ara-nr-sq h4 { font-size: 16px; }
+    #AraEditorialFrontPage-{{ section.id }} .ara-nr-strip { height: auto; min-height: 92px; }
+  }
+</style>
+
+<script>
+  (function () {
+    var root = document.getElementById('AraEditorialFrontPage-{{ section.id }}');
+    if (!root) return;
+    root.querySelectorAll('.ara-nr-flip').forEach(function (el) {
+      el.addEventListener('click', function (e) {
+        var link = e.target.closest('a');
+        if (link && link.getAttribute('href')) return; // let real links work
+        e.preventDefault();
+        el.classList.toggle('is-flipped');
+      });
+      el.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); el.classList.toggle('is-flipped'); }
+      });
+    });
+  })();
+</script>
+
+
+<style>
+  #AraEditorialFrontPage-{{ section.id }} {
+    overflow: hidden;
+    padding: var(--ara-news-top) 0 var(--ara-news-bottom);
+    background:
+      repeating-linear-gradient(
+        to bottom,
+        transparent 0,
+        transparent 35px,
+        color-mix(in srgb, var(--ara-news-line) 13%, transparent) 35px,
+        color-mix(in srgb, var(--ara-news-line) 13%, transparent) 36px
+      ),
+      var(--ara-news-bg);
+    color: var(--ara-news-text);
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} * {
+    box-sizing: border-box;
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} a {
+    color: inherit;
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__inner {
+    width: min(100%, var(--ara-news-max));
+    margin: 0 auto;
+    padding: 0 40px;
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__masthead {
+    border-top: 4px solid var(--ara-news-text);
+    border-bottom: 2px solid var(--ara-news-text);
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__edition {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 20px;
+    padding: 9px 0;
+    border-bottom: 1px solid var(--ara-news-border);
+    color: var(--ara-news-muted);
+    font-family: var(--font-body-family);
+    font-size: var(--ara-news-label);
+    font-weight: 800;
+    letter-spacing: 0.11em;
+    text-transform: uppercase;
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__edition span:nth-child(2) {
+    color: var(--ara-news-text);
+    text-align: center;
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__edition span:last-child {
+    text-align: right;
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__title-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(260px, 0.42fr);
+    gap: 46px;
+    align-items: end;
+    padding: 24px 0 28px;
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__eyebrow,
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__section-heading span,
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__question-label,
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__archive > div > span {
+    margin: 0;
+    color: var(--ara-news-mint);
+    font-family: var(--font-body-family);
+    font-size: var(--ara-news-label);
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__title-row h2 {
+    margin: 8px 0 0;
+    font-family: var(--font-heading-family);
+    font-size: clamp(47px, 5vw, 76px);
+    font-style: var(--font-heading-style);
+    font-weight: var(--font-heading-weight);
+    line-height: 0.92;
+    letter-spacing: -0.055em;
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__intro {
+    margin: 0;
+    color: var(--ara-news-muted);
+    font-family: var(--font-body-family);
+    font-size: var(--ara-news-body);
+    line-height: 1.6;
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__front {
+    display: grid;
+    grid-template-columns: minmax(0, 1.75fr) minmax(330px, 0.75fr);
+    gap: 30px;
+    padding-top: 30px;
+    border-bottom: 2px solid var(--ara-news-text);
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__lead {
+    min-width: 0;
+    padding: 0 30px 30px 0;
+    border-right: 1px solid var(--ara-news-border);
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__lead-media {
+    position: relative;
+    display: block;
+    overflow: hidden;
+    background: var(--ara-news-paper);
+    text-decoration: none;
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__lead-image {
+    display: block;
+    width: 100%;
+    height: clamp(370px, 40vw, 610px);
+    object-fit: cover;
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__lead-placeholder {
+    display: grid;
+    min-height: 520px;
+    place-items: center;
+    background:
+      radial-gradient(circle at 70% 30%, color-mix(in srgb, var(--ara-story-accent) 18%, transparent), transparent 35%),
+      var(--ara-news-paper);
+    color: var(--ara-news-muted);
+    font-family: var(--font-body-family);
+    font-size: var(--ara-news-label);
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__lead-label {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    padding: 7px 10px;
+    border: 1px solid var(--ara-news-text);
+    background: var(--ara-news-gold);
+    color: var(--ara-news-text);
+    font-family: var(--font-body-family);
+    font-size: var(--ara-news-label);
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__lead-copy {
+    padding-top: 20px;
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px 0;
+    color: var(--ara-news-muted);
+    font-family: var(--font-body-family);
+    font-size: var(--ara-news-label);
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__meta span {
+    padding: 0 8px;
+    border-right: 1px solid var(--ara-news-border);
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__meta span:first-child {
+    padding-left: 0;
+    color: var(--ara-news-mint);
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__meta span:last-child {
+    border-right: 0;
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__lead h3 {
+    margin: 15px 0 0;
+    font-family: var(--font-heading-family);
+    font-size: var(--ara-news-lead-title);
+    font-style: var(--font-heading-style);
+    font-weight: var(--font-heading-weight);
+    line-height: 0.98;
+    letter-spacing: -0.045em;
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__lead h3 a,
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__featured-story h4 a,
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__market-item h4 a,
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-item h4 a,
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__report h4 a {
+    text-decoration: none;
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__lead-copy > p {
+    max-width: 840px;
+    margin: 17px 0 0;
+    color: var(--ara-news-muted);
+    font-family: var(--font-body-family);
+    font-size: var(--ara-news-body);
+    line-height: 1.62;
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__lead-links,
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__story-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    align-items: center;
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__lead-links {
+    margin-top: 21px;
+    padding-top: 15px;
+    border-top: 1px solid var(--ara-news-border);
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__lead-links a,
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__story-links a,
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__report-link {
+    color: var(--ara-news-mint);
+    font-family: var(--font-body-family);
+    font-size: var(--ara-news-label);
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-decoration: none;
+    text-transform: uppercase;
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__lead-links a:last-child,
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__story-links a:last-child {
+    color: var(--ara-news-muted);
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__featured-rail {
+    display: grid;
+    align-content: start;
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__featured-rail-label {
+    grid-column: 1 / -1;
+    display: flex;
+    gap: 8px;
+    align-items: baseline;
+    margin-bottom: 16px;
+    padding-bottom: 11px;
+    border-bottom: 2px solid var(--ara-news-text);
+    color: var(--ara-news-text);
+    font-family: var(--font-body-family);
+    text-transform: uppercase;
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__featured-rail-label span {
+    color: var(--ara-news-mint);
+    font-size: var(--ara-news-label);
+    font-weight: 900;
+    letter-spacing: 0.12em;
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__featured-rail-label strong {
+    font-size: var(--ara-news-label);
+    font-weight: 900;
+    letter-spacing: 0.12em;
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__featured-story {
+    display: grid;
+    grid-template-columns: minmax(110px, 0.37fr) minmax(0, 0.63fr);
+    gap: 18px;
+    padding: 0 0 22px;
+    margin-bottom: 22px;
+    border-bottom: 1px solid var(--ara-news-border);
+    align-items: center;
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__featured-story:last-child {
+    margin-bottom: 0;
+    border-bottom: 0;
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__featured-media {
+    display: block;
+    overflow: hidden;
+    background: color-mix(in srgb, var(--ara-story-accent) 8%, var(--ara-news-paper));
+    text-decoration: none;
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__featured-image {
+    display: block;
+    width: 100%;
+    object-fit: contain;
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__featured-placeholder {
+    display: grid;
+    min-height: 155px;
+    place-items: center;
+    color: var(--ara-story-accent);
+    font-family: var(--font-heading-family);
+    font-size: 42px;
+    font-style: italic;
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__featured-copy {
+    min-width: 0;
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__featured-number {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    align-items: center;
+    margin-bottom: 9px;
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__featured-number span {
+    color: var(--ara-story-accent);
+    font-family: var(--font-heading-family);
+    font-size: 20px;
+    font-style: italic;
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__featured-number strong {
+    padding: 4px 6px;
+    border: 1px solid var(--ara-news-border);
+    font-family: var(--font-body-family);
+    font-size: var(--ara-news-label);
+    letter-spacing: 0.08em;
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__featured-story h4 {
+    margin: 10px 0 0;
+    font-family: var(--font-heading-family);
+    font-size: var(--ara-news-feature-title);
+    font-style: var(--font-heading-style);
+    font-weight: var(--font-heading-weight);
+    line-height: 1.03;
+    letter-spacing: -0.03em;
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__featured-story p {
+    margin: 9px 0 0;
+    color: var(--ara-news-muted);
+    font-family: var(--font-body-family);
+    font-size: var(--ara-news-body);
+    line-height: 1.45;
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__story-links {
+    margin-top: 11px;
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__question {
+    display: grid;
+    grid-template-columns: 190px minmax(0, 1fr) auto;
+    gap: 32px;
+    align-items: center;
+    margin: 30px 0 0;
+    padding: 26px 30px;
+    border-top: 1px solid var(--ara-news-text);
+    border-bottom: 1px solid var(--ara-news-text);
+    background: var(--ara-question-bg);
+    color: var(--ara-question-text);
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__question-label {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    color: currentColor;
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__question-label i {
+    flex: 1;
+    height: 1px;
+    background: currentColor;
+    opacity: 0.45;
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__question h3 {
+    margin: 0;
+    font-family: var(--font-heading-family);
+    font-size: clamp(28px, 3vw, 43px);
+    line-height: 1;
+    letter-spacing: -0.035em;
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__question p {
+    margin: 9px 0 0;
+    font-family: var(--font-body-family);
+    font-size: var(--ara-news-body);
+    line-height: 1.5;
+    opacity: 0.75;
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__question > a {
+    display: inline-flex;
+    gap: 9px;
+    align-items: center;
+    font-family: var(--font-body-family);
+    font-size: var(--ara-news-label);
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-decoration: none;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__middle {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 42px;
+    margin-top: 48px;
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-column {
+    padding-left: 42px;
+    border-left: 1px solid var(--ara-news-border);
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__section-heading {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 15px;
+    align-items: end;
+    padding-bottom: 12px;
+    border-bottom: 2px solid var(--ara-news-text);
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__section-heading--wide {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__section-heading > div {
+    display: flex;
+    gap: 10px;
+    align-items: baseline;
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__section-heading h3 {
+    margin: 0;
+    font-family: var(--font-heading-family);
+    font-size: 34px;
+    line-height: 1;
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__section-heading i {
+    height: 1px;
+    margin-bottom: 5px;
+    background: var(--ara-news-border);
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__market-list,
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-list {
+    display: grid;
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__market-item {
+    display: grid;
+    grid-template-columns: 70px minmax(0, 1fr) auto;
+    gap: 13px;
+    align-items: center;
+    min-height: 52px;
+    border-bottom: 1px solid var(--ara-news-border);
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__market-item > span {
+    padding: 5px 7px;
+    background: color-mix(in srgb, var(--ara-story-accent) 13%, var(--ara-news-paper));
+    color: var(--ara-story-accent);
+    font-family: var(--font-body-family);
+    font-size: var(--ara-news-label);
+    font-weight: 900;
+    text-align: center;
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__market-item h4 {
+    margin: 0;
+    font-family: var(--font-body-family);
+    font-size: var(--ara-news-body);
+    font-weight: 700;
+    line-height: 1.35;
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__market-item small {
+    color: var(--ara-news-muted);
+    font-family: var(--font-body-family);
+    font-size: var(--ara-news-label);
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-item {
+    padding: 16px 0 17px 14px;
+    border-bottom: 1px solid var(--ara-news-border);
+    border-left: 3px solid var(--ara-story-accent);
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-meta {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    font-family: var(--font-body-family);
+    font-size: var(--ara-news-label);
+    font-weight: 800;
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-meta span {
+    padding: 4px 6px;
+    border: 1px solid var(--ara-news-border);
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-meta strong {
+    color: var(--ara-story-accent);
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-item h4 {
+    margin: 9px 0 0;
+    font-family: var(--font-heading-family);
+    font-size: 20px;
+    line-height: 1.1;
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-item p {
+    margin: 7px 0 0;
+    color: var(--ara-news-muted);
+    font-family: var(--font-body-family);
+    font-size: var(--ara-news-body);
+    line-height: 1.45;
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__reports {
+    margin-top: 54px;
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__report-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0;
+    margin-top: 22px;
+    border-top: 1px solid var(--ara-news-border);
+    border-bottom: 1px solid var(--ara-news-border);
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__report {
+    min-height: 240px;
+    padding: 23px 25px;
+    border-right: 1px solid var(--ara-news-border);
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__report:last-child {
+    border-right: 0;
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__report-top {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    align-items: flex-start;
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__report-top strong,
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__report-top span {
+    display: block;
+    font-family: var(--font-body-family);
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__report-top strong {
+    font-size: 15px;
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__report-top span {
+    margin-top: 5px;
+    color: var(--ara-news-muted);
+    font-size: var(--ara-news-label);
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__change {
+    font-family: var(--font-body-family);
+    font-size: 15px;
+    font-weight: 900;
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__change--up {
+    color: #00A968;
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__change--down {
+    color: #D63E42;
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__report h4 {
+    margin: 19px 0 0;
+    font-family: var(--font-heading-family);
+    font-size: var(--ara-news-row-title);
+    line-height: 1.08;
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__report p {
+    margin: 12px 0 0;
+    color: var(--ara-news-muted);
+    font-family: var(--font-body-family);
+    font-size: var(--ara-news-body);
+    line-height: 1.5;
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__report-link {
+    display: inline-flex;
+    margin-top: 18px;
+    gap: 8px;
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__archive {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 38px;
+    align-items: center;
+    margin-top: 48px;
+    padding-top: 24px;
+    border-top: 2px solid var(--ara-news-text);
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__archive h3 {
+    margin: 8px 0 0;
+    font-family: var(--font-heading-family);
+    font-size: 31px;
+    line-height: 1;
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__archive p {
+    max-width: 760px;
+    margin: 9px 0 0;
+    color: var(--ara-news-muted);
+    font-family: var(--font-body-family);
+    font-size: var(--ara-news-body);
+    line-height: 1.5;
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__archive > a {
+    display: inline-flex;
+    min-height: 44px;
+    gap: 9px;
+    align-items: center;
+    padding: 10px 16px;
+    border: 1px solid var(--ara-news-text);
+    background: var(--ara-news-text);
+    color: #FFFFFF;
+    font-family: var(--font-body-family);
+    font-size: var(--ara-news-label);
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-decoration: none;
+    text-transform: uppercase;
+  }
+
+  @media screen and (max-width: 1099px) {
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__front {
+      grid-template-columns: 1fr;
+    }
+
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__lead {
+      padding-right: 0;
+      border-right: 0;
+    }
+
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__featured-rail {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 22px;
+      padding-bottom: 30px;
+      border-top: 1px solid var(--ara-news-border);
+    }
+
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__featured-story {
+      display: block;
+      padding-top: 22px;
+      margin-bottom: 0;
+      border-right: 1px solid var(--ara-news-border);
+      border-bottom: 0;
+      padding-right: 22px;
+    }
+
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__featured-story:last-child {
+      border-right: 0;
+      padding-right: 0;
+    }
+
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__featured-media {
+      margin-bottom: 15px;
+    }
+
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__question {
+      grid-template-columns: 150px minmax(0, 1fr);
+    }
+
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__question > a {
+      grid-column: 2;
+      justify-self: start;
+    }
+  }
+
+  @media screen and (max-width: 899px) {
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__title-row {
+      grid-template-columns: 1fr;
+      gap: 18px;
+    }
+
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__middle {
+      grid-template-columns: 1fr;
+      gap: 44px;
+    }
+
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-column {
+      padding-left: 0;
+      border-left: 0;
+    }
+
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__report-grid {
+      grid-template-columns: 1fr;
+    }
+
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__report {
+      border-right: 0;
+      border-bottom: 1px solid var(--ara-news-border);
+    }
+
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__report:last-child {
+      border-bottom: 0;
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__inner {
+      padding: 0 20px;
+    }
+
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__edition {
+      grid-template-columns: 1fr auto;
+    }
+
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__edition span:last-child {
+      display: none;
+    }
+
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__title-row h2 {
+      font-size: clamp(41px, 13vw, 58px);
+    }
+
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__lead-image,
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__lead-placeholder {
+      min-height: 290px;
+      height: 290px;
+    }
+
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__lead h3 {
+      font-size: var(--ara-news-mobile-lead-title);
+    }
+
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__featured-rail {
+      grid-template-columns: 1fr;
+      gap: 0;
+    }
+
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__featured-story {
+      display: grid;
+      grid-template-columns: 110px minmax(0, 1fr);
+      gap: 15px;
+      padding: 18px 0;
+      border-right: 0;
+      border-bottom: 1px solid var(--ara-news-border);
+    }
+
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__featured-story:last-child {
+      border-bottom: 0;
+    }
+
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__featured-media {
+      margin-bottom: 0;
+    }
+
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__featured-image,
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__featured-placeholder {
+      height: 125px;
+      min-height: 125px;
+    }
+
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__featured-story h4 {
+      font-size: var(--ara-news-mobile-feature-title);
+    }
+
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__question {
+      grid-template-columns: 1fr;
+      gap: 15px;
+      padding: 23px 0;
+      background: transparent;
+      color: var(--ara-news-text);
+    }
+
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__question > a {
+      grid-column: auto;
+    }
+
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__section-heading > div {
+      align-items: flex-start;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__market-item {
+      grid-template-columns: 58px minmax(0, 1fr);
+      padding: 9px 0;
+    }
+
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__market-item small {
+      grid-column: 2;
+    }
+
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__report h4 {
+      font-size: var(--ara-news-mobile-row-title);
+    }
+
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__archive {
+      grid-template-columns: 1fr;
+      gap: 22px;
+      align-items: start;
+    }
+
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__archive > a {
+      width: 100%;
+      justify-content: center;
+    }
+
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__intro,
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__lead-copy > p,
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__featured-story p,
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__question p,
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__market-item h4,
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-item p,
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__report p,
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__archive p {
+      font-size: var(--ara-news-mobile-body);
+    }
+
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__edition,
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__eyebrow,
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__meta,
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__lead-label,
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__lead-links a,
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__featured-number strong,
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__story-links a,
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__question-label,
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__question > a,
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__section-heading span,
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__market-item > span,
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__market-item small,
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-meta,
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__report-link,
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__archive > div > span,
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__archive > a {
+      font-size: var(--ara-news-mobile-label);
+    }
+  }
+</style>
+
+
+<style>
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__question {
+    display: grid;
+    grid-template-columns: minmax(0, 1.25fr) minmax(300px, 0.75fr);
+    gap: 0;
+    align-items: stretch;
+    overflow: hidden;
+    margin-top: 32px;
+    padding: 0;
+    border: 1px solid var(--ara-news-text);
+    background: var(--ara-question-bg);
+    color: var(--ara-question-text);
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__question-copy {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    justify-content: center;
+    padding: clamp(30px, 4vw, 56px);
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__question-label {
+    display: flex;
+    gap: 14px;
+    align-items: center;
+    color: var(--ara-news-gold);
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__question-label i {
+    flex: 1;
+    height: 1px;
+    background: currentColor;
+    opacity: 0.5;
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__question h3 {
+    max-width: 900px;
+    margin: 18px 0 0;
+    font-family: var(--font-heading-family);
+    font-size: clamp(34px, 4vw, 58px);
+    font-style: var(--font-heading-style);
+    font-weight: var(--font-heading-weight);
+    line-height: 0.98;
+    letter-spacing: -0.045em;
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__question p {
+    max-width: 760px;
+    margin: 15px 0 0;
+    font-family: var(--font-body-family);
+    font-size: var(--ara-news-body);
+    line-height: 1.55;
+    opacity: 0.74;
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__question-link {
+    display: inline-flex;
+    width: fit-content;
+    min-height: 42px;
+    gap: 9px;
+    align-items: center;
+    margin-top: 23px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid currentColor;
+    font-family: var(--font-body-family);
+    font-size: var(--ara-news-label);
+    font-weight: 800;
+    letter-spacing: 0.09em;
+    text-decoration: none;
+    text-transform: uppercase;
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__question > .ara-editorial-front-page__question-media {
+    display: block;
+    min-height: 310px;
+    overflow: hidden;
+    border-left: 1px solid color-mix(in srgb, var(--ara-question-text) 35%, transparent);
+    background: color-mix(in srgb, var(--ara-question-bg) 82%, black);
+    color: inherit;
+    font: inherit;
+    letter-spacing: normal;
+    text-decoration: none;
+    text-transform: none;
+    white-space: normal;
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__question-media picture {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__question-image {
+    display: block;
+    width: 100%;
+    height: 100%;
+    min-height: 310px;
+    aspect-ratio: var(--ara-question-ratio);
+    object-fit: cover;
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__question-placeholder {
+    position: relative;
+    display: grid;
+    width: 100%;
+    height: 100%;
+    min-height: 310px;
+    place-items: center;
+    overflow: hidden;
+    background:
+      radial-gradient(circle at 70% 30%, rgba(255,255,255,0.17), transparent 34%),
+      var(--ara-question-bg);
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__question-placeholder > span {
+    position: relative;
+    z-index: 1;
+    font-family: var(--font-heading-family);
+    font-size: 120px;
+    font-style: italic;
+    opacity: 0.72;
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__question-placeholder svg {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 42%;
+    fill: none;
+    stroke: var(--ara-news-gold);
+    stroke-width: 4;
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    border-top: 1px solid var(--ara-news-border);
+    border-left: 1px solid var(--ara-news-border);
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-item {
+    display: flex;
+    min-width: 0;
+    min-height: 300px;
+    flex-direction: column;
+    padding: 18px 17px 15px;
+    border-right: 1px solid var(--ara-news-border);
+    border-bottom: 1px solid var(--ara-news-border);
+    border-left: 0;
+    background: color-mix(in srgb, var(--ara-news-paper) 96%, transparent);
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-top {
+    display: flex;
+    min-height: 52px;
+    justify-content: space-between;
+    gap: 15px;
+    align-items: flex-start;
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-number {
+    font-family: var(--font-heading-family);
+    font-size: 25px;
+    font-style: italic;
+    line-height: 1;
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-logo {
+    display: block;
+    width: auto;
+    max-width: 76px;
+    height: 42px;
+    object-fit: contain;
+    object-position: right top;
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-logo-text {
+    max-width: 90px;
+    color: var(--ara-story-accent);
+    font-family: var(--font-body-family);
+    font-size: var(--ara-news-label);
+    font-weight: 900;
+    line-height: 1.05;
+    text-align: right;
+    text-transform: uppercase;
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px 8px;
+    align-items: center;
+    margin-top: 8px;
+    font-family: var(--font-body-family);
+    font-size: var(--ara-news-label);
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-meta span {
+    padding: 0;
+    border: 0;
+    color: var(--ara-story-accent);
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-meta b {
+    color: var(--ara-news-muted);
+    font-weight: 800;
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-meta strong {
+    margin-left: auto;
+    color: var(--ara-story-accent);
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-item h4 {
+    margin: 18px 0 0;
+    font-family: var(--font-heading-family);
+    font-size: 22px;
+    line-height: 1.08;
+    letter-spacing: -0.028em;
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-item p {
+    margin: 9px 0 0;
+    color: var(--ara-news-muted);
+    font-family: var(--font-body-family);
+    font-size: 12px;
+    line-height: 1.45;
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-sparkline {
+    margin-top: auto;
+    padding-top: 20px;
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-sparkline svg {
+    display: block;
+    width: 100%;
+    height: 43px;
+    overflow: visible;
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-sparkline-fill {
+    fill: color-mix(in srgb, var(--ara-news-rise) 13%, transparent);
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-sparkline-line {
+    fill: none;
+    stroke: var(--ara-news-rise);
+    stroke-width: 2;
+    vector-effect: non-scaling-stroke;
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-sparkline--down {
+    transform: scaleY(-1);
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-sparkline--down .ara-editorial-front-page__quick-sparkline-fill {
+    fill: color-mix(in srgb, var(--ara-news-fall) 13%, transparent);
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-sparkline--down .ara-editorial-front-page__quick-sparkline-line {
+    stroke: var(--ara-news-fall);
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-sparkline--flat {
+    opacity: 0.62;
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-footer {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    align-items: center;
+    margin-top: 8px;
+    color: var(--ara-news-muted);
+    font-family: var(--font-body-family);
+    font-size: var(--ara-news-label);
+    font-weight: 800;
+    text-transform: uppercase;
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-change--up {
+    color: var(--ara-news-rise);
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-change--down {
+    color: var(--ara-news-fall);
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-change--flat {
+    color: var(--ara-news-muted);
+  }
+
+  @media screen and (max-width: 1099px) {
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__question {
+      grid-template-columns: minmax(0, 1fr) minmax(270px, 0.65fr);
+    }
+
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__question > .ara-editorial-front-page__question-media {
+      grid-column: auto;
+      justify-self: stretch;
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__question {
+      grid-template-columns: 1fr;
+      gap: 0;
+      padding: 0;
+      background: var(--ara-question-bg);
+      color: var(--ara-question-text);
+    }
+
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__question-copy {
+      padding: 27px 22px 30px;
+    }
+
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__question h3 {
+      font-size: clamp(32px, 10vw, 46px);
+    }
+
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__question p {
+      font-size: var(--ara-news-mobile-body);
+    }
+
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__question-link {
+      font-size: var(--ara-news-mobile-label);
+    }
+
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__question > .ara-editorial-front-page__question-media,
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__question-image,
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__question-placeholder {
+      min-height: 230px;
+      border-left: 0;
+      border-top: 1px solid color-mix(in srgb, var(--ara-question-text) 35%, transparent);
+    }
+
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-list {
+      display: flex;
+      overflow-x: auto;
+      margin-right: -20px;
+      padding-right: 20px;
+      scrollbar-width: none;
+    }
+
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-list::-webkit-scrollbar {
+      display: none;
+    }
+
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-item {
+      flex: 0 0 268px;
+      min-height: 292px;
+    }
+
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-item h4 {
+      font-size: 21px;
+    }
+
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-item p {
+      font-size: 12px;
+    }
+
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-meta,
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-footer,
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-logo-text {
+      font-size: var(--ara-news-mobile-label);
+    }
+  }
+</style>
+
+<style>
+  @media screen and (max-width: 749px) {
+    #AraEditorialFrontPage-{{ section.id }} {
+      overflow-x: clip;
+    }
+
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__middle,
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__market-column,
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-column,
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__market-list,
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__market-item,
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__market-item h4,
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__market-item h4 a {
+      min-width: 0;
+      max-width: 100%;
+    }
+
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__market-item {
+      grid-template-columns: 62px minmax(0, 1fr);
+      gap: 12px;
+      align-items: start;
+      padding: 12px 0;
+    }
+
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__market-item > span {
+      width: 62px;
+      margin-top: 1px;
+    }
+
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__market-item h4 {
+      line-height: 1.3;
+    }
+
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__market-item h4 a {
+      display: block;
+      white-space: normal !important;
+      overflow-wrap: anywhere;
+      word-break: normal;
+    }
+
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__market-item small {
+      grid-column: 2;
+      min-width: 0;
+      margin-top: -3px;
+      white-space: normal;
+    }
+
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-column {
+      min-width: 0;
+      overflow: hidden;
+    }
+
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-list {
+      display: flex;
+      width: auto;
+      max-width: none;
+      gap: 0;
+      overflow-x: auto;
+      overflow-y: hidden;
+      margin-right: -20px;
+      padding-right: 20px;
+      scroll-snap-type: x mandatory;
+      scroll-padding-left: 0;
+      overscroll-behavior-x: contain;
+      touch-action: pan-x;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-list::-webkit-scrollbar {
+      display: none;
+    }
+
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-item {
+      flex: 0 0 min(82vw, 300px);
+      width: min(82vw, 300px);
+      min-width: 0;
+      max-width: min(82vw, 300px);
+      scroll-snap-align: start;
+      scroll-snap-stop: always;
+    }
+
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-item h4,
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-item h4 a,
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-item p {
+      min-width: 0;
+      max-width: 100%;
+      white-space: normal;
+      overflow-wrap: anywhere;
+    }
+  }
+</style>
+
+<style>
+  /* Fin Journal: independent editorial tiles */
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__market-list,
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-list {
+    gap: 16px;
+    border: 0;
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__market-item {
+    min-height: auto;
+    padding: 12px 16px;
+    border: 1px solid var(--ara-news-border);
+    border-radius: 4px;
+    background: var(--ara-news-paper);
+    box-shadow: 0 2px 6px rgb(22 27 46 / 4%);
+    transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__market-item > span {
+    border-radius: 3px;
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-item {
+    padding: 20px;
+    border: 1px solid var(--ara-news-border);
+    border-left: 4px solid var(--ara-story-accent);
+    border-radius: 4px;
+    background: var(--ara-news-paper);
+    box-shadow: 0 2px 6px rgb(22 27 46 / 4%);
+    transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__report-grid {
+    gap: 16px;
+    border: 0;
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__report {
+    border: 1px solid var(--ara-news-border);
+    border-top: 4px solid var(--ara-story-accent);
+    border-radius: 4px;
+    background: var(--ara-news-paper);
+    box-shadow: 0 2px 6px rgb(22 27 46 / 4%);
+    transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__market-item:hover,
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__market-item:focus-within,
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-item:hover,
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-item:focus-within,
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__report:hover,
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__report:focus-within {
+    border-color: var(--ara-story-accent);
+    box-shadow: 0 8px 18px rgb(22 27 46 / 11%);
+    transform: translateY(-2px);
+  }
+
+  @media screen and (max-width: 749px) {
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__market-list {
+      gap: 12px;
+    }
+
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__market-item {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--ara-news-border);
+    }
+
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-list {
+      gap: 12px;
+      padding-left: 0;
+    }
+
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-item {
+      padding: 18px;
+      border-left: 4px solid var(--ara-story-accent);
+    }
+
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__report {
+      border-bottom: 1px solid var(--ara-news-border);
+    }
+  }
+</style>
+
+<style>
+  /* Fin Journal: Market News horizontal strips */
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__market-list {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__market-item {
+    grid-template-columns: 72px minmax(0, 1fr) auto;
+    gap: 16px;
+    min-height: 58px;
+    padding: 11px 15px;
+    border: 1px solid var(--ara-news-border);
+    border-left: 4px solid var(--ara-story-accent);
+    border-radius: 3px;
+    background: var(--ara-news-paper);
+    box-shadow: none;
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__market-item > span {
+    min-width: 0;
+    padding: 5px 7px;
+    border-radius: 2px;
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__market-item h4 {
+    min-width: 0;
+    margin: 0;
+    font-size: 13px;
+    line-height: 1.25;
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__market-item h4 a {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__market-item small {
+    padding-left: 14px;
+    border-left: 1px solid var(--ara-news-border);
+    color: var(--ara-news-muted);
+    font-size: var(--ara-news-label);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__market-item:hover,
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__market-item:focus-within {
+    transform: none;
+    border-color: var(--ara-story-accent);
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--ara-story-accent) 18%, transparent);
+  }
+
+  @media screen and (max-width: 749px) {
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__market-list {
+      gap: 10px;
+    }
+
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__market-item {
+      grid-template-columns: 62px minmax(0, 1fr);
+      gap: 8px 12px;
+      min-height: 0;
+      padding: 12px;
+    }
+
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__market-item h4 a {
+      overflow: visible;
+      text-overflow: clip;
+      white-space: normal;
+    }
+
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__market-item small {
+      grid-column: 2;
+      padding-left: 0;
+      border-left: 0;
+    }
+  }
+</style>
+
+<style>
+  /* Restore the original Short Takes tile shape */
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0;
+    border-top: 1px solid var(--ara-news-border);
+    border-left: 1px solid var(--ara-news-border);
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-item {
+    min-height: 300px;
+    padding: 18px 17px 15px;
+    border-top: 0;
+    border-right: 1px solid var(--ara-news-border);
+    border-bottom: 1px solid var(--ara-news-border);
+    border-left: 0;
+    border-radius: 0;
+    background: color-mix(in srgb, var(--ara-news-paper) 96%, transparent);
+    box-shadow: none;
+    transform: none;
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-item:hover,
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-item:focus-within {
+    border-color: var(--ara-news-border);
+    border-left-color: transparent;
+    box-shadow: none;
+    transform: none;
+  }
+
+  @media screen and (max-width: 749px) {
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-list {
+      gap: 0;
+      padding-left: 0;
+    }
+
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-item {
+      padding: 18px 17px 15px;
+      border-left: 0;
+      border-radius: 0;
+    }
+  }
+</style>
+
+<style>
+  /* Fin. by Mintmark masthead */
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__title-row {
+    padding: 24px 28px;
+    border: 2px solid #161B2E;
+    background: #161B2E;
+    color: #D8F0E4;
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__title-row h2,
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__title-row p,
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__title-row .ara-editorial-front-page__eyebrow,
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__header-note,
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__title-row span {
+    color: #D8F0E4;
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__title-row .ara-editorial-front-page__eyebrow {
+    opacity: 0.82;
+  }
+
+  @media screen and (max-width: 749px) {
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__title-row {
+      padding: 22px 20px;
+    }
+  }
+</style>
+
+
+<style>
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-list {
+    display:grid;
+    grid-template-columns:1fr;
+    gap:12px;
+    border:0;
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-item {
+    display:grid;
+    grid-template-columns:84px minmax(0,1fr) 116px;
+    grid-template-rows:auto auto 1fr;
+    gap:7px 16px;
+    align-items:start;
+    min-width:0;
+    min-height:142px;
+    padding:16px 17px;
+    overflow:hidden;
+    border:1px solid var(--ara-news-border);
+    border-left:4px solid var(--ara-story-accent);
+    border-radius:8px;
+    background:color-mix(in srgb,var(--ara-news-paper) 97%,transparent);
+    box-shadow:0 3px 8px rgb(22 27 46 / 5%);
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-top {
+    grid-column:1;
+    grid-row:1 / 4;
+    display:flex;
+    min-width:0;
+    height:100%;
+    flex-direction:column;
+    gap:12px;
+    align-items:center;
+    justify-content:flex-start;
+    padding-right:13px;
+    border-right:1px solid var(--ara-news-border);
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-number {
+    align-self:flex-start;
+    color:var(--ara-story-accent);
+    font-family:var(--font-heading-family);
+    font-size:25px;
+    font-style:italic;
+    line-height:1;
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-logo {
+    display:block;
+    width:66px;
+    max-width:100%;
+    height:42px;
+    object-fit:contain;
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-logo-text {
+    max-width:70px;
+    text-align:center;
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-meta {
+    grid-column:2;
+    grid-row:1;
+    display:flex;
+    min-width:0;
+    gap:7px;
+    align-items:center;
+    flex-wrap:wrap;
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-meta span,
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-meta b,
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-meta strong {
+    min-width:0;
+    max-width:100%;
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-item h4 {
+    grid-column:2;
+    grid-row:2;
+    min-width:0;
+    margin:0;
+    font-size:clamp(20px,1.55vw,27px);
+    line-height:1.05;
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-item h4 a {
+    display:-webkit-box;
+    min-width:0;
+    max-width:100%;
+    overflow:hidden;
+    overflow-wrap:anywhere;
+    -webkit-box-orient:vertical;
+    -webkit-line-clamp:2;
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-item p {
+    grid-column:2;
+    grid-row:3;
+    display:-webkit-box;
+    min-width:0;
+    max-width:100%;
+    margin:0;
+    overflow:hidden;
+    color:var(--ara-news-muted);
+    line-height:1.4;
+    -webkit-box-orient:vertical;
+    -webkit-line-clamp:2;
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-sparkline {
+    grid-column:3;
+    grid-row:1 / 3;
+    align-self:end;
+    width:100%;
+    height:50px;
+    margin:0;
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-footer {
+    grid-column:3;
+    grid-row:3;
+    align-self:end;
+    min-width:0;
+    margin:0;
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-item:hover,
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-item:focus-within {
+    border-color:var(--ara-story-accent);
+    border-left-color:var(--ara-story-accent);
+    box-shadow:0 8px 18px rgb(22 27 46 / 9%);
+    transform:translateY(-1px);
+  }
+
+  @media screen and (max-width:1199px) and (min-width:900px) {
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__middle {
+      grid-template-columns:minmax(0,1.08fr) minmax(390px,.92fr);
+      gap:30px;
+    }
+
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-column {
+      padding-left:30px;
+    }
+
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-item {
+      grid-template-columns:72px minmax(0,1fr) 94px;
+      gap:7px 12px;
+      padding:14px;
+    }
+
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-logo {
+      width:55px;
+      height:36px;
+    }
+  }
+
+  @media screen and (max-width:899px) and (min-width:750px) {
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-list {
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:12px;
+    }
+
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-item {
+      grid-template-columns:70px minmax(0,1fr);
+      grid-template-rows:auto auto auto 1fr auto;
+      gap:8px 13px;
+      min-height:220px;
+    }
+
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-top {
+      grid-column:1;
+      grid-row:1 / 6;
+    }
+
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-meta,
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-item h4,
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-item p,
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-sparkline,
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-footer {
+      grid-column:2;
+    }
+
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-meta { grid-row:1; }
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-item h4 { grid-row:2; }
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-item p { grid-row:3; }
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-sparkline { grid-row:4; height:46px; }
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-footer { grid-row:5; }
+  }
+
+  @media screen and (max-width:749px) {
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-column {
+      overflow:visible;
+    }
+
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-list {
+      display:flex;
+      width:auto;
+      max-width:none;
+      gap:12px;
+      overflow-x:auto;
+      overflow-y:hidden;
+      margin-right:-20px;
+      padding:2px 20px 10px 0;
+      border:0;
+      scroll-snap-type:x mandatory;
+      scroll-padding-left:0;
+      overscroll-behavior-x:contain;
+      touch-action:pan-x;
+      -webkit-overflow-scrolling:touch;
+      scrollbar-width:none;
+    }
+
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-list::-webkit-scrollbar {
+      display:none;
+    }
+
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-item {
+      display:grid;
+      flex:0 0 min(86vw,330px);
+      width:min(86vw,330px);
+      max-width:min(86vw,330px);
+      grid-template-columns:64px minmax(0,1fr);
+      grid-template-rows:auto auto auto 1fr auto;
+      gap:8px 12px;
+      min-height:270px;
+      padding:17px 16px;
+      scroll-snap-align:start;
+      scroll-snap-stop:always;
+    }
+
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-top {
+      grid-column:1;
+      grid-row:1 / 6;
+      padding-right:10px;
+    }
+
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-meta,
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-item h4,
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-item p,
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-sparkline,
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-footer {
+      grid-column:2;
+    }
+
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-meta { grid-row:1; }
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-item h4 { grid-row:2; font-size:clamp(22px,7vw,29px); }
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-item p { grid-row:3; -webkit-line-clamp:3; }
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-sparkline { grid-row:4; height:48px; }
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-footer { grid-row:5; }
+
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-logo {
+      width:50px;
+      height:34px;
+    }
+
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-number {
+      font-size:23px;
+    }
+
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-item h4 a {
+      -webkit-line-clamp:3;
+    }
+  }
+</style>
+
+<style>
+  @media screen and (min-width: 1200px) {
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__middle {
+      grid-template-columns: minmax(0, .88fr) minmax(620px, 1.12fr);
+      gap: 28px;
+    }
+
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-column {
+      padding-left: 28px;
+    }
+
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-list {
+      gap: 12px;
+    }
+
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-item {
+      grid-template-columns: 72px minmax(0, 1fr) 190px;
+      grid-template-rows: auto auto auto;
+      gap: 7px 18px;
+      min-height: 148px;
+      padding: 16px 18px;
+      border-radius: 10px;
+    }
+
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-top {
+      grid-row: 1 / 4;
+      gap: 14px;
+      padding-right: 12px;
+    }
+
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-number {
+      font-size: 23px;
+    }
+
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-logo {
+      width: 55px;
+      height: 38px;
+    }
+
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-meta {
+      grid-column: 2;
+      grid-row: 1;
+      gap: 7px 9px;
+      margin: 0;
+    }
+
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-meta strong {
+      display: inline-flex;
+      align-items: center;
+      min-height: 22px;
+      padding: 3px 7px;
+      border: 1px solid color-mix(in srgb, var(--ara-story-accent) 38%, transparent);
+      border-radius: 999px;
+      background: color-mix(in srgb, var(--ara-story-accent) 8%, transparent);
+      color: var(--ara-story-accent);
+      line-height: 1;
+    }
+
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-item h4 {
+      grid-column: 2;
+      grid-row: 2;
+      margin: 0;
+      font-size: clamp(20px, 1.35vw, 24px);
+      line-height: 1.05;
+      letter-spacing: -.025em;
+    }
+
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-item h4 a {
+      display: block;
+      overflow: visible;
+      white-space: normal;
+      overflow-wrap: normal;
+      -webkit-line-clamp: unset;
+    }
+
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-item p {
+      grid-column: 2;
+      grid-row: 3;
+      display: block;
+      margin: 0;
+      overflow: visible;
+      font-size: 13px;
+      line-height: 1.38;
+      -webkit-line-clamp: unset;
+    }
+
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-sparkline {
+      grid-column: 3;
+      grid-row: 1 / 3;
+      align-self: center;
+      height: 57px;
+      margin: 0;
+      padding: 0;
+    }
+
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-sparkline svg {
+      height: 57px;
+    }
+
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-footer {
+      grid-column: 3;
+      grid-row: 3;
+      align-self: end;
+      margin: 0;
+      padding-top: 4px;
+      border-top: 1px solid color-mix(in srgb, var(--ara-news-border) 72%, transparent);
+    }
+  }
+
+  @media screen and (max-width: 1399px) and (min-width: 1200px) {
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-item {
+      grid-template-columns: 66px minmax(0, 1fr) 150px;
+      gap: 7px 14px;
+      padding: 15px 16px;
+    }
+
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-item h4 {
+      font-size: 20px;
+    }
+
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-item p {
+      font-size: 12px;
+    }
+  }
+
+  @media screen and (max-width: 1199px) and (min-width: 900px) {
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__middle {
+      grid-template-columns: minmax(0, .94fr) minmax(410px, 1.06fr);
+      gap: 26px;
+    }
+
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-column {
+      padding-left: 26px;
+    }
+
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-item {
+      grid-template-columns: 64px minmax(0, 1fr);
+      grid-template-rows: auto auto auto auto auto;
+      gap: 7px 12px;
+      min-height: 226px;
+      padding: 15px;
+      border-radius: 10px;
+    }
+
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-top {
+      grid-column: 1;
+      grid-row: 1 / 6;
+      padding-right: 10px;
+    }
+
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-meta,
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-item h4,
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-item p,
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-sparkline,
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-footer {
+      grid-column: 2;
+    }
+
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-meta { grid-row: 1; }
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-item h4 { grid-row: 2; font-size: 21px; }
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-item p { grid-row: 3; display: block; overflow: visible; -webkit-line-clamp: unset; font-size: 12.5px; }
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-sparkline { grid-row: 4; height: 48px; margin-top: 2px; }
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-footer { grid-row: 5; }
+
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-item h4 a {
+      display: block;
+      overflow: visible;
+      -webkit-line-clamp: unset;
+    }
+  }
+
+  @media screen and (max-width: 899px) and (min-width: 750px) {
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-list {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+      border: 0;
+    }
+
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-item {
+      min-height: 300px;
+      padding: 17px;
+      border-radius: 10px;
+    }
+
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-item h4 {
+      font-size: 22px;
+    }
+
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-item h4 a,
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-item p {
+      display: block;
+      overflow: visible;
+      -webkit-line-clamp: unset;
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-item {
+      flex-basis: min(88vw, 340px);
+      width: min(88vw, 340px);
+      max-width: min(88vw, 340px);
+      min-height: 310px;
+      border-radius: 10px;
+    }
+
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-item h4 {
+      font-size: clamp(22px, 6.5vw, 28px);
+    }
+
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-item h4 a,
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-item p {
+      display: block;
+      overflow: visible;
+      white-space: normal;
+      overflow-wrap: normal;
+      -webkit-line-clamp: unset;
+    }
+
+    #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__quick-item p {
+      font-size: 13px;
+      line-height: 1.45;
+    }
+  }
+</style>
+
+<style>
+  /* ============================================================
+     ARA-NR POLISH KIT + MOTION  (soft cards · accents · reveal)
+     ============================================================ */
+  {%- assign S = section.id -%}
+  #AraEditorialFrontPage-{{ S }} .ara-nr-ticker { border-radius: 12px; }
+
+  /* --- soft rounded corners on every content surface --- */
+  #AraEditorialFrontPage-{{ S }} .ara-nr-strip,
+  #AraEditorialFrontPage-{{ S }} .ara-nr-strip .ara-nr-flip__face,
+  #AraEditorialFrontPage-{{ S }} .ara-nr-sq,
+  #AraEditorialFrontPage-{{ S }} .ara-nr-sq .ara-nr-flip__face,
+  #AraEditorialFrontPage-{{ S }} .ara-nr-flip__inner { border-radius: 12px; }
+  #AraEditorialFrontPage-{{ S }} .ara-editorial-front-page__lead-media { border-radius: 14px; overflow: hidden; }
+  #AraEditorialFrontPage-{{ S }} .ara-editorial-front-page__featured-media { border-radius: 10px; overflow: hidden; }
+  #AraEditorialFrontPage-{{ S }} .ara-editorial-front-page__question { border-radius: 16px; overflow: hidden; }
+  #AraEditorialFrontPage-{{ S }} .ara-nr-map { border-radius: 14px; }
+  #AraEditorialFrontPage-{{ S }} .ara-nr-map__chip { border-radius: 8px; }
+
+  /* --- one soft shadow system --- */
+  #AraEditorialFrontPage-{{ S }} .ara-nr-strip .ara-nr-flip__face { box-shadow: 0 8px 20px rgba(22,27,46,.06); }
+  #AraEditorialFrontPage-{{ S }} .ara-nr-sq .ara-nr-flip__face { box-shadow: 0 10px 24px rgba(22,27,46,.06); }
+  #AraEditorialFrontPage-{{ S }} .ara-editorial-front-page__lead-media { box-shadow: 0 14px 34px rgba(22,27,46,.08); }
+  #AraEditorialFrontPage-{{ S }} .ara-editorial-front-page__question { box-shadow: 0 16px 40px rgba(22,27,46,.10); }
+  #AraEditorialFrontPage-{{ S }} .ara-nr-map { box-shadow: 0 10px 26px rgba(22,27,46,.06); }
+
+  /* --- accent nuance: gold tab under every section heading --- */
+  #AraEditorialFrontPage-{{ S }} .ara-editorial-front-page__section-heading { position: relative; }
+  #AraEditorialFrontPage-{{ S }} .ara-editorial-front-page__section-heading::after {
+    content: ""; position: absolute; left: 0; bottom: -2px; width: 46px; height: 3px;
+    background: var(--sec, var(--ara-news-gold)); border-radius: 3px;
+  }
+  /* --- WSJ-style rules: kill the misaligned floating hairline, add a clean thin rule
+         above each kicker + breathing room below, and vertical column dividers --- */
+  #AraEditorialFrontPage-{{ S }} .ara-editorial-front-page__section-heading { margin: 6px 0 22px; padding-bottom: 10px; }
+  #AraEditorialFrontPage-{{ S }} .ara-editorial-front-page__section-heading i { display: none; }
+  #AraEditorialFrontPage-{{ S }} .ara-editorial-front-page__section-heading::before {
+    content: ""; position: absolute; top: -12px; left: 0; right: 0; height: 1px;
+    background: var(--ara-news-border);
+  }
+  #AraEditorialFrontPage-{{ S }} .ara-nr-band3,
+  #AraEditorialFrontPage-{{ S }} .ara-nr-band4 { gap: 0; }
+  #AraEditorialFrontPage-{{ S }} .ara-nr-band3 > .ara-nr-col + .ara-nr-col,
+  #AraEditorialFrontPage-{{ S }} .ara-nr-band4 > .ara-nr-col + .ara-nr-col { border-left: 1px solid var(--ara-news-border); padding-left: 34px; }
+  #AraEditorialFrontPage-{{ S }} .ara-nr-band3 > .ara-nr-col:first-child,
+  #AraEditorialFrontPage-{{ S }} .ara-nr-band4 > .ara-nr-col:first-child { padding-right: 34px; }
+  @media (max-width: 989px) {
+    #AraEditorialFrontPage-{{ S }} .ara-nr-band3 > .ara-nr-col + .ara-nr-col,
+    #AraEditorialFrontPage-{{ S }} .ara-nr-band4 > .ara-nr-col + .ara-nr-col { border-left: 0; padding-left: 0; }
+    #AraEditorialFrontPage-{{ S }} .ara-nr-band3 > .ara-nr-col:first-child,
+    #AraEditorialFrontPage-{{ S }} .ara-nr-band4 > .ara-nr-col:first-child { padding-right: 0; }
+  }
+  /* mint hairline accent joining the strip column head */
+  #AraEditorialFrontPage-{{ S }} .ara-nr-strip .ara-nr-flip__front { border-top: 3px solid var(--sec, var(--ara-news-mint)); }
+  #AraEditorialFrontPage-{{ S }} .ara-nr-sq .ara-nr-flip__front { border-top: 3px solid var(--sec, var(--ara-news-mint)); }
+
+  /* --- per-section colour suite: section colour rides the trim --- */
+  #AraEditorialFrontPage-{{ S }} .ara-editorial-front-page__section-heading span { color: var(--sec, var(--ara-news-mint)); }
+  #AraEditorialFrontPage-{{ S }} .ara-nr-sq__num span { color: var(--sec, var(--ara-news-mint)); }
+  #AraEditorialFrontPage-{{ S }} .ara-nr-strip .ara-nr-flip__front .ara-nr-strip__tick b { color: var(--sec, var(--ara-news-mint)); }
+  #AraEditorialFrontPage-{{ S }} .ara-nr-map__foot a { color: var(--sec, var(--ara-news-mint)); }
+
+  /* --- hover life (shadow/colour only, no transform → no motion clash) --- */
+  #AraEditorialFrontPage-{{ S }} .ara-nr-map__chip,
+  #AraEditorialFrontPage-{{ S }} .ara-editorial-front-page__featured-story,
+  #AraEditorialFrontPage-{{ S }} .ara-editorial-front-page__lead-media { transition: box-shadow .25s ease, border-color .25s ease, background .25s ease; }
+  #AraEditorialFrontPage-{{ S }} .ara-nr-map__chip:hover { background: color-mix(in srgb, var(--sec, var(--ara-news-mint)) 10%, var(--ara-news-bg)); border-color: var(--sec, var(--ara-news-mint)); }
+  #AraEditorialFrontPage-{{ S }} .ara-editorial-front-page__lead-media:hover { box-shadow: 0 20px 46px rgba(22,27,46,.14); }
+  #AraEditorialFrontPage-{{ S }} .ara-nr-ticker__item { transition: color .2s ease; }
+  #AraEditorialFrontPage-{{ S }} .ara-nr-ticker__item:hover span { color: var(--ara-news-gold); }
+
+  /* --- scroll / touch reveal (staggered) --- */
+  #AraEditorialFrontPage-{{ S }}.is-animate .ara-nr-reveal {
+    opacity: 0; transform: translateY(16px);
+    transition: opacity .6s ease, transform .6s cubic-bezier(.2,.7,.2,1);
+    will-change: opacity, transform;
+  }
+  #AraEditorialFrontPage-{{ S }}.is-animate .ara-nr-reveal.is-in { opacity: 1; transform: none; }
+
+  @media (prefers-reduced-motion: reduce) {
+    #AraEditorialFrontPage-{{ S }}.is-animate .ara-nr-reveal { opacity: 1 !important; transform: none !important; transition: none; }
+  }
+</style>
+
+<script>
+  (function () {
+    var root = document.getElementById('AraEditorialFrontPage-{{ section.id }}');
+    if (!root) return;
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    root.classList.add('is-animate');
+
+    var sel = '.ara-editorial-front-page__lead, .ara-nr-strip, .ara-editorial-front-page__question,'
+            + '.ara-nr-sq, .ara-editorial-front-page__featured-story, .ara-nr-map__chip,'
+            + '.ara-editorial-front-page__section-heading';
+    var targets = Array.prototype.slice.call(root.querySelectorAll(sel));
+    targets.forEach(function (el) { el.classList.add('ara-nr-reveal'); });
+
+    if (reduce || !('IntersectionObserver' in window)) {
+      targets.forEach(function (el) { el.classList.add('is-in'); });
+      return;
+    }
+
+    // stagger within each visual group
+    ['.ara-nr-strip', '.ara-nr-band3 .ara-nr-sq', '.ara-nr-map__chip', '.ara-editorial-front-page__featured-story']
+      .forEach(function (g) {
+        Array.prototype.slice.call(root.querySelectorAll(g)).forEach(function (el, i) {
+          el.setAttribute('data-rd', (i % 6) * 70);
+        });
+      });
+
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        var el = e.target;
+        el.style.transitionDelay = (el.getAttribute('data-rd') || 0) + 'ms';
+        el.classList.add('is-in');
+        io.unobserve(el);
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+
+    targets.forEach(function (el) { io.observe(el); });
+  })();
+</script>
+
+
+{% schema %}
+{
+  "name": "Ara Editorial Front Page",
+  "max_blocks": 24,
+"settings": [
+    {
+      "type": "blog",
+      "id": "auto_fill_from_blog",
+      "label": "Auto-fill from blog",
+      "info": "Automatically pull the latest articles if no specific article is selected in blocks."
+    },
+    {
+      "type": "text",
+      "id": "edition_label",
+      "label": "Edition label",
+      "default": "MINTMARK DAILY"
+    },
+    {
+      "type": "text",
+      "id": "edition_note",
+      "label": "Edition note",
+      "default": "BUSINESS · MARKETS · COMPANIES"
+    },
+    {
+      "type": "header",
+      "content": "Masthead (Fin. by Mintmark bar)"
+    },
+    {
+      "type": "select",
+      "id": "masthead_position",
+      "label": "Masthead position",
+      "info": "Where the Fin. by Mintmark bar sits. Change it here — no code needed.",
+      "default": "above_ticker",
+      "options": [
+        { "value": "above_ticker", "label": "Above the ticker (very top)" },
+        { "value": "below_ticker", "label": "Below the ticker (above the news)" },
+        { "value": "under_question", "label": "Under the Company Question" }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Small heading",
+      "default": "MY PAPER"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Main heading",
+      "default": "The company paper."
+    },
+    {
+      "type": "textarea",
+      "id": "header_note",
+      "label": "Header note",
+      "default": "One lead story, supporting briefs, market headlines and company reports—arranged as one connected front page."
+    },
+    {
+      "type": "header",
+      "content": "Headline ticker"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_ticker",
+      "label": "Show headline ticker at top",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "ticker_label",
+      "label": "Ticker label",
+      "default": "LATEST"
+    },
+    {
+      "type": "range",
+      "id": "ticker_speed",
+      "label": "Ticker scroll time (seconds)",
+      "info": "Higher = slower scroll.",
+      "min": 20,
+      "max": 90,
+      "step": 5,
+      "default": 45
+    },
+    {
+      "type": "text",
+      "id": "market_heading",
+      "label": "Market news heading",
+      "default": "Market News"
+    },
+    {
+      "type": "text",
+      "id": "market_note",
+      "label": "Market news note",
+      "default": "LIVE"
+    },
+    {
+      "type": "range",
+      "id": "market_strip_count",
+      "label": "Market news flip strips shown",
+      "info": "How many market-news flip strips appear beside the lead story in Band 1.",
+      "min": 3,
+      "max": 8,
+      "step": 1,
+      "default": 5
+    },
+    {
+      "type": "text",
+      "id": "quick_heading",
+      "label": "Quick takes heading",
+      "default": "Short Takes"
+    },
+    {
+      "type": "text",
+      "id": "quick_note",
+      "label": "Quick takes note",
+      "default": "MARKET SNAPSHOTS"
+    },
+    {
+      "type": "text",
+      "id": "reports_heading",
+      "label": "Reports heading",
+      "default": "Interesting"
+    },
+    {
+      "type": "text",
+      "id": "reports_note",
+      "label": "Reports note",
+      "default": "STOCK REPORTS"
+    },
+    {
+      "type": "header",
+      "content": "Desktop typography"
+    },
+    {
+      "type": "range",
+      "id": "desktop_main_title_size",
+      "min": 38,
+      "max": 78,
+      "step": 2,
+      "unit": "px",
+      "label": "Lead story title",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "desktop_side_title_size",
+      "min": 20,
+      "max": 38,
+      "step": 1,
+      "unit": "px",
+      "label": "Featured story title",
+      "default": 27
+    },
+    {
+      "type": "range",
+      "id": "desktop_row_title_size",
+      "min": 19,
+      "max": 34,
+      "step": 1,
+      "unit": "px",
+      "label": "Report title",
+      "default": 26
+    },
+    {
+      "type": "range",
+      "id": "desktop_body_size",
+      "min": 12,
+      "max": 19,
+      "step": 1,
+      "unit": "px",
+      "label": "Body text",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "desktop_label_size",
+      "min": 8,
+      "max": 13,
+      "step": 1,
+      "unit": "px",
+      "label": "Labels",
+      "default": 10
+    },
+    {
+      "type": "header",
+      "content": "Mobile typography"
+    },
+    {
+      "type": "range",
+      "id": "mobile_main_title_size",
+      "min": 34,
+      "max": 58,
+      "step": 2,
+      "unit": "px",
+      "label": "Lead story title",
+      "default": 44
+    },
+    {
+      "type": "range",
+      "id": "mobile_side_title_size",
+      "min": 20,
+      "max": 34,
+      "step": 1,
+      "unit": "px",
+      "label": "Featured story title",
+      "default": 26
+    },
+    {
+      "type": "range",
+      "id": "mobile_row_title_size",
+      "min": 19,
+      "max": 32,
+      "step": 1,
+      "unit": "px",
+      "label": "Report title",
+      "default": 23
+    },
+    {
+      "type": "range",
+      "id": "mobile_body_size",
+      "min": 12,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "label": "Body text",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "mobile_label_size",
+      "min": 8,
+      "max": 12,
+      "step": 1,
+      "unit": "px",
+      "label": "Labels",
+      "default": 10
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "max_width",
+      "label": "Content width",
+      "default": "1700px",
+      "options": [
+        {
+          "value": "1300px",
+          "label": "Narrow"
+        },
+        {
+          "value": "1500px",
+          "label": "Medium"
+        },
+        {
+          "value": "1700px",
+          "label": "Wide"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 40,
+      "max": 110,
+      "step": 5,
+      "unit": "px",
+      "label": "Top spacing",
+      "default": 70
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 45,
+      "max": 120,
+      "step": 5,
+      "unit": "px",
+      "label": "Bottom spacing",
+      "default": 45
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background",
+      "default": "#F2F8F6"
+    },
+    {
+      "type": "color",
+      "id": "paper_color",
+      "label": "Paper",
+      "default": "#F7FCFA"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text",
+      "default": "#161B2E"
+    },
+    {
+      "type": "color",
+      "id": "muted_text_color",
+      "label": "Secondary text",
+      "default": "#646575"
+    },
+    {
+      "type": "color",
+      "id": "mint_color",
+      "label": "Mint",
+      "default": "#176D5C"
+    },
+    {
+      "type": "color",
+      "id": "gold_color",
+      "label": "Gold",
+      "default": "#E0A526"
+    },
+    {
+      "type": "color",
+      "id": "blue_color",
+      "label": "Blue",
+      "default": "#3A5BE0"
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Borders",
+      "default": "#C9BEA8"
+    },
+    {
+      "type": "color",
+      "id": "line_color",
+      "label": "Paper lines",
+      "default": "#1FA88F"
+    },
+    {
+      "type": "color",
+      "id": "rise_color",
+      "label": "Rising values",
+      "default": "#00C805"
+    },
+    {
+      "type": "color",
+      "id": "fall_color",
+      "label": "Falling values (readable red)",
+      "default": "#C93A32"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "lead_story",
+      "name": "Lead story",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "article",
+          "id": "article",
+          "label": "Select Shopify article"
+        },
+        {
+          "type": "text",
+          "id": "article_number",
+          "label": "Story label",
+          "default": "COVER STORY"
+        },
+        {
+          "type": "text",
+          "id": "story_type",
+          "label": "Fallback article type",
+          "default": "COVER STORY"
+        },
+        {
+          "type": "text",
+          "id": "ticker",
+          "label": "Fallback ticker",
+          "default": "AAPL"
+        },
+        {
+          "type": "text",
+          "id": "company",
+          "label": "Fallback company",
+          "default": "APPLE"
+        },
+        {
+          "type": "text",
+          "id": "domain",
+          "label": "Fallback domain",
+          "default": "TECHNOLOGY"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Fallback heading",
+          "default": "Apple: The Machine That Prints Value"
+        },
+        {
+          "type": "richtext",
+          "id": "description",
+          "label": "Fallback description",
+          "default": "<p>How Apple turned design, hardware and software into the world’s most profitable ecosystem.</p>"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Fallback desktop image"
+        },
+        {
+          "type": "image_picker",
+          "id": "mobile_image",
+          "label": "Fallback mobile image"
+        },
+        {
+          "type": "text",
+          "id": "placeholder_text",
+          "label": "Image placeholder",
+          "default": "SELECT A SHOPIFY ARTICLE"
+        },
+        {
+          "type": "text",
+          "id": "link_label",
+          "label": "Article link text",
+          "default": "READ THE STORY"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Fallback article link"
+        },
+        {
+          "type": "text",
+          "id": "company_module_label",
+          "label": "Company module link text",
+          "default": "OPEN COMPANY MODULE"
+        },
+        {
+          "type": "url",
+          "id": "company_module_link",
+          "label": "Company module link"
+        },
+        {
+          "type": "color",
+          "id": "accent_color",
+          "label": "Story accent",
+          "default": "#176D5C"
+        }
+      ]
+    },
+    {
+      "type": "featured_story",
+      "name": "Featured story",
+      "limit": 3,
+      "settings": [
+        {
+          "type": "article",
+          "id": "article",
+          "label": "Select Shopify article"
+        },
+        {
+          "type": "text",
+          "id": "number",
+          "label": "Story number",
+          "default": "01"
+        },
+        {
+          "type": "text",
+          "id": "story_type",
+          "label": "Fallback article type",
+          "default": "SHORT TAKE"
+        },
+        {
+          "type": "text",
+          "id": "ticker",
+          "label": "Fallback ticker",
+          "default": "NVDA"
+        },
+        {
+          "type": "text",
+          "id": "company",
+          "label": "Fallback company",
+          "default": "NVIDIA"
+        },
+        {
+          "type": "textarea",
+          "id": "heading",
+          "label": "Fallback headline",
+          "default": "NVIDIA’s chips power the newest generation of AI models."
+        },
+        {
+          "type": "textarea",
+          "id": "summary",
+          "label": "Fallback summary"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Fallback image"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_image",
+          "label": "Show story image",
+          "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "show_excerpt",
+          "label": "Show article excerpt",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "link_label",
+          "label": "Article link text",
+          "default": "READ"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Fallback article link"
+        },
+        {
+          "type": "text",
+          "id": "company_module_label",
+          "label": "Company module link text",
+          "default": "COMPANY FILE"
+        },
+        {
+          "type": "url",
+          "id": "company_module_link",
+          "label": "Company module link"
+        },
+        {
+          "type": "color",
+          "id": "accent_color",
+          "label": "Story accent",
+          "default": "#176D5C"
+        }
+      ]
+    },
+    {
+      "type": "market_news",
+      "name": "Market news item",
+      "settings": [
+        {
+          "type": "article",
+          "id": "article",
+          "label": "Select Shopify article"
+        },
+        {
+          "type": "text",
+          "id": "ticker",
+          "label": "Fallback ticker",
+          "default": "TSLA"
+        },
+        {
+          "type": "textarea",
+          "id": "heading",
+          "label": "Fallback headline",
+          "default": "Company results beat expectations."
+        },
+        {
+          "type": "textarea",
+          "id": "summary",
+          "label": "Back of flip tile (short detail)",
+          "info": "Shown on the reverse of the flip strip. Falls back to a generic prompt if empty.",
+          "default": "Tap to read the full story."
+        },
+        {
+          "type": "text",
+          "id": "time_label",
+          "label": "Fallback time",
+          "default": "2h ago"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Fallback article link"
+        },
+        {
+          "type": "color",
+          "id": "accent_color",
+          "label": "Ticker accent",
+          "default": "#176D5C"
+        }
+      ]
+    },
+    {
+      "type": "quick_take",
+      "name": "Short take",
+      "settings": [
+        {
+          "type": "article",
+          "id": "article",
+          "label": "Select Shopify article"
+        },
+        {
+          "type": "text",
+          "id": "number",
+          "label": "Number",
+          "default": "01"
+        },
+        {
+          "type": "text",
+          "id": "ticker",
+          "label": "Fallback ticker",
+          "default": "AMZN"
+        },
+        {
+          "type": "text",
+          "id": "company",
+          "label": "Fallback company",
+          "default": "AMAZON"
+        },
+        {
+          "type": "image_picker",
+          "id": "logo",
+          "label": "Company logo"
+        },
+        {
+          "type": "text",
+          "id": "logo_text",
+          "label": "Fallback logo text",
+          "default": "AMAZON"
+        },
+        {
+          "type": "text",
+          "id": "mark",
+          "label": "Fallback Mint mark",
+          "default": "Raise"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Fallback heading",
+          "default": "A clear company idea in thirty seconds."
+        },
+        {
+          "type": "textarea",
+          "id": "summary",
+          "label": "Fallback explanation",
+          "default": "Explain one business idea in a compact, easy-to-understand paragraph."
+        },
+        {
+          "type": "select",
+          "id": "sparkline_style",
+          "label": "Chart shape",
+          "default": "up",
+          "options": [
+            {
+              "value": "up",
+              "label": "Rising"
+            },
+            {
+              "value": "down",
+              "label": "Falling"
+            },
+            {
+              "value": "flat",
+              "label": "Mostly flat"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "direction",
+          "label": "Movement direction",
+          "default": "up",
+          "options": [
+            {
+              "value": "up",
+              "label": "Rising"
+            },
+            {
+              "value": "down",
+              "label": "Falling"
+            },
+            {
+              "value": "flat",
+              "label": "Unchanged"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "change",
+          "label": "Movement",
+          "default": "2.39%"
+        },
+        {
+          "type": "text",
+          "id": "period",
+          "label": "Period",
+          "default": "1Y"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Fallback article link"
+        },
+        {
+          "type": "color",
+          "id": "accent_color",
+          "label": "Take accent",
+          "default": "#E0A526"
+        }
+      ]
+    },
+    {
+      "type": "stock_report",
+      "name": "Stock report",
+      "limit": 3,
+      "settings": [
+        {
+          "type": "article",
+          "id": "article",
+          "label": "Select Shopify article"
+        },
+        {
+          "type": "text",
+          "id": "ticker",
+          "label": "Fallback ticker",
+          "default": "COST"
+        },
+        {
+          "type": "text",
+          "id": "company",
+          "label": "Fallback company",
+          "default": "Costco"
+        },
+        {
+          "type": "text",
+          "id": "change",
+          "label": "Change",
+          "default": "+18.4%"
+        },
+        {
+          "type": "select",
+          "id": "direction",
+          "label": "Change direction",
+          "default": "up",
+          "options": [
+            {
+              "value": "up",
+              "label": "Up"
+            },
+            {
+              "value": "down",
+              "label": "Down"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Fallback heading",
+          "default": "A company report worth reading."
+        },
+        {
+          "type": "textarea",
+          "id": "summary",
+          "label": "Fallback summary",
+          "default": "A concise explanation of the business and the number that matters."
+        },
+        {
+          "type": "text",
+          "id": "link_label",
+          "label": "Link text",
+          "default": "READ THE REPORT"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Fallback article link"
+        },
+        {
+          "type": "color",
+          "id": "accent_color",
+          "label": "Report accent",
+          "default": "#176D5C"
+        }
+      ]
+    },
+    {
+      "type": "question",
+      "name": "Company question",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "article",
+          "id": "article",
+          "label": "Optional Shopify article"
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Small heading",
+          "default": "THE COMPANY QUESTION"
+        },
+        {
+          "type": "textarea",
+          "id": "heading",
+          "label": "Question",
+          "default": "Costco makes razor-thin margins. So why can’t anybody beat it?"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description",
+          "default": "Follow one business question all the way down."
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Question image"
+        },
+        {
+          "type": "image_picker",
+          "id": "mobile_image",
+          "label": "Mobile question image"
+        },
+        {
+          "type": "select",
+          "id": "image_ratio",
+          "label": "Image ratio",
+          "default": "16 / 10",
+          "options": [
+            {
+              "value": "16 / 10",
+              "label": "Landscape"
+            },
+            {
+              "value": "4 / 3",
+              "label": "Classic"
+            },
+            {
+              "value": "1 / 1",
+              "label": "Square"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "link_label",
+          "label": "Link text",
+          "default": "EXPLORE THE QUESTION"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Fallback link"
+        },
+        {
+          "type": "color",
+          "id": "background_color",
+          "label": "Background",
+          "default": "#3A5BE0"
+        },
+        {
+          "type": "color",
+          "id": "text_color",
+          "label": "Text",
+          "default": "#FFFFFF"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Ara Editorial Front Page",
+      "blocks": [
+        {
+          "type": "lead_story"
+        },
+        {
+          "type": "featured_story",
+          "settings": {
+            "number": "01",
+            "ticker": "NVDA",
+            "company": "NVIDIA",
+            "heading": "NVIDIA’s chips power the newest generation of AI models.",
+            "accent_color": "#176D5C"
+          }
+        },
+        {
+          "type": "featured_story",
+          "settings": {
+            "number": "02",
+            "ticker": "AAPL",
+            "company": "Apple",
+            "heading": "Apple now makes more from Services than from iPhones.",
+            "accent_color": "#E0A526"
+          }
+        },
+        {
+          "type": "featured_story",
+          "settings": {
+            "number": "03",
+            "ticker": "COST",
+            "company": "Costco",
+            "heading": "A small margin can still build an enormous machine.",
+            "accent_color": "#3A5BE0"
+          }
+        },
+        {
+          "type": "question"
+        },
+        {
+          "type": "market_news",
+          "settings": {
+            "ticker": "TSLA",
+            "heading": "Tesla deliveries beat estimates for a second straight quarter.",
+            "time_label": "2h ago"
+          }
+        },
+        {
+          "type": "market_news",
+          "settings": {
+            "ticker": "META",
+            "heading": "Meta’s AI assistant crosses one billion monthly users.",
+            "time_label": "3h ago"
+          }
+        },
+        {
+          "type": "market_news",
+          "settings": {
+            "ticker": "JPM",
+            "heading": "JPMorgan raises its dividend after the latest stress test.",
+            "time_label": "4h ago"
+          }
+        },
+        {
+          "type": "market_news",
+          "settings": {
+            "ticker": "NKE",
+            "heading": "Nike cuts jobs as China sales disappoint.",
+            "time_label": "5h ago",
+            "accent_color": "#D63E42"
+          }
+        },
+        {
+          "type": "market_news",
+          "settings": {
+            "ticker": "WMT",
+            "heading": "Walmart expands same-day delivery to more cities.",
+            "time_label": "6h ago"
+          }
+        },
+        {
+          "type": "market_news",
+          "settings": {
+            "ticker": "KO",
+            "heading": "Coca-Cola raises prices while consumers keep buying.",
+            "time_label": "7h ago"
+          }
+        },
+        {
+          "type": "quick_take",
+          "settings": {
+            "number": "01",
+            "ticker": "NVDA",
+            "company": "NVIDIA",
+            "logo_text": "NVIDIA",
+            "mark": "Build",
+            "heading": "NVIDIA’s chips power AI models with over 1.5 trillion parameters.",
+            "summary": "The company that powered the AI boom is building an entire factory floor for computing.",
+            "sparkline_style": "up",
+            "direction": "up",
+            "change": "2.39%",
+            "period": "1Y",
+            "accent_color": "#1FA88F"
+          }
+        },
+        {
+          "type": "quick_take",
+          "settings": {
+            "number": "02",
+            "ticker": "AAPL",
+            "company": "APPLE",
+            "logo_text": "APPLE",
+            "mark": "Defend",
+            "heading": "Apple now makes more from Services than from iPhones.",
+            "summary": "The recurring-services layer has become central to Apple’s economics.",
+            "sparkline_style": "up",
+            "direction": "up",
+            "change": "1.75%",
+            "period": "1Y",
+            "accent_color": "#3A74C9"
+          }
+        },
+        {
+          "type": "quick_take",
+          "settings": {
+            "number": "03",
+            "ticker": "COST",
+            "company": "COSTCO",
+            "logo_text": "COSTCO",
+            "mark": "Earn",
+            "heading": "Costco pays its CEO less than $1M — less than many managers.",
+            "summary": "A different compensation structure reveals how the company thinks about leadership.",
+            "sparkline_style": "up",
+            "direction": "up",
+            "change": "0.81%",
+            "period": "1Y",
+            "accent_color": "#E0A526"
+          }
+        },
+        {
+          "type": "quick_take",
+          "settings": {
+            "number": "04",
+            "ticker": "KO",
+            "company": "COCA-COLA",
+            "logo_text": "COCA-COLA",
+            "mark": "Grow",
+            "heading": "Coca-Cola sells over 1.9 billion drinks every single day.",
+            "summary": "Distribution at global scale can be more powerful than the product itself.",
+            "sparkline_style": "down",
+            "direction": "down",
+            "change": "0.61%",
+            "period": "1Y",
+            "accent_color": "#176D5C"
+          }
+        },
+        {
+          "type": "stock_report",
+          "settings": {
+            "ticker": "COST",
+            "company": "Costco",
+            "change": "+18.4%",
+            "direction": "up",
+            "heading": "Membership economics make the business unusually durable.",
+            "summary": "Customers pay to shop, then keep returning because the value is difficult to replace."
+          }
+        },
+        {
+          "type": "stock_report",
+          "settings": {
+            "ticker": "DIS",
+            "company": "Disney",
+            "change": "+8.2%",
+            "direction": "up",
+            "heading": "Every character is a franchise, and every franchise is a theme park.",
+            "summary": "Disney turns stories into a system of films, products, parks and recurring attention.",
+            "accent_color": "#E0A526"
+          }
+        },
+        {
+          "type": "stock_report",
+          "settings": {
+            "ticker": "SBUX",
+            "company": "Starbucks",
+            "change": "-4.1%",
+            "direction": "down",
+            "heading": "The loyalty program is part of the business model.",
+            "summary": "The app turns routine purchases into data, stored value and repeat behavior.",
+            "accent_color": "#D63E42"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+
+<style>
+  /* Reorder: put Market News (inside .middle) before the Featured Pitch section */
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__inner {
+    display: flex;
+    flex-direction: column;
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__masthead {
+    order: 1;
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__middle {
+    order: 2;
+    margin-top: 0;
+    margin-bottom: 48px;
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__front {
+    order: 3;
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__question {
+    order: 4;
+  }
+
+  #AraEditorialFrontPage-{{ section.id }} .ara-editorial-front-page__reports {
+    order: 5;
+  }
+</style>
+

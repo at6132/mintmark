@@ -1,0 +1,899 @@
+<section
+  id="AraMissionPurpose-{{ section.id }}"
+  class="ara-mission-purpose"
+  style="
+    --ara-purpose-bg: {{ section.settings.background_color }};
+    --ara-purpose-paper: {{ section.settings.paper_color }};
+    --ara-purpose-text: {{ section.settings.text_color }};
+    --ara-purpose-muted: {{ section.settings.muted_text_color }};
+    --ara-purpose-mint: {{ section.settings.mint_color }};
+    --ara-purpose-gold: {{ section.settings.gold_color }};
+    --ara-purpose-blue: {{ section.settings.blue_color }};
+    --ara-purpose-blue-deep: {{ section.settings.blue_deep_color }};
+    --ara-purpose-border: {{ section.settings.border_color }};
+    --ara-purpose-max: {{ section.settings.max_width }};
+    --ara-purpose-top: {{ section.settings.padding_top }}px;
+    --ara-purpose-bottom: {{ section.settings.padding_bottom }}px;
+    --ara-purpose-heading-desktop: {{ section.settings.desktop_heading_size }}px;
+    --ara-purpose-body-desktop: {{ section.settings.desktop_body_size }}px;
+    --ara-purpose-label-desktop: {{ section.settings.desktop_label_size }}px;
+    --ara-purpose-card-title-desktop: {{ section.settings.desktop_card_title_size }}px;
+    --ara-purpose-card-text-desktop: {{ section.settings.desktop_card_text_size }}px;
+    --ara-purpose-heading-mobile: {{ section.settings.mobile_heading_size }}px;
+    --ara-purpose-body-mobile: {{ section.settings.mobile_body_size }}px;
+    --ara-purpose-label-mobile: {{ section.settings.mobile_label_size }}px;
+    --ara-purpose-card-title-mobile: {{ section.settings.mobile_card_title_size }}px;
+    --ara-purpose-card-text-mobile: {{ section.settings.mobile_card_text_size }}px;
+  "
+>
+  <div class="ara-mission-purpose__lines" aria-hidden="true"></div>
+
+  <div class="ara-mission-purpose__inner">
+    <div class="ara-mission-purpose__intro">
+      <div>
+        {% if section.settings.eyebrow != blank %}
+          <span class="ara-mission-purpose__eyebrow">
+            {{ section.settings.eyebrow | escape }}
+          </span>
+        {% endif %}
+
+        {% if section.settings.heading != blank %}
+          <h2 class="ara-mission-purpose__heading">
+            {{ section.settings.heading | escape | newline_to_br }}
+          </h2>
+        {% endif %}
+      </div>
+
+      {% if section.settings.description != blank %}
+        <div class="ara-mission-purpose__description">
+          {{ section.settings.description }}
+        </div>
+      {% endif %}
+    </div>
+
+    <div class="ara-mission-purpose__frame">
+      <div class="ara-mission-purpose__board">
+        <div class="ara-mission-purpose__column ara-mission-purpose__column--problem">
+          <div class="ara-mission-purpose__column-head">
+            <span>{{ section.settings.problem_heading | escape }}</span>
+            <small>{{ section.settings.problem_note | escape }}</small>
+          </div>
+
+          <div class="ara-mission-purpose__problem-cards">
+            {% for block in section.blocks %}
+              <article
+                class="ara-mission-purpose__problem-card"
+                {{ block.shopify_attributes }}
+              >
+                <span class="ara-mission-purpose__number">
+                  {{ forloop.index | prepend: '0' }}
+                </span>
+
+                <div>
+                  {% if block.settings.problem_title != blank %}
+                    <h3>{{ block.settings.problem_title | escape }}</h3>
+                  {% endif %}
+
+                  {% if block.settings.problem_text != blank %}
+                    <p>{{ block.settings.problem_text | escape }}</p>
+                  {% endif %}
+                </div>
+              </article>
+            {% endfor %}
+          </div>
+        </div>
+
+        <div class="ara-mission-purpose__bridge">
+          <span>{{ section.settings.bridge_label | escape }}</span>
+
+          <div class="ara-mission-purpose__bridge-line" aria-hidden="true"></div>
+
+          {% if section.settings.bridge_note != blank %}
+            <p>{{ section.settings.bridge_note | escape }}</p>
+          {% endif %}
+        </div>
+
+        <div class="ara-mission-purpose__column ara-mission-purpose__column--promise">
+          <div class="ara-mission-purpose__column-head">
+            <span>{{ section.settings.promise_heading | escape }}</span>
+            <small>{{ section.settings.promise_note | escape }}</small>
+          </div>
+
+          <div class="ara-mission-purpose__promise-cards">
+            {% for block in section.blocks %}
+              <article class="ara-mission-purpose__promise-card">
+                <span class="ara-mission-purpose__number">
+                  {{ forloop.index | prepend: '0' }}
+                </span>
+
+                <div>
+                  {% if block.settings.promise_title != blank %}
+                    <h3>{{ block.settings.promise_title | escape }}</h3>
+                  {% endif %}
+
+                  {% if block.settings.promise_text != blank %}
+                    <p>{{ block.settings.promise_text | escape }}</p>
+                  {% endif %}
+                </div>
+              </article>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {% if section.settings.bottom_statement != blank %}
+      <div class="ara-mission-purpose__statement">
+        <span>{{ section.settings.statement_label | escape }}</span>
+        <p>{{ section.settings.bottom_statement | escape }}</p>
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+<style>
+  #AraMissionPurpose-{{ section.id }} {
+    position: relative;
+    overflow: hidden;
+    padding: var(--ara-purpose-top) 0 var(--ara-purpose-bottom);
+    background: var(--ara-purpose-bg);
+    color: var(--ara-purpose-text);
+    isolation: isolate;
+  }
+
+  #AraMissionPurpose-{{ section.id }} * {
+    box-sizing: border-box;
+  }
+
+  #AraMissionPurpose-{{ section.id }} .ara-mission-purpose__lines {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    opacity: 0.45;
+    background-image:
+      repeating-linear-gradient(
+        to bottom,
+        transparent 0,
+        transparent 35px,
+        color-mix(in srgb, var(--ara-purpose-mint) 22%, transparent) 35px,
+        color-mix(in srgb, var(--ara-purpose-mint) 22%, transparent) 36px
+      );
+    pointer-events: none;
+  }
+
+  #AraMissionPurpose-{{ section.id }} .ara-mission-purpose__inner {
+    width: min(100%, var(--ara-purpose-max));
+    margin: 0 auto;
+    padding: 0 40px;
+  }
+
+  #AraMissionPurpose-{{ section.id }} .ara-mission-purpose__intro {
+    display: grid;
+    grid-template-columns: minmax(0, 0.95fr) minmax(320px, 0.55fr);
+    gap: clamp(30px, 5vw, 90px);
+    align-items: end;
+    margin-bottom: 44px;
+  }
+
+  #AraMissionPurpose-{{ section.id }} .ara-mission-purpose__eyebrow,
+  #AraMissionPurpose-{{ section.id }} .ara-mission-purpose__column-head span,
+  #AraMissionPurpose-{{ section.id }} .ara-mission-purpose__column-head small,
+  #AraMissionPurpose-{{ section.id }} .ara-mission-purpose__number,
+  #AraMissionPurpose-{{ section.id }} .ara-mission-purpose__bridge span,
+  #AraMissionPurpose-{{ section.id }} .ara-mission-purpose__statement span {
+    font-family: var(--font-body-family);
+    font-style: var(--font-body-style);
+    font-weight: 800;
+    line-height: 1.2;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  #AraMissionPurpose-{{ section.id }} .ara-mission-purpose__eyebrow {
+    display: inline-flex;
+    min-height: 31px;
+    align-items: center;
+    padding: 6px 11px;
+    border: 2px solid var(--ara-purpose-text);
+    border-radius: 8px;
+    background: var(--ara-purpose-gold);
+    color: var(--ara-purpose-text);
+    font-size: var(--ara-purpose-label-desktop);
+    box-shadow: 3px 3px 0 var(--ara-purpose-text);
+  }
+
+  #AraMissionPurpose-{{ section.id }} .ara-mission-purpose__heading {
+    max-width: 900px;
+    margin: 24px 0 0;
+    font-family: var(--font-heading-family);
+    font-size: var(--ara-purpose-heading-desktop);
+    font-style: var(--font-heading-style);
+    font-weight: var(--font-heading-weight);
+    line-height: 0.94;
+    letter-spacing: -0.055em;
+  }
+
+  #AraMissionPurpose-{{ section.id }} .ara-mission-purpose__description {
+    color: var(--ara-purpose-muted);
+    font-family: var(--font-body-family);
+    font-size: var(--ara-purpose-body-desktop);
+    font-style: var(--font-body-style);
+    font-weight: var(--font-body-weight);
+    line-height: 1.65;
+  }
+
+  #AraMissionPurpose-{{ section.id }} .ara-mission-purpose__description p {
+    margin: 0;
+  }
+
+  #AraMissionPurpose-{{ section.id }} .ara-mission-purpose__frame {
+    padding: 8px;
+    border: 2px solid var(--ara-purpose-text);
+    border-radius: 26px;
+    background: var(--ara-purpose-paper);
+    box-shadow:
+      10px 10px 0 var(--ara-purpose-gold),
+      18px 18px 0 color-mix(in srgb, var(--ara-purpose-mint) 66%, transparent);
+  }
+
+  #AraMissionPurpose-{{ section.id }} .ara-mission-purpose__board {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 230px minmax(0, 1fr);
+    gap: 24px;
+    align-items: stretch;
+    padding: clamp(30px, 4vw, 58px);
+    border: 3px solid var(--ara-purpose-text);
+    border-radius: 17px;
+    background:
+      linear-gradient(
+        90deg,
+        color-mix(in srgb, var(--ara-purpose-paper) 97%, white) 0 48%,
+        color-mix(in srgb, var(--ara-purpose-blue) 88%, var(--ara-purpose-blue-deep)) 48% 52%,
+        color-mix(in srgb, var(--ara-purpose-paper) 97%, white) 52% 100%
+      );
+  }
+
+  #AraMissionPurpose-{{ section.id }} .ara-mission-purpose__column {
+    min-width: 0;
+  }
+
+  #AraMissionPurpose-{{ section.id }} .ara-mission-purpose__column-head {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    align-items: flex-start;
+    padding-bottom: 15px;
+    border-bottom: 2px solid var(--ara-purpose-text);
+  }
+
+  #AraMissionPurpose-{{ section.id }} .ara-mission-purpose__column-head span,
+  #AraMissionPurpose-{{ section.id }} .ara-mission-purpose__column-head small {
+    font-size: var(--ara-purpose-label-desktop);
+  }
+
+  #AraMissionPurpose-{{ section.id }} .ara-mission-purpose__column-head small {
+    color: var(--ara-purpose-muted);
+    text-align: right;
+  }
+
+  #AraMissionPurpose-{{ section.id }} .ara-mission-purpose__problem-cards,
+  #AraMissionPurpose-{{ section.id }} .ara-mission-purpose__promise-cards {
+    display: grid;
+    gap: 14px;
+    margin-top: 20px;
+  }
+
+  #AraMissionPurpose-{{ section.id }} .ara-mission-purpose__problem-card,
+  #AraMissionPurpose-{{ section.id }} .ara-mission-purpose__promise-card {
+    display: grid;
+    grid-template-columns: 42px minmax(0, 1fr);
+    gap: 15px;
+    align-items: start;
+    padding: 20px;
+    border: 2px solid var(--ara-purpose-text);
+    border-radius: 14px;
+    box-shadow: 4px 4px 0 var(--ara-purpose-text);
+  }
+
+  #AraMissionPurpose-{{ section.id }} .ara-mission-purpose__problem-card {
+    background: color-mix(in srgb, var(--ara-purpose-paper) 94%, #f4b2a0);
+  }
+
+  #AraMissionPurpose-{{ section.id }} .ara-mission-purpose__promise-card {
+    background: color-mix(in srgb, var(--ara-purpose-paper) 90%, var(--ara-purpose-mint));
+  }
+
+  #AraMissionPurpose-{{ section.id }} .ara-mission-purpose__number {
+    display: grid;
+    width: 38px;
+    height: 38px;
+    place-items: center;
+    border: 2px solid currentColor;
+    border-radius: 50%;
+    font-size: var(--ara-purpose-label-desktop);
+  }
+
+  #AraMissionPurpose-{{ section.id }} .ara-mission-purpose__problem-card h3,
+  #AraMissionPurpose-{{ section.id }} .ara-mission-purpose__promise-card h3 {
+    margin: 0;
+    font-family: var(--font-heading-family);
+    font-size: var(--ara-purpose-card-title-desktop);
+    font-style: var(--font-heading-style);
+    font-weight: var(--font-heading-weight);
+    line-height: 1;
+  }
+
+  #AraMissionPurpose-{{ section.id }} .ara-mission-purpose__problem-card p,
+  #AraMissionPurpose-{{ section.id }} .ara-mission-purpose__promise-card p {
+    margin: 12px 0 0;
+    color: var(--ara-purpose-muted);
+    font-family: var(--font-body-family);
+    font-size: var(--ara-purpose-card-text-desktop);
+    font-style: var(--font-body-style);
+    font-weight: var(--font-body-weight);
+    line-height: 1.5;
+  }
+
+  #AraMissionPurpose-{{ section.id }} .ara-mission-purpose__bridge {
+    position: relative;
+    display: grid;
+    justify-items: center;
+    align-content: center;
+    gap: 20px;
+    min-width: 0;
+    padding: 28px 22px;
+    border: 2px solid var(--ara-purpose-text);
+    border-radius: 16px;
+    background:
+      linear-gradient(
+        180deg,
+        var(--ara-purpose-blue),
+        var(--ara-purpose-blue-deep)
+      );
+    color: #FFFFFF;
+    box-shadow: 5px 5px 0 var(--ara-purpose-gold);
+  }
+
+  #AraMissionPurpose-{{ section.id }} .ara-mission-purpose__bridge span {
+    color: var(--ara-purpose-gold);
+    font-size: var(--ara-purpose-label-desktop);
+    text-align: center;
+  }
+
+  #AraMissionPurpose-{{ section.id }} .ara-mission-purpose__bridge-line {
+    width: 2px;
+    height: 110px;
+    background:
+      repeating-linear-gradient(
+        to bottom,
+        var(--ara-purpose-gold) 0 10px,
+        transparent 10px 18px
+      );
+  }
+
+  #AraMissionPurpose-{{ section.id }} .ara-mission-purpose__bridge p {
+    max-width: 180px;
+    margin: 0;
+    color: rgba(255, 255, 255, 0.9);
+    font-family: var(--font-heading-family);
+    font-size: clamp(18px, 1.45vw, 24px);
+    font-style: var(--font-heading-style);
+    font-weight: var(--font-heading-weight);
+    line-height: 1.12;
+    overflow-wrap: anywhere;
+    text-align: center;
+  }
+
+  #AraMissionPurpose-{{ section.id }} .ara-mission-purpose__statement {
+    display: grid;
+    grid-template-columns: 180px minmax(0, 1fr);
+    gap: 24px;
+    align-items: center;
+    margin-top: 42px;
+    padding: 26px 30px;
+    border: 2px solid var(--ara-purpose-text);
+    border-radius: 16px;
+    background: var(--ara-purpose-blue-deep);
+    color: #FFFFFF;
+    box-shadow: 6px 6px 0 var(--ara-purpose-gold);
+  }
+
+  #AraMissionPurpose-{{ section.id }} .ara-mission-purpose__statement span {
+    color: var(--ara-purpose-gold);
+    font-size: var(--ara-purpose-label-desktop);
+  }
+
+  #AraMissionPurpose-{{ section.id }} .ara-mission-purpose__statement p {
+    margin: 0;
+    font-family: var(--font-heading-family);
+    font-size: clamp(30px, 3vw, 48px);
+    font-style: var(--font-heading-style);
+    font-weight: var(--font-heading-weight);
+    line-height: 1;
+  }
+
+  @media screen and (max-width: 1099px) {
+    #AraMissionPurpose-{{ section.id }} .ara-mission-purpose__intro {
+      grid-template-columns: 1fr;
+    }
+
+    #AraMissionPurpose-{{ section.id }} .ara-mission-purpose__board {
+      grid-template-columns: 1fr;
+      background: var(--ara-purpose-paper);
+    }
+
+    #AraMissionPurpose-{{ section.id }} .ara-mission-purpose__bridge {
+      grid-template-columns: auto 1fr auto;
+      justify-items: stretch;
+      align-items: center;
+      padding: 22px 24px;
+    }
+
+    #AraMissionPurpose-{{ section.id }} .ara-mission-purpose__bridge p {
+      max-width: none;
+      font-size: clamp(20px, 3vw, 28px);
+    }
+
+    #AraMissionPurpose-{{ section.id }} .ara-mission-purpose__bridge-line {
+      width: 100%;
+      height: 2px;
+      background:
+        repeating-linear-gradient(
+          to right,
+          var(--ara-purpose-gold) 0 10px,
+          transparent 10px 18px
+        );
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    #AraMissionPurpose-{{ section.id }} {
+      padding-top: calc(var(--ara-purpose-top) * 0.7);
+      padding-bottom: calc(var(--ara-purpose-bottom) * 0.7);
+    }
+
+    #AraMissionPurpose-{{ section.id }} .ara-mission-purpose__inner {
+      padding: 0 20px;
+    }
+
+    #AraMissionPurpose-{{ section.id }} .ara-mission-purpose__intro {
+      gap: 24px;
+      margin-bottom: 32px;
+    }
+
+    #AraMissionPurpose-{{ section.id }} .ara-mission-purpose__eyebrow,
+    #AraMissionPurpose-{{ section.id }} .ara-mission-purpose__column-head span,
+    #AraMissionPurpose-{{ section.id }} .ara-mission-purpose__column-head small,
+    #AraMissionPurpose-{{ section.id }} .ara-mission-purpose__number,
+    #AraMissionPurpose-{{ section.id }} .ara-mission-purpose__bridge span,
+    #AraMissionPurpose-{{ section.id }} .ara-mission-purpose__statement span {
+      font-size: var(--ara-purpose-label-mobile);
+    }
+
+    #AraMissionPurpose-{{ section.id }} .ara-mission-purpose__heading {
+      font-size: var(--ara-purpose-heading-mobile);
+    }
+
+    #AraMissionPurpose-{{ section.id }} .ara-mission-purpose__description {
+      font-size: var(--ara-purpose-body-mobile);
+    }
+
+    #AraMissionPurpose-{{ section.id }} .ara-mission-purpose__frame {
+      padding: 5px;
+      box-shadow:
+        5px 5px 0 var(--ara-purpose-gold),
+        10px 10px 0 color-mix(in srgb, var(--ara-purpose-mint) 66%, transparent);
+    }
+
+    #AraMissionPurpose-{{ section.id }} .ara-mission-purpose__board {
+      gap: 20px;
+      padding: 26px 20px;
+    }
+
+    #AraMissionPurpose-{{ section.id }} .ara-mission-purpose__column-head,
+    #AraMissionPurpose-{{ section.id }} .ara-mission-purpose__statement {
+      align-items: flex-start;
+      grid-template-columns: 1fr;
+    }
+
+    #AraMissionPurpose-{{ section.id }} .ara-mission-purpose__column-head small {
+      text-align: left;
+    }
+
+    #AraMissionPurpose-{{ section.id }} .ara-mission-purpose__problem-card,
+    #AraMissionPurpose-{{ section.id }} .ara-mission-purpose__promise-card {
+      padding: 18px;
+    }
+
+    #AraMissionPurpose-{{ section.id }} .ara-mission-purpose__problem-card h3,
+    #AraMissionPurpose-{{ section.id }} .ara-mission-purpose__promise-card h3 {
+      font-size: var(--ara-purpose-card-title-mobile);
+    }
+
+    #AraMissionPurpose-{{ section.id }} .ara-mission-purpose__problem-card p,
+    #AraMissionPurpose-{{ section.id }} .ara-mission-purpose__promise-card p {
+      font-size: var(--ara-purpose-card-text-mobile);
+    }
+
+    #AraMissionPurpose-{{ section.id }} .ara-mission-purpose__bridge {
+      grid-template-columns: 1fr;
+      justify-items: center;
+      padding: 24px 20px;
+    }
+
+    #AraMissionPurpose-{{ section.id }} .ara-mission-purpose__bridge p {
+      max-width: 260px;
+      font-size: clamp(24px, 8vw, 34px);
+    }
+
+    #AraMissionPurpose-{{ section.id }} .ara-mission-purpose__bridge-line {
+      width: 2px;
+      height: 70px;
+      background:
+        repeating-linear-gradient(
+          to bottom,
+          var(--ara-purpose-gold) 0 10px,
+          transparent 10px 18px
+        );
+    }
+
+    #AraMissionPurpose-{{ section.id }} .ara-mission-purpose__statement {
+      padding: 24px 22px;
+    }
+
+    #AraMissionPurpose-{{ section.id }} .ara-mission-purpose__statement p {
+      font-size: clamp(28px, 9vw, 40px);
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Ara Mission Purpose",
+  "max_blocks": 3,
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Small heading",
+      "default": "WHY THIS MATTERS"
+    },
+    {
+      "type": "textarea",
+      "id": "heading",
+      "label": "Main heading",
+      "default": "The problem is not\nlack of information."
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description",
+      "default": "<p>People are surrounded by financial information, but much of it is fragmented, intimidating or disconnected from real companies and everyday decisions.</p>"
+    },
+    {
+      "type": "text",
+      "id": "problem_heading",
+      "label": "Left column heading",
+      "default": "THE PROBLEM"
+    },
+    {
+      "type": "text",
+      "id": "problem_note",
+      "label": "Left column note",
+      "default": "WHAT GETS IN THE WAY"
+    },
+    {
+      "type": "text",
+      "id": "promise_heading",
+      "label": "Right column heading",
+      "default": "THE MINTMARK PROMISE"
+    },
+    {
+      "type": "text",
+      "id": "promise_note",
+      "label": "Right column note",
+      "default": "WHAT WE DO DIFFERENTLY"
+    },
+    {
+      "type": "text",
+      "id": "bridge_label",
+      "label": "Middle label",
+      "default": "FROM CONFUSION TO CLARITY"
+    },
+    {
+      "type": "textarea",
+      "id": "bridge_note",
+      "label": "Middle statement",
+      "default": "Build the bridge between information and understanding."
+    },
+    {
+      "type": "text",
+      "id": "statement_label",
+      "label": "Bottom statement label",
+      "default": "OUR PURPOSE"
+    },
+    {
+      "type": "textarea",
+      "id": "bottom_statement",
+      "label": "Bottom statement",
+      "default": "Make financial literacy feel useful, connected and possible."
+    },
+    {
+      "type": "header",
+      "content": "Desktop typography"
+    },
+    {
+      "type": "range",
+      "id": "desktop_heading_size",
+      "min": 44,
+      "max": 92,
+      "step": 2,
+      "unit": "px",
+      "label": "Main heading size",
+      "default": 68
+    },
+    {
+      "type": "range",
+      "id": "desktop_body_size",
+      "min": 13,
+      "max": 22,
+      "step": 1,
+      "unit": "px",
+      "label": "Description size",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "desktop_label_size",
+      "min": 8,
+      "max": 15,
+      "step": 1,
+      "unit": "px",
+      "label": "Small text size",
+      "default": 9
+    },
+    {
+      "type": "range",
+      "id": "desktop_card_title_size",
+      "min": 22,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "label": "Card heading size",
+      "default": 28
+    },
+    {
+      "type": "range",
+      "id": "desktop_card_text_size",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Card text size",
+      "default": 14
+    },
+    {
+      "type": "header",
+      "content": "Mobile typography"
+    },
+    {
+      "type": "range",
+      "id": "mobile_heading_size",
+      "min": 36,
+      "max": 66,
+      "step": 2,
+      "unit": "px",
+      "label": "Main heading size",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "mobile_body_size",
+      "min": 13,
+      "max": 19,
+      "step": 1,
+      "unit": "px",
+      "label": "Description size",
+      "default": 15
+    },
+    {
+      "type": "range",
+      "id": "mobile_label_size",
+      "min": 8,
+      "max": 14,
+      "step": 1,
+      "unit": "px",
+      "label": "Small text size",
+      "default": 9
+    },
+    {
+      "type": "range",
+      "id": "mobile_card_title_size",
+      "min": 22,
+      "max": 36,
+      "step": 1,
+      "unit": "px",
+      "label": "Card heading size",
+      "default": 26
+    },
+    {
+      "type": "range",
+      "id": "mobile_card_text_size",
+      "min": 12,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "label": "Card text size",
+      "default": 14
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "max_width",
+      "label": "Content width",
+      "default": "1600px",
+      "options": [
+        {
+          "value": "1300px",
+          "label": "Narrow"
+        },
+        {
+          "value": "1450px",
+          "label": "Medium"
+        },
+        {
+          "value": "1600px",
+          "label": "Wide"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 40,
+      "max": 120,
+      "step": 5,
+      "unit": "px",
+      "label": "Top spacing",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 40,
+      "max": 120,
+      "step": 5,
+      "unit": "px",
+      "label": "Bottom spacing",
+      "default": 80
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Section background",
+      "default": "#F2F8F6"
+    },
+    {
+      "type": "color",
+      "id": "paper_color",
+      "label": "Paper background",
+      "default": "#F7FCFA"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Main text",
+      "default": "#161B2E"
+    },
+    {
+      "type": "color",
+      "id": "muted_text_color",
+      "label": "Secondary text",
+      "default": "#646575"
+    },
+    {
+      "type": "color",
+      "id": "mint_color",
+      "label": "Mint accent",
+      "default": "#176D5C"
+    },
+    {
+      "type": "color",
+      "id": "gold_color",
+      "label": "Gold accent",
+      "default": "#E0A526"
+    },
+    {
+      "type": "color",
+      "id": "blue_color",
+      "label": "Blue accent",
+      "default": "#3A5BE0"
+    },
+    {
+      "type": "color",
+      "id": "blue_deep_color",
+      "label": "Deep blue",
+      "default": "#22389A"
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Soft border",
+      "default": "#C9BEA8"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "purpose_item",
+      "name": "Purpose comparison",
+      "settings": [
+        {
+          "type": "text",
+          "id": "problem_title",
+          "label": "Problem heading",
+          "default": "Too much jargon"
+        },
+        {
+          "type": "textarea",
+          "id": "problem_text",
+          "label": "Problem text",
+          "default": "Financial language often assumes knowledge before it has been built."
+        },
+        {
+          "type": "text",
+          "id": "promise_title",
+          "label": "Promise heading",
+          "default": "Clear explanations"
+        },
+        {
+          "type": "textarea",
+          "id": "promise_text",
+          "label": "Promise text",
+          "default": "We explain the idea first, then introduce the language that belongs to it."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Ara Mission Purpose",
+      "blocks": [
+        {
+          "type": "purpose_item",
+          "settings": {
+            "problem_title": "Too much jargon",
+            "problem_text": "Financial language often assumes knowledge before it has been built.",
+            "promise_title": "Clear explanations",
+            "promise_text": "We explain the idea first, then introduce the language that belongs to it."
+          }
+        },
+        {
+          "type": "purpose_item",
+          "settings": {
+            "problem_title": "Facts without context",
+            "problem_text": "Numbers feel meaningless when they are separated from the company and decisions behind them.",
+            "promise_title": "Real company context",
+            "promise_text": "We connect every concept to actual companies, industries and business choices."
+          }
+        },
+        {
+          "type": "purpose_item",
+          "settings": {
+            "problem_title": "Information overload",
+            "problem_text": "People are expected to follow markets, news and financial statements all at once.",
+            "promise_title": "A guided path",
+            "promise_text": "We organize learning into stages so understanding can grow in a deliberate order."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

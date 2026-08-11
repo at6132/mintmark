@@ -1,0 +1,1032 @@
+<section
+  id="AraMintIntro-{{ section.id }}"
+  class="ara-mint-intro"
+  style="
+    --ara-intro-bg: {{ section.settings.background_color }};
+    --ara-intro-paper: {{ section.settings.paper_color }};
+    --ara-intro-text: {{ section.settings.text_color }};
+    --ara-intro-muted: {{ section.settings.muted_text_color }};
+    --ara-intro-mint: {{ section.settings.mint_color }};
+    --ara-intro-gold: {{ section.settings.gold_color }};
+    --ara-intro-blue: {{ section.settings.blue_color }};
+    --ara-intro-border: {{ section.settings.border_color }};
+    --ara-intro-max: {{ section.settings.max_width }};
+    --ara-intro-top: {{ section.settings.padding_top }}px;
+    --ara-intro-bottom: {{ section.settings.padding_bottom }}px;
+    --ara-intro-heading-desktop: {{ section.settings.desktop_heading_size }}px;
+    --ara-intro-body-desktop: {{ section.settings.desktop_body_size }}px;
+    --ara-intro-label-desktop: {{ section.settings.desktop_label_size }}px;
+    --ara-intro-button-desktop: {{ section.settings.desktop_button_size }}px;
+    --ara-intro-card-title-desktop: {{ section.settings.desktop_card_title_size }}px;
+    --ara-intro-card-text-desktop: {{ section.settings.desktop_card_text_size }}px;
+    --ara-intro-heading-mobile: {{ section.settings.mobile_heading_size }}px;
+    --ara-intro-body-mobile: {{ section.settings.mobile_body_size }}px;
+    --ara-intro-label-mobile: {{ section.settings.mobile_label_size }}px;
+    --ara-intro-button-mobile: {{ section.settings.mobile_button_size }}px;
+    --ara-intro-card-title-mobile: {{ section.settings.mobile_card_title_size }}px;
+    --ara-intro-card-text-mobile: {{ section.settings.mobile_card_text_size }}px;
+  "
+>
+  <div class="ara-mint-intro__lines" aria-hidden="true"></div>
+
+  <div class="ara-mint-intro__inner">
+    <div class="ara-mint-intro__main-frame">
+      <div class="ara-mint-intro__main">
+        <div class="ara-mint-intro__copy">
+          <div class="ara-mint-intro__meta">
+            {% if section.settings.eyebrow != blank %}
+              <span class="ara-mint-intro__eyebrow">
+                {{ section.settings.eyebrow | escape }}
+              </span>
+            {% endif %}
+
+            {% if section.settings.folio != blank %}
+              <span class="ara-mint-intro__folio">
+                {{ section.settings.folio | escape }}
+              </span>
+            {% endif %}
+          </div>
+
+          {% if section.settings.heading != blank %}
+            <h1 class="ara-mint-intro__heading">
+              {{ section.settings.heading | escape | newline_to_br }}
+            </h1>
+          {% endif %}
+
+          {% if section.settings.description != blank %}
+            <div class="ara-mint-intro__description">
+              {{ section.settings.description }}
+            </div>
+          {% endif %}
+
+          <div class="ara-mint-intro__buttons">
+            {% if section.settings.primary_button_label != blank %}
+              <a
+                class="ara-mint-intro__button ara-mint-intro__button--primary"
+                {% if section.settings.primary_button_link != blank %}
+                  href="{{ section.settings.primary_button_link }}"
+                {% else %}
+                  role="link"
+                  aria-disabled="true"
+                {% endif %}
+              >
+                {{ section.settings.primary_button_label | escape }}
+              </a>
+            {% endif %}
+
+            {% if section.settings.secondary_button_label != blank %}
+              <a
+                class="ara-mint-intro__button ara-mint-intro__button--secondary"
+                {% if section.settings.secondary_button_link != blank %}
+                  href="{{ section.settings.secondary_button_link }}"
+                {% else %}
+                  role="link"
+                  aria-disabled="true"
+                {% endif %}
+              >
+                {{ section.settings.secondary_button_label | escape }}
+              </a>
+            {% endif %}
+          </div>
+
+          {% if section.settings.note != blank %}
+            <p class="ara-mint-intro__note">
+              {{ section.settings.note | escape }}
+            </p>
+          {% endif %}
+        </div>
+
+        <div class="ara-mint-intro__visual">
+          <div class="ara-mint-intro__visual-frame">
+            {% if section.settings.image != blank %}
+              {{
+                section.settings.image
+                | image_url: width: 1800
+                | image_tag:
+                  widths: '500, 750, 1000, 1400, 1800',
+                  sizes: '(max-width: 749px) 100vw, 48vw',
+                  loading: 'eager',
+                  class: 'ara-mint-intro__image',
+                  alt: section.settings.image.alt
+              }}
+            {% else %}
+              <div class="ara-mint-intro__placeholder">
+                {{ 'lifestyle-1' | placeholder_svg_tag: 'ara-mint-intro__placeholder-svg' }}
+              </div>
+            {% endif %}
+
+            {% if section.settings.image_label != blank %}
+              <span class="ara-mint-intro__image-label">
+                {{ section.settings.image_label | escape }}
+              </span>
+            {% endif %}
+          </div>
+
+          {% if section.settings.side_note != blank %}
+            <div class="ara-mint-intro__side-note">
+              {{ section.settings.side_note | escape }}
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    {% if section.blocks.size > 0 %}
+      <div class="ara-mint-intro__cards">
+        {% for block in section.blocks %}
+          <article
+            class="ara-mint-intro__card ara-mint-intro__card--{{ block.settings.style }}"
+            {{ block.shopify_attributes }}
+          >
+            <span class="ara-mint-intro__card-number">
+              {{ forloop.index | prepend: '0' }}
+            </span>
+
+            <div class="ara-mint-intro__card-copy">
+              {% if block.settings.title != blank %}
+                <h2>{{ block.settings.title | escape }}</h2>
+              {% endif %}
+
+              {% if block.settings.text != blank %}
+                <p>{{ block.settings.text | escape }}</p>
+              {% endif %}
+            </div>
+
+            {% if block.settings.link_label != blank %}
+              <a
+                class="ara-mint-intro__card-link"
+                {% if block.settings.link != blank %}
+                  href="{{ block.settings.link }}"
+                {% else %}
+                  role="link"
+                  aria-disabled="true"
+                {% endif %}
+              >
+                {{ block.settings.link_label | escape }}
+              </a>
+            {% endif %}
+          </article>
+        {% endfor %}
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+<style>
+  #AraMintIntro-{{ section.id }} {
+    position: relative;
+    overflow: hidden;
+    padding: var(--ara-intro-top) 0 var(--ara-intro-bottom);
+    background: var(--ara-intro-bg);
+    color: var(--ara-intro-text);
+    isolation: isolate;
+  }
+
+  #AraMintIntro-{{ section.id }} * {
+    box-sizing: border-box;
+  }
+
+  #AraMintIntro-{{ section.id }} .ara-mint-intro__lines {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    opacity: 0.48;
+    background-image:
+      repeating-linear-gradient(
+        to bottom,
+        transparent 0,
+        transparent 35px,
+        color-mix(in srgb, var(--ara-intro-mint) 22%, transparent) 35px,
+        color-mix(in srgb, var(--ara-intro-mint) 22%, transparent) 36px
+      );
+    pointer-events: none;
+  }
+
+  #AraMintIntro-{{ section.id }} .ara-mint-intro__inner {
+    width: min(100%, var(--ara-intro-max));
+    margin: 0 auto;
+    padding: 0 40px;
+  }
+
+  #AraMintIntro-{{ section.id }} .ara-mint-intro__main-frame {
+    padding: 8px;
+    border: 2px solid var(--ara-intro-text);
+    border-radius: 26px;
+    background: var(--ara-intro-paper);
+    box-shadow:
+      10px 10px 0 var(--ara-intro-gold),
+      18px 18px 0 color-mix(in srgb, var(--ara-intro-mint) 68%, transparent);
+  }
+
+  #AraMintIntro-{{ section.id }} .ara-mint-intro__main {
+    display: grid;
+    grid-template-columns: minmax(0, 1.02fr) minmax(360px, 0.98fr);
+    gap: clamp(34px, 5vw, 82px);
+    align-items: center;
+    padding: clamp(34px, 5vw, 74px);
+    border: 3px solid var(--ara-intro-text);
+    border-radius: 17px;
+    background:
+      radial-gradient(
+        circle at 110% 110%,
+        color-mix(in srgb, var(--ara-intro-mint) 15%, transparent) 0 28%,
+        transparent 29%
+      ),
+      linear-gradient(
+        145deg,
+        color-mix(in srgb, var(--ara-intro-paper) 96%, white),
+        color-mix(in srgb, var(--ara-intro-bg) 94%, transparent)
+      );
+  }
+
+  #AraMintIntro-{{ section.id }} .ara-mint-intro__copy {
+    min-width: 0;
+  }
+
+  #AraMintIntro-{{ section.id }} .ara-mint-intro__meta {
+    display: flex;
+    justify-content: space-between;
+    gap: 18px;
+    align-items: center;
+    margin-bottom: 25px;
+  }
+
+  #AraMintIntro-{{ section.id }} .ara-mint-intro__eyebrow,
+  #AraMintIntro-{{ section.id }} .ara-mint-intro__folio,
+  #AraMintIntro-{{ section.id }} .ara-mint-intro__image-label,
+  #AraMintIntro-{{ section.id }} .ara-mint-intro__side-note,
+  #AraMintIntro-{{ section.id }} .ara-mint-intro__note,
+  #AraMintIntro-{{ section.id }} .ara-mint-intro__card-number {
+    font-family: var(--font-body-family);
+    font-style: var(--font-body-style);
+    font-weight: 800;
+    line-height: 1.2;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  #AraMintIntro-{{ section.id }} .ara-mint-intro__eyebrow {
+    display: inline-flex;
+    min-height: 32px;
+    align-items: center;
+    padding: 6px 11px;
+    border: 2px solid var(--ara-intro-text);
+    border-radius: 8px;
+    background: var(--ara-intro-gold);
+    color: var(--ara-intro-text);
+    font-size: var(--ara-intro-label-desktop);
+    box-shadow: 3px 3px 0 var(--ara-intro-text);
+  }
+
+  #AraMintIntro-{{ section.id }} .ara-mint-intro__folio {
+    color: var(--ara-intro-muted);
+    font-size: var(--ara-intro-label-desktop);
+    text-align: right;
+  }
+
+  #AraMintIntro-{{ section.id }} .ara-mint-intro__heading {
+    max-width: 820px;
+    margin: 0;
+    color: var(--ara-intro-text);
+    font-family: var(--font-heading-family);
+    font-size: var(--ara-intro-heading-desktop);
+    font-style: var(--font-heading-style);
+    font-weight: var(--font-heading-weight);
+    line-height: 0.93;
+    letter-spacing: -0.055em;
+    text-wrap: balance;
+  }
+
+  #AraMintIntro-{{ section.id }} .ara-mint-intro__description {
+    max-width: 690px;
+    margin-top: 27px;
+    color: var(--ara-intro-muted);
+    font-family: var(--font-body-family);
+    font-size: var(--ara-intro-body-desktop);
+    font-style: var(--font-body-style);
+    font-weight: var(--font-body-weight);
+    line-height: 1.64;
+  }
+
+  #AraMintIntro-{{ section.id }} .ara-mint-intro__description p {
+    margin: 0;
+  }
+
+  #AraMintIntro-{{ section.id }} .ara-mint-intro__buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-top: 31px;
+  }
+
+  #AraMintIntro-{{ section.id }} .ara-mint-intro__button {
+    display: inline-flex;
+    min-width: 188px;
+    min-height: 50px;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 22px;
+    border: 2px solid currentColor;
+    border-radius: 8px;
+    font-family: var(--font-body-family);
+    font-size: var(--ara-intro-button-desktop);
+    font-style: var(--font-body-style);
+    font-weight: 800;
+    line-height: 1.2;
+    letter-spacing: 0.12em;
+    text-align: center;
+    text-decoration: none;
+    text-transform: uppercase;
+    box-shadow: 4px 4px 0 currentColor;
+    transition:
+      transform 0.2s ease,
+      box-shadow 0.2s ease;
+  }
+
+  #AraMintIntro-{{ section.id }} .ara-mint-intro__button:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0 currentColor;
+  }
+
+  #AraMintIntro-{{ section.id }} .ara-mint-intro__button--primary {
+    background: var(--ara-intro-mint);
+    color: #FFFFFF;
+  }
+
+  #AraMintIntro-{{ section.id }} .ara-mint-intro__button--secondary {
+    background: var(--ara-intro-gold);
+    color: var(--ara-intro-text);
+  }
+
+  #AraMintIntro-{{ section.id }} .ara-mint-intro__note {
+    margin: 48px 0 0;
+    padding-top: 16px;
+    border-top: 1px dashed color-mix(in srgb, var(--ara-intro-text) 34%, transparent);
+    color: var(--ara-intro-muted);
+    font-size: var(--ara-intro-label-desktop);
+  }
+
+  #AraMintIntro-{{ section.id }} .ara-mint-intro__visual {
+    position: relative;
+    min-width: 0;
+  }
+
+  #AraMintIntro-{{ section.id }} .ara-mint-intro__visual-frame {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 4 / 3;
+    padding: 7px;
+    border: 2px solid var(--ara-intro-text);
+    border-radius: 22px;
+    background: var(--ara-intro-paper);
+    box-shadow:
+      8px 8px 0 var(--ara-intro-blue),
+      14px 14px 0 color-mix(in srgb, var(--ara-intro-gold) 72%, transparent);
+  }
+
+  #AraMintIntro-{{ section.id }} .ara-mint-intro__image,
+  #AraMintIntro-{{ section.id }} .ara-mint-intro__placeholder,
+  #AraMintIntro-{{ section.id }} .ara-mint-intro__placeholder-svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  #AraMintIntro-{{ section.id }} .ara-mint-intro__image,
+  #AraMintIntro-{{ section.id }} .ara-mint-intro__placeholder-svg {
+    border: 3px solid var(--ara-intro-text);
+    border-radius: 14px;
+    object-fit: cover;
+  }
+
+  #AraMintIntro-{{ section.id }} .ara-mint-intro__placeholder-svg {
+    background: var(--ara-intro-paper);
+  }
+
+  #AraMintIntro-{{ section.id }} .ara-mint-intro__image-label {
+    position: absolute;
+    right: 18px;
+    bottom: 18px;
+    left: 18px;
+    padding: 8px 12px;
+    border: 2px solid var(--ara-intro-text);
+    border-radius: 8px;
+    background: var(--ara-intro-gold);
+    color: var(--ara-intro-text);
+    font-size: var(--ara-intro-label-desktop);
+    text-align: center;
+    box-shadow: 3px 3px 0 var(--ara-intro-text);
+  }
+
+  #AraMintIntro-{{ section.id }} .ara-mint-intro__side-note {
+    position: absolute;
+    top: 30px;
+    right: -42px;
+    width: 180px;
+    padding: 9px 12px;
+    border: 2px solid var(--ara-intro-text);
+    border-radius: 8px;
+    background: var(--ara-intro-blue);
+    color: #FFFFFF;
+    font-size: var(--ara-intro-label-desktop);
+    text-align: center;
+    transform: rotate(4deg);
+    box-shadow: 3px 3px 0 var(--ara-intro-text);
+  }
+
+  #AraMintIntro-{{ section.id }} .ara-mint-intro__cards {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 24px;
+    margin-top: 42px;
+  }
+
+  #AraMintIntro-{{ section.id }} .ara-mint-intro__card {
+    position: relative;
+    display: grid;
+    grid-template-columns: 48px minmax(0, 1fr);
+    gap: 18px;
+    min-height: 190px;
+    align-content: start;
+    padding: 26px;
+    border: 2px solid var(--ara-intro-text);
+    border-radius: 16px;
+    box-shadow: 6px 6px 0 var(--ara-intro-text);
+  }
+
+  #AraMintIntro-{{ section.id }} .ara-mint-intro__card--cream {
+    background: var(--ara-intro-paper);
+  }
+
+  #AraMintIntro-{{ section.id }} .ara-mint-intro__card--mint {
+    background: var(--ara-intro-mint);
+    color: #FFFFFF;
+  }
+
+  #AraMintIntro-{{ section.id }} .ara-mint-intro__card--gold {
+    background: var(--ara-intro-gold);
+  }
+
+  #AraMintIntro-{{ section.id }} .ara-mint-intro__card--blue {
+    background: var(--ara-intro-blue);
+    color: #FFFFFF;
+  }
+
+  #AraMintIntro-{{ section.id }} .ara-mint-intro__card-number {
+    display: grid;
+    width: 42px;
+    height: 42px;
+    place-items: center;
+    border: 2px solid currentColor;
+    border-radius: 50%;
+    font-size: var(--ara-intro-label-desktop);
+  }
+
+  #AraMintIntro-{{ section.id }} .ara-mint-intro__card-copy {
+    min-width: 0;
+  }
+
+  #AraMintIntro-{{ section.id }} .ara-mint-intro__card h2 {
+    margin: 0;
+    font-family: var(--font-heading-family);
+    font-size: var(--ara-intro-card-title-desktop);
+    font-style: var(--font-heading-style);
+    font-weight: var(--font-heading-weight);
+    line-height: 1.03;
+  }
+
+  #AraMintIntro-{{ section.id }} .ara-mint-intro__card p {
+    margin: 14px 0 0;
+    font-family: var(--font-body-family);
+    font-size: var(--ara-intro-card-text-desktop);
+    font-style: var(--font-body-style);
+    font-weight: var(--font-body-weight);
+    line-height: 1.55;
+  }
+
+  #AraMintIntro-{{ section.id }} .ara-mint-intro__card-link {
+    grid-column: 2;
+    align-self: end;
+    margin-top: 18px;
+    color: inherit;
+    font-family: var(--font-body-family);
+    font-size: var(--ara-intro-label-desktop);
+    font-style: var(--font-body-style);
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    text-transform: uppercase;
+  }
+
+  @media screen and (max-width: 1099px) {
+    #AraMintIntro-{{ section.id }} .ara-mint-intro__main {
+      grid-template-columns: 1fr;
+    }
+
+    #AraMintIntro-{{ section.id }} .ara-mint-intro__visual {
+      max-width: 720px;
+    }
+
+    #AraMintIntro-{{ section.id }} .ara-mint-intro__side-note {
+      right: 20px;
+    }
+  }
+
+  @media screen and (max-width: 899px) {
+    #AraMintIntro-{{ section.id }} .ara-mint-intro__cards {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    #AraMintIntro-{{ section.id }} {
+      padding-top: calc(var(--ara-intro-top) * 0.7);
+      padding-bottom: calc(var(--ara-intro-bottom) * 0.7);
+    }
+
+    #AraMintIntro-{{ section.id }} .ara-mint-intro__inner {
+      padding: 0 20px;
+    }
+
+    #AraMintIntro-{{ section.id }} .ara-mint-intro__main-frame {
+      padding: 5px;
+      border-radius: 19px;
+      box-shadow:
+        5px 5px 0 var(--ara-intro-gold),
+        10px 10px 0 color-mix(in srgb, var(--ara-intro-mint) 68%, transparent);
+    }
+
+    #AraMintIntro-{{ section.id }} .ara-mint-intro__main {
+      gap: 34px;
+      padding: 32px 24px 37px;
+      border-radius: 13px;
+    }
+
+    #AraMintIntro-{{ section.id }} .ara-mint-intro__meta {
+      align-items: flex-start;
+      flex-direction: column;
+      margin-bottom: 22px;
+    }
+
+    #AraMintIntro-{{ section.id }} .ara-mint-intro__eyebrow,
+    #AraMintIntro-{{ section.id }} .ara-mint-intro__folio,
+    #AraMintIntro-{{ section.id }} .ara-mint-intro__note,
+    #AraMintIntro-{{ section.id }} .ara-mint-intro__image-label,
+    #AraMintIntro-{{ section.id }} .ara-mint-intro__side-note,
+    #AraMintIntro-{{ section.id }} .ara-mint-intro__card-number,
+    #AraMintIntro-{{ section.id }} .ara-mint-intro__card-link {
+      font-size: var(--ara-intro-label-mobile);
+    }
+
+    #AraMintIntro-{{ section.id }} .ara-mint-intro__folio {
+      text-align: left;
+    }
+
+    #AraMintIntro-{{ section.id }} .ara-mint-intro__heading {
+      font-size: var(--ara-intro-heading-mobile);
+    }
+
+    #AraMintIntro-{{ section.id }} .ara-mint-intro__description {
+      font-size: var(--ara-intro-body-mobile);
+    }
+
+    #AraMintIntro-{{ section.id }} .ara-mint-intro__buttons {
+      display: grid;
+    }
+
+    #AraMintIntro-{{ section.id }} .ara-mint-intro__button {
+      width: 100%;
+      font-size: var(--ara-intro-button-mobile);
+    }
+
+    #AraMintIntro-{{ section.id }} .ara-mint-intro__visual-frame {
+      box-shadow:
+        5px 5px 0 var(--ara-intro-blue),
+        10px 10px 0 color-mix(in srgb, var(--ara-intro-gold) 72%, transparent);
+    }
+
+    #AraMintIntro-{{ section.id }} .ara-mint-intro__side-note {
+      top: 15px;
+      right: 15px;
+      width: 150px;
+      transform: rotate(2deg);
+    }
+
+    #AraMintIntro-{{ section.id }} .ara-mint-intro__cards {
+      gap: 18px;
+      margin-top: 32px;
+    }
+
+    #AraMintIntro-{{ section.id }} .ara-mint-intro__card {
+      grid-template-columns: 42px minmax(0, 1fr);
+      min-height: 0;
+      padding: 22px;
+    }
+
+    #AraMintIntro-{{ section.id }} .ara-mint-intro__card h2 {
+      font-size: var(--ara-intro-card-title-mobile);
+    }
+
+    #AraMintIntro-{{ section.id }} .ara-mint-intro__card p {
+      font-size: var(--ara-intro-card-text-mobile);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #AraMintIntro-{{ section.id }} .ara-mint-intro__button {
+      transition: none;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Ara Mint Intro",
+  "max_blocks": 4,
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Small heading",
+      "default": "WELCOME TO THE MINT"
+    },
+    {
+      "type": "text",
+      "id": "folio",
+      "label": "Top note",
+      "default": "LEARNING SYSTEM · 01"
+    },
+    {
+      "type": "textarea",
+      "id": "heading",
+      "label": "Main heading",
+      "default": "Understand the companies\nthat shape the world."
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description",
+      "default": "<p>The Mint brings company headquarters, industries, business models and financial ideas into one clear learning system. Explore the map, follow the curriculum and build understanding one company at a time.</p>"
+    },
+    {
+      "type": "text",
+      "id": "primary_button_label",
+      "label": "First button text",
+      "default": "EXPLORE THE MAP"
+    },
+    {
+      "type": "url",
+      "id": "primary_button_link",
+      "label": "First button link"
+    },
+    {
+      "type": "text",
+      "id": "secondary_button_label",
+      "label": "Second button text",
+      "default": "VIEW THE CURRICULUM"
+    },
+    {
+      "type": "url",
+      "id": "secondary_button_link",
+      "label": "Second button link"
+    },
+    {
+      "type": "text",
+      "id": "note",
+      "label": "Bottom note",
+      "default": "FROM HEADQUARTERS TO BUSINESS MODELS · FROM NUMBERS TO UNDERSTANDING"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Main image"
+    },
+    {
+      "type": "text",
+      "id": "image_label",
+      "label": "Image label",
+      "default": "THE WORLD OF BUSINESS · MAPPED AND EXPLAINED"
+    },
+    {
+      "type": "text",
+      "id": "side_note",
+      "label": "Image side note",
+      "default": "START HERE"
+    },
+    {
+      "type": "header",
+      "content": "Desktop typography"
+    },
+    {
+      "type": "range",
+      "id": "desktop_heading_size",
+      "min": 46,
+      "max": 104,
+      "step": 2,
+      "unit": "px",
+      "label": "Main heading size",
+      "default": 78
+    },
+    {
+      "type": "range",
+      "id": "desktop_body_size",
+      "min": 13,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Description size",
+      "default": 17
+    },
+    {
+      "type": "range",
+      "id": "desktop_label_size",
+      "min": 8,
+      "max": 16,
+      "step": 1,
+      "unit": "px",
+      "label": "Small text size",
+      "default": 9
+    },
+    {
+      "type": "range",
+      "id": "desktop_button_size",
+      "min": 8,
+      "max": 16,
+      "step": 1,
+      "unit": "px",
+      "label": "Button text size",
+      "default": 10
+    },
+    {
+      "type": "range",
+      "id": "desktop_card_title_size",
+      "min": 22,
+      "max": 44,
+      "step": 1,
+      "unit": "px",
+      "label": "Card heading size",
+      "default": 29
+    },
+    {
+      "type": "range",
+      "id": "desktop_card_text_size",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Card text size",
+      "default": 14
+    },
+    {
+      "type": "header",
+      "content": "Mobile typography"
+    },
+    {
+      "type": "range",
+      "id": "mobile_heading_size",
+      "min": 38,
+      "max": 72,
+      "step": 2,
+      "unit": "px",
+      "label": "Main heading size",
+      "default": 52
+    },
+    {
+      "type": "range",
+      "id": "mobile_body_size",
+      "min": 13,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Description size",
+      "default": 15
+    },
+    {
+      "type": "range",
+      "id": "mobile_label_size",
+      "min": 8,
+      "max": 14,
+      "step": 1,
+      "unit": "px",
+      "label": "Small text size",
+      "default": 9
+    },
+    {
+      "type": "range",
+      "id": "mobile_button_size",
+      "min": 8,
+      "max": 15,
+      "step": 1,
+      "unit": "px",
+      "label": "Button text size",
+      "default": 10
+    },
+    {
+      "type": "range",
+      "id": "mobile_card_title_size",
+      "min": 22,
+      "max": 38,
+      "step": 1,
+      "unit": "px",
+      "label": "Card heading size",
+      "default": 27
+    },
+    {
+      "type": "range",
+      "id": "mobile_card_text_size",
+      "min": 12,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "label": "Card text size",
+      "default": 14
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "max_width",
+      "label": "Content width",
+      "default": "1600px",
+      "options": [
+        {
+          "value": "1300px",
+          "label": "Narrow"
+        },
+        {
+          "value": "1450px",
+          "label": "Medium"
+        },
+        {
+          "value": "1600px",
+          "label": "Wide"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 40,
+      "max": 120,
+      "step": 5,
+      "unit": "px",
+      "label": "Top spacing",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 40,
+      "max": 120,
+      "step": 5,
+      "unit": "px",
+      "label": "Bottom spacing",
+      "default": 80
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Section background",
+      "default": "#D8F0E4"
+    },
+    {
+      "type": "color",
+      "id": "paper_color",
+      "label": "Paper background",
+      "default": "#F2F8F6"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Main text",
+      "default": "#161B2E"
+    },
+    {
+      "type": "color",
+      "id": "muted_text_color",
+      "label": "Secondary text",
+      "default": "#646575"
+    },
+    {
+      "type": "color",
+      "id": "mint_color",
+      "label": "Mint accent",
+      "default": "#176D5C"
+    },
+    {
+      "type": "color",
+      "id": "gold_color",
+      "label": "Gold accent",
+      "default": "#E0A526"
+    },
+    {
+      "type": "color",
+      "id": "blue_color",
+      "label": "Blue accent",
+      "default": "#3A5BE0"
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Soft border",
+      "default": "#C9BEA8"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "intro_card",
+      "name": "Intro card",
+      "settings": [
+        {
+          "type": "select",
+          "id": "style",
+          "label": "Card color",
+          "default": "cream",
+          "options": [
+            {
+              "value": "cream",
+              "label": "Cream"
+            },
+            {
+              "value": "mint",
+              "label": "Mint"
+            },
+            {
+              "value": "gold",
+              "label": "Gold"
+            },
+            {
+              "value": "blue",
+              "label": "Blue"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "default": "Locate"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Text",
+          "default": "Discover where the world’s most influential companies are headquartered."
+        },
+        {
+          "type": "text",
+          "id": "link_label",
+          "label": "Link text",
+          "default": "Explore this stage"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Ara Mint Intro",
+      "blocks": [
+        {
+          "type": "intro_card",
+          "settings": {
+            "style": "cream",
+            "title": "Locate",
+            "text": "Discover where the world’s most influential companies are headquartered.",
+            "link_label": "Explore the map"
+          }
+        },
+        {
+          "type": "intro_card",
+          "settings": {
+            "style": "gold",
+            "title": "Understand",
+            "text": "Follow a structured curriculum through industries, business models and financial ideas.",
+            "link_label": "View the curriculum"
+          }
+        },
+        {
+          "type": "intro_card",
+          "settings": {
+            "style": "blue",
+            "title": "Connect",
+            "text": "See how companies, sectors and markets fit together as one connected system.",
+            "link_label": "Begin learning"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

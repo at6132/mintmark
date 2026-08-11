@@ -1,0 +1,1417 @@
+{% liquid
+  assign digest_product = section.settings.digest_product
+  assign digest_title = section.settings.digest_title
+  assign digest_price = section.settings.digest_price
+  assign digest_link = section.settings.digest_link
+
+  if digest_product != blank
+    if section.settings.use_product_title
+      assign digest_title = digest_product.title
+    endif
+
+    if section.settings.use_product_price
+      assign digest_price = digest_product.price | money
+    endif
+
+    if digest_link == blank
+      assign digest_link = digest_product.url
+    endif
+  endif
+%}
+
+<section
+  id="AraCompanyHero-{{ section.id }}"
+  class="ara-company-hero"
+  style="
+    --ara-company-bg: {{ section.settings.background_color }};
+    --ara-company-paper: {{ section.settings.paper_color }};
+    --ara-company-text: {{ section.settings.text_color }};
+    --ara-company-muted: {{ section.settings.muted_text_color }};
+    --ara-company-mint: {{ section.settings.mint_color }};
+    --ara-company-gold: {{ section.settings.gold_color }};
+    --ara-company-blue: {{ section.settings.blue_color }};
+    --ara-company-blue-deep: {{ section.settings.blue_deep_color }};
+    --ara-company-border: {{ section.settings.border_color }};
+    --ara-company-max: {{ section.settings.max_width }};
+    --ara-company-top: {{ section.settings.padding_top }}px;
+    --ara-company-bottom: {{ section.settings.padding_bottom }}px;
+    --ara-company-title-desktop: {{ section.settings.desktop_title_size }}px;
+    --ara-company-subtitle-desktop: {{ section.settings.desktop_subtitle_size }}px;
+    --ara-company-body-desktop: {{ section.settings.desktop_body_size }}px;
+    --ara-company-label-desktop: {{ section.settings.desktop_label_size }}px;
+    --ara-company-stat-desktop: {{ section.settings.desktop_stat_size }}px;
+    --ara-company-digest-title-desktop: {{ section.settings.desktop_digest_title_size }}px;
+    --ara-company-title-mobile: {{ section.settings.mobile_title_size }}px;
+    --ara-company-subtitle-mobile: {{ section.settings.mobile_subtitle_size }}px;
+    --ara-company-body-mobile: {{ section.settings.mobile_body_size }}px;
+    --ara-company-label-mobile: {{ section.settings.mobile_label_size }}px;
+    --ara-company-stat-mobile: {{ section.settings.mobile_stat_size }}px;
+    --ara-company-digest-title-mobile: {{ section.settings.mobile_digest_title_size }}px;
+  "
+>
+  <div class="ara-company-hero__lines" aria-hidden="true"></div>
+
+  <div class="ara-company-hero__inner">
+    <div class="ara-company-hero__brand-masthead">
+      <img
+        class="ara-company-hero__brand-wordmark"
+        src="{{ 'mintmark-wordmark-ink.png' | asset_url }}"
+        alt="Mintmark"
+        width="488"
+        height="88"
+        loading="eager"
+      >
+      <span>MINTMARK · COMPANY FILE</span>
+      <img
+        class="ara-company-hero__brand-mark"
+        src="{{ 'mintmark-mark-app.png' | asset_url }}"
+        alt=""
+        width="285"
+        height="285"
+        loading="eager"
+      >
+    </div>
+    <div class="ara-company-hero__frame">
+      <div class="ara-company-hero__panel">
+        <div class="ara-company-hero__content">
+          <div class="ara-company-hero__topline">
+            {% if section.settings.eyebrow != blank %}
+              <span class="ara-company-hero__eyebrow">
+                {{ section.settings.eyebrow | escape }}
+              </span>
+            {% endif %}
+
+            {% if section.settings.folio != blank %}
+              <span class="ara-company-hero__folio">
+                {{ section.settings.folio | escape }}
+              </span>
+            {% endif %}
+          </div>
+
+          <div class="ara-company-hero__identity">
+            {% if section.settings.company_logo != blank %}
+              <div class="ara-company-hero__logo-wrap">
+                {{
+                  section.settings.company_logo
+                  | image_url: width: 500
+                  | image_tag:
+                    widths: '120, 180, 260, 360, 500',
+                    sizes: '(max-width: 749px) 72px, 96px',
+                    loading: 'eager',
+                    class: 'ara-company-hero__logo',
+                    alt: section.settings.company_logo.alt
+                }}
+              </div>
+            {% endif %}
+
+            <div>
+              {% if section.settings.company_name != blank %}
+                <h1 class="ara-company-hero__title">
+                  {{ section.settings.company_name | escape }}
+                </h1>
+              {% endif %}
+
+              <div class="ara-company-hero__identity-meta">
+                {% if section.settings.ticker != blank %}
+                  <span>{{ section.settings.ticker | escape }}</span>
+                {% endif %}
+
+                {% if section.settings.sector != blank %}
+                  <span>{{ section.settings.sector | escape }}</span>
+                {% endif %}
+
+                {% if section.settings.location != blank %}
+                  <span>{{ section.settings.location | escape }}</span>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+
+          {% if section.settings.subtitle != blank %}
+            <h2 class="ara-company-hero__subtitle">
+              {{ section.settings.subtitle | escape }}
+            </h2>
+          {% endif %}
+
+          {% if section.settings.summary != blank %}
+            <div class="ara-company-hero__summary">
+              {{ section.settings.summary }}
+            </div>
+          {% endif %}
+
+          {% if section.blocks.size > 0 %}
+            <div class="ara-company-hero__stats">
+              {% for block in section.blocks %}
+                <div
+                  class="ara-company-hero__stat"
+                  {{ block.shopify_attributes }}
+                >
+                  <span>{{ block.settings.label | escape }}</span>
+                  <strong>{{ block.settings.value | escape }}</strong>
+
+                  {% if block.settings.note != blank %}
+                    <small>{{ block.settings.note | escape }}</small>
+                  {% endif %}
+                </div>
+              {% endfor %}
+            </div>
+          {% endif %}
+
+          <div class="ara-company-hero__buttons">
+            {% if section.settings.primary_button_label != blank %}
+              <a
+                class="ara-company-hero__button ara-company-hero__button--primary"
+                {% if section.settings.primary_button_link != blank %}
+                  href="{{ section.settings.primary_button_link }}"
+                {% else %}
+                  role="link"
+                  aria-disabled="true"
+                {% endif %}
+              >
+                {{ section.settings.primary_button_label | escape }}
+              </a>
+            {% endif %}
+
+            {% if section.settings.secondary_button_label != blank %}
+              <a
+                class="ara-company-hero__button ara-company-hero__button--secondary"
+                {% if section.settings.secondary_button_link != blank %}
+                  href="{{ section.settings.secondary_button_link }}"
+                {% else %}
+                  role="link"
+                  aria-disabled="true"
+                {% endif %}
+              >
+                {{ section.settings.secondary_button_label | escape }}
+              </a>
+            {% endif %}
+          </div>
+        </div>
+
+        <div class="ara-company-hero__visual-column">
+          <div class="ara-company-hero__visual-frame">
+            {% if section.settings.hero_image != blank %}
+              <picture>
+                {% if section.settings.mobile_hero_image != blank %}
+                  <source
+                    media="(max-width: 749px)"
+                    srcset="
+                      {{ section.settings.mobile_hero_image | image_url: width: 800 }} 800w,
+                      {{ section.settings.mobile_hero_image | image_url: width: 1200 }} 1200w
+                    "
+                  >
+                {% endif %}
+
+                {{
+                  section.settings.hero_image
+                  | image_url: width: 1800
+                  | image_tag:
+                    widths: '600, 900, 1200, 1500, 1800',
+                    sizes: '(max-width: 749px) 100vw, 48vw',
+                    loading: 'eager',
+                    class: 'ara-company-hero__image',
+                    alt: section.settings.hero_image.alt
+                }}
+              </picture>
+            {% else %}
+              <div class="ara-company-hero__placeholder">
+                {{ 'lifestyle-1' | placeholder_svg_tag: 'ara-company-hero__placeholder-svg' }}
+              </div>
+            {% endif %}
+
+            {% if section.settings.image_label != blank %}
+              <span class="ara-company-hero__image-label">
+                {{ section.settings.image_label | escape }}
+              </span>
+            {% endif %}
+          </div>
+
+          <aside class="ara-company-hero__digest">
+            <div class="ara-company-hero__digest-brand">
+              <img
+                src="{{ 'mintmark-bookplate.png' | asset_url }}"
+                alt=""
+                width="535"
+                height="325"
+                loading="lazy"
+              >
+            </div>
+
+            <div class="ara-company-hero__digest-top">
+              <span>{{ section.settings.digest_eyebrow | escape }}</span>
+
+              {% if digest_price != blank %}
+                <small>{{ digest_price | escape }}</small>
+              {% endif %}
+            </div>
+
+            <div class="ara-company-hero__digest-body">
+              {% if section.settings.digest_cover != blank %}
+                <div class="ara-company-hero__digest-cover">
+                  {{
+                    section.settings.digest_cover
+                    | image_url: width: 700
+                    | image_tag:
+                      widths: '180, 280, 420, 560, 700',
+                      sizes: '(max-width: 749px) 110px, 135px',
+                      loading: 'lazy',
+                      class: 'ara-company-hero__digest-image',
+                      alt: section.settings.digest_cover.alt
+                  }}
+                </div>
+              {% endif %}
+
+              <div>
+                {% if digest_title != blank %}
+                  <h3>{{ digest_title | escape }}</h3>
+                {% endif %}
+
+                {% if section.settings.digest_text != blank %}
+                  <p>{{ section.settings.digest_text | escape }}</p>
+                {% endif %}
+
+                {% if section.settings.digest_button_label != blank %}
+                  <a
+                    class="ara-company-hero__digest-link"
+                    {% if digest_link != blank %}
+                      href="{{ digest_link }}"
+                    {% else %}
+                      role="link"
+                      aria-disabled="true"
+                    {% endif %}
+                  >
+                    {{ section.settings.digest_button_label | escape }}
+                  </a>
+                {% endif %}
+              </div>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  #AraCompanyHero-{{ section.id }} {
+    position: relative;
+    overflow: hidden;
+    padding: var(--ara-company-top) 0 var(--ara-company-bottom);
+    background: var(--ara-company-bg);
+    color: var(--ara-company-text);
+    isolation: isolate;
+  }
+
+  #AraCompanyHero-{{ section.id }} * {
+    box-sizing: border-box;
+  }
+
+  #AraCompanyHero-{{ section.id }} .ara-company-hero__lines {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    opacity: 0.46;
+    background-image:
+      linear-gradient(
+        90deg,
+        transparent 0,
+        transparent 31px,
+        color-mix(in srgb, var(--ara-company-mint) 12%, transparent) 31px,
+        color-mix(in srgb, var(--ara-company-mint) 12%, transparent) 32px
+      ),
+      repeating-linear-gradient(
+        to bottom,
+        transparent 0,
+        transparent 35px,
+        color-mix(in srgb, var(--ara-company-mint) 22%, transparent) 35px,
+        color-mix(in srgb, var(--ara-company-mint) 22%, transparent) 36px
+      );
+    pointer-events: none;
+  }
+
+  #AraCompanyHero-{{ section.id }} .ara-company-hero__inner {
+    width: min(100%, var(--ara-company-max));
+    margin: 0 auto;
+    padding: 0 40px;
+  }
+
+  #AraCompanyHero-{{ section.id }} .ara-company-hero__frame {
+    padding: 8px;
+    border: 2px solid var(--ara-company-text);
+    border-radius: 26px;
+    background: var(--ara-company-paper);
+    box-shadow:
+      10px 10px 0 var(--ara-company-gold),
+      18px 18px 0 color-mix(in srgb, var(--ara-company-mint) 68%, transparent);
+  }
+
+  #AraCompanyHero-{{ section.id }} .ara-company-hero__panel {
+    display: grid;
+    grid-template-columns: minmax(0, 1.06fr) minmax(380px, 0.94fr);
+    gap: clamp(38px, 5vw, 84px);
+    align-items: start;
+    padding: clamp(38px, 5vw, 66px);
+    border: 3px solid var(--ara-company-text);
+    border-radius: 17px;
+    background:
+      radial-gradient(
+        circle at 112% 112%,
+        color-mix(in srgb, var(--ara-company-mint) 15%, transparent) 0 29%,
+        transparent 30%
+      ),
+      linear-gradient(
+        145deg,
+        color-mix(in srgb, var(--ara-company-paper) 96%, white),
+        color-mix(in srgb, var(--ara-company-bg) 92%, transparent)
+      );
+  }
+
+  #AraCompanyHero-{{ section.id }} .ara-company-hero__topline {
+    display: flex;
+    justify-content: space-between;
+    gap: 18px;
+    align-items: flex-start;
+  }
+
+  #AraCompanyHero-{{ section.id }} .ara-company-hero__eyebrow,
+  #AraCompanyHero-{{ section.id }} .ara-company-hero__folio,
+  #AraCompanyHero-{{ section.id }} .ara-company-hero__identity-meta span,
+  #AraCompanyHero-{{ section.id }} .ara-company-hero__stat span,
+  #AraCompanyHero-{{ section.id }} .ara-company-hero__stat small,
+  #AraCompanyHero-{{ section.id }} .ara-company-hero__image-label,
+  #AraCompanyHero-{{ section.id }} .ara-company-hero__digest-top span,
+  #AraCompanyHero-{{ section.id }} .ara-company-hero__digest-top small {
+    font-family: var(--font-body-family);
+    font-style: var(--font-body-style);
+    font-weight: 800;
+    line-height: 1.2;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  #AraCompanyHero-{{ section.id }} .ara-company-hero__eyebrow {
+    display: inline-flex;
+    min-height: 31px;
+    align-items: center;
+    padding: 6px 11px;
+    border: 2px solid var(--ara-company-text);
+    border-radius: 8px;
+    background: var(--ara-company-gold);
+    color: var(--ara-company-text);
+    font-size: var(--ara-company-label-desktop);
+    box-shadow: 3px 3px 0 var(--ara-company-text);
+  }
+
+  #AraCompanyHero-{{ section.id }} .ara-company-hero__folio {
+    color: var(--ara-company-muted);
+    font-size: var(--ara-company-label-desktop);
+    text-align: right;
+  }
+
+  #AraCompanyHero-{{ section.id }} .ara-company-hero__identity {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 20px;
+    align-items: center;
+    margin-top: 30px;
+  }
+
+  #AraCompanyHero-{{ section.id }} .ara-company-hero__logo-wrap {
+    display: grid;
+    width: 96px;
+    height: 96px;
+    place-items: center;
+    padding: 12px;
+    border: 2px solid var(--ara-company-text);
+    border-radius: 15px;
+    background: var(--ara-company-paper);
+    box-shadow: 5px 5px 0 var(--ara-company-blue);
+  }
+
+  #AraCompanyHero-{{ section.id }} .ara-company-hero__logo {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  #AraCompanyHero-{{ section.id }} .ara-company-hero__title {
+    margin: 0;
+    font-family: var(--font-heading-family);
+    font-size: var(--ara-company-title-desktop);
+    font-style: var(--font-heading-style);
+    font-weight: var(--font-heading-weight);
+    line-height: 0.92;
+    letter-spacing: -0.055em;
+  }
+
+  #AraCompanyHero-{{ section.id }} .ara-company-hero__identity-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 13px;
+  }
+
+  #AraCompanyHero-{{ section.id }} .ara-company-hero__identity-meta span {
+    padding: 5px 8px;
+    border: 1px solid var(--ara-company-text);
+    border-radius: 999px;
+    background: var(--ara-company-paper);
+    color: var(--ara-company-text);
+    font-size: var(--ara-company-label-desktop);
+  }
+
+  #AraCompanyHero-{{ section.id }} .ara-company-hero__subtitle {
+    max-width: 760px;
+    margin: 34px 0 0;
+    font-family: var(--font-heading-family);
+    font-size: var(--ara-company-subtitle-desktop);
+    font-style: var(--font-heading-style);
+    font-weight: var(--font-heading-weight);
+    line-height: 1;
+  }
+
+  #AraCompanyHero-{{ section.id }} .ara-company-hero__summary {
+    max-width: 720px;
+    margin-top: 21px;
+    color: var(--ara-company-muted);
+    font-family: var(--font-body-family);
+    font-size: var(--ara-company-body-desktop);
+    font-style: var(--font-body-style);
+    font-weight: var(--font-body-weight);
+    line-height: 1.65;
+  }
+
+  #AraCompanyHero-{{ section.id }} .ara-company-hero__summary p {
+    margin: 0;
+  }
+
+  #AraCompanyHero-{{ section.id }} .ara-company-hero__stats {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 10px;
+    margin-top: 30px;
+  }
+
+  #AraCompanyHero-{{ section.id }} .ara-company-hero__stat {
+    display: flex;
+    min-width: 0;
+    min-height: 112px;
+    flex-direction: column;
+    padding: 15px 12px;
+    border: 2px solid var(--ara-company-text);
+    border-radius: 11px;
+    background: var(--ara-company-paper);
+    box-shadow: 3px 3px 0 var(--ara-company-text);
+  }
+
+  #AraCompanyHero-{{ section.id }} .ara-company-hero__stat span,
+  #AraCompanyHero-{{ section.id }} .ara-company-hero__stat small {
+    display: block;
+    font-size: var(--ara-company-label-desktop);
+  }
+
+  #AraCompanyHero-{{ section.id }} .ara-company-hero__stat span {
+    color: var(--ara-company-muted);
+  }
+
+  #AraCompanyHero-{{ section.id }} .ara-company-hero__stat strong {
+    display: block;
+    max-width: 100%;
+    margin-top: 8px;
+    font-family: var(--font-heading-family);
+    font-size: clamp(16px, 1.45vw, var(--ara-company-stat-desktop));
+    line-height: 0.98;
+    letter-spacing: -0.025em;
+    overflow-wrap: anywhere;
+    word-break: normal;
+  }
+
+  #AraCompanyHero-{{ section.id }} .ara-company-hero__stat small {
+    margin-top: 6px;
+    color: var(--ara-company-mint);
+  }
+
+  #AraCompanyHero-{{ section.id }} .ara-company-hero__buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-top: 31px;
+  }
+
+  #AraCompanyHero-{{ section.id }} .ara-company-hero__button {
+    display: inline-flex;
+    min-width: 180px;
+    min-height: 49px;
+    align-items: center;
+    justify-content: center;
+    padding: 11px 20px;
+    border: 2px solid currentColor;
+    border-radius: 8px;
+    font-family: var(--font-body-family);
+    font-size: var(--ara-company-label-desktop);
+    font-weight: 800;
+    letter-spacing: 0.11em;
+    text-align: center;
+    text-decoration: none;
+    text-transform: uppercase;
+    box-shadow: 4px 4px 0 currentColor;
+  }
+
+  #AraCompanyHero-{{ section.id }} .ara-company-hero__button--primary {
+    background: var(--ara-company-mint);
+    color: #FFFFFF;
+  }
+
+  #AraCompanyHero-{{ section.id }} .ara-company-hero__button--secondary {
+    background: var(--ara-company-gold);
+    color: var(--ara-company-text);
+  }
+
+  #AraCompanyHero-{{ section.id }} .ara-company-hero__visual-column {
+    display: grid;
+    gap: 22px;
+    min-width: 0;
+    align-self: start;
+  }
+
+  #AraCompanyHero-{{ section.id }} .ara-company-hero__visual-frame {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 4 / 3;
+    padding: 7px;
+    border: 2px solid var(--ara-company-text);
+    border-radius: 22px;
+    background: var(--ara-company-paper);
+    box-shadow:
+      8px 8px 0 var(--ara-company-blue),
+      14px 14px 0 color-mix(in srgb, var(--ara-company-gold) 72%, transparent);
+  }
+
+  #AraCompanyHero-{{ section.id }} .ara-company-hero__visual-frame picture,
+  #AraCompanyHero-{{ section.id }} .ara-company-hero__image,
+  #AraCompanyHero-{{ section.id }} .ara-company-hero__placeholder,
+  #AraCompanyHero-{{ section.id }} .ara-company-hero__placeholder-svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  #AraCompanyHero-{{ section.id }} .ara-company-hero__image,
+  #AraCompanyHero-{{ section.id }} .ara-company-hero__placeholder-svg {
+    border: 3px solid var(--ara-company-text);
+    border-radius: 14px;
+    object-fit: cover;
+  }
+
+  #AraCompanyHero-{{ section.id }} .ara-company-hero__image-label {
+    position: absolute;
+    right: 18px;
+    bottom: 18px;
+    left: 18px;
+    padding: 8px 12px;
+    border: 2px solid var(--ara-company-text);
+    border-radius: 8px;
+    background: var(--ara-company-gold);
+    color: var(--ara-company-text);
+    font-size: var(--ara-company-label-desktop);
+    text-align: center;
+    box-shadow: 3px 3px 0 var(--ara-company-text);
+  }
+
+  #AraCompanyHero-{{ section.id }} .ara-company-hero__digest {
+    padding: 20px;
+    border: 2px solid var(--ara-company-text);
+    border-radius: 15px;
+    background: var(--ara-company-blue-deep);
+    color: #FFFFFF;
+    box-shadow: 6px 6px 0 var(--ara-company-gold);
+  }
+
+  #AraCompanyHero-{{ section.id }} .ara-company-hero__digest-top {
+    display: flex;
+    justify-content: space-between;
+    gap: 14px;
+    padding-bottom: 13px;
+    border-bottom: 1px dashed rgba(255, 255, 255, 0.4);
+  }
+
+  #AraCompanyHero-{{ section.id }} .ara-company-hero__digest-top span,
+  #AraCompanyHero-{{ section.id }} .ara-company-hero__digest-top small {
+    font-size: var(--ara-company-label-desktop);
+  }
+
+  #AraCompanyHero-{{ section.id }} .ara-company-hero__digest-top span {
+    color: var(--ara-company-gold);
+  }
+
+  #AraCompanyHero-{{ section.id }} .ara-company-hero__digest-top small {
+    text-align: right;
+  }
+
+  #AraCompanyHero-{{ section.id }} .ara-company-hero__digest-body {
+    display: grid;
+    grid-template-columns: minmax(105px, 135px) minmax(0, 1fr);
+    gap: 20px;
+    align-items: center;
+    margin-top: 18px;
+  }
+
+  #AraCompanyHero-{{ section.id }} .ara-company-hero__digest-cover {
+    overflow: hidden;
+    aspect-ratio: 3 / 4;
+    border: 2px solid #FFFFFF;
+    border-radius: 8px;
+    background: var(--ara-company-paper);
+  }
+
+  #AraCompanyHero-{{ section.id }} .ara-company-hero__digest-image {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  #AraCompanyHero-{{ section.id }} .ara-company-hero__digest h3 {
+    margin: 0;
+    font-family: var(--font-heading-family);
+    font-size: var(--ara-company-digest-title-desktop);
+    line-height: 1;
+  }
+
+  #AraCompanyHero-{{ section.id }} .ara-company-hero__digest p {
+    margin: 12px 0 0;
+    color: rgba(255, 255, 255, 0.82);
+    font-family: var(--font-body-family);
+    font-size: var(--ara-company-body-desktop);
+    line-height: 1.5;
+  }
+
+  #AraCompanyHero-{{ section.id }} .ara-company-hero__digest-link {
+    display: inline-flex;
+    margin-top: 16px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid var(--ara-company-gold);
+    color: var(--ara-company-gold);
+    font-family: var(--font-body-family);
+    font-size: var(--ara-company-label-desktop);
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-decoration: none;
+    text-transform: uppercase;
+  }
+
+
+  @media screen and (min-width: 750px) and (max-width: 1299px) {
+    #AraCompanyHero-{{ section.id }} .ara-company-hero__stats {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    #AraCompanyHero-{{ section.id }} .ara-company-hero__stat strong {
+      font-size: min(var(--ara-company-stat-desktop), 24px);
+    }
+  }
+
+  @media screen and (max-width: 1099px) {
+    #AraCompanyHero-{{ section.id }} .ara-company-hero__panel {
+      grid-template-columns: 1fr;
+    }
+
+    #AraCompanyHero-{{ section.id }} .ara-company-hero__visual-column {
+      max-width: 760px;
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    #AraCompanyHero-{{ section.id }} {
+      padding-top: calc(var(--ara-company-top) * 0.7);
+      padding-bottom: calc(var(--ara-company-bottom) * 0.7);
+    }
+
+    #AraCompanyHero-{{ section.id }} .ara-company-hero__inner {
+      padding: 0 20px;
+    }
+
+    #AraCompanyHero-{{ section.id }} .ara-company-hero__frame {
+      padding: 5px;
+      box-shadow:
+        5px 5px 0 var(--ara-company-gold),
+        10px 10px 0 color-mix(in srgb, var(--ara-company-mint) 68%, transparent);
+    }
+
+    #AraCompanyHero-{{ section.id }} .ara-company-hero__panel {
+      padding: 31px 23px 37px;
+    }
+
+    #AraCompanyHero-{{ section.id }} .ara-company-hero__topline {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+
+    #AraCompanyHero-{{ section.id }} .ara-company-hero__eyebrow,
+    #AraCompanyHero-{{ section.id }} .ara-company-hero__folio,
+    #AraCompanyHero-{{ section.id }} .ara-company-hero__identity-meta span,
+    #AraCompanyHero-{{ section.id }} .ara-company-hero__stat span,
+    #AraCompanyHero-{{ section.id }} .ara-company-hero__stat small,
+    #AraCompanyHero-{{ section.id }} .ara-company-hero__image-label,
+    #AraCompanyHero-{{ section.id }} .ara-company-hero__digest-top span,
+    #AraCompanyHero-{{ section.id }} .ara-company-hero__digest-top small,
+    #AraCompanyHero-{{ section.id }} .ara-company-hero__button,
+    #AraCompanyHero-{{ section.id }} .ara-company-hero__digest-link {
+      font-size: var(--ara-company-label-mobile);
+    }
+
+    #AraCompanyHero-{{ section.id }} .ara-company-hero__folio {
+      text-align: left;
+    }
+
+    #AraCompanyHero-{{ section.id }} .ara-company-hero__identity {
+      grid-template-columns: 72px minmax(0, 1fr);
+      gap: 14px;
+    }
+
+    #AraCompanyHero-{{ section.id }} .ara-company-hero__logo-wrap {
+      width: 72px;
+      height: 72px;
+      padding: 9px;
+    }
+
+    #AraCompanyHero-{{ section.id }} .ara-company-hero__title {
+      font-size: var(--ara-company-title-mobile);
+    }
+
+    #AraCompanyHero-{{ section.id }} .ara-company-hero__subtitle {
+      font-size: var(--ara-company-subtitle-mobile);
+    }
+
+    #AraCompanyHero-{{ section.id }} .ara-company-hero__summary,
+    #AraCompanyHero-{{ section.id }} .ara-company-hero__digest p {
+      font-size: var(--ara-company-body-mobile);
+    }
+
+    #AraCompanyHero-{{ section.id }} .ara-company-hero__stats {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    #AraCompanyHero-{{ section.id }} .ara-company-hero__stat {
+      min-height: 104px;
+    }
+
+    #AraCompanyHero-{{ section.id }} .ara-company-hero__stat strong {
+      font-size: clamp(16px, 5vw, var(--ara-company-stat-mobile));
+    }
+
+    #AraCompanyHero-{{ section.id }} .ara-company-hero__buttons {
+      display: grid;
+    }
+
+    #AraCompanyHero-{{ section.id }} .ara-company-hero__button {
+      width: 100%;
+    }
+
+    #AraCompanyHero-{{ section.id }} .ara-company-hero__visual-frame {
+      box-shadow:
+        5px 5px 0 var(--ara-company-blue),
+        10px 10px 0 color-mix(in srgb, var(--ara-company-gold) 72%, transparent);
+    }
+
+    #AraCompanyHero-{{ section.id }} .ara-company-hero__digest-body {
+      grid-template-columns: 110px minmax(0, 1fr);
+      gap: 16px;
+    }
+
+    #AraCompanyHero-{{ section.id }} .ara-company-hero__digest h3 {
+      font-size: var(--ara-company-digest-title-mobile);
+    }
+  }
+
+  @media screen and (max-width: 430px) {
+    #AraCompanyHero-{{ section.id }} .ara-company-hero__stats,
+    #AraCompanyHero-{{ section.id }} .ara-company-hero__digest-body {
+      grid-template-columns: 1fr;
+    }
+
+    #AraCompanyHero-{{ section.id }} .ara-company-hero__digest-cover {
+      width: 118px;
+    }
+  }
+</style>
+
+<style>
+  #AraCompanyHero-{{ section.id }} .ara-company-hero__frame,
+  #AraCompanyHero-{{ section.id }} .ara-company-hero__panel,
+  #AraCompanyHero-{{ section.id }} .ara-company-hero__visual-frame,
+  #AraCompanyHero-{{ section.id }} .ara-company-hero__digest {
+    border-radius: 14px;
+  }
+
+  #AraCompanyHero-{{ section.id }} [class$="__button"],
+  #AraCompanyHero-{{ section.id }} [class*="__button--"] {
+    border-radius: 7px;
+  }
+</style>
+
+
+<style>
+  #AraCompanyHero-{{ section.id }} {
+    --ara-brand-ink: #161B2E;
+    --ara-brand-mint: #A6DECB;
+    --ara-brand-cream: #F5EFE1;
+    --ara-brand-paper: #F3ECDC;
+    --ara-brand-verdigris: #274B44;
+  }
+
+  #AraCompanyHero-{{ section.id }} .ara-company-hero__brand-masthead {
+    display: grid;
+    grid-template-columns: minmax(190px, 320px) minmax(0, 1fr) 54px;
+    gap: 20px;
+    align-items: center;
+    margin-bottom: 26px;
+    padding: 14px 0 16px;
+    border-top: 3px solid var(--ara-brand-ink);
+    border-bottom: 1px solid var(--ara-brand-ink);
+  }
+
+  #AraCompanyHero-{{ section.id }} .ara-company-hero__brand-wordmark {
+    display: block;
+    width: min(100%, 280px);
+    height: auto;
+  }
+
+  #AraCompanyHero-{{ section.id }} .ara-company-hero__brand-masthead > span {
+    justify-self: end;
+    font-family: var(--font-body-family);
+    font-size: 9px;
+    font-weight: 900;
+    letter-spacing: .17em;
+    text-align: right;
+  }
+
+  #AraCompanyHero-{{ section.id }} .ara-company-hero__brand-mark {
+    display: block;
+    width: 48px;
+    height: 48px;
+    border-radius: 11px;
+    object-fit: cover;
+  }
+
+  #AraCompanyHero-{{ section.id }} .ara-company-hero__frame,
+  #AraCompanyHero-{{ section.id }} .ara-company-hero__panel,
+  #AraCompanyHero-{{ section.id }} .ara-company-hero__visual-frame,
+  #AraCompanyHero-{{ section.id }} .ara-company-hero__digest {
+    border-radius: 6px;
+  }
+
+  #AraCompanyHero-{{ section.id }} .ara-company-hero__frame {
+    border: 2px solid var(--ara-brand-ink);
+    box-shadow:
+      inset 0 0 0 5px var(--ara-brand-paper),
+      8px 8px 0 var(--ara-brand-mint);
+  }
+
+  #AraCompanyHero-{{ section.id }} .ara-company-hero__panel {
+    background:
+      repeating-linear-gradient(
+        to bottom,
+        transparent 0 35px,
+        color-mix(in srgb, var(--ara-brand-mint) 15%, transparent) 35px 36px
+      ),
+      var(--ara-brand-cream);
+  }
+
+  #AraCompanyHero-{{ section.id }} .ara-company-hero__digest {
+    border-color: var(--ara-brand-ink);
+    background: var(--ara-brand-paper);
+  }
+
+  #AraCompanyHero-{{ section.id }} .ara-company-hero__digest-brand {
+    padding: 12px 14px 0;
+  }
+
+  #AraCompanyHero-{{ section.id }} .ara-company-hero__digest-brand img {
+    display: block;
+    width: min(100%, 118px);
+    height: auto;
+    border-radius: 5px;
+  }
+
+  #AraCompanyHero-{{ section.id }} [class$="__button"],
+  #AraCompanyHero-{{ section.id }} [class*="__button--"] {
+    border-radius: 3px;
+  }
+
+  @media screen and (max-width: 749px) {
+    #AraCompanyHero-{{ section.id }} .ara-company-hero__brand-masthead {
+      grid-template-columns: minmax(0, 1fr) 44px;
+    }
+
+    #AraCompanyHero-{{ section.id }} .ara-company-hero__brand-masthead > span {
+      grid-column: 1 / -1;
+      grid-row: 2;
+      justify-self: start;
+      text-align: left;
+    }
+
+    #AraCompanyHero-{{ section.id }} .ara-company-hero__brand-mark {
+      width: 42px;
+      height: 42px;
+      justify-self: end;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Ara Company Hero",
+  "max_blocks": 4,
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Small heading",
+      "default": "COMPANY FILE"
+    },
+    {
+      "type": "text",
+      "id": "folio",
+      "label": "Top note",
+      "default": "COMPANY FILE · 01"
+    },
+    {
+      "type": "image_picker",
+      "id": "company_logo",
+      "label": "Company logo"
+    },
+    {
+      "type": "text",
+      "id": "company_name",
+      "label": "Company name",
+      "default": "Apple"
+    },
+    {
+      "type": "text",
+      "id": "ticker",
+      "label": "Ticker",
+      "default": "NASDAQ: AAPL"
+    },
+    {
+      "type": "text",
+      "id": "sector",
+      "label": "Sector",
+      "default": "Technology"
+    },
+    {
+      "type": "text",
+      "id": "location",
+      "label": "Headquarters",
+      "default": "Cupertino, California"
+    },
+    {
+      "type": "textarea",
+      "id": "subtitle",
+      "label": "Main statement",
+      "default": "The machine that prints value."
+    },
+    {
+      "type": "richtext",
+      "id": "summary",
+      "label": "Company summary",
+      "default": "<p>Apple combines hardware, software and services into one tightly controlled ecosystem. This company file explains how that system creates customer loyalty, recurring revenue and extraordinary financial strength.</p>"
+    },
+    {
+      "type": "text",
+      "id": "primary_button_label",
+      "label": "First button text",
+      "default": "OPEN THE COMPANY FILE"
+    },
+    {
+      "type": "url",
+      "id": "primary_button_link",
+      "label": "First button link"
+    },
+    {
+      "type": "text",
+      "id": "secondary_button_label",
+      "label": "Second button text",
+      "default": "READ COMPANY STORIES"
+    },
+    {
+      "type": "url",
+      "id": "secondary_button_link",
+      "label": "Second button link"
+    },
+    {
+      "type": "image_picker",
+      "id": "hero_image",
+      "label": "Desktop company image"
+    },
+    {
+      "type": "image_picker",
+      "id": "mobile_hero_image",
+      "label": "Mobile company image"
+    },
+    {
+      "type": "text",
+      "id": "image_label",
+      "label": "Image label",
+      "default": "HEADQUARTERS · PRODUCT · SYSTEM"
+    },
+    {
+      "type": "header",
+      "content": "Physical digest"
+    },
+    {
+      "type": "product",
+      "id": "digest_product",
+      "label": "Digest product"
+    },
+    {
+      "type": "checkbox",
+      "id": "use_product_title",
+      "label": "Use product title",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "use_product_price",
+      "label": "Use product price",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "digest_eyebrow",
+      "label": "Small digest heading",
+      "default": "THE PHYSICAL DIGEST"
+    },
+    {
+      "type": "image_picker",
+      "id": "digest_cover",
+      "label": "Digest cover"
+    },
+    {
+      "type": "text",
+      "id": "digest_title",
+      "label": "Custom digest title",
+      "default": "The Apple Digest"
+    },
+    {
+      "type": "text",
+      "id": "digest_price",
+      "label": "Custom digest price",
+      "default": "$24.00"
+    },
+    {
+      "type": "textarea",
+      "id": "digest_text",
+      "label": "Digest description",
+      "default": "A printed company guide designed for reading, annotation and return."
+    },
+    {
+      "type": "text",
+      "id": "digest_button_label",
+      "label": "Digest button text",
+      "default": "VIEW THE DIGEST"
+    },
+    {
+      "type": "url",
+      "id": "digest_link",
+      "label": "Custom digest link"
+    },
+    {
+      "type": "header",
+      "content": "Desktop typography"
+    },
+    {
+      "type": "range",
+      "id": "desktop_title_size",
+      "min": 48,
+      "max": 110,
+      "step": 2,
+      "unit": "px",
+      "label": "Company name size",
+      "default": 82
+    },
+    {
+      "type": "range",
+      "id": "desktop_subtitle_size",
+      "min": 28,
+      "max": 56,
+      "step": 2,
+      "unit": "px",
+      "label": "Main statement size",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "desktop_body_size",
+      "min": 13,
+      "max": 22,
+      "step": 1,
+      "unit": "px",
+      "label": "Body text size",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "desktop_label_size",
+      "min": 8,
+      "max": 15,
+      "step": 1,
+      "unit": "px",
+      "label": "Small text size",
+      "default": 9
+    },
+    {
+      "type": "range",
+      "id": "desktop_stat_size",
+      "min": 18,
+      "max": 34,
+      "step": 1,
+      "unit": "px",
+      "label": "Statistic value size",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "desktop_digest_title_size",
+      "min": 24,
+      "max": 44,
+      "step": 1,
+      "unit": "px",
+      "label": "Digest heading size",
+      "default": 31
+    },
+    {
+      "type": "header",
+      "content": "Mobile typography"
+    },
+    {
+      "type": "range",
+      "id": "mobile_title_size",
+      "min": 38,
+      "max": 72,
+      "step": 2,
+      "unit": "px",
+      "label": "Company name size",
+      "default": 52
+    },
+    {
+      "type": "range",
+      "id": "mobile_subtitle_size",
+      "min": 26,
+      "max": 44,
+      "step": 2,
+      "unit": "px",
+      "label": "Main statement size",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "mobile_body_size",
+      "min": 13,
+      "max": 19,
+      "step": 1,
+      "unit": "px",
+      "label": "Body text size",
+      "default": 15
+    },
+    {
+      "type": "range",
+      "id": "mobile_label_size",
+      "min": 8,
+      "max": 14,
+      "step": 1,
+      "unit": "px",
+      "label": "Small text size",
+      "default": 9
+    },
+    {
+      "type": "range",
+      "id": "mobile_stat_size",
+      "min": 18,
+      "max": 30,
+      "step": 1,
+      "unit": "px",
+      "label": "Statistic value size",
+      "default": 22
+    },
+    {
+      "type": "range",
+      "id": "mobile_digest_title_size",
+      "min": 22,
+      "max": 36,
+      "step": 1,
+      "unit": "px",
+      "label": "Digest heading size",
+      "default": 27
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "max_width",
+      "label": "Content width",
+      "default": "1600px",
+      "options": [
+        {
+          "value": "1300px",
+          "label": "Narrow"
+        },
+        {
+          "value": "1450px",
+          "label": "Medium"
+        },
+        {
+          "value": "1600px",
+          "label": "Wide"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 40,
+      "max": 120,
+      "step": 5,
+      "unit": "px",
+      "label": "Top spacing",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 40,
+      "max": 120,
+      "step": 5,
+      "unit": "px",
+      "label": "Bottom spacing",
+      "default": 80
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Section background",
+      "default": "#D8F0E4"
+    },
+    {
+      "type": "color",
+      "id": "paper_color",
+      "label": "Paper background",
+      "default": "#F3ECDC"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Main text",
+      "default": "#161B2E"
+    },
+    {
+      "type": "color",
+      "id": "muted_text_color",
+      "label": "Secondary text",
+      "default": "#646575"
+    },
+    {
+      "type": "color",
+      "id": "mint_color",
+      "label": "Mint accent",
+      "default": "#274B44"
+    },
+    {
+      "type": "color",
+      "id": "gold_color",
+      "label": "Gold accent",
+      "default": "#E0A526"
+    },
+    {
+      "type": "color",
+      "id": "blue_color",
+      "label": "Blue accent",
+      "default": "#274B44"
+    },
+    {
+      "type": "color",
+      "id": "blue_deep_color",
+      "label": "Deep blue",
+      "default": "#161B2E"
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Soft border",
+      "default": "#C9BEA8"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "stat",
+      "name": "Company statistic",
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label",
+          "default": "FOUNDED"
+        },
+        {
+          "type": "text",
+          "id": "value",
+          "label": "Value",
+          "default": "1976"
+        },
+        {
+          "type": "text",
+          "id": "note",
+          "label": "Small note",
+          "default": "CALIFORNIA"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Ara Company Hero",
+      "blocks": [
+        {
+          "type": "stat",
+          "settings": {
+            "label": "FOUNDED",
+            "value": "1976",
+            "note": "CALIFORNIA"
+          }
+        },
+        {
+          "type": "stat",
+          "settings": {
+            "label": "BUSINESS MODEL",
+            "value": "ECOSYSTEM",
+            "note": "HARDWARE + SERVICES"
+          }
+        },
+        {
+          "type": "stat",
+          "settings": {
+            "label": "CUSTOMER",
+            "value": "GLOBAL",
+            "note": "CONSUMER + ENTERPRISE"
+          }
+        },
+        {
+          "type": "stat",
+          "settings": {
+            "label": "CORE ADVANTAGE",
+            "value": "LOYALTY",
+            "note": "INTEGRATION"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

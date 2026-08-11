@@ -1,0 +1,1331 @@
+<section
+  id="AraCompanyRevenue-{{ section.id }}"
+  class="ara-company-revenue"
+  style="
+    --ara-revenue-bg: {{ section.settings.background_color }};
+    --ara-revenue-paper: {{ section.settings.paper_color }};
+    --ara-revenue-text: {{ section.settings.text_color }};
+    --ara-revenue-muted: {{ section.settings.muted_text_color }};
+    --ara-revenue-mint: {{ section.settings.mint_color }};
+    --ara-revenue-gold: {{ section.settings.gold_color }};
+    --ara-revenue-blue: {{ section.settings.blue_color }};
+    --ara-revenue-blue-deep: {{ section.settings.blue_deep_color }};
+    --ara-revenue-border: {{ section.settings.border_color }};
+    --ara-revenue-max: {{ section.settings.max_width }};
+    --ara-revenue-top: {{ section.settings.padding_top }}px;
+    --ara-revenue-bottom: {{ section.settings.padding_bottom }}px;
+    --ara-revenue-heading-desktop: {{ section.settings.desktop_heading_size }}px;
+    --ara-revenue-body-desktop: {{ section.settings.desktop_body_size }}px;
+    --ara-revenue-label-desktop: {{ section.settings.desktop_label_size }}px;
+    --ara-revenue-stream-title-desktop: {{ section.settings.desktop_stream_title_size }}px;
+    --ara-revenue-stream-value-desktop: {{ section.settings.desktop_stream_value_size }}px;
+    --ara-revenue-card-title-desktop: {{ section.settings.desktop_card_title_size }}px;
+    --ara-revenue-heading-mobile: {{ section.settings.mobile_heading_size }}px;
+    --ara-revenue-body-mobile: {{ section.settings.mobile_body_size }}px;
+    --ara-revenue-label-mobile: {{ section.settings.mobile_label_size }}px;
+    --ara-revenue-stream-title-mobile: {{ section.settings.mobile_stream_title_size }}px;
+    --ara-revenue-stream-value-mobile: {{ section.settings.mobile_stream_value_size }}px;
+    --ara-revenue-card-title-mobile: {{ section.settings.mobile_card_title_size }}px;
+  "
+>
+  <div class="ara-company-revenue__lines" aria-hidden="true"></div>
+
+  <div class="ara-company-revenue__inner">
+    <div class="ara-company-file__brand-rule">
+      <img
+        src="{{ 'mintmark-wordmark-ink.png' | asset_url }}"
+        alt="Mintmark"
+        width="488"
+        height="88"
+        loading="lazy"
+      >
+      <span>COMPANY FILE · MINTMARK</span>
+    </div>
+    <div class="ara-company-revenue__intro">
+      <div>
+        {% if section.settings.eyebrow != blank %}
+          <span class="ara-company-revenue__eyebrow">
+            {{ section.settings.eyebrow | escape }}
+          </span>
+        {% endif %}
+
+        {% if section.settings.heading != blank %}
+          <h2 class="ara-company-revenue__heading">
+            {{ section.settings.heading | escape | newline_to_br }}
+          </h2>
+        {% endif %}
+      </div>
+
+      {% if section.settings.description != blank %}
+        <div class="ara-company-revenue__description">
+          {{ section.settings.description }}
+        </div>
+      {% endif %}
+    </div>
+
+    <div class="ara-company-revenue__mix-frame">
+      <div class="ara-company-revenue__mix">
+        <div class="ara-company-revenue__mix-head">
+          <div>
+            <span>{{ section.settings.mix_heading | escape }}</span>
+            <small>{{ section.settings.mix_note | escape }}</small>
+          </div>
+
+          {% if section.settings.mix_badge != blank %}
+            <span class="ara-company-revenue__mix-badge">
+              {{ section.settings.mix_badge | escape }}
+            </span>
+          {% endif %}
+        </div>
+
+        {% if section.blocks.size > 0 %}
+          <div
+            class="ara-company-revenue__bar"
+            aria-label="{{ section.settings.bar_accessibility_label | escape }}"
+          >
+            {% for block in section.blocks %}
+              <div
+                class="ara-company-revenue__bar-segment ara-company-revenue__bar-segment--{{ block.settings.style }}"
+                style="--ara-stream-share: {{ block.settings.percentage }};"
+                title="{{ block.settings.title | escape }}: {{ block.settings.percentage }}%"
+              >
+                {% if block.settings.percentage > 7 %}
+                  <span>{{ block.settings.percentage }}%</span>
+                {% endif %}
+              </div>
+            {% endfor %}
+          </div>
+
+          <div class="ara-company-revenue__legend">
+            {% for block in section.blocks %}
+              <div class="ara-company-revenue__legend-item">
+                <i class="ara-company-revenue__legend-dot ara-company-revenue__legend-dot--{{ block.settings.style }}"></i>
+                <span>{{ block.settings.title | escape }}</span>
+                <strong>{{ block.settings.percentage }}%</strong>
+              </div>
+            {% endfor %}
+          </div>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="ara-company-revenue__layout">
+      <div class="ara-company-revenue__streams">
+        {% for block in section.blocks %}
+          <article
+            class="ara-company-revenue__stream ara-company-revenue__stream--{{ block.settings.style }}"
+            {{ block.shopify_attributes }}
+          >
+            <div class="ara-company-revenue__stream-top">
+              <span>{{ forloop.index | prepend: '0' }}</span>
+
+              {% if block.settings.kicker != blank %}
+                <small>{{ block.settings.kicker | escape }}</small>
+              {% endif %}
+            </div>
+
+            <div class="ara-company-revenue__stream-main">
+              {% if block.settings.title != blank %}
+                <h3>{{ block.settings.title | escape }}</h3>
+              {% endif %}
+
+              <strong>{{ block.settings.percentage }}%</strong>
+
+              {% if block.settings.description != blank %}
+                <p>{{ block.settings.description | escape }}</p>
+              {% endif %}
+            </div>
+
+            {% if block.settings.driver_label != blank or block.settings.driver_value != blank %}
+              <div class="ara-company-revenue__stream-driver">
+                <span>{{ block.settings.driver_label | escape }}</span>
+                <strong>{{ block.settings.driver_value | escape }}</strong>
+              </div>
+            {% endif %}
+          </article>
+        {% endfor %}
+      </div>
+
+      <aside class="ara-company-revenue__economics-frame">
+        <div class="ara-company-revenue__economics">
+          <div class="ara-company-revenue__economics-head">
+            <span>{{ section.settings.economics_heading | escape }}</span>
+            <small>{{ section.settings.economics_note | escape }}</small>
+          </div>
+
+          <div class="ara-company-revenue__economics-cards">
+            {% if section.settings.economic_one_title != blank %}
+              <article>
+                <span>01</span>
+                <h3>{{ section.settings.economic_one_title | escape }}</h3>
+
+                {% if section.settings.economic_one_text != blank %}
+                  <p>{{ section.settings.economic_one_text | escape }}</p>
+                {% endif %}
+              </article>
+            {% endif %}
+
+            {% if section.settings.economic_two_title != blank %}
+              <article>
+                <span>02</span>
+                <h3>{{ section.settings.economic_two_title | escape }}</h3>
+
+                {% if section.settings.economic_two_text != blank %}
+                  <p>{{ section.settings.economic_two_text | escape }}</p>
+                {% endif %}
+              </article>
+            {% endif %}
+
+            {% if section.settings.economic_three_title != blank %}
+              <article>
+                <span>03</span>
+                <h3>{{ section.settings.economic_three_title | escape }}</h3>
+
+                {% if section.settings.economic_three_text != blank %}
+                  <p>{{ section.settings.economic_three_text | escape }}</p>
+                {% endif %}
+              </article>
+            {% endif %}
+          </div>
+
+          {% if section.settings.key_idea != blank %}
+            <div class="ara-company-revenue__key-idea">
+              <span>{{ section.settings.key_idea_label | escape }}</span>
+              <p>{{ section.settings.key_idea | escape }}</p>
+            </div>
+          {% endif %}
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<style>
+  #AraCompanyRevenue-{{ section.id }} {
+    position: relative;
+    overflow: hidden;
+    padding: var(--ara-revenue-top) 0 var(--ara-revenue-bottom);
+    background: var(--ara-revenue-bg);
+    color: var(--ara-revenue-text);
+    isolation: isolate;
+  }
+
+  #AraCompanyRevenue-{{ section.id }} * {
+    box-sizing: border-box;
+  }
+
+  #AraCompanyRevenue-{{ section.id }} .ara-company-revenue__lines {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    opacity: 0.44;
+    background-image:
+      repeating-linear-gradient(
+        to bottom,
+        transparent 0,
+        transparent 35px,
+        color-mix(in srgb, var(--ara-revenue-mint) 21%, transparent) 35px,
+        color-mix(in srgb, var(--ara-revenue-mint) 21%, transparent) 36px
+      );
+    pointer-events: none;
+  }
+
+  #AraCompanyRevenue-{{ section.id }} .ara-company-revenue__inner {
+    width: min(100%, var(--ara-revenue-max));
+    margin: 0 auto;
+    padding: 0 40px;
+  }
+
+  #AraCompanyRevenue-{{ section.id }} .ara-company-revenue__intro {
+    display: grid;
+    grid-template-columns: minmax(0, 0.95fr) minmax(320px, 0.55fr);
+    gap: clamp(30px, 5vw, 90px);
+    align-items: end;
+    margin-bottom: 44px;
+  }
+
+  #AraCompanyRevenue-{{ section.id }} .ara-company-revenue__eyebrow,
+  #AraCompanyRevenue-{{ section.id }} .ara-company-revenue__mix-head span,
+  #AraCompanyRevenue-{{ section.id }} .ara-company-revenue__mix-head small,
+  #AraCompanyRevenue-{{ section.id }} .ara-company-revenue__mix-badge,
+  #AraCompanyRevenue-{{ section.id }} .ara-company-revenue__legend-item span,
+  #AraCompanyRevenue-{{ section.id }} .ara-company-revenue__stream-top span,
+  #AraCompanyRevenue-{{ section.id }} .ara-company-revenue__stream-top small,
+  #AraCompanyRevenue-{{ section.id }} .ara-company-revenue__stream-driver span,
+  #AraCompanyRevenue-{{ section.id }} .ara-company-revenue__economics-head span,
+  #AraCompanyRevenue-{{ section.id }} .ara-company-revenue__economics-head small,
+  #AraCompanyRevenue-{{ section.id }} .ara-company-revenue__economics-cards article > span,
+  #AraCompanyRevenue-{{ section.id }} .ara-company-revenue__key-idea span {
+    font-family: var(--font-body-family);
+    font-style: var(--font-body-style);
+    font-weight: 800;
+    line-height: 1.2;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  #AraCompanyRevenue-{{ section.id }} .ara-company-revenue__eyebrow {
+    display: inline-flex;
+    min-height: 31px;
+    align-items: center;
+    padding: 6px 11px;
+    border: 2px solid var(--ara-revenue-text);
+    border-radius: 8px;
+    background: var(--ara-revenue-gold);
+    color: var(--ara-revenue-text);
+    font-size: var(--ara-revenue-label-desktop);
+    box-shadow: 3px 3px 0 var(--ara-revenue-text);
+  }
+
+  #AraCompanyRevenue-{{ section.id }} .ara-company-revenue__heading {
+    max-width: 900px;
+    margin: 24px 0 0;
+    font-family: var(--font-heading-family);
+    font-size: var(--ara-revenue-heading-desktop);
+    font-style: var(--font-heading-style);
+    font-weight: var(--font-heading-weight);
+    line-height: 0.94;
+    letter-spacing: -0.055em;
+  }
+
+  #AraCompanyRevenue-{{ section.id }} .ara-company-revenue__description {
+    color: var(--ara-revenue-muted);
+    font-family: var(--font-body-family);
+    font-size: var(--ara-revenue-body-desktop);
+    font-style: var(--font-body-style);
+    font-weight: var(--font-body-weight);
+    line-height: 1.65;
+  }
+
+  #AraCompanyRevenue-{{ section.id }} .ara-company-revenue__description p {
+    margin: 0;
+  }
+
+  #AraCompanyRevenue-{{ section.id }} .ara-company-revenue__mix-frame {
+    padding: 7px;
+    border: 2px solid var(--ara-revenue-text);
+    border-radius: 24px;
+    background: var(--ara-revenue-paper);
+    box-shadow:
+      9px 9px 0 var(--ara-revenue-gold),
+      16px 16px 0 color-mix(in srgb, var(--ara-revenue-mint) 66%, transparent);
+  }
+
+  #AraCompanyRevenue-{{ section.id }} .ara-company-revenue__mix {
+    padding: 28px;
+    border: 3px solid var(--ara-revenue-text);
+    border-radius: 16px;
+    background: var(--ara-revenue-paper);
+  }
+
+  #AraCompanyRevenue-{{ section.id }} .ara-company-revenue__mix-head,
+  #AraCompanyRevenue-{{ section.id }} .ara-company-revenue__economics-head,
+  #AraCompanyRevenue-{{ section.id }} .ara-company-revenue__stream-top,
+  #AraCompanyRevenue-{{ section.id }} .ara-company-revenue__key-idea {
+    display: flex;
+    justify-content: space-between;
+    gap: 14px;
+    align-items: flex-start;
+  }
+
+  #AraCompanyRevenue-{{ section.id }} .ara-company-revenue__mix-head {
+    padding-bottom: 15px;
+    border-bottom: 2px solid var(--ara-revenue-text);
+  }
+
+  #AraCompanyRevenue-{{ section.id }} .ara-company-revenue__mix-head > div {
+    display: grid;
+    gap: 5px;
+  }
+
+  #AraCompanyRevenue-{{ section.id }} .ara-company-revenue__mix-head span,
+  #AraCompanyRevenue-{{ section.id }} .ara-company-revenue__mix-head small,
+  #AraCompanyRevenue-{{ section.id }} .ara-company-revenue__mix-badge {
+    font-size: var(--ara-revenue-label-desktop);
+  }
+
+  #AraCompanyRevenue-{{ section.id }} .ara-company-revenue__mix-head small {
+    color: var(--ara-revenue-muted);
+  }
+
+  #AraCompanyRevenue-{{ section.id }} .ara-company-revenue__mix-badge {
+    padding: 5px 9px;
+    border: 1px solid var(--ara-revenue-text);
+    border-radius: 999px;
+    background: var(--ara-revenue-gold);
+  }
+
+  #AraCompanyRevenue-{{ section.id }} .ara-company-revenue__bar {
+    display: flex;
+    min-height: 74px;
+    margin-top: 25px;
+    overflow: hidden;
+    border: 3px solid var(--ara-revenue-text);
+    border-radius: 13px;
+    background: var(--ara-revenue-paper);
+    box-shadow: 5px 5px 0 var(--ara-revenue-text);
+  }
+
+  #AraCompanyRevenue-{{ section.id }} .ara-company-revenue__bar-segment {
+    display: grid;
+    min-width: 14px;
+    flex: var(--ara-stream-share) 1 0%;
+    place-items: center;
+    border-right: 2px solid var(--ara-revenue-text);
+  }
+
+  #AraCompanyRevenue-{{ section.id }} .ara-company-revenue__bar-segment:last-child {
+    border-right: 0;
+  }
+
+  #AraCompanyRevenue-{{ section.id }} .ara-company-revenue__bar-segment span {
+    font-family: var(--font-heading-family);
+    font-size: clamp(18px, 2vw, 30px);
+    font-weight: var(--font-heading-weight);
+  }
+
+  #AraCompanyRevenue-{{ section.id }} .ara-company-revenue__bar-segment--cream,
+  #AraCompanyRevenue-{{ section.id }} .ara-company-revenue__legend-dot--cream,
+  #AraCompanyRevenue-{{ section.id }} .ara-company-revenue__stream--cream {
+    background: var(--ara-revenue-paper);
+    color: var(--ara-revenue-text);
+  }
+
+  #AraCompanyRevenue-{{ section.id }} .ara-company-revenue__bar-segment--gold,
+  #AraCompanyRevenue-{{ section.id }} .ara-company-revenue__legend-dot--gold,
+  #AraCompanyRevenue-{{ section.id }} .ara-company-revenue__stream--gold {
+    background: var(--ara-revenue-gold);
+    color: var(--ara-revenue-text);
+  }
+
+  #AraCompanyRevenue-{{ section.id }} .ara-company-revenue__bar-segment--mint,
+  #AraCompanyRevenue-{{ section.id }} .ara-company-revenue__legend-dot--mint,
+  #AraCompanyRevenue-{{ section.id }} .ara-company-revenue__stream--mint {
+    background: color-mix(in srgb, var(--ara-revenue-mint) 76%, white);
+    color: var(--ara-revenue-text);
+  }
+
+  #AraCompanyRevenue-{{ section.id }} .ara-company-revenue__bar-segment--blue,
+  #AraCompanyRevenue-{{ section.id }} .ara-company-revenue__legend-dot--blue,
+  #AraCompanyRevenue-{{ section.id }} .ara-company-revenue__stream--blue {
+    background: var(--ara-revenue-blue);
+    color: #FFFFFF;
+  }
+
+  #AraCompanyRevenue-{{ section.id }} .ara-company-revenue__bar-segment--dark,
+  #AraCompanyRevenue-{{ section.id }} .ara-company-revenue__legend-dot--dark,
+  #AraCompanyRevenue-{{ section.id }} .ara-company-revenue__stream--dark {
+    background: var(--ara-revenue-blue-deep);
+    color: #FFFFFF;
+  }
+
+  #AraCompanyRevenue-{{ section.id }} .ara-company-revenue__legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 11px 18px;
+    margin-top: 21px;
+  }
+
+  #AraCompanyRevenue-{{ section.id }} .ara-company-revenue__legend-item {
+    display: grid;
+    grid-template-columns: 13px auto auto;
+    gap: 8px;
+    align-items: center;
+  }
+
+  #AraCompanyRevenue-{{ section.id }} .ara-company-revenue__legend-dot {
+    display: block;
+    width: 13px;
+    height: 13px;
+    border: 1px solid var(--ara-revenue-text);
+    border-radius: 3px;
+  }
+
+  #AraCompanyRevenue-{{ section.id }} .ara-company-revenue__legend-item span {
+    font-size: var(--ara-revenue-label-desktop);
+  }
+
+  #AraCompanyRevenue-{{ section.id }} .ara-company-revenue__legend-item strong {
+    font-family: var(--font-heading-family);
+    font-size: 17px;
+  }
+
+  #AraCompanyRevenue-{{ section.id }} .ara-company-revenue__layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1.25fr) minmax(330px, 0.75fr);
+    gap: 34px;
+    align-items: start;
+    margin-top: 40px;
+  }
+
+  #AraCompanyRevenue-{{ section.id }} .ara-company-revenue__streams {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 15px;
+  }
+
+  #AraCompanyRevenue-{{ section.id }} .ara-company-revenue__stream {
+    display: grid;
+    align-content: space-between;
+    min-height: 265px;
+    padding: 21px;
+    border: 2px solid var(--ara-revenue-text);
+    border-radius: 14px;
+    box-shadow: 5px 5px 0 var(--ara-revenue-text);
+  }
+
+  #AraCompanyRevenue-{{ section.id }} .ara-company-revenue__stream:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+    min-height: 220px;
+  }
+
+  #AraCompanyRevenue-{{ section.id }} .ara-company-revenue__stream:last-child:nth-child(odd) .ara-company-revenue__stream-main {
+    display: grid;
+    grid-template-columns: minmax(180px, 0.72fr) minmax(0, 1.28fr);
+    gap: 22px;
+    align-items: start;
+  }
+
+  #AraCompanyRevenue-{{ section.id }} .ara-company-revenue__stream:last-child:nth-child(odd) .ara-company-revenue__stream-main > strong {
+    grid-column: 1;
+  }
+
+  #AraCompanyRevenue-{{ section.id }} .ara-company-revenue__stream:last-child:nth-child(odd) .ara-company-revenue__stream-main > p {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    margin-top: 0;
+  }
+
+  #AraCompanyRevenue-{{ section.id }} .ara-company-revenue__stream-top {
+    padding-bottom: 13px;
+    border-bottom: 1px dashed currentColor;
+  }
+
+  #AraCompanyRevenue-{{ section.id }} .ara-company-revenue__stream-top span,
+  #AraCompanyRevenue-{{ section.id }} .ara-company-revenue__stream-top small,
+  #AraCompanyRevenue-{{ section.id }} .ara-company-revenue__stream-driver span {
+    font-size: var(--ara-revenue-label-desktop);
+  }
+
+  #AraCompanyRevenue-{{ section.id }} .ara-company-revenue__stream-top small {
+    text-align: right;
+  }
+
+  #AraCompanyRevenue-{{ section.id }} .ara-company-revenue__stream-main {
+    margin-top: 22px;
+  }
+
+  #AraCompanyRevenue-{{ section.id }} .ara-company-revenue__stream h3 {
+    margin: 0;
+    font-family: var(--font-heading-family);
+    font-size: var(--ara-revenue-stream-title-desktop);
+    font-style: var(--font-heading-style);
+    font-weight: var(--font-heading-weight);
+    line-height: 0.98;
+  }
+
+  #AraCompanyRevenue-{{ section.id }} .ara-company-revenue__stream-main > strong {
+    display: block;
+    margin-top: 14px;
+    font-family: var(--font-heading-family);
+    font-size: var(--ara-revenue-stream-value-desktop);
+    line-height: 1;
+  }
+
+  #AraCompanyRevenue-{{ section.id }} .ara-company-revenue__stream p {
+    margin: 13px 0 0;
+    font-family: var(--font-body-family);
+    font-size: var(--ara-revenue-body-desktop);
+    font-style: var(--font-body-style);
+    font-weight: var(--font-body-weight);
+    line-height: 1.5;
+  }
+
+  #AraCompanyRevenue-{{ section.id }} .ara-company-revenue__stream-driver {
+    margin-top: 21px;
+    padding-top: 14px;
+    border-top: 1px solid currentColor;
+  }
+
+  #AraCompanyRevenue-{{ section.id }} .ara-company-revenue__stream-driver span {
+    display: block;
+  }
+
+  #AraCompanyRevenue-{{ section.id }} .ara-company-revenue__stream-driver strong {
+    display: block;
+    margin-top: 7px;
+    font-family: var(--font-heading-family);
+    font-size: clamp(21px, 1.8vw, 30px);
+    line-height: 1;
+  }
+
+  #AraCompanyRevenue-{{ section.id }} .ara-company-revenue__economics-frame {
+    align-self: start;
+    height: fit-content;
+    padding: 7px;
+    border: 2px solid var(--ara-revenue-text);
+    border-radius: 24px;
+    background: var(--ara-revenue-paper);
+    box-shadow:
+      9px 9px 0 var(--ara-revenue-blue-deep),
+      16px 16px 0 color-mix(in srgb, var(--ara-revenue-gold) 68%, transparent);
+  }
+
+  #AraCompanyRevenue-{{ section.id }} .ara-company-revenue__economics {
+    padding: 26px 23px;
+    border: 3px solid var(--ara-revenue-text);
+    border-radius: 16px;
+    background:
+      linear-gradient(
+        145deg,
+        var(--ara-revenue-blue),
+        var(--ara-revenue-blue-deep)
+      );
+    color: #FFFFFF;
+  }
+
+  #AraCompanyRevenue-{{ section.id }} .ara-company-revenue__economics-head {
+    padding-bottom: 15px;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.75);
+  }
+
+  #AraCompanyRevenue-{{ section.id }} .ara-company-revenue__economics-head span,
+  #AraCompanyRevenue-{{ section.id }} .ara-company-revenue__economics-head small {
+    font-size: var(--ara-revenue-label-desktop);
+  }
+
+  #AraCompanyRevenue-{{ section.id }} .ara-company-revenue__economics-head small {
+    color: rgba(255, 255, 255, 0.64);
+    text-align: right;
+  }
+
+  #AraCompanyRevenue-{{ section.id }} .ara-company-revenue__economics-cards {
+    display: grid;
+    gap: 11px;
+    margin-top: 20px;
+  }
+
+  #AraCompanyRevenue-{{ section.id }} .ara-company-revenue__economics-cards article {
+    padding: 17px;
+    border: 1px solid rgba(255, 255, 255, 0.42);
+    border-radius: 11px;
+    background: rgba(255, 255, 255, 0.08);
+  }
+
+  #AraCompanyRevenue-{{ section.id }} .ara-company-revenue__economics-cards article > span {
+    color: var(--ara-revenue-gold);
+    font-size: var(--ara-revenue-label-desktop);
+  }
+
+  #AraCompanyRevenue-{{ section.id }} .ara-company-revenue__economics-cards h3 {
+    margin: 11px 0 0;
+    font-family: var(--font-heading-family);
+    font-size: var(--ara-revenue-card-title-desktop);
+    font-style: var(--font-heading-style);
+    font-weight: var(--font-heading-weight);
+    line-height: 1;
+  }
+
+  #AraCompanyRevenue-{{ section.id }} .ara-company-revenue__economics-cards p {
+    margin: 10px 0 0;
+    color: rgba(255, 255, 255, 0.82);
+    font-family: var(--font-body-family);
+    font-size: var(--ara-revenue-body-desktop);
+    line-height: 1.5;
+  }
+
+  #AraCompanyRevenue-{{ section.id }} .ara-company-revenue__key-idea {
+    display: grid;
+    gap: 10px;
+    align-items: start;
+    margin-top: 22px;
+    padding: 18px;
+    border: 2px solid #FFFFFF;
+    border-radius: 11px;
+    background: var(--ara-revenue-paper);
+    color: var(--ara-revenue-text);
+    box-shadow: 4px 4px 0 var(--ara-revenue-gold);
+  }
+
+  #AraCompanyRevenue-{{ section.id }} .ara-company-revenue__key-idea span {
+    color: var(--ara-revenue-mint);
+    font-size: var(--ara-revenue-label-desktop);
+  }
+
+  #AraCompanyRevenue-{{ section.id }} .ara-company-revenue__key-idea p {
+    margin: 0;
+    font-family: var(--font-heading-family);
+    font-size: clamp(20px, 1.65vw, 27px);
+    line-height: 1.08;
+  }
+
+  @media screen and (max-width: 1099px) {
+    #AraCompanyRevenue-{{ section.id }} .ara-company-revenue__intro,
+    #AraCompanyRevenue-{{ section.id }} .ara-company-revenue__layout {
+      grid-template-columns: 1fr;
+    }
+
+    #AraCompanyRevenue-{{ section.id }} .ara-company-revenue__economics-frame {
+      max-width: 760px;
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    #AraCompanyRevenue-{{ section.id }} {
+      padding-top: calc(var(--ara-revenue-top) * 0.7);
+      padding-bottom: calc(var(--ara-revenue-bottom) * 0.7);
+    }
+
+    #AraCompanyRevenue-{{ section.id }} .ara-company-revenue__inner {
+      padding: 0 20px;
+    }
+
+    #AraCompanyRevenue-{{ section.id }} .ara-company-revenue__intro {
+      gap: 24px;
+      margin-bottom: 32px;
+    }
+
+    #AraCompanyRevenue-{{ section.id }} .ara-company-revenue__heading {
+      font-size: var(--ara-revenue-heading-mobile);
+    }
+
+    #AraCompanyRevenue-{{ section.id }} .ara-company-revenue__description,
+    #AraCompanyRevenue-{{ section.id }} .ara-company-revenue__stream p,
+    #AraCompanyRevenue-{{ section.id }} .ara-company-revenue__economics-cards p {
+      font-size: var(--ara-revenue-body-mobile);
+    }
+
+    #AraCompanyRevenue-{{ section.id }} .ara-company-revenue__eyebrow,
+    #AraCompanyRevenue-{{ section.id }} .ara-company-revenue__mix-head span,
+    #AraCompanyRevenue-{{ section.id }} .ara-company-revenue__mix-head small,
+    #AraCompanyRevenue-{{ section.id }} .ara-company-revenue__mix-badge,
+    #AraCompanyRevenue-{{ section.id }} .ara-company-revenue__legend-item span,
+    #AraCompanyRevenue-{{ section.id }} .ara-company-revenue__stream-top span,
+    #AraCompanyRevenue-{{ section.id }} .ara-company-revenue__stream-top small,
+    #AraCompanyRevenue-{{ section.id }} .ara-company-revenue__stream-driver span,
+    #AraCompanyRevenue-{{ section.id }} .ara-company-revenue__economics-head span,
+    #AraCompanyRevenue-{{ section.id }} .ara-company-revenue__economics-head small,
+    #AraCompanyRevenue-{{ section.id }} .ara-company-revenue__economics-cards article > span,
+    #AraCompanyRevenue-{{ section.id }} .ara-company-revenue__key-idea span {
+      font-size: var(--ara-revenue-label-mobile);
+    }
+
+    #AraCompanyRevenue-{{ section.id }} .ara-company-revenue__mix-frame,
+    #AraCompanyRevenue-{{ section.id }} .ara-company-revenue__economics-frame {
+      padding: 5px;
+    }
+
+    #AraCompanyRevenue-{{ section.id }} .ara-company-revenue__mix-frame {
+      box-shadow:
+        5px 5px 0 var(--ara-revenue-gold),
+        10px 10px 0 color-mix(in srgb, var(--ara-revenue-mint) 66%, transparent);
+    }
+
+    #AraCompanyRevenue-{{ section.id }} .ara-company-revenue__economics-frame {
+      box-shadow:
+        5px 5px 0 var(--ara-revenue-blue-deep),
+        10px 10px 0 color-mix(in srgb, var(--ara-revenue-gold) 68%, transparent);
+    }
+
+    #AraCompanyRevenue-{{ section.id }} .ara-company-revenue__mix,
+    #AraCompanyRevenue-{{ section.id }} .ara-company-revenue__economics {
+      padding: 22px 18px;
+    }
+
+    #AraCompanyRevenue-{{ section.id }} .ara-company-revenue__mix-head,
+    #AraCompanyRevenue-{{ section.id }} .ara-company-revenue__economics-head,
+    #AraCompanyRevenue-{{ section.id }} .ara-company-revenue__key-idea {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+
+    #AraCompanyRevenue-{{ section.id }} .ara-company-revenue__bar {
+      min-height: 56px;
+    }
+
+    #AraCompanyRevenue-{{ section.id }} .ara-company-revenue__bar-segment span {
+      font-size: 14px;
+    }
+
+    #AraCompanyRevenue-{{ section.id }} .ara-company-revenue__streams {
+      grid-template-columns: 1fr;
+    }
+
+    #AraCompanyRevenue-{{ section.id }} .ara-company-revenue__stream,
+    #AraCompanyRevenue-{{ section.id }} .ara-company-revenue__stream:last-child:nth-child(odd) {
+      grid-column: auto;
+      min-height: 0;
+    }
+
+    #AraCompanyRevenue-{{ section.id }} .ara-company-revenue__stream:last-child:nth-child(odd) .ara-company-revenue__stream-main {
+      display: block;
+    }
+
+    #AraCompanyRevenue-{{ section.id }} .ara-company-revenue__stream:last-child:nth-child(odd) .ara-company-revenue__stream-main > p {
+      margin-top: 13px;
+    }
+
+    #AraCompanyRevenue-{{ section.id }} .ara-company-revenue__stream h3 {
+      font-size: var(--ara-revenue-stream-title-mobile);
+    }
+
+    #AraCompanyRevenue-{{ section.id }} .ara-company-revenue__stream-main > strong {
+      font-size: var(--ara-revenue-stream-value-mobile);
+    }
+
+    #AraCompanyRevenue-{{ section.id }} .ara-company-revenue__economics-cards h3 {
+      font-size: var(--ara-revenue-card-title-mobile);
+    }
+
+    #AraCompanyRevenue-{{ section.id }} .ara-company-revenue__key-idea span {
+      flex-basis: auto;
+    }
+  }
+</style>
+
+<style>
+  #AraCompanyRevenue-{{ section.id }} .ara-company-revenue__mix-frame,
+  #AraCompanyRevenue-{{ section.id }} .ara-company-revenue__economics-frame,
+  #AraCompanyRevenue-{{ section.id }} .ara-company-revenue__stream {
+    border-radius: 14px;
+  }
+
+  #AraCompanyRevenue-{{ section.id }} [class$="__button"],
+  #AraCompanyRevenue-{{ section.id }} [class*="__button--"] {
+    border-radius: 7px;
+  }
+</style>
+
+
+<style>
+  #AraCompanyRevenue-{{ section.id }} .ara-company-file__brand-rule {
+    display: flex;
+    justify-content: space-between;
+    gap: 18px;
+    align-items: center;
+    margin-bottom: clamp(24px, 3vw, 38px);
+    padding: 10px 0 12px;
+    border-top: 2px solid #161B2E;
+    border-bottom: 1px solid #161B2E;
+  }
+
+  #AraCompanyRevenue-{{ section.id }} .ara-company-file__brand-rule img {
+    display: block;
+    width: min(100%, 170px);
+    height: auto;
+  }
+
+  #AraCompanyRevenue-{{ section.id }} .ara-company-file__brand-rule span {
+    color: #161B2E;
+    font-family: var(--font-body-family);
+    font-size: 8px;
+    font-weight: 900;
+    letter-spacing: .16em;
+    text-align: right;
+  }
+
+  #AraCompanyRevenue-{{ section.id }} [class*="__card"],
+  #AraCompanyRevenue-{{ section.id }} [class*="__frame"],
+  #AraCompanyRevenue-{{ section.id }} [class*="__panel"] {
+    border-radius: 6px;
+  }
+
+  @media screen and (max-width: 749px) {
+    #AraCompanyRevenue-{{ section.id }} .ara-company-file__brand-rule {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+
+    #AraCompanyRevenue-{{ section.id }} .ara-company-file__brand-rule span {
+      text-align: left;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Ara Company Revenue",
+  "max_blocks": 6,
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Small heading",
+      "default": "HOW THE COMPANY MAKES MONEY"
+    },
+    {
+      "type": "textarea",
+      "id": "heading",
+      "label": "Main heading",
+      "default": "One ecosystem.\nSeveral revenue engines."
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description",
+      "default": "<p>See which products and services generate revenue, how the mix is changing and why some streams are more valuable than others.</p>"
+    },
+    {
+      "type": "text",
+      "id": "mix_heading",
+      "label": "Revenue mix heading",
+      "default": "ILLUSTRATIVE REVENUE MIX"
+    },
+    {
+      "type": "text",
+      "id": "mix_note",
+      "label": "Revenue mix note",
+      "default": "EDITABLE COMPANY SNAPSHOT"
+    },
+    {
+      "type": "text",
+      "id": "mix_badge",
+      "label": "Revenue mix badge",
+      "default": "TOTAL · 100%"
+    },
+    {
+      "type": "text",
+      "id": "bar_accessibility_label",
+      "label": "Revenue bar accessibility label",
+      "default": "Illustrative company revenue mix"
+    },
+    {
+      "type": "header",
+      "content": "Business economics"
+    },
+    {
+      "type": "text",
+      "id": "economics_heading",
+      "label": "Economics panel heading",
+      "default": "WHY THE MIX MATTERS"
+    },
+    {
+      "type": "text",
+      "id": "economics_note",
+      "label": "Economics panel note",
+      "default": "BEYOND REVENUE"
+    },
+    {
+      "type": "text",
+      "id": "economic_one_title",
+      "label": "First economics heading",
+      "default": "Hardware creates the relationship"
+    },
+    {
+      "type": "textarea",
+      "id": "economic_one_text",
+      "label": "First economics text",
+      "default": "The initial device sale brings a customer into the ecosystem and creates future opportunities."
+    },
+    {
+      "type": "text",
+      "id": "economic_two_title",
+      "label": "Second economics heading",
+      "default": "Services deepen the value"
+    },
+    {
+      "type": "textarea",
+      "id": "economic_two_text",
+      "label": "Second economics text",
+      "default": "Subscriptions, payments and digital services add recurring revenue to the installed base."
+    },
+    {
+      "type": "text",
+      "id": "economic_three_title",
+      "label": "Third economics heading",
+      "default": "The mix changes profitability"
+    },
+    {
+      "type": "textarea",
+      "id": "economic_three_text",
+      "label": "Third economics text",
+      "default": "Different revenue streams carry different margins, growth rates and levels of predictability."
+    },
+    {
+      "type": "text",
+      "id": "key_idea_label",
+      "label": "Key idea label",
+      "default": "KEY IDEA"
+    },
+    {
+      "type": "textarea",
+      "id": "key_idea",
+      "label": "Key idea",
+      "default": "The company does not need every category to grow equally. It needs the total ecosystem to become more valuable."
+    },
+    {
+      "type": "header",
+      "content": "Desktop typography"
+    },
+    {
+      "type": "range",
+      "id": "desktop_heading_size",
+      "min": 44,
+      "max": 92,
+      "step": 2,
+      "unit": "px",
+      "label": "Main heading size",
+      "default": 68
+    },
+    {
+      "type": "range",
+      "id": "desktop_body_size",
+      "min": 13,
+      "max": 22,
+      "step": 1,
+      "unit": "px",
+      "label": "Body text size",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "desktop_label_size",
+      "min": 8,
+      "max": 15,
+      "step": 1,
+      "unit": "px",
+      "label": "Small text size",
+      "default": 9
+    },
+    {
+      "type": "range",
+      "id": "desktop_stream_title_size",
+      "min": 22,
+      "max": 42,
+      "step": 1,
+      "unit": "px",
+      "label": "Revenue stream heading size",
+      "default": 30
+    },
+    {
+      "type": "range",
+      "id": "desktop_stream_value_size",
+      "min": 30,
+      "max": 62,
+      "step": 1,
+      "unit": "px",
+      "label": "Revenue percentage size",
+      "default": 44
+    },
+    {
+      "type": "range",
+      "id": "desktop_card_title_size",
+      "min": 22,
+      "max": 38,
+      "step": 1,
+      "unit": "px",
+      "label": "Economics heading size",
+      "default": 27
+    },
+    {
+      "type": "header",
+      "content": "Mobile typography"
+    },
+    {
+      "type": "range",
+      "id": "mobile_heading_size",
+      "min": 36,
+      "max": 66,
+      "step": 2,
+      "unit": "px",
+      "label": "Main heading size",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "mobile_body_size",
+      "min": 13,
+      "max": 19,
+      "step": 1,
+      "unit": "px",
+      "label": "Body text size",
+      "default": 15
+    },
+    {
+      "type": "range",
+      "id": "mobile_label_size",
+      "min": 8,
+      "max": 14,
+      "step": 1,
+      "unit": "px",
+      "label": "Small text size",
+      "default": 9
+    },
+    {
+      "type": "range",
+      "id": "mobile_stream_title_size",
+      "min": 22,
+      "max": 36,
+      "step": 1,
+      "unit": "px",
+      "label": "Revenue stream heading size",
+      "default": 27
+    },
+    {
+      "type": "range",
+      "id": "mobile_stream_value_size",
+      "min": 30,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "label": "Revenue percentage size",
+      "default": 38
+    },
+    {
+      "type": "range",
+      "id": "mobile_card_title_size",
+      "min": 22,
+      "max": 34,
+      "step": 1,
+      "unit": "px",
+      "label": "Economics heading size",
+      "default": 25
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "max_width",
+      "label": "Content width",
+      "default": "1600px",
+      "options": [
+        {
+          "value": "1300px",
+          "label": "Narrow"
+        },
+        {
+          "value": "1450px",
+          "label": "Medium"
+        },
+        {
+          "value": "1600px",
+          "label": "Wide"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 40,
+      "max": 120,
+      "step": 5,
+      "unit": "px",
+      "label": "Top spacing",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 40,
+      "max": 120,
+      "step": 5,
+      "unit": "px",
+      "label": "Bottom spacing",
+      "default": 80
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Section background",
+      "default": "#D8F0E4"
+    },
+    {
+      "type": "color",
+      "id": "paper_color",
+      "label": "Paper background",
+      "default": "#F3ECDC"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Main text",
+      "default": "#161B2E"
+    },
+    {
+      "type": "color",
+      "id": "muted_text_color",
+      "label": "Secondary text",
+      "default": "#646575"
+    },
+    {
+      "type": "color",
+      "id": "mint_color",
+      "label": "Mint accent",
+      "default": "#274B44"
+    },
+    {
+      "type": "color",
+      "id": "gold_color",
+      "label": "Gold accent",
+      "default": "#E0A526"
+    },
+    {
+      "type": "color",
+      "id": "blue_color",
+      "label": "Blue accent",
+      "default": "#274B44"
+    },
+    {
+      "type": "color",
+      "id": "blue_deep_color",
+      "label": "Deep blue",
+      "default": "#161B2E"
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Soft border",
+      "default": "#C9BEA8"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "revenue_stream",
+      "name": "Revenue stream",
+      "settings": [
+        {
+          "type": "select",
+          "id": "style",
+          "label": "Card color",
+          "default": "cream",
+          "options": [
+            {
+              "value": "cream",
+              "label": "Cream"
+            },
+            {
+              "value": "gold",
+              "label": "Gold"
+            },
+            {
+              "value": "mint",
+              "label": "Mint"
+            },
+            {
+              "value": "blue",
+              "label": "Blue"
+            },
+            {
+              "value": "dark",
+              "label": "Dark blue"
+            }
+          ]
+        },
+        {
+          "type": "range",
+          "id": "percentage",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "%",
+          "label": "Illustrative revenue share",
+          "default": 20
+        },
+        {
+          "type": "text",
+          "id": "kicker",
+          "label": "Small heading",
+          "default": "PRODUCT CATEGORY"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Revenue stream name",
+          "default": "iPhone"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description",
+          "default": "The largest product category and the main entry point into the broader ecosystem."
+        },
+        {
+          "type": "text",
+          "id": "driver_label",
+          "label": "Driver label",
+          "default": "WHAT DRIVES IT"
+        },
+        {
+          "type": "text",
+          "id": "driver_value",
+          "label": "Driver value",
+          "default": "UPGRADE CYCLE"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Ara Company Revenue",
+      "blocks": [
+        {
+          "type": "revenue_stream",
+          "settings": {
+            "style": "cream",
+            "percentage": 52,
+            "kicker": "PRODUCT CATEGORY",
+            "title": "iPhone",
+            "description": "The largest product category and the main entry point into the broader ecosystem.",
+            "driver_label": "WHAT DRIVES IT",
+            "driver_value": "UPGRADE CYCLE"
+          }
+        },
+        {
+          "type": "revenue_stream",
+          "settings": {
+            "style": "blue",
+            "percentage": 25,
+            "kicker": "RECURRING CATEGORY",
+            "title": "Services",
+            "description": "Subscriptions, payments, advertising and digital distribution tied to the installed base.",
+            "driver_label": "WHAT DRIVES IT",
+            "driver_value": "ACTIVE DEVICES"
+          }
+        },
+        {
+          "type": "revenue_stream",
+          "settings": {
+            "style": "mint",
+            "percentage": 8,
+            "kicker": "PRODUCT CATEGORY",
+            "title": "Mac",
+            "description": "Personal computers serving consumers, creators, students and professional customers.",
+            "driver_label": "WHAT DRIVES IT",
+            "driver_value": "PRODUCT CYCLE"
+          }
+        },
+        {
+          "type": "revenue_stream",
+          "settings": {
+            "style": "gold",
+            "percentage": 7,
+            "kicker": "PRODUCT CATEGORY",
+            "title": "iPad",
+            "description": "Tablet products spanning education, creativity, entertainment and professional use.",
+            "driver_label": "WHAT DRIVES IT",
+            "driver_value": "USE CASES"
+          }
+        },
+        {
+          "type": "revenue_stream",
+          "settings": {
+            "style": "dark",
+            "percentage": 8,
+            "kicker": "PRODUCT CATEGORY",
+            "title": "Wearables & Home",
+            "description": "Watch, audio, accessories and connected-home products that extend the ecosystem.",
+            "driver_label": "WHAT DRIVES IT",
+            "driver_value": "ECOSYSTEM DEPTH"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

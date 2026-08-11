@@ -1,0 +1,1100 @@
+<section
+  id="AraCompanyStories-{{ section.id }}"
+  class="ara-company-stories"
+  style="
+    --ara-stories-bg: {{ section.settings.background_color }};
+    --ara-stories-paper: {{ section.settings.paper_color }};
+    --ara-stories-text: {{ section.settings.text_color }};
+    --ara-stories-muted: {{ section.settings.muted_text_color }};
+    --ara-stories-mint: {{ section.settings.mint_color }};
+    --ara-stories-gold: {{ section.settings.gold_color }};
+    --ara-stories-blue: {{ section.settings.blue_color }};
+    --ara-stories-blue-deep: {{ section.settings.blue_deep_color }};
+    --ara-stories-max: {{ section.settings.max_width }};
+    --ara-stories-top: {{ section.settings.padding_top }}px;
+    --ara-stories-bottom: {{ section.settings.padding_bottom }}px;
+    --ara-stories-heading-desktop: {{ section.settings.desktop_heading_size }}px;
+    --ara-stories-body-desktop: {{ section.settings.desktop_body_size }}px;
+    --ara-stories-label-desktop: {{ section.settings.desktop_label_size }}px;
+    --ara-stories-feature-title-desktop: {{ section.settings.desktop_feature_title_size }}px;
+    --ara-stories-card-title-desktop: {{ section.settings.desktop_card_title_size }}px;
+    --ara-stories-heading-mobile: {{ section.settings.mobile_heading_size }}px;
+    --ara-stories-body-mobile: {{ section.settings.mobile_body_size }}px;
+    --ara-stories-label-mobile: {{ section.settings.mobile_label_size }}px;
+    --ara-stories-feature-title-mobile: {{ section.settings.mobile_feature_title_size }}px;
+    --ara-stories-card-title-mobile: {{ section.settings.mobile_card_title_size }}px;
+  "
+>
+  <div class="ara-company-stories__lines" aria-hidden="true"></div>
+
+  <div class="ara-company-stories__inner">
+    <div class="ara-company-file__brand-rule">
+      <img
+        src="{{ 'mintmark-wordmark-ink.png' | asset_url }}"
+        alt="Mintmark"
+        width="488"
+        height="88"
+        loading="lazy"
+      >
+      <span>COMPANY FILE · MINTMARK</span>
+    </div>
+    <div class="ara-company-stories__intro">
+      <div>
+        {% if section.settings.eyebrow != blank %}
+          <span class="ara-company-stories__eyebrow">
+            {{ section.settings.eyebrow | escape }}
+          </span>
+        {% endif %}
+
+        {% if section.settings.heading != blank %}
+          <h2 class="ara-company-stories__heading">
+            {{ section.settings.heading | escape | newline_to_br }}
+          </h2>
+        {% endif %}
+      </div>
+
+      <div class="ara-company-stories__intro-side">
+        {% if section.settings.description != blank %}
+          <div class="ara-company-stories__description">
+            {{ section.settings.description }}
+          </div>
+        {% endif %}
+
+        {% if section.settings.all_articles_label != blank %}
+          <a
+            class="ara-company-stories__all-link"
+            {% if section.settings.all_articles_link != blank %}
+              href="{{ section.settings.all_articles_link }}"
+            {% else %}
+              role="link"
+              aria-disabled="true"
+            {% endif %}
+          >
+            {{ section.settings.all_articles_label | escape }}
+          </a>
+        {% endif %}
+      </div>
+    </div>
+
+    {% if section.blocks.size > 0 %}
+      <div class="ara-company-stories__feature-frame">
+        {% assign feature_block = section.blocks.first %}
+        {% assign feature_article = feature_block.settings.article %}
+        {% assign feature_image = feature_block.settings.custom_image %}
+        {% assign feature_title = feature_block.settings.custom_title %}
+        {% assign feature_excerpt = feature_block.settings.custom_excerpt %}
+        {% assign feature_link = feature_block.settings.custom_link %}
+        {% assign feature_date = feature_block.settings.custom_date %}
+
+        {% if feature_article != blank %}
+          {% if feature_image == blank %}
+            {% assign feature_image = feature_article.image %}
+          {% endif %}
+
+          {% if feature_title == blank %}
+            {% assign feature_title = feature_article.title %}
+          {% endif %}
+
+          {% if feature_excerpt == blank %}
+            {% assign feature_excerpt = feature_article.excerpt_or_content | strip_html | truncate: 220 %}
+          {% endif %}
+
+          {% if feature_link == blank %}
+            {% assign feature_link = feature_article.url %}
+          {% endif %}
+
+          {% if feature_date == blank %}
+            {% assign feature_date = feature_article.published_at | date: section.settings.date_format %}
+          {% endif %}
+        {% endif %}
+
+        <article
+          class="ara-company-stories__feature"
+          {{ feature_block.shopify_attributes }}
+        >
+          <div class="ara-company-stories__feature-image-wrap">
+            {% if feature_image != blank %}
+              {{
+                feature_image
+                | image_url: width: 1800
+                | image_tag:
+                  widths: '600, 900, 1200, 1500, 1800',
+                  sizes: '(max-width: 749px) 100vw, 56vw',
+                  loading: 'lazy',
+                  class: 'ara-company-stories__feature-image',
+                  alt: feature_image.alt
+              }}
+            {% else %}
+              <div class="ara-company-stories__placeholder">
+                {{ 'lifestyle-1' | placeholder_svg_tag: 'ara-company-stories__placeholder-svg' }}
+              </div>
+            {% endif %}
+
+            {% if feature_block.settings.image_label != blank %}
+              <span class="ara-company-stories__image-label">
+                {{ feature_block.settings.image_label | escape }}
+              </span>
+            {% endif %}
+          </div>
+
+          <div class="ara-company-stories__feature-copy">
+            <div class="ara-company-stories__story-meta">
+              <span>{{ feature_block.settings.category | escape }}</span>
+
+              {% if feature_date != blank %}
+                <small>{{ feature_date | escape }}</small>
+              {% endif %}
+            </div>
+
+            {% if feature_title != blank %}
+              <h3>{{ feature_title | escape }}</h3>
+            {% endif %}
+
+            {% if feature_excerpt != blank %}
+              <p>{{ feature_excerpt | escape }}</p>
+            {% endif %}
+
+            {% if feature_block.settings.button_label != blank %}
+              <a
+                class="ara-company-stories__button"
+                {% if feature_link != blank %}
+                  href="{{ feature_link }}"
+                {% else %}
+                  role="link"
+                  aria-disabled="true"
+                {% endif %}
+              >
+                {{ feature_block.settings.button_label | escape }}
+              </a>
+            {% endif %}
+          </div>
+        </article>
+      </div>
+
+      {% if section.blocks.size > 1 %}
+        <div class="ara-company-stories__grid">
+          {% for block in section.blocks offset: 1 %}
+            {% assign story_article = block.settings.article %}
+            {% assign story_image = block.settings.custom_image %}
+            {% assign story_title = block.settings.custom_title %}
+            {% assign story_excerpt = block.settings.custom_excerpt %}
+            {% assign story_link = block.settings.custom_link %}
+            {% assign story_date = block.settings.custom_date %}
+
+            {% if story_article != blank %}
+              {% if story_image == blank %}
+                {% assign story_image = story_article.image %}
+              {% endif %}
+
+              {% if story_title == blank %}
+                {% assign story_title = story_article.title %}
+              {% endif %}
+
+              {% if story_excerpt == blank %}
+                {% assign story_excerpt = story_article.excerpt_or_content | strip_html | truncate: 135 %}
+              {% endif %}
+
+              {% if story_link == blank %}
+                {% assign story_link = story_article.url %}
+              {% endif %}
+
+              {% if story_date == blank %}
+                {% assign story_date = story_article.published_at | date: section.settings.date_format %}
+              {% endif %}
+            {% endif %}
+
+            <article
+              class="ara-company-stories__card ara-company-stories__card--{{ block.settings.style }}"
+              {{ block.shopify_attributes }}
+            >
+              <div class="ara-company-stories__card-image-wrap">
+                {% if story_image != blank %}
+                  {{
+                    story_image
+                    | image_url: width: 1000
+                    | image_tag:
+                      widths: '360, 520, 720, 1000',
+                      sizes: '(max-width: 749px) 100vw, 30vw',
+                      loading: 'lazy',
+                      class: 'ara-company-stories__card-image',
+                      alt: story_image.alt
+                  }}
+                {% else %}
+                  <div class="ara-company-stories__placeholder">
+                    {{ 'lifestyle-2' | placeholder_svg_tag: 'ara-company-stories__placeholder-svg' }}
+                  </div>
+                {% endif %}
+              </div>
+
+              <div class="ara-company-stories__card-copy">
+                <div class="ara-company-stories__story-meta">
+                  <span>{{ block.settings.category | escape }}</span>
+
+                  {% if story_date != blank %}
+                    <small>{{ story_date | escape }}</small>
+                  {% endif %}
+                </div>
+
+                {% if story_title != blank %}
+                  <h3>{{ story_title | escape }}</h3>
+                {% endif %}
+
+                {% if story_excerpt != blank %}
+                  <p>{{ story_excerpt | escape }}</p>
+                {% endif %}
+
+                {% if block.settings.button_label != blank %}
+                  <a
+                    class="ara-company-stories__card-link"
+                    {% if story_link != blank %}
+                      href="{{ story_link }}"
+                    {% else %}
+                      role="link"
+                      aria-disabled="true"
+                    {% endif %}
+                  >
+                    {{ block.settings.button_label | escape }}
+                  </a>
+                {% endif %}
+              </div>
+            </article>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endif %}
+  </div>
+</section>
+
+<style>
+  #AraCompanyStories-{{ section.id }} {
+    position: relative;
+    overflow: hidden;
+    padding: var(--ara-stories-top) 0 var(--ara-stories-bottom);
+    background: var(--ara-stories-bg);
+    color: var(--ara-stories-text);
+    isolation: isolate;
+  }
+
+  #AraCompanyStories-{{ section.id }} * {
+    box-sizing: border-box;
+  }
+
+  #AraCompanyStories-{{ section.id }} .ara-company-stories__lines {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    opacity: 0.44;
+    background-image:
+      repeating-linear-gradient(
+        to bottom,
+        transparent 0,
+        transparent 35px,
+        color-mix(in srgb, var(--ara-stories-mint) 21%, transparent) 35px,
+        color-mix(in srgb, var(--ara-stories-mint) 21%, transparent) 36px
+      );
+    pointer-events: none;
+  }
+
+  #AraCompanyStories-{{ section.id }} .ara-company-stories__inner {
+    width: min(100%, var(--ara-stories-max));
+    margin: 0 auto;
+    padding: 0 40px;
+  }
+
+  #AraCompanyStories-{{ section.id }} .ara-company-stories__intro {
+    display: grid;
+    grid-template-columns: minmax(0, 0.95fr) minmax(320px, 0.55fr);
+    gap: clamp(30px, 5vw, 90px);
+    align-items: end;
+    margin-bottom: 44px;
+  }
+
+  #AraCompanyStories-{{ section.id }} .ara-company-stories__eyebrow,
+  #AraCompanyStories-{{ section.id }} .ara-company-stories__story-meta span,
+  #AraCompanyStories-{{ section.id }} .ara-company-stories__story-meta small,
+  #AraCompanyStories-{{ section.id }} .ara-company-stories__image-label {
+    font-family: var(--font-body-family);
+    font-style: var(--font-body-style);
+    font-weight: 800;
+    line-height: 1.2;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  #AraCompanyStories-{{ section.id }} .ara-company-stories__eyebrow {
+    display: inline-flex;
+    min-height: 31px;
+    align-items: center;
+    padding: 6px 11px;
+    border: 2px solid var(--ara-stories-text);
+    border-radius: 8px;
+    background: var(--ara-stories-gold);
+    color: var(--ara-stories-text);
+    font-size: var(--ara-stories-label-desktop);
+    box-shadow: 3px 3px 0 var(--ara-stories-text);
+  }
+
+  #AraCompanyStories-{{ section.id }} .ara-company-stories__heading {
+    max-width: 900px;
+    margin: 24px 0 0;
+    font-family: var(--font-heading-family);
+    font-size: var(--ara-stories-heading-desktop);
+    font-style: var(--font-heading-style);
+    font-weight: var(--font-heading-weight);
+    line-height: 0.94;
+    letter-spacing: -0.055em;
+  }
+
+  #AraCompanyStories-{{ section.id }} .ara-company-stories__intro-side {
+    display: grid;
+    gap: 22px;
+  }
+
+  #AraCompanyStories-{{ section.id }} .ara-company-stories__description {
+    color: var(--ara-stories-muted);
+    font-family: var(--font-body-family);
+    font-size: var(--ara-stories-body-desktop);
+    font-style: var(--font-body-style);
+    font-weight: var(--font-body-weight);
+    line-height: 1.65;
+  }
+
+  #AraCompanyStories-{{ section.id }} .ara-company-stories__description p {
+    margin: 0;
+  }
+
+  #AraCompanyStories-{{ section.id }} .ara-company-stories__all-link,
+  #AraCompanyStories-{{ section.id }} .ara-company-stories__button,
+  #AraCompanyStories-{{ section.id }} .ara-company-stories__card-link {
+    display: inline-flex;
+    width: fit-content;
+    align-items: center;
+    font-family: var(--font-body-family);
+    font-size: var(--ara-stories-label-desktop);
+    font-weight: 800;
+    letter-spacing: 0.11em;
+    text-decoration: none;
+    text-transform: uppercase;
+  }
+
+  #AraCompanyStories-{{ section.id }} .ara-company-stories__all-link {
+    color: var(--ara-stories-mint);
+    text-decoration: underline;
+    text-underline-offset: 5px;
+  }
+
+  #AraCompanyStories-{{ section.id }} .ara-company-stories__feature-frame {
+    padding: 7px;
+    border: 2px solid var(--ara-stories-text);
+    border-radius: 24px;
+    background: var(--ara-stories-paper);
+    box-shadow:
+      9px 9px 0 var(--ara-stories-gold),
+      16px 16px 0 color-mix(in srgb, var(--ara-stories-mint) 66%, transparent);
+  }
+
+  #AraCompanyStories-{{ section.id }} .ara-company-stories__feature {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(320px, 0.85fr);
+    min-height: 470px;
+    overflow: hidden;
+    border: 3px solid var(--ara-stories-text);
+    border-radius: 16px;
+    background: var(--ara-stories-paper);
+  }
+
+  #AraCompanyStories-{{ section.id }} .ara-company-stories__feature-image-wrap,
+  #AraCompanyStories-{{ section.id }} .ara-company-stories__card-image-wrap {
+    position: relative;
+    overflow: hidden;
+    min-width: 0;
+  }
+
+  #AraCompanyStories-{{ section.id }} .ara-company-stories__feature-image-wrap {
+    min-height: 470px;
+    border-right: 3px solid var(--ara-stories-text);
+  }
+
+  #AraCompanyStories-{{ section.id }} .ara-company-stories__feature-image,
+  #AraCompanyStories-{{ section.id }} .ara-company-stories__card-image,
+  #AraCompanyStories-{{ section.id }} .ara-company-stories__placeholder,
+  #AraCompanyStories-{{ section.id }} .ara-company-stories__placeholder-svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  #AraCompanyStories-{{ section.id }} .ara-company-stories__feature-image,
+  #AraCompanyStories-{{ section.id }} .ara-company-stories__card-image,
+  #AraCompanyStories-{{ section.id }} .ara-company-stories__placeholder-svg {
+    object-fit: cover;
+  }
+
+  #AraCompanyStories-{{ section.id }} .ara-company-stories__image-label {
+    position: absolute;
+    right: 18px;
+    bottom: 18px;
+    left: 18px;
+    padding: 8px 12px;
+    border: 2px solid var(--ara-stories-text);
+    border-radius: 8px;
+    background: var(--ara-stories-gold);
+    color: var(--ara-stories-text);
+    font-size: var(--ara-stories-label-desktop);
+    text-align: center;
+    box-shadow: 3px 3px 0 var(--ara-stories-text);
+  }
+
+  #AraCompanyStories-{{ section.id }} .ara-company-stories__feature-copy {
+    display: grid;
+    align-content: center;
+    padding: clamp(32px, 4vw, 58px);
+    background:
+      radial-gradient(
+        circle at 112% 112%,
+        color-mix(in srgb, var(--ara-stories-mint) 16%, transparent) 0 29%,
+        transparent 30%
+      ),
+      var(--ara-stories-paper);
+  }
+
+  #AraCompanyStories-{{ section.id }} .ara-company-stories__story-meta {
+    display: flex;
+    justify-content: space-between;
+    gap: 14px;
+    align-items: flex-start;
+    padding-bottom: 13px;
+    border-bottom: 1px dashed currentColor;
+  }
+
+  #AraCompanyStories-{{ section.id }} .ara-company-stories__story-meta span,
+  #AraCompanyStories-{{ section.id }} .ara-company-stories__story-meta small {
+    font-size: var(--ara-stories-label-desktop);
+  }
+
+  #AraCompanyStories-{{ section.id }} .ara-company-stories__story-meta span {
+    color: var(--ara-stories-mint);
+  }
+
+  #AraCompanyStories-{{ section.id }} .ara-company-stories__story-meta small {
+    text-align: right;
+  }
+
+  #AraCompanyStories-{{ section.id }} .ara-company-stories__feature h3 {
+    margin: 27px 0 0;
+    font-family: var(--font-heading-family);
+    font-size: var(--ara-stories-feature-title-desktop);
+    font-style: var(--font-heading-style);
+    font-weight: var(--font-heading-weight);
+    line-height: 0.96;
+  }
+
+  #AraCompanyStories-{{ section.id }} .ara-company-stories__feature p,
+  #AraCompanyStories-{{ section.id }} .ara-company-stories__card p {
+    margin: 17px 0 0;
+    color: var(--ara-stories-muted);
+    font-family: var(--font-body-family);
+    font-size: var(--ara-stories-body-desktop);
+    font-style: var(--font-body-style);
+    font-weight: var(--font-body-weight);
+    line-height: 1.55;
+  }
+
+  #AraCompanyStories-{{ section.id }} .ara-company-stories__button {
+    min-height: 48px;
+    justify-content: center;
+    margin-top: 25px;
+    padding: 11px 18px;
+    border: 2px solid var(--ara-stories-text);
+    border-radius: 8px;
+    background: var(--ara-stories-mint);
+    color: #FFFFFF;
+    box-shadow: 4px 4px 0 var(--ara-stories-text);
+  }
+
+  #AraCompanyStories-{{ section.id }} .ara-company-stories__grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 18px;
+    margin-top: 36px;
+  }
+
+  #AraCompanyStories-{{ section.id }} .ara-company-stories__card {
+    display: grid;
+    min-width: 0;
+    overflow: hidden;
+    border: 2px solid var(--ara-stories-text);
+    border-radius: 15px;
+    box-shadow: 5px 5px 0 var(--ara-stories-text);
+  }
+
+  #AraCompanyStories-{{ section.id }} .ara-company-stories__card--cream {
+    background: var(--ara-stories-paper);
+    color: var(--ara-stories-text);
+  }
+
+  #AraCompanyStories-{{ section.id }} .ara-company-stories__card--gold {
+    background: var(--ara-stories-gold);
+    color: var(--ara-stories-text);
+  }
+
+  #AraCompanyStories-{{ section.id }} .ara-company-stories__card--mint {
+    background: color-mix(in srgb, var(--ara-stories-mint) 72%, white);
+    color: var(--ara-stories-text);
+  }
+
+  #AraCompanyStories-{{ section.id }} .ara-company-stories__card--blue {
+    background: var(--ara-stories-blue);
+    color: #FFFFFF;
+  }
+
+  #AraCompanyStories-{{ section.id }} .ara-company-stories__card-image-wrap {
+    aspect-ratio: 16 / 10;
+    border-bottom: 2px solid currentColor;
+  }
+
+  #AraCompanyStories-{{ section.id }} .ara-company-stories__card-copy {
+    display: grid;
+    align-content: start;
+    padding: 21px;
+  }
+
+  #AraCompanyStories-{{ section.id }} .ara-company-stories__card h3 {
+    margin: 22px 0 0;
+    font-family: var(--font-heading-family);
+    font-size: var(--ara-stories-card-title-desktop);
+    font-style: var(--font-heading-style);
+    font-weight: var(--font-heading-weight);
+    line-height: 1;
+  }
+
+  #AraCompanyStories-{{ section.id }} .ara-company-stories__card--blue p {
+    color: rgba(255, 255, 255, 0.82);
+  }
+
+  #AraCompanyStories-{{ section.id }} .ara-company-stories__card-link {
+    margin-top: 21px;
+    color: inherit;
+    text-decoration: underline;
+    text-underline-offset: 5px;
+  }
+
+  @media screen and (max-width: 1099px) {
+    #AraCompanyStories-{{ section.id }} .ara-company-stories__intro,
+    #AraCompanyStories-{{ section.id }} .ara-company-stories__feature {
+      grid-template-columns: 1fr;
+    }
+
+    #AraCompanyStories-{{ section.id }} .ara-company-stories__feature-image-wrap {
+      min-height: 360px;
+      border-right: 0;
+      border-bottom: 3px solid var(--ara-stories-text);
+    }
+
+    #AraCompanyStories-{{ section.id }} .ara-company-stories__grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    #AraCompanyStories-{{ section.id }} {
+      padding-top: calc(var(--ara-stories-top) * 0.7);
+      padding-bottom: calc(var(--ara-stories-bottom) * 0.7);
+    }
+
+    #AraCompanyStories-{{ section.id }} .ara-company-stories__inner {
+      padding: 0 20px;
+    }
+
+    #AraCompanyStories-{{ section.id }} .ara-company-stories__intro {
+      gap: 24px;
+      margin-bottom: 32px;
+    }
+
+    #AraCompanyStories-{{ section.id }} .ara-company-stories__heading {
+      font-size: var(--ara-stories-heading-mobile);
+    }
+
+    #AraCompanyStories-{{ section.id }} .ara-company-stories__description,
+    #AraCompanyStories-{{ section.id }} .ara-company-stories__feature p,
+    #AraCompanyStories-{{ section.id }} .ara-company-stories__card p {
+      font-size: var(--ara-stories-body-mobile);
+    }
+
+    #AraCompanyStories-{{ section.id }} .ara-company-stories__eyebrow,
+    #AraCompanyStories-{{ section.id }} .ara-company-stories__story-meta span,
+    #AraCompanyStories-{{ section.id }} .ara-company-stories__story-meta small,
+    #AraCompanyStories-{{ section.id }} .ara-company-stories__image-label,
+    #AraCompanyStories-{{ section.id }} .ara-company-stories__all-link,
+    #AraCompanyStories-{{ section.id }} .ara-company-stories__button,
+    #AraCompanyStories-{{ section.id }} .ara-company-stories__card-link {
+      font-size: var(--ara-stories-label-mobile);
+    }
+
+    #AraCompanyStories-{{ section.id }} .ara-company-stories__feature-frame {
+      padding: 5px;
+      box-shadow:
+        5px 5px 0 var(--ara-stories-gold),
+        10px 10px 0 color-mix(in srgb, var(--ara-stories-mint) 66%, transparent);
+    }
+
+    #AraCompanyStories-{{ section.id }} .ara-company-stories__feature-image-wrap {
+      min-height: 260px;
+    }
+
+    #AraCompanyStories-{{ section.id }} .ara-company-stories__feature-copy {
+      padding: 27px 22px 31px;
+    }
+
+    #AraCompanyStories-{{ section.id }} .ara-company-stories__feature h3 {
+      font-size: var(--ara-stories-feature-title-mobile);
+    }
+
+    #AraCompanyStories-{{ section.id }} .ara-company-stories__grid {
+      grid-template-columns: 1fr;
+    }
+
+    #AraCompanyStories-{{ section.id }} .ara-company-stories__card h3 {
+      font-size: var(--ara-stories-card-title-mobile);
+    }
+  }
+</style>
+
+<style>
+  #AraCompanyStories-{{ section.id }} .ara-company-stories__feature-frame,
+  #AraCompanyStories-{{ section.id }} .ara-company-stories__card {
+    border-radius: 14px;
+  }
+
+  #AraCompanyStories-{{ section.id }} [class$="__button"],
+  #AraCompanyStories-{{ section.id }} [class*="__button--"] {
+    border-radius: 7px;
+  }
+</style>
+
+
+<style>
+  #AraCompanyStories-{{ section.id }} .ara-company-file__brand-rule {
+    display: flex;
+    justify-content: space-between;
+    gap: 18px;
+    align-items: center;
+    margin-bottom: clamp(24px, 3vw, 38px);
+    padding: 10px 0 12px;
+    border-top: 2px solid #161B2E;
+    border-bottom: 1px solid #161B2E;
+  }
+
+  #AraCompanyStories-{{ section.id }} .ara-company-file__brand-rule img {
+    display: block;
+    width: min(100%, 170px);
+    height: auto;
+  }
+
+  #AraCompanyStories-{{ section.id }} .ara-company-file__brand-rule span {
+    color: #161B2E;
+    font-family: var(--font-body-family);
+    font-size: 8px;
+    font-weight: 900;
+    letter-spacing: .16em;
+    text-align: right;
+  }
+
+  #AraCompanyStories-{{ section.id }} [class*="__card"],
+  #AraCompanyStories-{{ section.id }} [class*="__frame"],
+  #AraCompanyStories-{{ section.id }} [class*="__panel"] {
+    border-radius: 6px;
+  }
+
+  @media screen and (max-width: 749px) {
+    #AraCompanyStories-{{ section.id }} .ara-company-file__brand-rule {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+
+    #AraCompanyStories-{{ section.id }} .ara-company-file__brand-rule span {
+      text-align: left;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Ara Company Stories",
+  "max_blocks": 8,
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Small heading",
+      "default": "COMPANY STORIES"
+    },
+    {
+      "type": "textarea",
+      "id": "heading",
+      "label": "Main heading",
+      "default": "The company story,\none chapter at a time."
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description",
+      "default": "<p>Read the launches, decisions, turning points and financial developments that shaped the company over time.</p>"
+    },
+    {
+      "type": "text",
+      "id": "all_articles_label",
+      "label": "All articles link text",
+      "default": "VIEW ALL COMPANY STORIES"
+    },
+    {
+      "type": "url",
+      "id": "all_articles_link",
+      "label": "All articles link"
+    },
+    {
+      "type": "text",
+      "id": "date_format",
+      "label": "Article date format",
+      "default": "%B %d, %Y",
+      "info": "Uses Shopify date formatting."
+    },
+    {
+      "type": "header",
+      "content": "Desktop typography"
+    },
+    {
+      "type": "range",
+      "id": "desktop_heading_size",
+      "min": 44,
+      "max": 92,
+      "step": 2,
+      "unit": "px",
+      "label": "Main heading size",
+      "default": 68
+    },
+    {
+      "type": "range",
+      "id": "desktop_body_size",
+      "min": 13,
+      "max": 22,
+      "step": 1,
+      "unit": "px",
+      "label": "Body text size",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "desktop_label_size",
+      "min": 8,
+      "max": 15,
+      "step": 1,
+      "unit": "px",
+      "label": "Small text size",
+      "default": 9
+    },
+    {
+      "type": "range",
+      "id": "desktop_feature_title_size",
+      "min": 34,
+      "max": 66,
+      "step": 2,
+      "unit": "px",
+      "label": "Featured story heading size",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "desktop_card_title_size",
+      "min": 22,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "label": "Story card heading size",
+      "default": 29
+    },
+    {
+      "type": "header",
+      "content": "Mobile typography"
+    },
+    {
+      "type": "range",
+      "id": "mobile_heading_size",
+      "min": 36,
+      "max": 66,
+      "step": 2,
+      "unit": "px",
+      "label": "Main heading size",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "mobile_body_size",
+      "min": 13,
+      "max": 19,
+      "step": 1,
+      "unit": "px",
+      "label": "Body text size",
+      "default": 15
+    },
+    {
+      "type": "range",
+      "id": "mobile_label_size",
+      "min": 8,
+      "max": 14,
+      "step": 1,
+      "unit": "px",
+      "label": "Small text size",
+      "default": 9
+    },
+    {
+      "type": "range",
+      "id": "mobile_feature_title_size",
+      "min": 30,
+      "max": 52,
+      "step": 2,
+      "unit": "px",
+      "label": "Featured story heading size",
+      "default": 38
+    },
+    {
+      "type": "range",
+      "id": "mobile_card_title_size",
+      "min": 22,
+      "max": 34,
+      "step": 1,
+      "unit": "px",
+      "label": "Story card heading size",
+      "default": 27
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "max_width",
+      "label": "Content width",
+      "default": "1600px",
+      "options": [
+        {
+          "value": "1300px",
+          "label": "Narrow"
+        },
+        {
+          "value": "1450px",
+          "label": "Medium"
+        },
+        {
+          "value": "1600px",
+          "label": "Wide"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 40,
+      "max": 120,
+      "step": 5,
+      "unit": "px",
+      "label": "Top spacing",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 40,
+      "max": 120,
+      "step": 5,
+      "unit": "px",
+      "label": "Bottom spacing",
+      "default": 80
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Section background",
+      "default": "#D8F0E4"
+    },
+    {
+      "type": "color",
+      "id": "paper_color",
+      "label": "Paper background",
+      "default": "#F3ECDC"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Main text",
+      "default": "#161B2E"
+    },
+    {
+      "type": "color",
+      "id": "muted_text_color",
+      "label": "Secondary text",
+      "default": "#646575"
+    },
+    {
+      "type": "color",
+      "id": "mint_color",
+      "label": "Mint accent",
+      "default": "#274B44"
+    },
+    {
+      "type": "color",
+      "id": "gold_color",
+      "label": "Gold accent",
+      "default": "#E0A526"
+    },
+    {
+      "type": "color",
+      "id": "blue_color",
+      "label": "Blue accent",
+      "default": "#274B44"
+    },
+    {
+      "type": "color",
+      "id": "blue_deep_color",
+      "label": "Deep blue",
+      "default": "#161B2E"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "story",
+      "name": "Company story",
+      "settings": [
+        {
+          "type": "article",
+          "id": "article",
+          "label": "Shopify article"
+        },
+        {
+          "type": "select",
+          "id": "style",
+          "label": "Card color",
+          "default": "cream",
+          "options": [
+            {
+              "value": "cream",
+              "label": "Cream"
+            },
+            {
+              "value": "gold",
+              "label": "Gold"
+            },
+            {
+              "value": "mint",
+              "label": "Mint"
+            },
+            {
+              "value": "blue",
+              "label": "Blue"
+            }
+          ]
+        },
+        {
+          "type": "image_picker",
+          "id": "custom_image",
+          "label": "Custom image"
+        },
+        {
+          "type": "text",
+          "id": "image_label",
+          "label": "Featured image label",
+          "default": "COMPANY STORY"
+        },
+        {
+          "type": "text",
+          "id": "category",
+          "label": "Category",
+          "default": "STRATEGY"
+        },
+        {
+          "type": "text",
+          "id": "custom_date",
+          "label": "Custom date"
+        },
+        {
+          "type": "text",
+          "id": "custom_title",
+          "label": "Custom heading"
+        },
+        {
+          "type": "textarea",
+          "id": "custom_excerpt",
+          "label": "Custom excerpt"
+        },
+        {
+          "type": "text",
+          "id": "button_label",
+          "label": "Link text",
+          "default": "READ THE STORY"
+        },
+        {
+          "type": "url",
+          "id": "custom_link",
+          "label": "Custom link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Ara Company Stories",
+      "blocks": [
+        {
+          "type": "story",
+          "settings": {
+            "style": "cream",
+            "category": "COVER STORY",
+            "custom_date": "JANUARY 24, 2026",
+            "custom_title": "How Apple built a machine that prints value",
+            "custom_excerpt": "The company’s most important advantage is not a single product. It is the system that connects devices, software, services and customer loyalty.",
+            "button_label": "READ THE COVER STORY",
+            "image_label": "THE COMPANY STORY"
+          }
+        },
+        {
+          "type": "story",
+          "settings": {
+            "style": "blue",
+            "category": "BUSINESS MODEL",
+            "custom_date": "JANUARY 18, 2026",
+            "custom_title": "Why services changed Apple’s economics",
+            "custom_excerpt": "Recurring digital revenue added a new layer of value to an already powerful installed base.",
+            "button_label": "READ THE STORY"
+          }
+        },
+        {
+          "type": "story",
+          "settings": {
+            "style": "gold",
+            "category": "PRODUCT",
+            "custom_date": "JANUARY 11, 2026",
+            "custom_title": "The product decision that deepened the ecosystem",
+            "custom_excerpt": "A look at how product integration can increase convenience, loyalty and switching costs.",
+            "button_label": "READ THE STORY"
+          }
+        },
+        {
+          "type": "story",
+          "settings": {
+            "style": "mint",
+            "category": "FINANCIALS",
+            "custom_date": "JANUARY 04, 2026",
+            "custom_title": "What Apple’s cash generation makes possible",
+            "custom_excerpt": "Strong internal cash flow gives the company unusual flexibility across investment and capital returns.",
+            "button_label": "READ THE STORY"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

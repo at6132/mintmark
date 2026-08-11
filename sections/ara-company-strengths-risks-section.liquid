@@ -1,0 +1,1384 @@
+<section
+  id="AraCompanyStrengthRisk-{{ section.id }}"
+  class="ara-company-strength-risk"
+  style="
+    --ara-sr-bg: {{ section.settings.background_color }};
+    --ara-sr-paper: {{ section.settings.paper_color }};
+    --ara-sr-text: {{ section.settings.text_color }};
+    --ara-sr-muted: {{ section.settings.muted_text_color }};
+    --ara-sr-mint: {{ section.settings.mint_color }};
+    --ara-sr-gold: {{ section.settings.gold_color }};
+    --ara-sr-blue: {{ section.settings.blue_color }};
+    --ara-sr-blue-deep: {{ section.settings.blue_deep_color }};
+    --ara-sr-positive: {{ section.settings.positive_color }};
+    --ara-sr-negative: {{ section.settings.negative_color }};
+    --ara-sr-neutral: {{ section.settings.neutral_color }};
+    --ara-sr-max: {{ section.settings.max_width }};
+    --ara-sr-top: {{ section.settings.padding_top }}px;
+    --ara-sr-bottom: {{ section.settings.padding_bottom }}px;
+    --ara-sr-heading-desktop: {{ section.settings.desktop_heading_size }}px;
+    --ara-sr-body-desktop: {{ section.settings.desktop_body_size }}px;
+    --ara-sr-label-desktop: {{ section.settings.desktop_label_size }}px;
+    --ara-sr-metric-desktop: {{ section.settings.desktop_metric_size }}px;
+    --ara-sr-card-title-desktop: {{ section.settings.desktop_card_title_size }}px;
+    --ara-sr-heading-mobile: {{ section.settings.mobile_heading_size }}px;
+    --ara-sr-body-mobile: {{ section.settings.mobile_body_size }}px;
+    --ara-sr-label-mobile: {{ section.settings.mobile_label_size }}px;
+    --ara-sr-metric-mobile: {{ section.settings.mobile_metric_size }}px;
+    --ara-sr-card-title-mobile: {{ section.settings.mobile_card_title_size }}px;
+  "
+>
+  <div class="ara-company-strength-risk__lines" aria-hidden="true"></div>
+
+  <div class="ara-company-strength-risk__inner">
+    <div class="ara-company-file__brand-rule">
+      <img
+        src="{{ 'mintmark-wordmark-ink.png' | asset_url }}"
+        alt="Mintmark"
+        width="488"
+        height="88"
+        loading="lazy"
+      >
+      <span>COMPANY FILE · MINTMARK</span>
+    </div>
+    <div class="ara-company-strength-risk__intro">
+      <div>
+        {% if section.settings.eyebrow != blank %}
+          <span class="ara-company-strength-risk__eyebrow">
+            {{ section.settings.eyebrow | escape }}
+          </span>
+        {% endif %}
+
+        {% if section.settings.heading != blank %}
+          <h2 class="ara-company-strength-risk__heading">
+            {{ section.settings.heading | escape | newline_to_br }}
+          </h2>
+        {% endif %}
+      </div>
+
+      {% if section.settings.description != blank %}
+        <div class="ara-company-strength-risk__description">
+          {{ section.settings.description }}
+        </div>
+      {% endif %}
+    </div>
+
+    <div class="ara-company-strength-risk__scorecard-frame">
+      <div class="ara-company-strength-risk__scorecard">
+        <div class="ara-company-strength-risk__scorecard-head">
+          <div>
+            <span>{{ section.settings.scorecard_heading | escape }}</span>
+            <small>{{ section.settings.scorecard_note | escape }}</small>
+          </div>
+
+          {% if section.settings.scorecard_badge != blank %}
+            <span class="ara-company-strength-risk__badge">
+              {{ section.settings.scorecard_badge | escape }}
+            </span>
+          {% endif %}
+        </div>
+
+        <div class="ara-company-strength-risk__metrics">
+          {% for block in section.blocks %}
+            {% if block.type == 'metric' %}
+              <article
+                class="ara-company-strength-risk__metric ara-company-strength-risk__metric--{{ block.settings.direction }}"
+                {{ block.shopify_attributes }}
+              >
+                <div class="ara-company-strength-risk__metric-top">
+                  <span>{{ block.settings.label | escape }}</span>
+                  <small>{{ block.settings.period | escape }}</small>
+                </div>
+
+                {% if block.settings.value != blank %}
+                  <strong>{{ block.settings.value | escape }}</strong>
+                {% endif %}
+
+                {% if block.settings.note != blank %}
+                  <p>{{ block.settings.note | escape }}</p>
+                {% endif %}
+              </article>
+            {% endif %}
+          {% endfor %}
+        </div>
+
+        {% if section.settings.scorecard_footer != blank %}
+          <div class="ara-company-strength-risk__scorecard-footer">
+            <span>{{ section.settings.scorecard_footer_label | escape }}</span>
+            <p>{{ section.settings.scorecard_footer | escape }}</p>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="ara-company-strength-risk__columns">
+      <div class="ara-company-strength-risk__column-frame ara-company-strength-risk__column-frame--advantages">
+        <div class="ara-company-strength-risk__column">
+          <div class="ara-company-strength-risk__column-head">
+            <div>
+              <span>{{ section.settings.advantages_heading | escape }}</span>
+              <small>{{ section.settings.advantages_note | escape }}</small>
+            </div>
+
+            {% if section.settings.advantages_badge != blank %}
+              <span class="ara-company-strength-risk__column-badge">
+                {{ section.settings.advantages_badge | escape }}
+              </span>
+            {% endif %}
+          </div>
+
+          <div class="ara-company-strength-risk__cards">
+            {% assign advantage_index = 0 %}
+            {% for block in section.blocks %}
+              {% if block.type == 'advantage' %}
+                {% assign advantage_index = advantage_index | plus: 1 %}
+                <article
+                  class="ara-company-strength-risk__card ara-company-strength-risk__card--advantage"
+                  {{ block.shopify_attributes }}
+                >
+                  <span class="ara-company-strength-risk__card-number">
+                    {{ advantage_index | prepend: '0' }}
+                  </span>
+
+                  <div>
+                    {% if block.settings.title != blank %}
+                      <h3>{{ block.settings.title | escape }}</h3>
+                    {% endif %}
+
+                    {% if block.settings.text != blank %}
+                      <p>{{ block.settings.text | escape }}</p>
+                    {% endif %}
+
+                    {% if block.settings.proof != blank %}
+                      <div class="ara-company-strength-risk__evidence">
+                        <span>{{ block.settings.proof_label | escape }}</span>
+                        <strong>{{ block.settings.proof | escape }}</strong>
+                      </div>
+                    {% endif %}
+                  </div>
+                </article>
+              {% endif %}
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+
+      <div class="ara-company-strength-risk__column-frame ara-company-strength-risk__column-frame--risks">
+        <div class="ara-company-strength-risk__column ara-company-strength-risk__column--dark">
+          <div class="ara-company-strength-risk__column-head">
+            <div>
+              <span>{{ section.settings.risks_heading | escape }}</span>
+              <small>{{ section.settings.risks_note | escape }}</small>
+            </div>
+
+            {% if section.settings.risks_badge != blank %}
+              <span class="ara-company-strength-risk__column-badge">
+                {{ section.settings.risks_badge | escape }}
+              </span>
+            {% endif %}
+          </div>
+
+          <div class="ara-company-strength-risk__cards">
+            {% assign risk_index = 0 %}
+            {% for block in section.blocks %}
+              {% if block.type == 'risk' %}
+                {% assign risk_index = risk_index | plus: 1 %}
+                <article
+                  class="ara-company-strength-risk__card ara-company-strength-risk__card--risk"
+                  {{ block.shopify_attributes }}
+                >
+                  <span class="ara-company-strength-risk__card-number">
+                    {{ risk_index | prepend: '0' }}
+                  </span>
+
+                  <div>
+                    {% if block.settings.title != blank %}
+                      <h3>{{ block.settings.title | escape }}</h3>
+                    {% endif %}
+
+                    {% if block.settings.text != blank %}
+                      <p>{{ block.settings.text | escape }}</p>
+                    {% endif %}
+
+                    {% if block.settings.watch != blank %}
+                      <div class="ara-company-strength-risk__watch">
+                        <span>{{ block.settings.watch_label | escape }}</span>
+                        <strong>{{ block.settings.watch | escape }}</strong>
+                      </div>
+                    {% endif %}
+                  </div>
+                </article>
+              {% endif %}
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {% if section.settings.thesis != blank %}
+      <div class="ara-company-strength-risk__thesis">
+        <span>{{ section.settings.thesis_label | escape }}</span>
+        <p>{{ section.settings.thesis | escape }}</p>
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+<style>
+  #AraCompanyStrengthRisk-{{ section.id }} {
+    position: relative;
+    overflow: hidden;
+    padding: var(--ara-sr-top) 0 var(--ara-sr-bottom);
+    background: var(--ara-sr-bg);
+    color: var(--ara-sr-text);
+    isolation: isolate;
+  }
+
+  #AraCompanyStrengthRisk-{{ section.id }} * {
+    box-sizing: border-box;
+  }
+
+  #AraCompanyStrengthRisk-{{ section.id }} .ara-company-strength-risk__lines {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    opacity: 0.44;
+    background-image:
+      linear-gradient(
+        90deg,
+        transparent 0,
+        transparent 31px,
+        color-mix(in srgb, var(--ara-sr-mint) 12%, transparent) 31px,
+        color-mix(in srgb, var(--ara-sr-mint) 12%, transparent) 32px
+      ),
+      repeating-linear-gradient(
+        to bottom,
+        transparent 0,
+        transparent 35px,
+        color-mix(in srgb, var(--ara-sr-mint) 21%, transparent) 35px,
+        color-mix(in srgb, var(--ara-sr-mint) 21%, transparent) 36px
+      );
+    pointer-events: none;
+  }
+
+  #AraCompanyStrengthRisk-{{ section.id }} .ara-company-strength-risk__inner {
+    width: min(100%, var(--ara-sr-max));
+    margin: 0 auto;
+    padding: 0 40px;
+  }
+
+  #AraCompanyStrengthRisk-{{ section.id }} .ara-company-strength-risk__intro {
+    display: grid;
+    grid-template-columns: minmax(0, 0.95fr) minmax(320px, 0.55fr);
+    gap: clamp(30px, 5vw, 90px);
+    align-items: end;
+    margin-bottom: 44px;
+  }
+
+  #AraCompanyStrengthRisk-{{ section.id }} .ara-company-strength-risk__eyebrow,
+  #AraCompanyStrengthRisk-{{ section.id }} .ara-company-strength-risk__scorecard-head span,
+  #AraCompanyStrengthRisk-{{ section.id }} .ara-company-strength-risk__scorecard-head small,
+  #AraCompanyStrengthRisk-{{ section.id }} .ara-company-strength-risk__badge,
+  #AraCompanyStrengthRisk-{{ section.id }} .ara-company-strength-risk__metric-top span,
+  #AraCompanyStrengthRisk-{{ section.id }} .ara-company-strength-risk__metric-top small,
+  #AraCompanyStrengthRisk-{{ section.id }} .ara-company-strength-risk__scorecard-footer span,
+  #AraCompanyStrengthRisk-{{ section.id }} .ara-company-strength-risk__column-head span,
+  #AraCompanyStrengthRisk-{{ section.id }} .ara-company-strength-risk__column-head small,
+  #AraCompanyStrengthRisk-{{ section.id }} .ara-company-strength-risk__column-badge,
+  #AraCompanyStrengthRisk-{{ section.id }} .ara-company-strength-risk__card-number,
+  #AraCompanyStrengthRisk-{{ section.id }} .ara-company-strength-risk__evidence span,
+  #AraCompanyStrengthRisk-{{ section.id }} .ara-company-strength-risk__watch span,
+  #AraCompanyStrengthRisk-{{ section.id }} .ara-company-strength-risk__thesis span {
+    font-family: var(--font-body-family);
+    font-style: var(--font-body-style);
+    font-weight: 800;
+    line-height: 1.2;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  #AraCompanyStrengthRisk-{{ section.id }} .ara-company-strength-risk__eyebrow {
+    display: inline-flex;
+    min-height: 31px;
+    align-items: center;
+    padding: 6px 11px;
+    border: 2px solid var(--ara-sr-text);
+    border-radius: 8px;
+    background: var(--ara-sr-gold);
+    color: var(--ara-sr-text);
+    font-size: var(--ara-sr-label-desktop);
+    box-shadow: 3px 3px 0 var(--ara-sr-text);
+  }
+
+  #AraCompanyStrengthRisk-{{ section.id }} .ara-company-strength-risk__heading {
+    max-width: 900px;
+    margin: 24px 0 0;
+    font-family: var(--font-heading-family);
+    font-size: var(--ara-sr-heading-desktop);
+    font-style: var(--font-heading-style);
+    font-weight: var(--font-heading-weight);
+    line-height: 0.94;
+    letter-spacing: -0.055em;
+  }
+
+  #AraCompanyStrengthRisk-{{ section.id }} .ara-company-strength-risk__description {
+    color: var(--ara-sr-muted);
+    font-family: var(--font-body-family);
+    font-size: var(--ara-sr-body-desktop);
+    font-style: var(--font-body-style);
+    font-weight: var(--font-body-weight);
+    line-height: 1.65;
+  }
+
+  #AraCompanyStrengthRisk-{{ section.id }} .ara-company-strength-risk__description p {
+    margin: 0;
+  }
+
+  #AraCompanyStrengthRisk-{{ section.id }} .ara-company-strength-risk__scorecard-frame,
+  #AraCompanyStrengthRisk-{{ section.id }} .ara-company-strength-risk__column-frame {
+    padding: 7px;
+    border: 2px solid var(--ara-sr-text);
+    border-radius: 24px;
+    background: var(--ara-sr-paper);
+  }
+
+  #AraCompanyStrengthRisk-{{ section.id }} .ara-company-strength-risk__scorecard-frame {
+    box-shadow:
+      9px 9px 0 var(--ara-sr-gold),
+      16px 16px 0 color-mix(in srgb, var(--ara-sr-mint) 66%, transparent);
+  }
+
+  #AraCompanyStrengthRisk-{{ section.id }} .ara-company-strength-risk__scorecard {
+    padding: 28px;
+    border: 3px solid var(--ara-sr-text);
+    border-radius: 16px;
+    background: var(--ara-sr-paper);
+  }
+
+  #AraCompanyStrengthRisk-{{ section.id }} .ara-company-strength-risk__scorecard-head,
+  #AraCompanyStrengthRisk-{{ section.id }} .ara-company-strength-risk__metric-top,
+  #AraCompanyStrengthRisk-{{ section.id }} .ara-company-strength-risk__scorecard-footer,
+  #AraCompanyStrengthRisk-{{ section.id }} .ara-company-strength-risk__column-head,
+  #AraCompanyStrengthRisk-{{ section.id }} .ara-company-strength-risk__thesis {
+    display: flex;
+    justify-content: space-between;
+    gap: 14px;
+    align-items: flex-start;
+  }
+
+  #AraCompanyStrengthRisk-{{ section.id }} .ara-company-strength-risk__scorecard-head,
+  #AraCompanyStrengthRisk-{{ section.id }} .ara-company-strength-risk__column-head {
+    padding-bottom: 15px;
+    border-bottom: 2px solid currentColor;
+  }
+
+  #AraCompanyStrengthRisk-{{ section.id }} .ara-company-strength-risk__scorecard-head > div,
+  #AraCompanyStrengthRisk-{{ section.id }} .ara-company-strength-risk__column-head > div {
+    display: grid;
+    gap: 5px;
+  }
+
+  #AraCompanyStrengthRisk-{{ section.id }} .ara-company-strength-risk__scorecard-head span,
+  #AraCompanyStrengthRisk-{{ section.id }} .ara-company-strength-risk__scorecard-head small,
+  #AraCompanyStrengthRisk-{{ section.id }} .ara-company-strength-risk__badge,
+  #AraCompanyStrengthRisk-{{ section.id }} .ara-company-strength-risk__column-head span,
+  #AraCompanyStrengthRisk-{{ section.id }} .ara-company-strength-risk__column-head small,
+  #AraCompanyStrengthRisk-{{ section.id }} .ara-company-strength-risk__column-badge {
+    font-size: var(--ara-sr-label-desktop);
+  }
+
+  #AraCompanyStrengthRisk-{{ section.id }} .ara-company-strength-risk__scorecard-head small {
+    color: var(--ara-sr-muted);
+  }
+
+  #AraCompanyStrengthRisk-{{ section.id }} .ara-company-strength-risk__badge,
+  #AraCompanyStrengthRisk-{{ section.id }} .ara-company-strength-risk__column-badge {
+    padding: 5px 9px;
+    border: 1px solid currentColor;
+    border-radius: 999px;
+  }
+
+  #AraCompanyStrengthRisk-{{ section.id }} .ara-company-strength-risk__badge {
+    background: var(--ara-sr-gold);
+  }
+
+  #AraCompanyStrengthRisk-{{ section.id }} .ara-company-strength-risk__metrics {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 13px;
+    margin-top: 24px;
+  }
+
+  #AraCompanyStrengthRisk-{{ section.id }} .ara-company-strength-risk__metric {
+    min-width: 0;
+    min-height: 170px;
+    padding: 19px;
+    border: 2px solid var(--ara-sr-text);
+    border-radius: 13px;
+    box-shadow: 4px 4px 0 var(--ara-sr-text);
+  }
+
+  #AraCompanyStrengthRisk-{{ section.id }} .ara-company-strength-risk__metric--positive {
+    background: color-mix(in srgb, var(--ara-sr-positive) 72%, white);
+  }
+
+  #AraCompanyStrengthRisk-{{ section.id }} .ara-company-strength-risk__metric--neutral {
+    background: color-mix(in srgb, var(--ara-sr-neutral) 68%, white);
+  }
+
+  #AraCompanyStrengthRisk-{{ section.id }} .ara-company-strength-risk__metric--negative {
+    background: color-mix(in srgb, var(--ara-sr-negative) 68%, white);
+  }
+
+  #AraCompanyStrengthRisk-{{ section.id }} .ara-company-strength-risk__metric-top {
+    padding-bottom: 11px;
+    border-bottom: 1px dashed color-mix(in srgb, var(--ara-sr-text) 30%, transparent);
+  }
+
+  #AraCompanyStrengthRisk-{{ section.id }} .ara-company-strength-risk__metric-top span,
+  #AraCompanyStrengthRisk-{{ section.id }} .ara-company-strength-risk__metric-top small {
+    font-size: var(--ara-sr-label-desktop);
+  }
+
+  #AraCompanyStrengthRisk-{{ section.id }} .ara-company-strength-risk__metric-top small {
+    text-align: right;
+  }
+
+  #AraCompanyStrengthRisk-{{ section.id }} .ara-company-strength-risk__metric > strong {
+    display: block;
+    margin-top: 16px;
+    font-family: var(--font-heading-family);
+    font-size: var(--ara-sr-metric-desktop);
+    line-height: 1;
+    overflow-wrap: anywhere;
+  }
+
+  #AraCompanyStrengthRisk-{{ section.id }} .ara-company-strength-risk__metric p {
+    margin: 11px 0 0;
+    color: color-mix(in srgb, var(--ara-sr-text) 76%, transparent);
+    font-family: var(--font-body-family);
+    font-size: var(--ara-sr-body-desktop);
+    line-height: 1.45;
+  }
+
+  #AraCompanyStrengthRisk-{{ section.id }} .ara-company-strength-risk__scorecard-footer {
+    align-items: center;
+    margin-top: 24px;
+    padding: 20px;
+    border: 2px solid var(--ara-sr-text);
+    border-radius: 12px;
+    background: var(--ara-sr-blue-deep);
+    color: #FFFFFF;
+    box-shadow: 4px 4px 0 var(--ara-sr-gold);
+  }
+
+  #AraCompanyStrengthRisk-{{ section.id }} .ara-company-strength-risk__scorecard-footer span {
+    flex: 0 0 120px;
+    color: var(--ara-sr-gold);
+    font-size: var(--ara-sr-label-desktop);
+  }
+
+  #AraCompanyStrengthRisk-{{ section.id }} .ara-company-strength-risk__scorecard-footer p {
+    margin: 0;
+    font-family: var(--font-heading-family);
+    font-size: clamp(24px, 2.4vw, 38px);
+    line-height: 1.04;
+  }
+
+  #AraCompanyStrengthRisk-{{ section.id }} .ara-company-strength-risk__columns {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 34px;
+    align-items: start;
+    margin-top: 40px;
+  }
+
+  #AraCompanyStrengthRisk-{{ section.id }} .ara-company-strength-risk__column-frame {
+    align-self: start;
+    height: fit-content;
+  }
+
+  #AraCompanyStrengthRisk-{{ section.id }} .ara-company-strength-risk__column-frame--advantages {
+    box-shadow:
+      9px 9px 0 var(--ara-sr-mint),
+      16px 16px 0 color-mix(in srgb, var(--ara-sr-gold) 66%, transparent);
+  }
+
+  #AraCompanyStrengthRisk-{{ section.id }} .ara-company-strength-risk__column-frame--risks {
+    box-shadow:
+      9px 9px 0 var(--ara-sr-blue-deep),
+      16px 16px 0 color-mix(in srgb, var(--ara-sr-negative) 56%, transparent);
+  }
+
+  #AraCompanyStrengthRisk-{{ section.id }} .ara-company-strength-risk__column {
+    padding: 27px 24px;
+    border: 3px solid var(--ara-sr-text);
+    border-radius: 16px;
+    background: var(--ara-sr-paper);
+  }
+
+  #AraCompanyStrengthRisk-{{ section.id }} .ara-company-strength-risk__column--dark {
+    background:
+      linear-gradient(
+        145deg,
+        var(--ara-sr-blue),
+        var(--ara-sr-blue-deep)
+      );
+    color: #FFFFFF;
+  }
+
+  #AraCompanyStrengthRisk-{{ section.id }} .ara-company-strength-risk__column-head small {
+    color: var(--ara-sr-muted);
+  }
+
+  #AraCompanyStrengthRisk-{{ section.id }} .ara-company-strength-risk__column--dark .ara-company-strength-risk__column-head small {
+    color: rgba(255, 255, 255, 0.66);
+  }
+
+  #AraCompanyStrengthRisk-{{ section.id }} .ara-company-strength-risk__column-badge {
+    color: inherit;
+  }
+
+  #AraCompanyStrengthRisk-{{ section.id }} .ara-company-strength-risk__cards {
+    display: grid;
+    gap: 14px;
+    margin-top: 22px;
+  }
+
+  #AraCompanyStrengthRisk-{{ section.id }} .ara-company-strength-risk__card {
+    display: grid;
+    grid-template-columns: 42px minmax(0, 1fr);
+    gap: 15px;
+    align-items: start;
+    padding: 19px;
+    border: 2px solid var(--ara-sr-text);
+    border-radius: 13px;
+    box-shadow: 4px 4px 0 var(--ara-sr-text);
+  }
+
+  #AraCompanyStrengthRisk-{{ section.id }} .ara-company-strength-risk__card--advantage {
+    background: color-mix(in srgb, var(--ara-sr-mint) 72%, white);
+    color: var(--ara-sr-text);
+  }
+
+  #AraCompanyStrengthRisk-{{ section.id }} .ara-company-strength-risk__card--risk {
+    border-color: #FFFFFF;
+    background: rgba(255, 255, 255, 0.08);
+    color: #FFFFFF;
+    box-shadow: 4px 4px 0 var(--ara-sr-gold);
+  }
+
+  #AraCompanyStrengthRisk-{{ section.id }} .ara-company-strength-risk__card-number {
+    display: grid;
+    width: 38px;
+    height: 38px;
+    place-items: center;
+    border: 2px solid currentColor;
+    border-radius: 50%;
+    font-size: var(--ara-sr-label-desktop);
+  }
+
+  #AraCompanyStrengthRisk-{{ section.id }} .ara-company-strength-risk__card h3 {
+    margin: 0;
+    font-family: var(--font-heading-family);
+    font-size: var(--ara-sr-card-title-desktop);
+    font-style: var(--font-heading-style);
+    font-weight: var(--font-heading-weight);
+    line-height: 1;
+  }
+
+  #AraCompanyStrengthRisk-{{ section.id }} .ara-company-strength-risk__card p {
+    margin: 11px 0 0;
+    font-family: var(--font-body-family);
+    font-size: var(--ara-sr-body-desktop);
+    font-style: var(--font-body-style);
+    font-weight: var(--font-body-weight);
+    line-height: 1.5;
+  }
+
+  #AraCompanyStrengthRisk-{{ section.id }} .ara-company-strength-risk__card--advantage p {
+    color: var(--ara-sr-muted);
+  }
+
+  #AraCompanyStrengthRisk-{{ section.id }} .ara-company-strength-risk__card--risk p {
+    color: rgba(255, 255, 255, 0.82);
+  }
+
+  #AraCompanyStrengthRisk-{{ section.id }} .ara-company-strength-risk__evidence,
+  #AraCompanyStrengthRisk-{{ section.id }} .ara-company-strength-risk__watch {
+    margin-top: 16px;
+    padding-top: 13px;
+    border-top: 1px solid currentColor;
+  }
+
+  #AraCompanyStrengthRisk-{{ section.id }} .ara-company-strength-risk__evidence span,
+  #AraCompanyStrengthRisk-{{ section.id }} .ara-company-strength-risk__watch span {
+    display: block;
+    font-size: var(--ara-sr-label-desktop);
+  }
+
+  #AraCompanyStrengthRisk-{{ section.id }} .ara-company-strength-risk__evidence strong,
+  #AraCompanyStrengthRisk-{{ section.id }} .ara-company-strength-risk__watch strong {
+    display: block;
+    margin-top: 7px;
+    font-family: var(--font-heading-family);
+    font-size: clamp(19px, 1.7vw, 28px);
+    line-height: 1.05;
+  }
+
+  #AraCompanyStrengthRisk-{{ section.id }} .ara-company-strength-risk__thesis {
+    align-items: center;
+    margin-top: 42px;
+    padding: 27px 30px;
+    border: 2px solid var(--ara-sr-text);
+    border-radius: 16px;
+    background: var(--ara-sr-gold);
+    color: var(--ara-sr-text);
+    box-shadow: 6px 6px 0 var(--ara-sr-blue-deep);
+  }
+
+  #AraCompanyStrengthRisk-{{ section.id }} .ara-company-strength-risk__thesis span {
+    flex: 0 0 170px;
+    font-size: var(--ara-sr-label-desktop);
+  }
+
+  #AraCompanyStrengthRisk-{{ section.id }} .ara-company-strength-risk__thesis p {
+    margin: 0;
+    font-family: var(--font-heading-family);
+    font-size: clamp(30px, 3vw, 48px);
+    line-height: 1;
+  }
+
+  @media screen and (max-width: 1099px) {
+    #AraCompanyStrengthRisk-{{ section.id }} .ara-company-strength-risk__intro,
+    #AraCompanyStrengthRisk-{{ section.id }} .ara-company-strength-risk__columns {
+      grid-template-columns: 1fr;
+    }
+
+    #AraCompanyStrengthRisk-{{ section.id }} .ara-company-strength-risk__metrics {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    #AraCompanyStrengthRisk-{{ section.id }} {
+      padding-top: calc(var(--ara-sr-top) * 0.7);
+      padding-bottom: calc(var(--ara-sr-bottom) * 0.7);
+    }
+
+    #AraCompanyStrengthRisk-{{ section.id }} .ara-company-strength-risk__inner {
+      padding: 0 20px;
+    }
+
+    #AraCompanyStrengthRisk-{{ section.id }} .ara-company-strength-risk__intro {
+      gap: 24px;
+      margin-bottom: 32px;
+    }
+
+    #AraCompanyStrengthRisk-{{ section.id }} .ara-company-strength-risk__heading {
+      font-size: var(--ara-sr-heading-mobile);
+    }
+
+    #AraCompanyStrengthRisk-{{ section.id }} .ara-company-strength-risk__description,
+    #AraCompanyStrengthRisk-{{ section.id }} .ara-company-strength-risk__metric p,
+    #AraCompanyStrengthRisk-{{ section.id }} .ara-company-strength-risk__card p {
+      font-size: var(--ara-sr-body-mobile);
+    }
+
+    #AraCompanyStrengthRisk-{{ section.id }} .ara-company-strength-risk__eyebrow,
+    #AraCompanyStrengthRisk-{{ section.id }} .ara-company-strength-risk__scorecard-head span,
+    #AraCompanyStrengthRisk-{{ section.id }} .ara-company-strength-risk__scorecard-head small,
+    #AraCompanyStrengthRisk-{{ section.id }} .ara-company-strength-risk__badge,
+    #AraCompanyStrengthRisk-{{ section.id }} .ara-company-strength-risk__metric-top span,
+    #AraCompanyStrengthRisk-{{ section.id }} .ara-company-strength-risk__metric-top small,
+    #AraCompanyStrengthRisk-{{ section.id }} .ara-company-strength-risk__scorecard-footer span,
+    #AraCompanyStrengthRisk-{{ section.id }} .ara-company-strength-risk__column-head span,
+    #AraCompanyStrengthRisk-{{ section.id }} .ara-company-strength-risk__column-head small,
+    #AraCompanyStrengthRisk-{{ section.id }} .ara-company-strength-risk__column-badge,
+    #AraCompanyStrengthRisk-{{ section.id }} .ara-company-strength-risk__card-number,
+    #AraCompanyStrengthRisk-{{ section.id }} .ara-company-strength-risk__evidence span,
+    #AraCompanyStrengthRisk-{{ section.id }} .ara-company-strength-risk__watch span,
+    #AraCompanyStrengthRisk-{{ section.id }} .ara-company-strength-risk__thesis span {
+      font-size: var(--ara-sr-label-mobile);
+    }
+
+    #AraCompanyStrengthRisk-{{ section.id }} .ara-company-strength-risk__scorecard-frame,
+    #AraCompanyStrengthRisk-{{ section.id }} .ara-company-strength-risk__column-frame {
+      padding: 5px;
+    }
+
+    #AraCompanyStrengthRisk-{{ section.id }} .ara-company-strength-risk__scorecard-frame {
+      box-shadow:
+        5px 5px 0 var(--ara-sr-gold),
+        10px 10px 0 color-mix(in srgb, var(--ara-sr-mint) 66%, transparent);
+    }
+
+    #AraCompanyStrengthRisk-{{ section.id }} .ara-company-strength-risk__column-frame--advantages {
+      box-shadow:
+        5px 5px 0 var(--ara-sr-mint),
+        10px 10px 0 color-mix(in srgb, var(--ara-sr-gold) 66%, transparent);
+    }
+
+    #AraCompanyStrengthRisk-{{ section.id }} .ara-company-strength-risk__column-frame--risks {
+      box-shadow:
+        5px 5px 0 var(--ara-sr-blue-deep),
+        10px 10px 0 color-mix(in srgb, var(--ara-sr-negative) 56%, transparent);
+    }
+
+    #AraCompanyStrengthRisk-{{ section.id }} .ara-company-strength-risk__scorecard,
+    #AraCompanyStrengthRisk-{{ section.id }} .ara-company-strength-risk__column {
+      padding: 22px 18px;
+    }
+
+    #AraCompanyStrengthRisk-{{ section.id }} .ara-company-strength-risk__scorecard-head,
+    #AraCompanyStrengthRisk-{{ section.id }} .ara-company-strength-risk__scorecard-footer,
+    #AraCompanyStrengthRisk-{{ section.id }} .ara-company-strength-risk__column-head,
+    #AraCompanyStrengthRisk-{{ section.id }} .ara-company-strength-risk__thesis {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+
+    #AraCompanyStrengthRisk-{{ section.id }} .ara-company-strength-risk__metrics {
+      grid-template-columns: 1fr;
+    }
+
+    #AraCompanyStrengthRisk-{{ section.id }} .ara-company-strength-risk__metric {
+      min-height: 0;
+    }
+
+    #AraCompanyStrengthRisk-{{ section.id }} .ara-company-strength-risk__metric > strong {
+      font-size: var(--ara-sr-metric-mobile);
+    }
+
+    #AraCompanyStrengthRisk-{{ section.id }} .ara-company-strength-risk__scorecard-footer span,
+    #AraCompanyStrengthRisk-{{ section.id }} .ara-company-strength-risk__thesis span {
+      flex-basis: auto;
+    }
+
+    #AraCompanyStrengthRisk-{{ section.id }} .ara-company-strength-risk__card h3 {
+      font-size: var(--ara-sr-card-title-mobile);
+    }
+
+    #AraCompanyStrengthRisk-{{ section.id }} .ara-company-strength-risk__thesis {
+      padding: 24px 22px;
+    }
+
+    #AraCompanyStrengthRisk-{{ section.id }} .ara-company-strength-risk__thesis p {
+      font-size: clamp(28px, 9vw, 40px);
+    }
+  }
+</style>
+
+<style>
+  #AraCompanyStrengthRisk-{{ section.id }} .ara-company-strength-risk__column-frame,
+  #AraCompanyStrengthRisk-{{ section.id }} .ara-company-strength-risk__scorecard-frame,
+  #AraCompanyStrengthRisk-{{ section.id }} .ara-company-strength-risk__card {
+    border-radius: 14px;
+  }
+
+  #AraCompanyStrengthRisk-{{ section.id }} [class$="__button"],
+  #AraCompanyStrengthRisk-{{ section.id }} [class*="__button--"] {
+    border-radius: 7px;
+  }
+</style>
+
+
+<style>
+  #AraCompanyStrengthRisk-{{ section.id }} .ara-company-file__brand-rule {
+    display: flex;
+    justify-content: space-between;
+    gap: 18px;
+    align-items: center;
+    margin-bottom: clamp(24px, 3vw, 38px);
+    padding: 10px 0 12px;
+    border-top: 2px solid #161B2E;
+    border-bottom: 1px solid #161B2E;
+  }
+
+  #AraCompanyStrengthRisk-{{ section.id }} .ara-company-file__brand-rule img {
+    display: block;
+    width: min(100%, 170px);
+    height: auto;
+  }
+
+  #AraCompanyStrengthRisk-{{ section.id }} .ara-company-file__brand-rule span {
+    color: #161B2E;
+    font-family: var(--font-body-family);
+    font-size: 8px;
+    font-weight: 900;
+    letter-spacing: .16em;
+    text-align: right;
+  }
+
+  #AraCompanyStrengthRisk-{{ section.id }} [class*="__card"],
+  #AraCompanyStrengthRisk-{{ section.id }} [class*="__frame"],
+  #AraCompanyStrengthRisk-{{ section.id }} [class*="__panel"] {
+    border-radius: 6px;
+  }
+
+  @media screen and (max-width: 749px) {
+    #AraCompanyStrengthRisk-{{ section.id }} .ara-company-file__brand-rule {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+
+    #AraCompanyStrengthRisk-{{ section.id }} .ara-company-file__brand-rule span {
+      text-align: left;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Ara Strengths & Risks",
+  "max_blocks": 12,
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Small heading",
+      "default": "FINANCIAL STRENGTH · ADVANTAGES · RISKS"
+    },
+    {
+      "type": "textarea",
+      "id": "heading",
+      "label": "Main heading",
+      "default": "What makes the company strong.\nWhat could change the story."
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description",
+      "default": "<p>Separate the company’s current financial position from the competitive advantages that support it—and the risks that could weaken either one.</p>"
+    },
+    {
+      "type": "header",
+      "content": "Financial scorecard"
+    },
+    {
+      "type": "text",
+      "id": "scorecard_heading",
+      "label": "Scorecard heading",
+      "default": "FINANCIAL SCORECARD"
+    },
+    {
+      "type": "text",
+      "id": "scorecard_note",
+      "label": "Scorecard note",
+      "default": "EDITABLE COMPANY SNAPSHOT"
+    },
+    {
+      "type": "text",
+      "id": "scorecard_badge",
+      "label": "Scorecard badge",
+      "default": "STRONG POSITION"
+    },
+    {
+      "type": "text",
+      "id": "scorecard_footer_label",
+      "label": "Scorecard footer label",
+      "default": "WHAT IT MEANS"
+    },
+    {
+      "type": "textarea",
+      "id": "scorecard_footer",
+      "label": "Scorecard footer statement",
+      "default": "Strong cash generation gives the company flexibility to invest, return capital and absorb periods of weaker demand."
+    },
+    {
+      "type": "header",
+      "content": "Competitive advantages"
+    },
+    {
+      "type": "text",
+      "id": "advantages_heading",
+      "label": "Advantages heading",
+      "default": "COMPETITIVE ADVANTAGES"
+    },
+    {
+      "type": "text",
+      "id": "advantages_note",
+      "label": "Advantages note",
+      "default": "WHAT SUPPORTS THE BUSINESS"
+    },
+    {
+      "type": "text",
+      "id": "advantages_badge",
+      "label": "Advantages badge",
+      "default": "WHY IT CAN ENDURE"
+    },
+    {
+      "type": "header",
+      "content": "Risks"
+    },
+    {
+      "type": "text",
+      "id": "risks_heading",
+      "label": "Risks heading",
+      "default": "RISKS TO WATCH"
+    },
+    {
+      "type": "text",
+      "id": "risks_note",
+      "label": "Risks note",
+      "default": "WHAT COULD WEAKEN THE STORY"
+    },
+    {
+      "type": "text",
+      "id": "risks_badge",
+      "label": "Risks badge",
+      "default": "MONITOR OVER TIME"
+    },
+    {
+      "type": "text",
+      "id": "thesis_label",
+      "label": "Bottom thesis label",
+      "default": "THE COMPANY THESIS"
+    },
+    {
+      "type": "textarea",
+      "id": "thesis",
+      "label": "Bottom thesis",
+      "default": "The company remains powerful while its ecosystem keeps customers engaged, its products stay differentiated and its financial discipline remains intact."
+    },
+    {
+      "type": "header",
+      "content": "Desktop typography"
+    },
+    {
+      "type": "range",
+      "id": "desktop_heading_size",
+      "min": 44,
+      "max": 92,
+      "step": 2,
+      "unit": "px",
+      "label": "Main heading size",
+      "default": 68
+    },
+    {
+      "type": "range",
+      "id": "desktop_body_size",
+      "min": 13,
+      "max": 22,
+      "step": 1,
+      "unit": "px",
+      "label": "Body text size",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "desktop_label_size",
+      "min": 8,
+      "max": 15,
+      "step": 1,
+      "unit": "px",
+      "label": "Small text size",
+      "default": 9
+    },
+    {
+      "type": "range",
+      "id": "desktop_metric_size",
+      "min": 24,
+      "max": 52,
+      "step": 1,
+      "unit": "px",
+      "label": "Metric value size",
+      "default": 34
+    },
+    {
+      "type": "range",
+      "id": "desktop_card_title_size",
+      "min": 22,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "label": "Advantage and risk heading size",
+      "default": 28
+    },
+    {
+      "type": "header",
+      "content": "Mobile typography"
+    },
+    {
+      "type": "range",
+      "id": "mobile_heading_size",
+      "min": 36,
+      "max": 66,
+      "step": 2,
+      "unit": "px",
+      "label": "Main heading size",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "mobile_body_size",
+      "min": 13,
+      "max": 19,
+      "step": 1,
+      "unit": "px",
+      "label": "Body text size",
+      "default": 15
+    },
+    {
+      "type": "range",
+      "id": "mobile_label_size",
+      "min": 8,
+      "max": 14,
+      "step": 1,
+      "unit": "px",
+      "label": "Small text size",
+      "default": 9
+    },
+    {
+      "type": "range",
+      "id": "mobile_metric_size",
+      "min": 24,
+      "max": 42,
+      "step": 1,
+      "unit": "px",
+      "label": "Metric value size",
+      "default": 31
+    },
+    {
+      "type": "range",
+      "id": "mobile_card_title_size",
+      "min": 22,
+      "max": 34,
+      "step": 1,
+      "unit": "px",
+      "label": "Advantage and risk heading size",
+      "default": 26
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "max_width",
+      "label": "Content width",
+      "default": "1600px",
+      "options": [
+        {
+          "value": "1300px",
+          "label": "Narrow"
+        },
+        {
+          "value": "1450px",
+          "label": "Medium"
+        },
+        {
+          "value": "1600px",
+          "label": "Wide"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 40,
+      "max": 120,
+      "step": 5,
+      "unit": "px",
+      "label": "Top spacing",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 40,
+      "max": 120,
+      "step": 5,
+      "unit": "px",
+      "label": "Bottom spacing",
+      "default": 80
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Section background",
+      "default": "#F5EFE1"
+    },
+    {
+      "type": "color",
+      "id": "paper_color",
+      "label": "Paper background",
+      "default": "#F3ECDC"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Main text",
+      "default": "#161B2E"
+    },
+    {
+      "type": "color",
+      "id": "muted_text_color",
+      "label": "Secondary text",
+      "default": "#646575"
+    },
+    {
+      "type": "color",
+      "id": "mint_color",
+      "label": "Mint accent",
+      "default": "#274B44"
+    },
+    {
+      "type": "color",
+      "id": "gold_color",
+      "label": "Gold accent",
+      "default": "#E0A526"
+    },
+    {
+      "type": "color",
+      "id": "blue_color",
+      "label": "Blue accent",
+      "default": "#274B44"
+    },
+    {
+      "type": "color",
+      "id": "blue_deep_color",
+      "label": "Deep blue",
+      "default": "#161B2E"
+    },
+    {
+      "type": "color",
+      "id": "positive_color",
+      "label": "Positive metric color",
+      "default": "#8ED7A0"
+    },
+    {
+      "type": "color",
+      "id": "negative_color",
+      "label": "Negative metric color",
+      "default": "#F0A28F"
+    },
+    {
+      "type": "color",
+      "id": "neutral_color",
+      "label": "Neutral metric color",
+      "default": "#E7CA77"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "metric",
+      "name": "Financial metric",
+      "limit": 4,
+      "settings": [
+        {
+          "type": "select",
+          "id": "direction",
+          "label": "Metric color",
+          "default": "positive",
+          "options": [
+            {
+              "value": "positive",
+              "label": "Positive"
+            },
+            {
+              "value": "neutral",
+              "label": "Neutral"
+            },
+            {
+              "value": "negative",
+              "label": "Negative"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Metric label",
+          "default": "REVENUE"
+        },
+        {
+          "type": "text",
+          "id": "period",
+          "label": "Period",
+          "default": "FY 2024"
+        },
+        {
+          "type": "text",
+          "id": "value",
+          "label": "Metric value",
+          "default": "$391B"
+        },
+        {
+          "type": "textarea",
+          "id": "note",
+          "label": "Metric note",
+          "default": "Large global revenue base across products and services."
+        }
+      ]
+    },
+    {
+      "type": "advantage",
+      "name": "Competitive advantage",
+      "limit": 4,
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Advantage heading",
+          "default": "Integrated ecosystem"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Advantage text",
+          "default": "Hardware, software and services reinforce one another and make the full experience difficult to copy."
+        },
+        {
+          "type": "text",
+          "id": "proof_label",
+          "label": "Evidence label",
+          "default": "EVIDENCE"
+        },
+        {
+          "type": "text",
+          "id": "proof",
+          "label": "Evidence",
+          "default": "HIGH CUSTOMER RETENTION"
+        }
+      ]
+    },
+    {
+      "type": "risk",
+      "name": "Company risk",
+      "limit": 4,
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Risk heading",
+          "default": "Product concentration"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Risk text",
+          "default": "A large share of revenue still depends on one product family and its replacement cycle."
+        },
+        {
+          "type": "text",
+          "id": "watch_label",
+          "label": "Watch label",
+          "default": "WATCH"
+        },
+        {
+          "type": "text",
+          "id": "watch",
+          "label": "What to watch",
+          "default": "IPHONE DEMAND"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Ara Strengths & Risks",
+      "blocks": [
+        {
+          "type": "metric",
+          "settings": {
+            "direction": "positive",
+            "label": "REVENUE",
+            "period": "FY 2024",
+            "value": "$391B",
+            "note": "Large global revenue base across products and services."
+          }
+        },
+        {
+          "type": "metric",
+          "settings": {
+            "direction": "positive",
+            "label": "OPERATING CASH FLOW",
+            "period": "FY 2024",
+            "value": "$118B",
+            "note": "Strong internal cash generation supports investment and capital returns."
+          }
+        },
+        {
+          "type": "metric",
+          "settings": {
+            "direction": "positive",
+            "label": "GROSS MARGIN",
+            "period": "FY 2024",
+            "value": "46%",
+            "note": "Premium pricing and services support attractive overall economics."
+          }
+        },
+        {
+          "type": "metric",
+          "settings": {
+            "direction": "neutral",
+            "label": "GROWTH",
+            "period": "RECENT",
+            "value": "MATURE",
+            "note": "Scale is exceptional, but growth depends on product cycles and services expansion."
+          }
+        },
+        {
+          "type": "advantage",
+          "settings": {
+            "title": "Integrated ecosystem",
+            "text": "Hardware, software and services reinforce one another and make the full experience difficult to copy.",
+            "proof_label": "EVIDENCE",
+            "proof": "HIGH CUSTOMER RETENTION"
+          }
+        },
+        {
+          "type": "advantage",
+          "settings": {
+            "title": "Brand and pricing power",
+            "text": "Customers associate the brand with design, reliability and status, supporting premium pricing.",
+            "proof_label": "EVIDENCE",
+            "proof": "PREMIUM AVERAGE PRICES"
+          }
+        },
+        {
+          "type": "advantage",
+          "settings": {
+            "title": "Installed base",
+            "text": "A large active-device population creates recurring opportunities for services, accessories and upgrades.",
+            "proof_label": "EVIDENCE",
+            "proof": "BILLIONS OF ACTIVE DEVICES"
+          }
+        },
+        {
+          "type": "risk",
+          "settings": {
+            "title": "Product concentration",
+            "text": "A large share of revenue still depends on one product family and its replacement cycle.",
+            "watch_label": "WATCH",
+            "watch": "IPHONE DEMAND"
+          }
+        },
+        {
+          "type": "risk",
+          "settings": {
+            "title": "Regulatory pressure",
+            "text": "App distribution, payments and platform rules face increasing scrutiny in major markets.",
+            "watch_label": "WATCH",
+            "watch": "PLATFORM RULE CHANGES"
+          }
+        },
+        {
+          "type": "risk",
+          "settings": {
+            "title": "Supply-chain exposure",
+            "text": "The company relies on a complex global manufacturing network and concentrated production regions.",
+            "watch_label": "WATCH",
+            "watch": "PRODUCTION DISRUPTION"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

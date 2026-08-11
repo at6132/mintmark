@@ -1,0 +1,366 @@
+<section
+  id="AraMintmarkTopBar-{{ section.id }}"
+  class="ara-mintmark-top-bar"
+  style="
+    --ara-topbar-bg: {{ section.settings.background_color }};
+    --ara-topbar-text: {{ section.settings.text_color }};
+    --ara-topbar-muted: {{ section.settings.muted_text_color }};
+    --ara-topbar-accent: {{ section.settings.accent_color }};
+    --ara-topbar-rule: {{ section.settings.rule_color }};
+    --ara-topbar-max: {{ section.settings.max_width }};
+    --ara-topbar-padding: {{ section.settings.vertical_padding }}px;
+    --ara-topbar-font-size: {{ section.settings.desktop_font_size }}px;
+    --ara-topbar-mobile-font-size: {{ section.settings.mobile_font_size }}px;
+  "
+>
+  <div class="ara-mintmark-top-bar__inner">
+    <div class="ara-mintmark-top-bar__left">
+      {% if section.settings.paper_label != blank %}
+        <span class="ara-mintmark-top-bar__paper">
+          {{ section.settings.paper_label | escape }}
+        </span>
+      {% endif %}
+
+      {% if section.settings.issue_label != blank %}
+        <span class="ara-mintmark-top-bar__separator" aria-hidden="true"></span>
+        <span>{{ section.settings.issue_label | escape }}</span>
+      {% endif %}
+
+      {% if section.settings.show_date %}
+        <span class="ara-mintmark-top-bar__separator" aria-hidden="true"></span>
+        <span>{{ 'now' | date: section.settings.date_format }}</span>
+      {% endif %}
+    </div>
+
+    {% if section.settings.center_text != blank %}
+      <div class="ara-mintmark-top-bar__center">
+        <span aria-hidden="true"></span>
+        <strong>{{ section.settings.center_text | escape }}</strong>
+        <span aria-hidden="true"></span>
+      </div>
+    {% endif %}
+
+    <div class="ara-mintmark-top-bar__right">
+      {% if section.settings.show_account %}
+        <a href="{{ routes.account_url }}">
+          <span>{{ section.settings.account_label | escape }}</span>
+
+          <svg
+            aria-hidden="true"
+            viewBox="0 0 24 24"
+            width="16"
+            height="16"
+            fill="none"
+          >
+            <circle cx="12" cy="8" r="3.2" stroke="currentColor" stroke-width="1.6"/>
+            <path d="M5.5 19c.8-3.7 3.1-5.6 6.5-5.6s5.7 1.9 6.5 5.6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+          </svg>
+        </a>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+<style>
+  #AraMintmarkTopBar-{{ section.id }} {
+    position: relative;
+    z-index: 45;
+    background: var(--ara-topbar-bg);
+    color: var(--ara-topbar-text);
+  }
+
+  #AraMintmarkTopBar-{{ section.id }} * {
+    box-sizing: border-box;
+  }
+
+  #AraMintmarkTopBar-{{ section.id }} .ara-mintmark-top-bar__inner {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(320px, auto) minmax(0, 1fr);
+    gap: 28px;
+    align-items: center;
+    width: min(100%, var(--ara-topbar-max));
+    margin: 0 auto;
+    padding: var(--ara-topbar-padding) 40px;
+    border-bottom: 1px solid var(--ara-topbar-rule);
+  }
+
+  #AraMintmarkTopBar-{{ section.id }} .ara-mintmark-top-bar__left,
+  #AraMintmarkTopBar-{{ section.id }} .ara-mintmark-top-bar__center,
+  #AraMintmarkTopBar-{{ section.id }} .ara-mintmark-top-bar__right {
+    font-family: var(--font-body-family);
+    font-size: var(--ara-topbar-font-size);
+    font-style: var(--font-body-style);
+    font-weight: 800;
+    line-height: 1.25;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+  }
+
+  #AraMintmarkTopBar-{{ section.id }} .ara-mintmark-top-bar__left {
+    display: flex;
+    min-width: 0;
+    flex-wrap: wrap;
+    gap: 7px;
+    align-items: center;
+  }
+
+  #AraMintmarkTopBar-{{ section.id }} .ara-mintmark-top-bar__separator {
+    display: block;
+    width: 3px;
+    height: 3px;
+    flex: 0 0 3px;
+    border-radius: 50%;
+    background: var(--ara-topbar-muted);
+  }
+
+  #AraMintmarkTopBar-{{ section.id }} .ara-mintmark-top-bar__center {
+    display: grid;
+    grid-template-columns: minmax(24px, 70px) auto minmax(24px, 70px);
+    gap: 14px;
+    align-items: center;
+    color: var(--ara-topbar-muted);
+    text-align: center;
+    white-space: nowrap;
+  }
+
+  #AraMintmarkTopBar-{{ section.id }} .ara-mintmark-top-bar__center > span {
+    display: block;
+    height: 1px;
+    background: var(--ara-topbar-accent);
+  }
+
+  #AraMintmarkTopBar-{{ section.id }} .ara-mintmark-top-bar__center strong {
+    font: inherit;
+  }
+
+  #AraMintmarkTopBar-{{ section.id }} .ara-mintmark-top-bar__right {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  #AraMintmarkTopBar-{{ section.id }} .ara-mintmark-top-bar__right a {
+    display: inline-flex;
+    gap: 8px;
+    align-items: center;
+    color: inherit;
+    text-decoration: none;
+  }
+
+  #AraMintmarkTopBar-{{ section.id }} .ara-mintmark-top-bar__right a:hover {
+    color: var(--ara-topbar-accent);
+  }
+
+  @media screen and (max-width: 1199px) {
+    #AraMintmarkTopBar-{{ section.id }} .ara-mintmark-top-bar__inner {
+      grid-template-columns: minmax(0, 1fr) auto;
+    }
+
+    #AraMintmarkTopBar-{{ section.id }} .ara-mintmark-top-bar__center {
+      display: none;
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    #AraMintmarkTopBar-{{ section.id }} .ara-mintmark-top-bar__inner {
+      gap: 14px;
+      padding-right: 20px;
+      padding-left: 20px;
+    }
+
+    #AraMintmarkTopBar-{{ section.id }} .ara-mintmark-top-bar__left,
+    #AraMintmarkTopBar-{{ section.id }} .ara-mintmark-top-bar__right {
+      font-size: var(--ara-topbar-mobile-font-size);
+      letter-spacing: 0.1em;
+    }
+
+    #AraMintmarkTopBar-{{ section.id }} .ara-mintmark-top-bar__paper {
+      display: none;
+    }
+
+    #AraMintmarkTopBar-{{ section.id }} .ara-mintmark-top-bar__paper + .ara-mintmark-top-bar__separator {
+      display: none;
+    }
+
+    #AraMintmarkTopBar-{{ section.id }} .ara-mintmark-top-bar__right a > span {
+      display: none;
+    }
+  }
+
+  @media screen and (max-width: 420px) {
+    #AraMintmarkTopBar-{{ section.id }} .ara-mintmark-top-bar__left {
+      gap: 5px;
+    }
+
+    #AraMintmarkTopBar-{{ section.id }} .ara-mintmark-top-bar__left span:last-child {
+      display: none;
+    }
+
+    #AraMintmarkTopBar-{{ section.id }} .ara-mintmark-top-bar__left span:nth-last-child(2) {
+      display: none;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Ara Mintmark Top Bar",
+  "enabled_on": {
+    "groups": ["header"]
+  },
+  "settings": [
+    {
+      "type": "text",
+      "id": "paper_label",
+      "label": "Paper label",
+      "default": "THE MINTMARK PAPER"
+    },
+    {
+      "type": "text",
+      "id": "issue_label",
+      "label": "Issue label",
+      "default": "ISSUE 01"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_date",
+      "label": "Show current date",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "date_format",
+      "label": "Date format",
+      "default": "%B %d, %Y",
+      "options": [
+        {
+          "value": "%B %d, %Y",
+          "label": "July 24, 2026"
+        },
+        {
+          "value": "%d %B %Y",
+          "label": "24 July 2026"
+        },
+        {
+          "value": "%m.%d.%Y",
+          "label": "07.24.2026"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "center_text",
+      "label": "Center text",
+      "default": "A CLEARER WAY TO UNDERSTAND COMPANIES"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_account",
+      "label": "Show account link",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "account_label",
+      "label": "Account label",
+      "default": "MEMBER LOGIN"
+    },
+    {
+      "type": "header",
+      "content": "Typography"
+    },
+    {
+      "type": "range",
+      "id": "desktop_font_size",
+      "min": 8,
+      "max": 14,
+      "step": 1,
+      "unit": "px",
+      "label": "Desktop font size",
+      "default": 10
+    },
+    {
+      "type": "range",
+      "id": "mobile_font_size",
+      "min": 7,
+      "max": 12,
+      "step": 1,
+      "unit": "px",
+      "label": "Mobile font size",
+      "default": 8
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "max_width",
+      "label": "Content width",
+      "default": "1700px",
+      "options": [
+        {
+          "value": "1300px",
+          "label": "Narrow"
+        },
+        {
+          "value": "1500px",
+          "label": "Medium"
+        },
+        {
+          "value": "1700px",
+          "label": "Wide"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "vertical_padding",
+      "min": 7,
+      "max": 16,
+      "step": 1,
+      "unit": "px",
+      "label": "Vertical spacing",
+      "default": 10
+    },
+    {
+      "type": "header",
+      "content": "Shared header colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background",
+      "default": "#F2F8F6"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text",
+      "default": "#161B2E"
+    },
+    {
+      "type": "color",
+      "id": "muted_text_color",
+      "label": "Muted text",
+      "default": "#646575"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Mint accent",
+      "default": "#176D5C"
+    },
+    {
+      "type": "color",
+      "id": "rule_color",
+      "label": "Bottom rule",
+      "default": "#1FA88F"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Ara Mintmark Top Bar"
+    }
+  ]
+}
+{% endschema %}

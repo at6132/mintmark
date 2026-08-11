@@ -1,0 +1,1713 @@
+<section
+  id="AraMintCurriculum-{{ section.id }}"
+  class="ara-mint-curriculum"
+  style="
+    --ara-mint-bg: {{ section.settings.background_color }};
+    --ara-mint-paper: {{ section.settings.paper_color }};
+    --ara-mint-ink: {{ section.settings.text_color }};
+    --ara-mint-muted: {{ section.settings.muted_color }};
+    --ara-mint-mint: {{ section.settings.mint_color }};
+    --ara-mint-gold: {{ section.settings.gold_color }};
+    --ara-mint-border: {{ section.settings.border_color }};
+    --ara-mint-max: {{ section.settings.max_width }};
+    --ara-mint-top: {{ section.settings.padding_top }}px;
+    --ara-mint-bottom: {{ section.settings.padding_bottom }}px;
+    --ara-mint-heading-desktop: {{ section.settings.desktop_heading_size }}px;
+    --ara-mint-level-desktop: {{ section.settings.desktop_level_size }}px;
+    --ara-mint-body-desktop: {{ section.settings.desktop_body_size }}px;
+    --ara-mint-label-desktop: {{ section.settings.desktop_label_size }}px;
+    --ara-mint-heading-mobile: {{ section.settings.mobile_heading_size }}px;
+    --ara-mint-level-mobile: {{ section.settings.mobile_level_size }}px;
+    --ara-mint-body-mobile: {{ section.settings.mobile_body_size }}px;
+    --ara-mint-label-mobile: {{ section.settings.mobile_label_size }}px;
+  "
+>
+  <div class="ara-mint-curriculum__rules" aria-hidden="true"></div>
+
+  <div class="ara-mint-curriculum__inner">
+    <div class="ara-mint-curriculum__masthead">
+      <img
+        src="{{ 'mintmark-wordmark-ink.png' | asset_url }}"
+        class="ara-mint-curriculum__wordmark"
+        alt="Mintmark"
+        width="488"
+        height="88"
+        loading="eager"
+      >
+
+      <div class="ara-mint-curriculum__masthead-center">
+        <span>THE MINT</span>
+        <small>CURRICULUM · SIX LEVELS · THIRTY-SIX CONCEPTS</small>
+      </div>
+
+      <img
+        src="{{ 'mintmark-mint-emblem.png' | asset_url }}"
+        class="ara-mint-curriculum__mint-emblem"
+        alt=""
+        width="270"
+        height="183"
+        loading="eager"
+      >
+    </div>
+
+    <header class="ara-mint-curriculum__cover">
+      <div class="ara-mint-curriculum__cover-copy">
+        <div class="ara-mint-curriculum__folio">
+          <span>THE MINTMARK CURRICULUM</span>
+          <span>EDITION · 01</span>
+        </div>
+
+        {% if section.settings.eyebrow != blank %}
+          <p class="ara-mint-curriculum__eyebrow">{{ section.settings.eyebrow | escape }}</p>
+        {% endif %}
+
+        {% if section.settings.heading != blank %}
+          <h1>{{ section.settings.heading | escape | newline_to_br }}</h1>
+        {% endif %}
+
+        {% if section.settings.description != blank %}
+          <div class="ara-mint-curriculum__description">{{ section.settings.description }}</div>
+        {% endif %}
+
+        <div class="ara-mint-curriculum__strike-path">
+          <div>
+            <b>01</b>
+            <span>{{ section.settings.progress_one | escape }}</span>
+          </div>
+          <i aria-hidden="true"></i>
+          <div>
+            <b>02</b>
+            <span>{{ section.settings.progress_two | escape }}</span>
+          </div>
+          <i aria-hidden="true"></i>
+          <div>
+            <b>03</b>
+            <span>{{ section.settings.progress_three | escape }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="ara-mint-curriculum__coin-feature">
+        <div class="ara-mint-curriculum__coin-head">
+          <div>
+            <span>THE COIN SYSTEM</span>
+            <strong>METALS ARE THE CURRICULUM</strong>
+          </div>
+          <span class="ara-mint-curriculum__coin-folio">COMPANY COIN · SAMPLE</span>
+        </div>
+
+        <div class="ara-mint-curriculum__coin-stage">
+          <img
+            src="{{ 'mintmark-company-coin-nvda.png' | asset_url }}"
+            alt="Mintmark company coin sample for Nvidia"
+            class="ara-mint-curriculum__company-coin"
+            width="802"
+            height="741"
+            loading="eager"
+          >
+          <img
+            src="{{ 'mintmark-mark-transparent.png' | asset_url }}"
+            alt=""
+            class="ara-mint-curriculum__mark-watermark"
+            width="250"
+            height="251"
+            loading="lazy"
+          >
+        </div>
+
+        <div class="ara-mint-curriculum__coin-key">
+          <span>ONE CELL = ONE CONCEPT</span>
+          <span>METAL = TOPIC</span>
+          <span>TREATMENT = DIFFICULTY</span>
+        </div>
+      </div>
+    </header>
+
+    <section class="ara-mint-curriculum__index" aria-label="Curriculum index">
+      <div class="ara-mint-curriculum__section-heading">
+        <div>
+          <span>THE SIX LEVELS</span>
+          <h2>From first principles to the corner office.</h2>
+        </div>
+        <p>Select a metal plate to open its six concepts. Each level keeps the supplied curriculum intact.</p>
+      </div>
+
+      <div class="ara-mint-curriculum__level-tabs" role="tablist" aria-label="Mint curriculum levels">
+        {% for block in section.blocks %}
+          <button
+            type="button"
+            class="ara-mint-curriculum__level-tab{% if block.settings.open_by_default %} is-active{% endif %}"
+            data-level-target="{{ block.id }}"
+            data-index="{{ forloop.index }}"
+            role="tab"
+            aria-selected="{% if block.settings.open_by_default %}true{% else %}false{% endif %}"
+            {{ block.shopify_attributes }}
+          >
+            <span class="ara-mint-curriculum__metal-plate" aria-hidden="true">
+              <span class="ara-mint-curriculum__metal-inner">
+                <small>LEVEL</small>
+                <strong>{{ block.settings.number | escape }}</strong>
+                <em>{{ block.settings.metal | escape }}</em>
+                <img src="{{ 'mintmark-mark-transparent.png' | asset_url }}" alt="" width="250" height="251" loading="lazy">
+              </span>
+            </span>
+            <span class="ara-mint-curriculum__level-tab-copy">
+              <small>{{ block.settings.status | escape }}</small>
+              <strong>{{ block.settings.title | escape }}</strong>
+              <span>{{ block.settings.subtitle | escape }}</span>
+            </span>
+          </button>
+        {% endfor %}
+      </div>
+    </section>
+
+    <section class="ara-mint-curriculum__tools">
+      <div class="ara-mint-curriculum__filters" role="group" aria-label="Filter curriculum by business function">
+        <button class="is-active" type="button" data-domain="all" aria-pressed="true">
+          <span>ALL</span><small>36 CONCEPTS</small>
+        </button>
+        <button type="button" data-domain="raise" aria-pressed="false"><span>RAISE</span><small>CAPITAL</small></button>
+        <button type="button" data-domain="build" aria-pressed="false"><span>BUILD</span><small>PRODUCT</small></button>
+        <button type="button" data-domain="sell" aria-pressed="false"><span>SELL</span><small>CUSTOMER</small></button>
+        <button type="button" data-domain="grow" aria-pressed="false"><span>GROW</span><small>TEAM</small></button>
+        <button type="button" data-domain="allocate" aria-pressed="false"><span>ALLOCATE</span><small>CAPITAL</small></button>
+        <button type="button" data-domain="defend" aria-pressed="false"><span>DEFEND</span><small>ADVANTAGE</small></button>
+      </div>
+
+      <label class="ara-mint-curriculum__search">
+        <span>{{ section.settings.search_label | escape }}</span>
+        <input
+          type="search"
+          placeholder="{{ section.settings.search_placeholder | escape }}"
+          data-curriculum-search
+          autocomplete="off"
+        >
+        {% if section.settings.search_note != blank %}<small>{{ section.settings.search_note | escape }}</small>{% endif %}
+      </label>
+    </section>
+
+    <div class="ara-mint-curriculum__levels" data-levels>
+      {% for block in section.blocks %}
+        <article
+          class="ara-mint-curriculum__level{% if block.settings.open_by_default %} is-open{% endif %}"
+          data-level="{{ block.id }}"
+          data-search="{{ block.settings.number | append: ' ' | append: block.settings.metal | append: ' ' | append: block.settings.title | append: ' ' | append: block.settings.subtitle | append: ' ' | append: block.settings.company_list | append: ' ' | append: block.settings.raise_title | append: ' ' | append: block.settings.raise_text | append: ' ' | append: block.settings.build_title | append: ' ' | append: block.settings.build_text | append: ' ' | append: block.settings.sell_title | append: ' ' | append: block.settings.sell_text | append: ' ' | append: block.settings.grow_title | append: ' ' | append: block.settings.grow_text | append: ' ' | append: block.settings.allocate_title | append: ' ' | append: block.settings.allocate_text | append: ' ' | append: block.settings.defend_title | append: ' ' | append: block.settings.defend_text | escape }}"
+        >
+          <div class="ara-mint-curriculum__level-head">
+            <div class="ara-mint-curriculum__level-medal" data-index="{{ forloop.index }}">
+              <div>
+                <span>LEVEL</span>
+                <strong>{{ block.settings.number | escape }}</strong>
+                <small>{{ block.settings.metal | escape }}</small>
+              </div>
+            </div>
+
+            <div class="ara-mint-curriculum__level-title">
+              <span>{{ block.settings.status | escape }}</span>
+              <h2>{{ block.settings.title | escape }}</h2>
+              <p>{{ block.settings.subtitle | escape }}</p>
+              {% if block.settings.company_count != blank or block.settings.company_list != blank %}
+                <div class="ara-mint-curriculum__companies">
+                  {% if block.settings.company_count != blank %}<strong>{{ block.settings.company_count | escape }}</strong>{% endif %}
+                  {% if block.settings.company_list != blank %}<span>{{ block.settings.company_list | escape }}</span>{% endif %}
+                </div>
+              {% endif %}
+            </div>
+
+            <button type="button" class="ara-mint-curriculum__level-toggle" data-level-toggle="{{ block.id }}" aria-expanded="{% if block.settings.open_by_default %}true{% else %}false{% endif %}">
+              <span>VIEW CONCEPTS</span>
+              <b aria-hidden="true">+</b>
+            </button>
+          </div>
+
+          <div class="ara-mint-curriculum__concepts">
+            {% assign concepts = 'raise,build,sell,grow,allocate,defend' | split: ',' %}
+            {% for concept in concepts %}
+              {% capture title_key %}{{ concept }}_title{% endcapture %}
+              {% capture text_key %}{{ concept }}_text{% endcapture %}
+              {% assign concept_title = block.settings[title_key] %}
+              {% assign concept_text = block.settings[text_key] %}
+              <div class="ara-mint-curriculum__concept" data-concept="{{ concept }}" data-search="{{ concept | append: ' ' | append: concept_title | append: ' ' | append: concept_text | escape }}">
+                <div class="ara-mint-curriculum__concept-cell ara-mint-curriculum__concept-cell--{{ concept }}" aria-hidden="true">
+                  <span>{{ concept | slice: 0 | upcase }}</span>
+                </div>
+                <div>
+                  <span class="ara-mint-curriculum__concept-label">{{ concept | upcase }}</span>
+                  <h3>{{ concept_title | escape }}</h3>
+                  <p>{{ concept_text | escape }}</p>
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+        </article>
+      {% endfor %}
+    </div>
+
+    <section class="ara-mint-curriculum__matrix">
+      <div class="ara-mint-curriculum__section-heading ara-mint-curriculum__section-heading--matrix">
+        <div>
+          <span>THE COMPLETE MATRIX</span>
+          <h2>{{ section.settings.matrix_heading | escape }}</h2>
+        </div>
+        {% if section.settings.matrix_description != blank %}<p>{{ section.settings.matrix_description | escape }}</p>{% endif %}
+      </div>
+
+      <div class="ara-mint-curriculum__matrix-scroll">
+        <table>
+          <thead>
+            <tr>
+              <th>FUNCTION</th>
+              {% for block in section.blocks %}
+                <th><span>{{ block.settings.status | escape }}</span><strong>{{ block.settings.metal | escape }}</strong></th>
+              {% endfor %}
+            </tr>
+          </thead>
+          <tbody>
+            {% assign concepts = 'raise,build,sell,grow,allocate,defend' | split: ',' %}
+            {% for concept in concepts %}
+              <tr data-matrix-domain="{{ concept }}">
+                <th>{{ concept | upcase }}</th>
+                {% for block in section.blocks %}
+                  {% capture title_key %}{{ concept }}_title{% endcapture %}
+                  <td>{{ block.settings[title_key] | escape }}</td>
+                {% endfor %}
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+      {% if section.settings.matrix_footer != blank %}
+        <p class="ara-mint-curriculum__matrix-footer">{{ section.settings.matrix_footer | escape }}</p>
+      {% endif %}
+    </section>
+  </div>
+</section>
+
+<style>
+  #AraMintCurriculum-{{ section.id }} {
+    position: relative;
+    overflow: hidden;
+    padding: var(--ara-mint-top) 0 var(--ara-mint-bottom);
+    background: var(--ara-mint-bg);
+    color: var(--ara-mint-ink);
+  }
+
+  #AraMintCurriculum-{{ section.id }} * { box-sizing: border-box; }
+
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__rules {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: .62;
+    background: repeating-linear-gradient(to bottom, transparent 0 35px, color-mix(in srgb, var(--ara-mint-mint) 46%, transparent) 35px 36px);
+  }
+
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__inner {
+    position: relative;
+    width: min(100%, var(--ara-mint-max));
+    margin: 0 auto;
+    padding: 0 38px;
+  }
+
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__masthead {
+    display: grid;
+    grid-template-columns: minmax(190px, 280px) 1fr minmax(110px, 180px);
+    gap: 28px;
+    align-items: center;
+    min-height: 88px;
+    padding: 14px 22px;
+    border: 2px solid var(--ara-mint-ink);
+    border-radius: 20px 20px 0 0;
+    background: var(--ara-mint-paper);
+    box-shadow: 7px 7px 0 var(--ara-mint-gold), 12px 12px 0 color-mix(in srgb, var(--ara-mint-mint) 75%, transparent);
+  }
+
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__wordmark {
+    display: block;
+    width: min(100%, 255px);
+    height: auto;
+  }
+
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__masthead-center {
+    display: grid;
+    justify-items: center;
+    gap: 4px;
+    text-align: center;
+  }
+
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__masthead-center span,
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__masthead-center small,
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__folio span,
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__eyebrow,
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__section-heading > div > span,
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__concept-label {
+    font-family: var(--font-body-family);
+    font-size: var(--ara-mint-label-desktop);
+    font-weight: 800;
+    letter-spacing: .15em;
+    line-height: 1.3;
+    text-transform: uppercase;
+  }
+
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__masthead-center span { color: var(--ara-mint-ink); }
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__masthead-center small { color: var(--ara-mint-muted); }
+
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__mint-emblem {
+    justify-self: end;
+    display: block;
+    width: min(100%, 150px);
+    height: auto;
+    filter: brightness(.72) saturate(.88);
+  }
+
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__cover {
+    display: grid;
+    grid-template-columns: minmax(0, .9fr) minmax(420px, 1.1fr);
+    gap: 0;
+    margin-top: 38px;
+    border: 2px solid var(--ara-mint-ink);
+    border-radius: 26px;
+    overflow: hidden;
+    background: var(--ara-mint-paper);
+    box-shadow: 10px 10px 0 color-mix(in srgb, var(--ara-mint-mint) 75%, transparent);
+  }
+
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__cover-copy {
+    position: relative;
+    padding: 48px 46px 44px;
+    border-right: 1px solid var(--ara-mint-border);
+    background:
+      linear-gradient(135deg, transparent 0 90%, color-mix(in srgb, var(--ara-mint-mint) 48%, transparent) 90% 100%),
+      var(--ara-mint-paper);
+  }
+
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__cover-copy::after {
+    content: "";
+    position: absolute;
+    right: 24px;
+    bottom: 22px;
+    width: 70px;
+    height: 70px;
+    border-right: 5px solid color-mix(in srgb, var(--ara-mint-mint) 85%, var(--ara-mint-ink));
+    border-bottom: 5px solid color-mix(in srgb, var(--ara-mint-mint) 85%, var(--ara-mint-ink));
+  }
+
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__folio {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--ara-mint-border);
+    color: var(--ara-mint-muted);
+  }
+
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__eyebrow {
+    display: inline-flex;
+    margin: 30px 0 0;
+    padding: 10px 15px;
+    border: 2px solid var(--ara-mint-ink);
+    border-radius: 14px;
+    background: var(--ara-mint-gold);
+    box-shadow: 4px 4px 0 var(--ara-mint-ink);
+  }
+
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__cover h1 {
+    max-width: 700px;
+    margin: 24px 0 0;
+    font-family: var(--font-heading-family);
+    font-size: var(--ara-mint-heading-desktop);
+    font-style: var(--font-heading-style);
+    font-weight: var(--font-heading-weight);
+    letter-spacing: -.055em;
+    line-height: .94;
+  }
+
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__description {
+    max-width: 620px;
+    margin-top: 22px;
+    color: var(--ara-mint-muted);
+    font-family: var(--font-body-family);
+    font-size: var(--ara-mint-body-desktop);
+    line-height: 1.62;
+  }
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__description p { margin: 0; }
+
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__strike-path {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr auto 1fr;
+    gap: 10px;
+    align-items: center;
+    margin-top: 38px;
+    padding-top: 20px;
+    border-top: 1px dashed var(--ara-mint-border);
+  }
+
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__strike-path div { display: grid; gap: 6px; }
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__strike-path b {
+    color: color-mix(in srgb, var(--ara-mint-mint) 50%, var(--ara-mint-ink));
+    font-family: var(--font-heading-family);
+    font-size: 20px;
+  }
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__strike-path span {
+    font-family: var(--font-body-family);
+    font-size: calc(var(--ara-mint-label-desktop) + 1px);
+    font-weight: 800;
+    letter-spacing: .07em;
+    line-height: 1.4;
+    text-transform: uppercase;
+  }
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__strike-path i { width: 28px; height: 1px; background: var(--ara-mint-gold); }
+
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__coin-feature {
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    min-width: 0;
+    background: var(--ara-mint-ink);
+    color: var(--ara-mint-paper);
+  }
+
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__coin-head {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    align-items: end;
+    padding: 24px 28px 18px;
+    border-bottom: 1px solid color-mix(in srgb, var(--ara-mint-mint) 65%, transparent);
+  }
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__coin-head > div { display: grid; gap: 4px; }
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__coin-head span,
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__coin-head strong,
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__coin-key span {
+    font-family: var(--font-body-family);
+    font-size: var(--ara-mint-label-desktop);
+    font-weight: 800;
+    letter-spacing: .14em;
+    line-height: 1.3;
+    text-transform: uppercase;
+  }
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__coin-head span { color: var(--ara-mint-mint); }
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__coin-head strong { color: var(--ara-mint-paper); }
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__coin-folio { color: var(--ara-mint-gold) !important; }
+
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__coin-stage {
+    position: relative;
+    display: grid;
+    min-height: 520px;
+    place-items: center;
+    overflow: hidden;
+    padding: 32px;
+    background:
+      repeating-linear-gradient(to bottom, transparent 0 34px, color-mix(in srgb, var(--ara-mint-mint) 12%, transparent) 34px 35px),
+      radial-gradient(circle at 50% 45%, color-mix(in srgb, var(--ara-mint-mint) 13%, transparent), transparent 58%);
+  }
+
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__company-coin {
+    position: relative;
+    z-index: 2;
+    display: block;
+    width: min(100%, 430px);
+    height: auto;
+    filter: drop-shadow(0 18px 24px rgba(0,0,0,.28));
+  }
+
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__mark-watermark {
+    position: absolute;
+    right: -18px;
+    bottom: -25px;
+    width: 160px;
+    height: auto;
+    opacity: .10;
+  }
+
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__coin-key {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: color-mix(in srgb, var(--ara-mint-mint) 32%, transparent);
+  }
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__coin-key span {
+    padding: 14px 12px;
+    background: var(--ara-mint-ink);
+    color: color-mix(in srgb, var(--ara-mint-paper) 78%, transparent);
+    text-align: center;
+  }
+
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__index { margin-top: 64px; }
+
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__section-heading {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(300px, .65fr);
+    gap: 44px;
+    align-items: end;
+    padding: 0 0 18px;
+    border-bottom: 3px solid var(--ara-mint-ink);
+  }
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__section-heading > div > span { color: color-mix(in srgb, var(--ara-mint-mint) 40%, var(--ara-mint-ink)); }
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__section-heading h2 {
+    margin: 7px 0 0;
+    font-family: var(--font-heading-family);
+    font-size: clamp(34px, 4vw, 58px);
+    font-weight: var(--font-heading-weight);
+    letter-spacing: -.045em;
+    line-height: .98;
+  }
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__section-heading p {
+    margin: 0;
+    color: var(--ara-mint-muted);
+    font-family: var(--font-body-family);
+    font-size: var(--ara-mint-body-desktop);
+    line-height: 1.55;
+  }
+
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__level-tabs {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(150px, 1fr));
+    gap: 12px;
+    margin-top: 24px;
+    overflow-x: auto;
+    padding: 6px 6px 18px;
+    scrollbar-width: thin;
+  }
+
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__level-tab {
+    display: grid;
+    min-width: 0;
+    grid-template-rows: auto 1fr;
+    gap: 16px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: var(--ara-mint-ink);
+    text-align: left;
+    cursor: pointer;
+  }
+
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__metal-plate {
+    position: relative;
+    display: grid;
+    min-height: 176px;
+    place-items: center;
+    padding: 11px;
+    border: 2px solid var(--ara-mint-ink);
+    border-radius: 18px;
+    background: var(--metal, #C9784A);
+    box-shadow: 5px 5px 0 color-mix(in srgb, var(--metal, #C9784A) 45%, var(--ara-mint-ink));
+    transition: transform .18s ease, box-shadow .18s ease;
+  }
+
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__level-tab[data-index="1"],
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__level-medal[data-index="1"] { --metal: #C97D4C; --metal-soft: #E9C9B5; }
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__level-tab[data-index="2"],
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__level-medal[data-index="2"] { --metal: #AEB5B5; --metal-soft: #E2E5E4; }
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__level-tab[data-index="3"],
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__level-medal[data-index="3"] { --metal: #C7A34A; --metal-soft: #E7D6A0; }
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__level-tab[data-index="4"],
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__level-medal[data-index="4"] { --metal: #C7CFD3; --metal-soft: #EDF0F1; }
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__level-tab[data-index="5"],
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__level-medal[data-index="5"] { --metal: #D7AB36; --metal-soft: #F0D98D; }
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__level-tab[data-index="6"],
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__level-medal[data-index="6"] { --metal: #5F9F8A; --metal-soft: #C8E7DD; }
+
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__metal-inner {
+    position: relative;
+    display: grid;
+    width: 100%;
+    height: 100%;
+    min-height: 152px;
+    place-items: center;
+    align-content: center;
+    gap: 3px;
+    overflow: hidden;
+    border: 2px solid color-mix(in srgb, var(--ara-mint-paper) 62%, var(--ara-mint-ink));
+    border-radius: 12px;
+    box-shadow: inset 0 0 0 4px color-mix(in srgb, var(--metal-soft, #E9C9B5) 70%, transparent);
+  }
+
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__metal-inner::before,
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__metal-inner::after {
+    content: "";
+    position: absolute;
+    right: 8px;
+    left: 8px;
+    height: 1px;
+    background: color-mix(in srgb, var(--ara-mint-ink) 52%, transparent);
+  }
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__metal-inner::before { top: 22px; }
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__metal-inner::after { bottom: 22px; }
+
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__metal-inner small,
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__metal-inner em {
+    position: relative;
+    z-index: 2;
+    font-family: var(--font-body-family);
+    font-size: var(--ara-mint-label-desktop);
+    font-style: normal;
+    font-weight: 900;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+  }
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__metal-inner strong {
+    position: relative;
+    z-index: 2;
+    font-family: var(--font-heading-family);
+    font-size: 42px;
+    line-height: 1;
+  }
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__metal-inner img {
+    position: absolute;
+    right: 7px;
+    bottom: 6px;
+    width: 22px;
+    height: 22px;
+    border-radius: 6px;
+    opacity: .78;
+  }
+
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__level-tab:hover .ara-mint-curriculum__metal-plate,
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__level-tab.is-active .ara-mint-curriculum__metal-plate {
+    transform: translateY(-5px);
+    box-shadow: 8px 9px 0 var(--ara-mint-ink);
+  }
+
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__level-tab-copy {
+    display: grid;
+    gap: 5px;
+    min-width: 0;
+  }
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__level-tab-copy small {
+    color: color-mix(in srgb, var(--ara-mint-mint) 40%, var(--ara-mint-ink));
+    font-family: var(--font-body-family);
+    font-size: var(--ara-mint-label-desktop);
+    font-weight: 900;
+    letter-spacing: .13em;
+    text-transform: uppercase;
+  }
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__level-tab-copy strong {
+    overflow-wrap: anywhere;
+    font-family: var(--font-heading-family);
+    font-size: 22px;
+    line-height: 1.03;
+  }
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__level-tab-copy > span {
+    display: -webkit-box;
+    overflow: hidden;
+    color: var(--ara-mint-muted);
+    font-family: var(--font-body-family);
+    font-size: 12px;
+    line-height: 1.45;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+  }
+
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__tools {
+    display: grid;
+    grid-template-columns: minmax(0, 1.4fr) minmax(270px, .6fr);
+    gap: 18px;
+    margin-top: 40px;
+    padding: 16px;
+    border: 1px solid var(--ara-mint-ink);
+    border-radius: 18px;
+    background: var(--ara-mint-paper);
+  }
+
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+  }
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__filters button {
+    display: grid;
+    gap: 2px;
+    min-width: 92px;
+    padding: 10px 12px;
+    border: 1px solid var(--ara-mint-ink);
+    border-radius: 10px;
+    background: transparent;
+    color: var(--ara-mint-ink);
+    cursor: pointer;
+  }
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__filters button.is-active {
+    background: var(--ara-mint-ink);
+    color: var(--ara-mint-paper);
+  }
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__filters span,
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__filters small,
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__search > span,
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__search > small {
+    font-family: var(--font-body-family);
+    font-size: var(--ara-mint-label-desktop);
+    font-weight: 800;
+    letter-spacing: .1em;
+    line-height: 1.25;
+    text-transform: uppercase;
+  }
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__filters small { opacity: .62; }
+
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__search { display: grid; gap: 6px; }
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__search input {
+    width: 100%;
+    min-height: 44px;
+    padding: 10px 12px;
+    border: 1px solid var(--ara-mint-ink);
+    border-radius: 10px;
+    background: var(--ara-mint-bg);
+    color: var(--ara-mint-ink);
+    font-family: var(--font-body-family);
+    font-size: var(--ara-mint-body-desktop);
+  }
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__search > small { color: var(--ara-mint-muted); letter-spacing: .04em; text-transform: none; }
+
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__levels { display: grid; gap: 18px; margin-top: 22px; }
+
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__level {
+    overflow: hidden;
+    border: 2px solid var(--ara-mint-ink);
+    border-radius: 22px;
+    background: var(--ara-mint-paper);
+    box-shadow: 6px 6px 0 color-mix(in srgb, var(--ara-mint-mint) 66%, transparent);
+  }
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__level[hidden] { display: none; }
+
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__level-head {
+    display: grid;
+    grid-template-columns: 170px minmax(0, 1fr) auto;
+    gap: 26px;
+    align-items: center;
+    padding: 24px 26px;
+  }
+
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__level-medal {
+    display: grid;
+    min-height: 135px;
+    place-items: center;
+    padding: 10px;
+    border: 2px solid var(--ara-mint-ink);
+    border-radius: 18px;
+    background: var(--metal, #C97D4C);
+    box-shadow: 5px 5px 0 color-mix(in srgb, var(--metal, #C97D4C) 42%, var(--ara-mint-ink));
+  }
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__level-medal > div {
+    display: grid;
+    width: 100%;
+    min-height: 112px;
+    place-items: center;
+    align-content: center;
+    border: 2px double color-mix(in srgb, var(--ara-mint-paper) 70%, var(--ara-mint-ink));
+    border-radius: 11px;
+  }
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__level-medal span,
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__level-medal small {
+    font-family: var(--font-body-family);
+    font-size: var(--ara-mint-label-desktop);
+    font-weight: 900;
+    letter-spacing: .14em;
+  }
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__level-medal strong {
+    font-family: var(--font-heading-family);
+    font-size: 42px;
+    line-height: 1;
+  }
+
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__level-title > span {
+    color: color-mix(in srgb, var(--ara-mint-mint) 38%, var(--ara-mint-ink));
+    font-family: var(--font-body-family);
+    font-size: var(--ara-mint-label-desktop);
+    font-weight: 900;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+  }
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__level-title h2 {
+    margin: 6px 0 0;
+    overflow-wrap: anywhere;
+    font-family: var(--font-heading-family);
+    font-size: var(--ara-mint-level-desktop);
+    letter-spacing: -.035em;
+    line-height: 1;
+  }
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__level-title p {
+    max-width: 810px;
+    margin: 10px 0 0;
+    color: var(--ara-mint-muted);
+    font-family: var(--font-body-family);
+    font-size: var(--ara-mint-body-desktop);
+    line-height: 1.55;
+  }
+
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__companies { display: grid; gap: 5px; margin-top: 12px; }
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__companies strong,
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__companies span {
+    font-family: var(--font-body-family);
+    font-size: var(--ara-mint-label-desktop);
+    line-height: 1.45;
+  }
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__companies strong { letter-spacing: .12em; text-transform: uppercase; }
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__companies span { color: var(--ara-mint-muted); }
+
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__level-toggle {
+    display: inline-flex;
+    gap: 12px;
+    align-items: center;
+    min-height: 45px;
+    padding: 10px 14px;
+    border: 1px solid var(--ara-mint-ink);
+    border-radius: 11px;
+    background: var(--ara-mint-ink);
+    color: var(--ara-mint-paper);
+    cursor: pointer;
+  }
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__level-toggle span {
+    font-family: var(--font-body-family);
+    font-size: var(--ara-mint-label-desktop);
+    font-weight: 900;
+    letter-spacing: .11em;
+  }
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__level-toggle b { font-size: 22px; font-weight: 400; line-height: 1; transition: transform .18s ease; }
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__level.is-open .ara-mint-curriculum__level-toggle b { transform: rotate(45deg); }
+
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__concepts {
+    display: none;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1px;
+    border-top: 1px solid var(--ara-mint-ink);
+    background: var(--ara-mint-border);
+  }
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__level.is-open .ara-mint-curriculum__concepts { display: grid; }
+
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__concept {
+    display: grid;
+    grid-template-columns: 56px minmax(0, 1fr);
+    gap: 15px;
+    min-height: 195px;
+    padding: 22px;
+    background: var(--ara-mint-paper);
+  }
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__concept[hidden] { display: none; }
+
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__concept-cell {
+    display: grid;
+    width: 52px;
+    height: 52px;
+    place-items: center;
+    border: 2px solid var(--ara-mint-ink);
+    border-radius: 11px;
+    box-shadow: inset 0 0 0 3px color-mix(in srgb, var(--ara-mint-paper) 45%, transparent), 3px 3px 0 var(--ara-mint-ink);
+  }
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__concept-cell span {
+    font-family: var(--font-heading-family);
+    font-size: 22px;
+    font-weight: 700;
+  }
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__concept-cell--raise { background: #C97D4C; }
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__concept-cell--build { background: #C8D1D5; }
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__concept-cell--sell { background: #D6AB36; }
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__concept-cell--grow { background: var(--ara-mint-mint); }
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__concept-cell--allocate { background: #E8D7A4; }
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__concept-cell--defend { background: #5F9F8A; }
+
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__concept-label { color: color-mix(in srgb, var(--ara-mint-mint) 38%, var(--ara-mint-ink)); }
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__concept h3 {
+    margin: 7px 0 0;
+    overflow-wrap: anywhere;
+    font-family: var(--font-heading-family);
+    font-size: 24px;
+    letter-spacing: -.02em;
+    line-height: 1.05;
+  }
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__concept p {
+    margin: 10px 0 0;
+    color: var(--ara-mint-muted);
+    font-family: var(--font-body-family);
+    font-size: var(--ara-mint-body-desktop);
+    line-height: 1.55;
+  }
+
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__matrix { margin-top: 72px; }
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__matrix-scroll {
+    margin-top: 22px;
+    overflow-x: auto;
+    border: 2px solid var(--ara-mint-ink);
+    border-radius: 18px;
+    background: var(--ara-mint-paper);
+  }
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__matrix table {
+    width: 100%;
+    min-width: 1040px;
+    border-collapse: collapse;
+  }
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__matrix th,
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__matrix td {
+    padding: 16px 14px;
+    border-right: 1px solid var(--ara-mint-border);
+    border-bottom: 1px solid var(--ara-mint-border);
+    vertical-align: top;
+    text-align: left;
+  }
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__matrix th {
+    background: color-mix(in srgb, var(--ara-mint-mint) 18%, var(--ara-mint-paper));
+    font-family: var(--font-body-family);
+    font-size: var(--ara-mint-label-desktop);
+    font-weight: 900;
+    letter-spacing: .1em;
+  }
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__matrix thead th span,
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__matrix thead th strong { display: block; }
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__matrix thead th span { color: var(--ara-mint-muted); }
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__matrix thead th strong { margin-top: 4px; color: var(--ara-mint-ink); }
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__matrix td {
+    min-width: 145px;
+    font-family: var(--font-body-family);
+    font-size: 13px;
+    line-height: 1.45;
+  }
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__matrix tr[hidden] { display: none; }
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__matrix-footer {
+    margin: 17px 0 0;
+    color: var(--ara-mint-muted);
+    font-family: var(--font-body-family);
+    font-size: var(--ara-mint-body-desktop);
+    line-height: 1.5;
+    text-align: center;
+  }
+
+  @media screen and (max-width: 1100px) {
+    #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__cover { grid-template-columns: 1fr; }
+    #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__cover-copy { border-right: 0; border-bottom: 1px solid var(--ara-mint-border); }
+    #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__coin-stage { min-height: 440px; }
+    #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__level-tabs { grid-template-columns: repeat(6, minmax(180px, 1fr)); }
+    #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__tools { grid-template-columns: 1fr; }
+    #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__concepts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+
+  @media screen and (max-width: 749px) {
+    #AraMintCurriculum-{{ section.id }} { padding-top: 34px; padding-bottom: 64px; }
+    #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__inner { padding: 0 16px; }
+
+    #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__masthead {
+      grid-template-columns: 1fr auto;
+      gap: 13px;
+      min-height: 72px;
+      padding: 12px 13px;
+      border-radius: 16px 16px 0 0;
+      box-shadow: 5px 5px 0 var(--ara-mint-gold), 9px 9px 0 color-mix(in srgb, var(--ara-mint-mint) 75%, transparent);
+    }
+    #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__wordmark { width: 175px; max-width: 54vw; }
+    #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__masthead-center { display: none; }
+    #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__mint-emblem { width: 82px; }
+
+    #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__cover { margin-top: 28px; border-radius: 20px; box-shadow: 6px 6px 0 color-mix(in srgb, var(--ara-mint-mint) 75%, transparent); }
+    #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__cover-copy { padding: 27px 22px 32px; }
+    #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__folio { align-items: flex-start; flex-direction: column; gap: 7px; }
+    #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__eyebrow { margin-top: 22px; padding: 9px 12px; }
+    #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__cover h1 { margin-top: 20px; font-size: var(--ara-mint-heading-mobile); }
+    #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__description { font-size: var(--ara-mint-body-mobile); }
+    #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__strike-path { grid-template-columns: 1fr; gap: 14px; }
+    #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__strike-path i { width: 1px; height: 15px; margin-left: 10px; }
+
+    #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__coin-head { align-items: flex-start; flex-direction: column; padding: 18px 20px 14px; }
+    #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__coin-stage { min-height: 335px; padding: 22px 18px; }
+    #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__company-coin { width: min(100%, 320px); }
+    #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__coin-key { grid-template-columns: 1fr; }
+
+    #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__index { margin-top: 48px; }
+    #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__section-heading { grid-template-columns: 1fr; gap: 13px; }
+    #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__section-heading h2 { font-size: 38px; }
+    #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__section-heading p { font-size: var(--ara-mint-body-mobile); }
+
+    #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__level-tabs {
+      display: flex;
+      gap: 12px;
+      margin-right: -16px;
+      overflow-x: auto;
+      padding: 7px 16px 18px 3px;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+    }
+    #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__level-tab { flex: 0 0 68vw; max-width: 285px; scroll-snap-align: start; }
+    #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__metal-plate { min-height: 154px; }
+    #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__metal-inner { min-height: 130px; }
+    #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__metal-inner strong { font-size: 38px; }
+    #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__level-tab-copy strong { font-size: 24px; }
+    #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__level-tab-copy > span { font-size: 13px; -webkit-line-clamp: 4; }
+
+    #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__tools { margin-top: 30px; padding: 13px; border-radius: 14px; }
+    #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__filters { flex-wrap: nowrap; overflow-x: auto; padding-bottom: 6px; -webkit-overflow-scrolling: touch; }
+    #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__filters button { flex: 0 0 auto; }
+    #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__search input { font-size: 16px; }
+
+    #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__level-head { grid-template-columns: 92px minmax(0, 1fr); gap: 17px; padding: 18px; align-items: start; }
+    #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__level-medal { min-height: 96px; padding: 7px; border-radius: 14px; }
+    #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__level-medal > div { min-height: 78px; }
+    #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__level-medal strong { font-size: 31px; }
+    #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__level-title { min-width: 0; padding-top: 2px; }
+    #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__level-title h2 { font-size: var(--ara-mint-level-mobile); }
+    #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__level-title p { font-size: var(--ara-mint-body-mobile); }
+    #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__level-toggle { grid-column: 1 / -1; width: 100%; justify-content: space-between; }
+
+    #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__concepts { grid-template-columns: 1fr; }
+    #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__concept { grid-template-columns: 46px minmax(0, 1fr); gap: 13px; min-height: 0; padding: 18px; }
+    #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__concept-cell { width: 44px; height: 44px; }
+    #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__concept h3 { font-size: 22px; }
+    #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__concept p { font-size: var(--ara-mint-body-mobile); }
+
+    #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__matrix { margin-top: 52px; }
+    #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__matrix-scroll { border-radius: 14px; }
+    #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__matrix-footer { font-size: var(--ara-mint-body-mobile); text-align: left; }
+
+    #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__masthead-center span,
+    #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__masthead-center small,
+    #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__folio span,
+    #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__eyebrow,
+    #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__section-heading > div > span,
+    #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__concept-label,
+    #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__coin-head span,
+    #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__coin-head strong,
+    #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__coin-key span,
+    #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__filters span,
+    #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__filters small,
+    #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__search > span,
+    #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__search > small,
+    #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__level-title > span,
+    #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__level-toggle span,
+    #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__level-medal span,
+    #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__level-medal small {
+      font-size: var(--ara-mint-label-mobile);
+    }
+  }
+</style>
+
+<script>
+  (() => {
+    const section = document.getElementById('AraMintCurriculum-{{ section.id }}');
+    if (!section || section.dataset.ready === 'true') return;
+    section.dataset.ready = 'true';
+
+    const tabs = [...section.querySelectorAll('[data-level-target]')];
+    const levels = [...section.querySelectorAll('[data-level]')];
+    const toggles = [...section.querySelectorAll('[data-level-toggle]')];
+    const filters = [...section.querySelectorAll('[data-domain]')];
+    const concepts = [...section.querySelectorAll('[data-concept]')];
+    const matrixRows = [...section.querySelectorAll('[data-matrix-domain]')];
+    const search = section.querySelector('[data-curriculum-search]');
+
+    const activateLevel = id => {
+      tabs.forEach(tab => {
+        const active = tab.dataset.levelTarget === id;
+        tab.classList.toggle('is-active', active);
+        tab.setAttribute('aria-selected', String(active));
+      });
+
+      levels.forEach(level => {
+        const active = level.dataset.level === id;
+        level.classList.toggle('is-open', active);
+        const button = level.querySelector('[data-level-toggle]');
+        if (button) button.setAttribute('aria-expanded', String(active));
+      });
+
+      const target = section.querySelector(`[data-level="${id}"]`);
+      target?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    };
+
+    tabs.forEach(tab => tab.addEventListener('click', () => activateLevel(tab.dataset.levelTarget)));
+
+    toggles.forEach(toggle => {
+      toggle.addEventListener('click', () => {
+        const level = toggle.closest('[data-level]');
+        const open = !level.classList.contains('is-open');
+        level.classList.toggle('is-open', open);
+        toggle.setAttribute('aria-expanded', String(open));
+      });
+    });
+
+    const applyFilters = () => {
+      const activeDomain = filters.find(item => item.classList.contains('is-active'))?.dataset.domain || 'all';
+      const term = (search?.value || '').trim().toLowerCase();
+
+      concepts.forEach(concept => {
+        const domainMatch = activeDomain === 'all' || concept.dataset.concept === activeDomain;
+        const termMatch = !term || (concept.dataset.search || '').toLowerCase().includes(term) || (concept.closest('[data-level]')?.dataset.search || '').toLowerCase().includes(term);
+        concept.hidden = !(domainMatch && termMatch);
+      });
+
+      levels.forEach(level => {
+        const levelTermMatch = !term || (level.dataset.search || '').toLowerCase().includes(term);
+        const visibleConcepts = [...level.querySelectorAll('[data-concept]')].some(item => !item.hidden);
+        level.hidden = !(levelTermMatch || visibleConcepts);
+        if (term && !level.hidden) level.classList.add('is-open');
+      });
+
+      matrixRows.forEach(row => row.hidden = activeDomain !== 'all' && row.dataset.matrixDomain !== activeDomain);
+    };
+
+    filters.forEach(filter => {
+      filter.addEventListener('click', () => {
+        filters.forEach(item => {
+          const active = item === filter;
+          item.classList.toggle('is-active', active);
+          item.setAttribute('aria-pressed', String(active));
+        });
+        applyFilters();
+      });
+    });
+
+    search?.addEventListener('input', applyFilters);
+
+    if (!tabs.some(tab => tab.classList.contains('is-active')) && tabs[0]) {
+      tabs[0].classList.add('is-active');
+      tabs[0].setAttribute('aria-selected', 'true');
+      levels[0]?.classList.add('is-open');
+      levels[0]?.querySelector('[data-level-toggle]')?.setAttribute('aria-expanded', 'true');
+    }
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Ara Mint Curriculum Map",
+  "max_blocks": 6,
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Small heading",
+      "default": "THE MINT · CEO CURRICULUM"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Main heading",
+      "default": "Learn everything."
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description",
+      "default": "<p>We distill the most difficult concepts for the next generation to understand the world they will lead.</p>"
+    },
+    {
+      "type": "text",
+      "id": "progress_one",
+      "label": "Progress step one",
+      "default": "Learn a concept"
+    },
+    {
+      "type": "text",
+      "id": "progress_two",
+      "label": "Progress step two",
+      "default": "Pass its Framing Check — strike a mintmark"
+    },
+    {
+      "type": "text",
+      "id": "progress_three",
+      "label": "Progress step three",
+      "default": "All six levels struck — the mark mints"
+    },
+    {
+      "type": "header",
+      "content": "Search"
+    },
+    {
+      "type": "text",
+      "id": "search_label",
+      "label": "Search label",
+      "default": "FIND A BOOK"
+    },
+    {
+      "type": "text",
+      "id": "search_placeholder",
+      "label": "Search placeholder",
+      "default": "Type a company name — Apple, Nike, Berkshire..."
+    },
+    {
+      "type": "text",
+      "id": "search_note",
+      "label": "Search note",
+      "default": "Search levels, concepts and listed company books."
+    },
+    {
+      "type": "header",
+      "content": "Matrix"
+    },
+    {
+      "type": "text",
+      "id": "matrix_heading",
+      "label": "Matrix heading",
+      "default": "The whole map"
+    },
+    {
+      "type": "textarea",
+      "id": "matrix_description",
+      "label": "Matrix description",
+      "default": "Read down a column for one level; read across a row to watch one job get harder from Day One to the corner office."
+    },
+    {
+      "type": "textarea",
+      "id": "matrix_footer",
+      "label": "Matrix footer",
+      "default": "Six marks, thirty-six concepts. Fill the Mint and you’ve run the whole company in your head."
+    },
+    {
+      "type": "header",
+      "content": "Desktop typography"
+    },
+    {
+      "type": "range",
+      "id": "desktop_heading_size",
+      "min": 44,
+      "max": 82,
+      "step": 2,
+      "unit": "px",
+      "label": "Main heading size",
+      "default": 62
+    },
+    {
+      "type": "range",
+      "id": "desktop_level_size",
+      "min": 24,
+      "max": 42,
+      "step": 1,
+      "unit": "px",
+      "label": "Level title size",
+      "default": 31
+    },
+    {
+      "type": "range",
+      "id": "desktop_body_size",
+      "min": 13,
+      "max": 19,
+      "step": 1,
+      "unit": "px",
+      "label": "Body size",
+      "default": 15
+    },
+    {
+      "type": "range",
+      "id": "desktop_label_size",
+      "min": 8,
+      "max": 13,
+      "step": 1,
+      "unit": "px",
+      "label": "Small text size",
+      "default": 9
+    },
+    {
+      "type": "header",
+      "content": "Mobile typography"
+    },
+    {
+      "type": "range",
+      "id": "mobile_heading_size",
+      "min": 36,
+      "max": 58,
+      "step": 2,
+      "unit": "px",
+      "label": "Main heading size",
+      "default": 46
+    },
+    {
+      "type": "range",
+      "id": "mobile_level_size",
+      "min": 24,
+      "max": 38,
+      "step": 1,
+      "unit": "px",
+      "label": "Level title size",
+      "default": 29
+    },
+    {
+      "type": "range",
+      "id": "mobile_body_size",
+      "min": 13,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "label": "Body size",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "mobile_label_size",
+      "min": 8,
+      "max": 12,
+      "step": 1,
+      "unit": "px",
+      "label": "Small text size",
+      "default": 9
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "max_width",
+      "label": "Page width",
+      "default": "1450px",
+      "options": [
+        {
+          "value": "1250px",
+          "label": "Narrow"
+        },
+        {
+          "value": "1450px",
+          "label": "Medium"
+        },
+        {
+          "value": "1650px",
+          "label": "Wide"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 40,
+      "max": 110,
+      "step": 5,
+      "unit": "px",
+      "label": "Top spacing",
+      "default": 70
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 50,
+      "max": 140,
+      "step": 5,
+      "unit": "px",
+      "label": "Bottom spacing",
+      "default": 100
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background",
+      "default": "#F5EFE1"
+    },
+    {
+      "type": "color",
+      "id": "paper_color",
+      "label": "Paper",
+      "default": "#F3ECDC"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text",
+      "default": "#161B2E"
+    },
+    {
+      "type": "color",
+      "id": "muted_color",
+      "label": "Secondary text",
+      "default": "#6A6C74"
+    },
+    {
+      "type": "color",
+      "id": "mint_color",
+      "label": "Mint",
+      "default": "#A6DECB"
+    },
+    {
+      "type": "color",
+      "id": "gold_color",
+      "label": "Gold",
+      "default": "#E0A526"
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Borders",
+      "default": "#C9BEA8"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "level",
+      "name": "Curriculum level",
+      "settings": [
+        {
+          "type": "text",
+          "id": "number",
+          "label": "Roman numeral",
+          "default": "I"
+        },
+        {
+          "type": "text",
+          "id": "metal",
+          "label": "Metal name",
+          "default": "COPPER"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Level title",
+          "default": "Day One"
+        },
+        {
+          "type": "textarea",
+          "id": "subtitle",
+          "label": "Level description",
+          "default": "Start with the first principles of a company."
+        },
+        {
+          "type": "text",
+          "id": "status",
+          "label": "Level label",
+          "default": "LEVEL I"
+        },
+        {
+          "type": "text",
+          "id": "company_count",
+          "label": "Company count"
+        },
+        {
+          "type": "textarea",
+          "id": "company_list",
+          "label": "Company list",
+          "info": "Separate company names with commas."
+        },
+        {
+          "type": "checkbox",
+          "id": "open_by_default",
+          "label": "Open this level by default",
+          "default": false
+        },
+        {
+          "type": "text",
+          "id": "raise_title",
+          "label": "Raise concept title",
+          "default": "Raise concept"
+        },
+        {
+          "type": "textarea",
+          "id": "raise_text",
+          "label": "Raise concept description",
+          "default": "Explain the raise concept here."
+        },
+        {
+          "type": "text",
+          "id": "build_title",
+          "label": "Build concept title",
+          "default": "Build concept"
+        },
+        {
+          "type": "textarea",
+          "id": "build_text",
+          "label": "Build concept description",
+          "default": "Explain the build concept here."
+        },
+        {
+          "type": "text",
+          "id": "sell_title",
+          "label": "Sell concept title",
+          "default": "Sell concept"
+        },
+        {
+          "type": "textarea",
+          "id": "sell_text",
+          "label": "Sell concept description",
+          "default": "Explain the sell concept here."
+        },
+        {
+          "type": "text",
+          "id": "grow_title",
+          "label": "Grow concept title",
+          "default": "Grow concept"
+        },
+        {
+          "type": "textarea",
+          "id": "grow_text",
+          "label": "Grow concept description",
+          "default": "Explain the grow concept here."
+        },
+        {
+          "type": "text",
+          "id": "allocate_title",
+          "label": "Allocate concept title",
+          "default": "Allocate concept"
+        },
+        {
+          "type": "textarea",
+          "id": "allocate_text",
+          "label": "Allocate concept description",
+          "default": "Explain the allocate concept here."
+        },
+        {
+          "type": "text",
+          "id": "defend_title",
+          "label": "Defend concept title",
+          "default": "Defend concept"
+        },
+        {
+          "type": "textarea",
+          "id": "defend_text",
+          "label": "Defend concept description",
+          "default": "Explain the defend concept here."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Ara Mint Curriculum Map",
+      "blocks": [
+        {
+          "type": "level",
+          "settings": {
+            "number": "I",
+            "metal": "COPPER",
+            "title": "Day One",
+            "subtitle": "Start with the first principles of ownership, product, customer, team, profit and advantage.",
+            "status": "LEVEL I",
+            "company_count": "",
+            "company_list": "",
+            "open_by_default": false,
+            "raise_title": "Your Own Pocket",
+            "raise_text": "Start with your own savings — skin in the game is your first capital.",
+            "build_title": "Make One Thing People Want",
+            "build_text": "A product only matters if it solves a real problem for someone willing to pay for it.",
+            "sell_title": "Your First Customer",
+            "sell_text": "Find the one person the thing is truly for, and make the first sale.",
+            "grow_title": "You Can’t Do It All",
+            "grow_text": "The first hire — letting go of a task so the thing can outgrow you.",
+            "allocate_title": "What Do You Do With Profit?",
+            "allocate_text": "The first fork: spend it, save it, or feed it back in.",
+            "defend_title": "Why You, Not Them?",
+            "defend_text": "The first reason a customer picks you over the next option on the shelf."
+          }
+        },
+        {
+          "type": "level",
+          "settings": {
+            "number": "II",
+            "metal": "NICKEL",
+            "title": "Open the Doors",
+            "subtitle": "See how money enters the company, what one unit costs and how early systems begin to form.",
+            "status": "LEVEL II",
+            "company_count": "",
+            "company_list": "",
+            "open_by_default": false,
+            "raise_title": "Loan or a Slice",
+            "raise_text": "Two ways to get money: borrow it and pay it back, or sell part of the company and give ownership up.",
+            "build_title": "What One Costs",
+            "build_text": "Unit cost — the true price of making a single one before you ever sell it.",
+            "sell_title": "Name Your Price",
+            "sell_text": "Pricing is the strongest lever a company owns — a few cents can change everything.",
+            "grow_title": "Who Does What",
+            "grow_text": "Organizational roles split the work so it does not collapse onto one person.",
+            "allocate_title": "Feed the Winners",
+            "allocate_text": "Put each dollar where it earns the most — return on capital in plain language.",
+            "defend_title": "The Moat",
+            "defend_text": "The advantage that stops a copycat from taking your lunch."
+          }
+        },
+        {
+          "type": "level",
+          "settings": {
+            "number": "III",
+            "metal": "BRASS",
+            "title": "Read the Machine",
+            "subtitle": "Follow cash, margins, acquisition cost, systems, reinvestment and the forces that keep customers in place.",
+            "status": "LEVEL III",
+            "company_count": "",
+            "company_list": "",
+            "open_by_default": false,
+            "raise_title": "Runway & Burn",
+            "raise_text": "How fast you spend cash, and how many months of life you have before it runs out.",
+            "build_title": "Margin on Every Sale",
+            "build_text": "Gross margin — price minus cost; the money left on each unit is the engine’s fuel.",
+            "sell_title": "Cost to Win a Buyer",
+            "sell_text": "Customer acquisition cost — what you spend to land a single customer.",
+            "grow_title": "Rules That Run Without You",
+            "grow_text": "Systems and processes turn heroics into a machine that repeats.",
+            "allocate_title": "Give It Back or Grow It",
+            "allocate_text": "Dividends versus reinvestment — the choice that defines capital allocation.",
+            "defend_title": "Hard to Leave",
+            "defend_text": "Switching costs and network effects explain why customers can become pleasantly stuck."
+          }
+        },
+        {
+          "type": "level",
+          "settings": {
+            "number": "IV",
+            "metal": "SILVER",
+            "title": "Fuel & Fit",
+            "subtitle": "Connect funding, supply chains, lifetime value, incentives, buybacks and toll-booth economics.",
+            "status": "LEVEL IV",
+            "company_count": "20 BOOKS",
+            "company_list": "Boeing, Disney, McDonald’s, Nike, Meta, Amazon, Walmart, Starbucks, Deere, Nestlé, Pepsi, J&J, Pfizer, UnitedHealth, ExxonMobil, Chevron, Shell, Costco, IKEA, Zara",
+            "open_by_default": true,
+            "raise_title": "Giving Up Slices",
+            "raise_text": "Dilution — every new slice you sell to raise money shrinks everyone’s slice, yours included.",
+            "build_title": "The Chain",
+            "build_text": "Supply chain and inventory — parts in, stock held; when one link snaps the whole line stops.",
+            "sell_title": "Worth More Than One Sale",
+            "sell_text": "Lifetime value — a customer is worth every future purchase, not just today’s.",
+            "grow_title": "Pay People to Care",
+            "grow_text": "Incentives — what you reward is what you get; pay and equity shape behavior.",
+            "allocate_title": "Buy Back Your Slices",
+            "allocate_text": "Buybacks shrink the pie so every remaining slice is worth more.",
+            "defend_title": "The Toll Booth",
+            "defend_text": "The business that collects a fee on every transaction, no matter who wins."
+          }
+        },
+        {
+          "type": "level",
+          "settings": {
+            "number": "V",
+            "metal": "GOLD",
+            "title": "Scale It",
+            "subtitle": "Understand valuation, economies of scale, customer economics, culture, acquisitions and constraints.",
+            "status": "LEVEL V",
+            "company_count": "",
+            "company_list": "",
+            "open_by_default": false,
+            "raise_title": "What’s It All Worth?",
+            "raise_text": "Valuation — why a company with zero profit can still be priced in the billions.",
+            "build_title": "Cheaper as You Grow",
+            "build_text": "Economies of scale — the cost of one unit drops as volume climbs.",
+            "sell_title": "The Growth Equation",
+            "sell_text": "A company can grow only while a customer is worth more than they cost to get.",
+            "grow_title": "Culture Shapes Execution",
+            "grow_text": "Culture is the invisible manager that scales when leaders cannot be everywhere.",
+            "allocate_title": "Buy Another Company",
+            "allocate_text": "Mergers and acquisitions — growth by acquisition, and why overpaying destroys value.",
+            "defend_title": "The Thing That Could Kill You",
+            "defend_text": "The binding constraint — the single limit or shock that ends the whole story."
+          }
+        },
+        {
+          "type": "level",
+          "settings": {
+            "number": "VI",
+            "metal": "PATINA",
+            "title": "The Corner Office",
+            "subtitle": "Reach public markets, long-term investment, brand power, organization design, value and governance.",
+            "status": "LEVEL VI",
+            "company_count": "",
+            "company_list": "",
+            "open_by_default": false,
+            "raise_title": "Going Public",
+            "raise_text": "The IPO — selling slices to the whole world at once; the day private becomes public.",
+            "build_title": "Bet on What’s Not Built Yet",
+            "build_text": "Research, development and capital spending put real money behind a future that might not arrive.",
+            "sell_title": "The Brand Is a Promise",
+            "sell_text": "Pricing power — people pay more for the same thing when they trust the name.",
+            "grow_title": "Why Big Gets Slow",
+            "grow_text": "Organization design and layers create the coordination tax that slows large companies.",
+            "allocate_title": "Price vs. Value",
+            "allocate_text": "What your slice is truly worth against what it costs today — the verdict that mints the mark.",
+            "defend_title": "Who Watches the CEO?",
+            "defend_text": "Governance — the board, shareholders and the duty the CEO cannot escape."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

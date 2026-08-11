@@ -1,0 +1,568 @@
+<footer
+  id="AraMintmarkFooter-{{ section.id }}"
+  class="ara-mintmark-footer"
+  style="
+    --ara-footer-bg: {{ section.settings.background_color }};
+    --ara-footer-text: {{ section.settings.text_color }};
+    --ara-footer-muted: {{ section.settings.muted_text_color }};
+    --ara-footer-accent: {{ section.settings.accent_color }};
+    --ara-footer-gold: {{ section.settings.gold_color }};
+    --ara-footer-border: {{ section.settings.border_color }};
+    --ara-footer-max: {{ section.settings.max_width }};
+    --ara-footer-top: {{ section.settings.padding_top }}px;
+    --ara-footer-bottom: {{ section.settings.padding_bottom }}px;
+    --ara-footer-logo-size: {{ section.settings.desktop_logo_size }}px;
+    --ara-footer-logo-width: {{ section.settings.logo_width }}px;
+    --ara-footer-mobile-logo-width: {{ section.settings.mobile_logo_width }}px;
+    --ara-footer-emblem-width: {{ section.settings.emblem_width }}px;
+    --ara-footer-statement-size: {{ section.settings.desktop_statement_size }}px;
+    --ara-footer-column-heading-size: {{ section.settings.desktop_column_heading_size }}px;
+    --ara-footer-link-size: {{ section.settings.desktop_link_size }}px;
+    --ara-footer-bottom-size: {{ section.settings.desktop_bottom_size }}px;
+    --ara-footer-mobile-logo-size: {{ section.settings.mobile_logo_size }}px;
+    --ara-footer-mobile-statement-size: {{ section.settings.mobile_statement_size }}px;
+    --ara-footer-mobile-column-heading-size: {{ section.settings.mobile_column_heading_size }}px;
+    --ara-footer-mobile-link-size: {{ section.settings.mobile_link_size }}px;
+    --ara-footer-mobile-bottom-size: {{ section.settings.mobile_bottom_size }}px;
+  "
+>
+  <div class="ara-mintmark-footer__inner">
+    <div class="ara-mintmark-footer__brand">
+      <div class="ara-mintmark-footer__brand-row">
+        <a
+          href="{{ routes.root_url }}"
+          class="ara-mintmark-footer__logo"
+          aria-label="{{ shop.name | escape }}"
+        >
+          {% if section.settings.logo != blank %}
+            {{
+              section.settings.logo
+              | image_url: width: 1000
+              | image_tag:
+                widths: '260, 420, 620, 800, 1000',
+                sizes: '(max-width: 749px) var(--ara-footer-mobile-logo-width), var(--ara-footer-logo-width)',
+                loading: 'lazy',
+                class: 'ara-mintmark-footer__logo-image',
+                alt: section.settings.logo.alt
+            }}
+          {% else %}
+            <span>MINTMARK.</span>
+          {% endif %}
+        </a>
+
+        {% if section.settings.emblem != blank %}
+          <span class="ara-mintmark-footer__emblem" aria-hidden="true">
+            {{
+              section.settings.emblem
+              | image_url: width: 600
+              | image_tag:
+                widths: '160, 240, 360, 480, 600',
+                sizes: 'var(--ara-footer-emblem-width)',
+                loading: 'lazy',
+                class: 'ara-mintmark-footer__emblem-image',
+                alt: ''
+            }}
+          </span>
+        {% endif %}
+      </div>
+
+      {% if section.settings.statement != blank %}
+        <p>{{ section.settings.statement | escape }}</p>
+      {% endif %}
+    </div>
+
+    <div class="ara-mintmark-footer__links">
+      {% for block in section.blocks %}
+        <div
+          class="ara-mintmark-footer__column"
+          {{ block.shopify_attributes }}
+        >
+          <h2>{{ block.settings.heading | escape }}</h2>
+
+          {% if block.settings.menu != blank %}
+            <nav aria-label="{{ block.settings.heading | escape }}">
+              {% for link in block.settings.menu.links %}
+                <a href="{{ link.url }}">{{ link.title | escape }}</a>
+              {% endfor %}
+            </nav>
+          {% endif %}
+        </div>
+      {% endfor %}
+    </div>
+
+<div class="ara-mintmark-footer__bottom">
+	      <div style="display: flex; flex-direction: column; gap: 4px;">
+	        <span>
+	          © {{ 'now' | date: '%Y' }} {{ shop.name | escape }}. {{ section.settings.copyright_text | escape }}
+	        </span>
+	        <small style="font-size: 0.8em; opacity: 0.7;">
+	          Mintmark is an independent publication. All company names, logos, and trademarks are the property of their respective owners and are used for identification and educational purposes only.
+	        </small>
+	      </div>
+
+      {% if section.settings.bottom_text != blank %}
+        <span>{{ section.settings.bottom_text | escape }}</span>
+      {% endif %}
+    </div>
+  </div>
+</footer>
+
+<style>
+  #AraMintmarkFooter-{{ section.id }} {
+    background: var(--ara-footer-bg);
+    color: var(--ara-footer-text);
+  }
+
+  #AraMintmarkFooter-{{ section.id }} .ara-mintmark-footer__inner {
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(380px, 0.8fr);
+    gap: clamp(50px, 8vw, 130px);
+    width: min(100%, var(--ara-footer-max));
+    margin: 0 auto;
+    padding: var(--ara-footer-top) 40px var(--ara-footer-bottom);
+  }
+
+  #AraMintmarkFooter-{{ section.id }} .ara-mintmark-footer__brand {
+    max-width: 660px;
+  }
+
+  #AraMintmarkFooter-{{ section.id }} .ara-mintmark-footer__brand-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 28px;
+    align-items: center;
+  }
+
+  #AraMintmarkFooter-{{ section.id }} .ara-mintmark-footer__logo {
+    display: inline-flex;
+    align-items: center;
+    color: var(--ara-footer-text);
+    text-decoration: none;
+  }
+
+  #AraMintmarkFooter-{{ section.id }} .ara-mintmark-footer__logo-image {
+    display: block;
+    width: min(100%, var(--ara-footer-logo-width));
+    height: auto;
+    max-height: 92px;
+    object-fit: contain;
+    object-position: left center;
+  }
+
+  #AraMintmarkFooter-{{ section.id }} .ara-mintmark-footer__emblem {
+    display: grid;
+    width: var(--ara-footer-emblem-width);
+    flex: 0 0 var(--ara-footer-emblem-width);
+    place-items: center;
+    opacity: 0.9;
+  }
+
+  #AraMintmarkFooter-{{ section.id }} .ara-mintmark-footer__emblem-image {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-height: 90px;
+    object-fit: contain;
+  }
+
+  #AraMintmarkFooter-{{ section.id }} .ara-mintmark-footer__logo span {
+    font-family: var(--font-heading-family);
+    font-size: var(--ara-footer-logo-size);
+    font-style: var(--font-heading-style);
+    font-weight: 600;
+    line-height: 1;
+    letter-spacing: 0.18em;
+  }
+
+  #AraMintmarkFooter-{{ section.id }} .ara-mintmark-footer__brand p {
+    max-width: 560px;
+    margin: 34px 0 0;
+    color: var(--ara-footer-text);
+    font-family: var(--font-heading-family);
+    font-size: var(--ara-footer-statement-size);
+    font-style: var(--font-heading-style);
+    font-weight: var(--font-heading-weight);
+    line-height: 1.05;
+    letter-spacing: -0.035em;
+  }
+
+  #AraMintmarkFooter-{{ section.id }} .ara-mintmark-footer__links {
+    display: grid;
+    grid-template-columns: repeat({{ section.blocks.size | at_most: 3 }}, minmax(0, 1fr));
+    gap: 30px;
+  }
+
+  #AraMintmarkFooter-{{ section.id }} .ara-mintmark-footer__column h2 {
+    margin: 0 0 18px;
+    color: var(--ara-footer-gold);
+    font-family: var(--font-body-family);
+    font-size: var(--ara-footer-column-heading-size);
+    font-style: var(--font-body-style);
+    font-weight: 800;
+    line-height: 1.3;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  #AraMintmarkFooter-{{ section.id }} .ara-mintmark-footer__column nav {
+    display: grid;
+    gap: 12px;
+  }
+
+  #AraMintmarkFooter-{{ section.id }} .ara-mintmark-footer__column a {
+    color: var(--ara-footer-muted);
+    font-family: var(--font-body-family);
+    font-size: var(--ara-footer-link-size);
+    font-style: var(--font-body-style);
+    font-weight: var(--font-body-weight);
+    line-height: 1.4;
+    text-decoration: none;
+  }
+
+  #AraMintmarkFooter-{{ section.id }} .ara-mintmark-footer__column a:hover {
+    color: var(--ara-footer-accent);
+  }
+
+  #AraMintmarkFooter-{{ section.id }} .ara-mintmark-footer__bottom {
+    display: flex;
+    grid-column: 1 / -1;
+    justify-content: space-between;
+    gap: 20px;
+    align-items: center;
+    margin-top: 34px;
+    padding-top: 22px;
+    border-top: 1px solid var(--ara-footer-border);
+    color: var(--ara-footer-muted);
+    font-family: var(--font-body-family);
+    font-size: var(--ara-footer-bottom-size);
+    font-style: var(--font-body-style);
+    font-weight: var(--font-body-weight);
+    line-height: 1.4;
+  }
+
+  @media screen and (max-width: 899px) {
+    #AraMintmarkFooter-{{ section.id }} .ara-mintmark-footer__inner {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    #AraMintmarkFooter-{{ section.id }} .ara-mintmark-footer__inner {
+      padding-right: 20px;
+      padding-left: 20px;
+    }
+
+    #AraMintmarkFooter-{{ section.id }} .ara-mintmark-footer__logo-image {
+      width: min(100%, var(--ara-footer-mobile-logo-width));
+      max-height: 74px;
+    }
+
+    #AraMintmarkFooter-{{ section.id }} .ara-mintmark-footer__logo span {
+      font-size: var(--ara-footer-mobile-logo-size);
+    }
+
+    #AraMintmarkFooter-{{ section.id }} .ara-mintmark-footer__brand p {
+      font-size: var(--ara-footer-mobile-statement-size);
+    }
+
+    #AraMintmarkFooter-{{ section.id }} .ara-mintmark-footer__links {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    #AraMintmarkFooter-{{ section.id }} .ara-mintmark-footer__column h2 {
+      font-size: var(--ara-footer-mobile-column-heading-size);
+    }
+
+    #AraMintmarkFooter-{{ section.id }} .ara-mintmark-footer__column a {
+      font-size: var(--ara-footer-mobile-link-size);
+    }
+
+    #AraMintmarkFooter-{{ section.id }} .ara-mintmark-footer__bottom {
+      align-items: flex-start;
+      flex-direction: column;
+      font-size: var(--ara-footer-mobile-bottom-size);
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Ara Mintmark Footer",
+  "enabled_on": {
+    "groups": ["footer"]
+  },
+  "max_blocks": 3,
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Footer reversed logo"
+    },
+    {
+      "type": "image_picker",
+      "id": "emblem",
+      "label": "Optional Mint emblem"
+    },
+    {
+      "type": "text",
+      "id": "statement",
+      "label": "Footer statement",
+      "default": "Big Ideas for Small Readers"
+    },
+    {
+      "type": "text",
+      "id": "copyright_text",
+      "label": "Copyright text",
+      "default": "All rights reserved."
+    },
+    {
+      "type": "text",
+      "id": "bottom_text",
+      "label": "Bottom right text",
+      "default": "Big Ideas for Small Readers."
+    },
+    {
+      "type": "header",
+      "content": "Typography"
+    },
+    {
+      "type": "range",
+"id": "logo_width",
+      "min": 180,
+      "max": 400,
+      "step": 10,
+      "unit": "px",
+      "label": "Desktop logo width",
+      "default": 300
+    },
+    {
+      "type": "range",
+      "id": "mobile_logo_width",
+      "min": 150,
+      "max": 320,
+      "step": 10,
+      "unit": "px",
+      "label": "Mobile logo width",
+      "default": 250
+    },
+    {
+      "type": "range",
+      "id": "emblem_width",
+      "min": 60,
+      "max": 180,
+      "step": 10,
+      "unit": "px",
+      "label": "Emblem width",
+      "default": 110
+    },
+    {
+      "type": "range",
+      "id": "desktop_logo_size",
+      "min": 14,
+      "max": 34,
+      "step": 1,
+      "unit": "px",
+      "label": "Desktop logo text size",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "desktop_statement_size",
+      "min": 22,
+      "max": 54,
+      "step": 2,
+      "unit": "px",
+      "label": "Desktop statement size",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "desktop_column_heading_size",
+      "min": 8,
+      "max": 16,
+      "step": 1,
+      "unit": "px",
+      "label": "Desktop menu heading size",
+      "default": 9
+    },
+    {
+      "type": "range",
+      "id": "desktop_link_size",
+      "min": 10,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Desktop menu link size",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "desktop_bottom_size",
+      "min": 8,
+      "max": 16,
+      "step": 1,
+      "unit": "px",
+      "label": "Desktop bottom text size",
+      "default": 9
+    },
+    {
+      "type": "range",
+      "id": "mobile_logo_size",
+      "min": 14,
+      "max": 30,
+      "step": 1,
+      "unit": "px",
+      "label": "Mobile logo text size",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "mobile_statement_size",
+      "min": 22,
+      "max": 46,
+      "step": 2,
+      "unit": "px",
+      "label": "Mobile statement size",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "mobile_column_heading_size",
+      "min": 8,
+      "max": 15,
+      "step": 1,
+      "unit": "px",
+      "label": "Mobile menu heading size",
+      "default": 9
+    },
+    {
+      "type": "range",
+      "id": "mobile_link_size",
+      "min": 10,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "label": "Mobile menu link size",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "mobile_bottom_size",
+      "min": 8,
+      "max": 15,
+      "step": 1,
+      "unit": "px",
+      "label": "Mobile bottom text size",
+      "default": 9
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "max_width",
+      "label": "Content width",
+      "default": "1700px",
+      "options": [
+        {
+          "value": "1300px",
+          "label": "Narrow"
+        },
+        {
+          "value": "1500px",
+          "label": "Medium"
+        },
+        {
+          "value": "1700px",
+          "label": "Wide"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 70,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "label": "Top spacing",
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 40,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Bottom spacing",
+      "default": 55
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background",
+      "default": "#161B2E"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text",
+      "default": "#F2F8F6"
+    },
+    {
+      "type": "color",
+      "id": "muted_text_color",
+      "label": "Secondary text",
+      "default": "#A7AFBE"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Mint accent",
+      "default": "#1FA88F"
+    },
+    {
+      "type": "color",
+      "id": "gold_color",
+      "label": "Gold accent",
+      "default": "#E0A526"
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Borders",
+      "default": "#2F3951"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "menu_column",
+      "name": "Menu column",
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "NAVIGATE"
+        },
+        {
+          "type": "link_list",
+          "id": "menu",
+          "label": "Menu"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Ara Mintmark Footer"
+    }
+  ]
+}
+{% endschema %}

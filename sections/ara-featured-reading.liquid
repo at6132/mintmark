@@ -1,0 +1,1637 @@
+{% liquid
+  assign real_slides = section.blocks.size
+  assign min_slides = section.settings.min_slides | default: 0
+  assign total_slides = real_slides
+  if min_slides > real_slides
+    assign total_slides = min_slides
+  endif
+  assign placeholder_count = total_slides | minus: real_slides
+%}
+<section
+  id="AraFeaturedReading-{{ section.id }}"
+  class="ara-featured-reading"
+  data-section-id="{{ section.id }}"
+  style="
+    --ara-reading-bg: {{ section.settings.background_color }};
+    --ara-reading-card: {{ section.settings.card_color }};
+    --ara-reading-text: {{ section.settings.text_color }};
+    --ara-reading-muted: {{ section.settings.muted_text_color }};
+    --ara-reading-accent: {{ section.settings.accent_color }};
+    --ara-reading-gold: {{ section.settings.gold_color }};
+    --ara-reading-border: {{ section.settings.border_color }};
+    --ara-reading-line: {{ section.settings.line_color }};
+    --ara-reading-max: {{ section.settings.max_width }};
+    --ara-reading-top: {{ section.settings.padding_top }}px;
+    --ara-reading-bottom: {{ section.settings.padding_bottom }}px;
+    --ara-reading-image-bg: {{ section.settings.image_background_color }};
+    --ara-reading-card-height: {{ section.settings.card_height }}px;
+    --ara-reading-label-size: {{ section.settings.desktop_section_label_size }}px;
+    --ara-reading-time-size: {{ section.settings.desktop_reading_time_size }}px;
+    --ara-reading-tag-size: {{ section.settings.desktop_tag_size }}px;
+    --ara-reading-number-size: {{ section.settings.desktop_article_number_size }}px;
+    --ara-reading-heading-size: {{ section.settings.desktop_heading_size }}px;
+    --ara-reading-description-size: {{ section.settings.desktop_description_size }}px;
+    --ara-reading-link-size: {{ section.settings.desktop_link_size }}px;
+    --ara-reading-placeholder-size: {{ section.settings.desktop_placeholder_size }}px;
+    --ara-reading-mobile-label-size: {{ section.settings.mobile_section_label_size }}px;
+    --ara-reading-mobile-time-size: {{ section.settings.mobile_reading_time_size }}px;
+    --ara-reading-mobile-tag-size: {{ section.settings.mobile_tag_size }}px;
+    --ara-reading-mobile-number-size: {{ section.settings.mobile_article_number_size }}px;
+    --ara-reading-mobile-heading-size: {{ section.settings.mobile_heading_size }}px;
+    --ara-reading-mobile-description-size: {{ section.settings.mobile_description_size }}px;
+    --ara-reading-mobile-link-size: {{ section.settings.mobile_link_size }}px;
+    --ara-reading-mobile-placeholder-size: {{ section.settings.mobile_placeholder_size }}px;
+  "
+>
+  <div class="ara-featured-reading__inner">
+    <div class="ara-featured-reading__topbar">
+      {% if section.settings.section_label != blank %}
+        <p class="ara-featured-reading__section-label">
+          {{ section.settings.section_label | escape }}
+        </p>
+      {% endif %}
+
+      {% if total_slides > 1 %}
+        <div class="ara-featured-reading__controls">
+          <button
+            type="button"
+            class="ara-featured-reading__control ara-featured-reading__control--prev"
+            aria-label="{{ section.settings.previous_label | escape }}"
+          >
+            {{ section.settings.previous_label | escape }}
+          </button>
+
+          <span class="ara-featured-reading__counter" aria-live="polite">
+            <b>01</b>
+            <span>/</span>
+            <span>{{ total_slides | prepend: '0' | slice: -2, 2 }}</span>
+          </span>
+
+          <button
+            type="button"
+            class="ara-featured-reading__control ara-featured-reading__control--next"
+            aria-label="{{ section.settings.next_label | escape }}"
+          >
+            {{ section.settings.next_label | escape }}
+          </button>
+        </div>
+      {% endif %}
+    </div>
+
+    <div
+      class="ara-featured-reading__slider"
+      role="region"
+      aria-label="{{ section.settings.section_label | default: 'Featured reading' | escape }}"
+      data-autoplay="{{ section.settings.enable_autoplay }}"
+      data-autoplay-delay="{{ section.settings.autoplay_delay | times: 1000 }}"
+      data-pause-on-hover="{{ section.settings.pause_on_hover }}"
+    >
+      <div class="ara-featured-reading__track">
+        {% for block in section.blocks %}
+          <article
+            id="AraFeaturedReadingSlide-{{ block.id }}"
+            class="ara-featured-reading__slide{% if forloop.first %} is-active{% endif %}"
+            data-slide-index="{{ forloop.index0 }}"
+            {{ block.shopify_attributes }}
+          >
+            <div class="ara-featured-reading__slide-meta">
+              <span class="ara-featured-reading__slide-position">
+                {{ forloop.index | prepend: '0' | slice: -2, 2 }}
+              </span>
+
+              {% if block.settings.reading_time != blank %}
+                <span class="ara-featured-reading__reading-time">
+                  {{ block.settings.reading_time | escape }}
+                </span>
+              {% endif %}
+            </div>
+
+            <div class="ara-featured-reading__card{% if block.settings.image_position == 'left' %} ara-featured-reading__card--image-left{% endif %}">
+              <div class="ara-featured-reading__content">
+                <div class="ara-featured-reading__tags">
+                  {% if block.settings.ticker != blank %}
+                    <span>{{ block.settings.ticker | escape }}</span>
+                  {% endif %}
+
+                  {% if block.settings.company != blank %}
+                    <span>{{ block.settings.company | escape }}</span>
+                  {% endif %}
+
+                  {% if block.settings.domain != blank %}
+                    <span>{{ block.settings.domain | escape }}</span>
+                  {% endif %}
+                </div>
+
+                {% if block.settings.article_number != blank %}
+                  <p class="ara-featured-reading__number">
+                    {{ block.settings.article_number | escape }}
+                  </p>
+                {% endif %}
+
+                {% if block.settings.heading != blank %}
+                  <h2>{{ block.settings.heading | escape }}</h2>
+                {% endif %}
+
+                {% if block.settings.description != blank %}
+                  <div class="ara-featured-reading__description">
+                    {{ block.settings.description }}
+                  </div>
+                {% endif %}
+
+                {% if block.settings.link_label != blank %}
+                  <a
+                    class="ara-featured-reading__link"
+                    {% if block.settings.link != blank %}
+                      href="{{ block.settings.link }}"
+                    {% else %}
+                      role="link"
+                      aria-disabled="true"
+                    {% endif %}
+                  >
+                    {{ block.settings.link_label | escape }}
+                  </a>
+                {% endif %}
+              </div>
+
+              <div class="ara-featured-reading__visual">
+                {% if block.settings.image != blank %}
+                  <picture>
+                    {% if block.settings.mobile_image != blank %}
+                      <source
+                        media="(max-width: 749px)"
+                        srcset="
+                          {{ block.settings.mobile_image | image_url: width: 700 }} 700w,
+                          {{ block.settings.mobile_image | image_url: width: 1000 }} 1000w,
+                          {{ block.settings.mobile_image | image_url: width: 1400 }} 1400w
+                        "
+                      >
+                    {% endif %}
+
+                    {{
+                      block.settings.image
+                      | image_url: width: 2000
+                      | image_tag:
+                        widths: '700, 1000, 1300, 1600, 2000',
+                        sizes: '(max-width: 899px) calc(100vw - 40px), 58vw',
+                        loading: 'lazy',
+                        class: 'ara-featured-reading__image',
+                        alt: block.settings.image.alt
+                    }}
+                  </picture>
+                {% else %}
+                  <div class="ara-featured-reading__placeholder">
+                    <span>{{ block.settings.placeholder_label | escape }}</span>
+                  </div>
+                {% endif %}
+              </div>
+            </div>
+          </article>
+        {% endfor %}
+
+        {% if placeholder_count > 0 %}
+          {% for i in (1..placeholder_count) %}
+            {% assign slot_num = real_slides | plus: forloop.index %}
+            <article
+              class="ara-featured-reading__slide ara-featured-reading__slide--placeholder{% if real_slides == 0 and forloop.first %} is-active{% endif %}"
+              data-slide-index="{{ slot_num | minus: 1 }}"
+            >
+              <div class="ara-featured-reading__slide-meta">
+                <span class="ara-featured-reading__slide-position">{{ slot_num | prepend: '0' | slice: -2, 2 }}</span>
+                <span class="ara-featured-reading__reading-time">{{ section.settings.placeholder_reading_time | default: 'Coming soon' | escape }}</span>
+              </div>
+              <div class="ara-featured-reading__card">
+                <div class="ara-featured-reading__content">
+                  <div class="ara-featured-reading__tags"><span>{{ section.settings.placeholder_tag | default: 'Reserved' | escape }}</span></div>
+                  <p class="ara-featured-reading__number">{{ slot_num | prepend: '0' | slice: -2, 2 }}</p>
+                  <h2>{{ section.settings.placeholder_heading | default: 'Featured story coming soon' | escape }}</h2>
+                  <div class="ara-featured-reading__description"><p>{{ section.settings.placeholder_text | default: 'This slot is reserved for an upcoming featured read.' | escape }}</p></div>
+                </div>
+                <div class="ara-featured-reading__visual">
+                  <div class="ara-featured-reading__placeholder"><span>{{ section.settings.placeholder_slide_label | default: 'Coming soon' | escape }}</span></div>
+                </div>
+              </div>
+            </article>
+          {% endfor %}
+        {% endif %}
+      </div>
+
+      {% if total_slides > 1 %}
+        <div class="ara-featured-reading__navigation">
+          <button
+            type="button"
+            class="ara-featured-reading__nav-button ara-featured-reading__nav-button--prev"
+            aria-label="{{ section.settings.previous_label | escape }}"
+          >
+            <span class="ara-featured-reading__arrow ara-featured-reading__arrow--left" aria-hidden="true"></span>
+          </button>
+
+          {% if section.settings.show_pagination %}
+            <div class="ara-featured-reading__pagination" aria-label="Featured reading slides">
+              {% for block in section.blocks %}
+                <button
+                  type="button"
+                  class="ara-featured-reading__dot{% if forloop.first %} is-active{% endif %}"
+                  data-slide-to="{{ forloop.index0 }}"
+                  aria-label="Go to slide {{ forloop.index }}"
+                  aria-current="{% if forloop.first %}true{% else %}false{% endif %}"
+                ></button>
+              {% endfor %}
+              {% if placeholder_count > 0 %}
+                {% for i in (1..placeholder_count) %}
+                  {% assign dot_idx = real_slides | plus: forloop.index0 %}
+                  <button
+                    type="button"
+                    class="ara-featured-reading__dot{% if real_slides == 0 and forloop.first %} is-active{% endif %}"
+                    data-slide-to="{{ dot_idx }}"
+                    aria-label="Go to slide {{ real_slides | plus: forloop.index }}"
+                    aria-current="{% if real_slides == 0 and forloop.first %}true{% else %}false{% endif %}"
+                  ></button>
+                {% endfor %}
+              {% endif %}
+            </div>
+          {% endif %}
+
+          <button
+            type="button"
+            class="ara-featured-reading__nav-button ara-featured-reading__nav-button--next"
+            aria-label="{{ section.settings.next_label | escape }}"
+          >
+            <span class="ara-featured-reading__arrow ara-featured-reading__arrow--right" aria-hidden="true"></span>
+          </button>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+<style>
+  #AraFeaturedReading-{{ section.id }} {
+    overflow: hidden;
+    border-bottom: 1px solid var(--ara-reading-border);
+    background-color: var(--ara-reading-bg);
+    background-image: repeating-linear-gradient(
+      to bottom,
+      transparent 0,
+      transparent 34px,
+      color-mix(in srgb, var(--ara-reading-line) 18%, transparent) 34px,
+      color-mix(in srgb, var(--ara-reading-line) 18%, transparent) 35px
+    );
+    color: var(--ara-reading-text);
+  }
+
+  #AraFeaturedReading-{{ section.id }} * {
+    box-sizing: border-box;
+  }
+
+  #AraFeaturedReading-{{ section.id }} .ara-featured-reading__inner {
+    width: min(100%, var(--ara-reading-max));
+    margin: 0 auto;
+    padding: var(--ara-reading-top) 40px var(--ara-reading-bottom);
+  }
+
+  #AraFeaturedReading-{{ section.id }} .ara-featured-reading__topbar {
+    display: flex;
+    justify-content: space-between;
+    gap: 24px;
+    align-items: center;
+    margin-bottom: 18px;
+  }
+
+  #AraFeaturedReading-{{ section.id }} .ara-featured-reading__section-label,
+  #AraFeaturedReading-{{ section.id }} .ara-featured-reading__counter,
+  #AraFeaturedReading-{{ section.id }} .ara-featured-reading__slide-meta {
+    font-family: var(--font-body-family);
+    font-style: var(--font-body-style);
+    text-transform: uppercase;
+  }
+
+  #AraFeaturedReading-{{ section.id }} .ara-featured-reading__section-label {
+    margin: 0;
+    color: var(--ara-reading-accent);
+    font-size: var(--ara-reading-label-size);
+    font-weight: 800;
+    line-height: 1.3;
+    letter-spacing: 0.14em;
+  }
+
+  #AraFeaturedReading-{{ section.id }} .ara-featured-reading__controls {
+    display: flex;
+    gap: 14px;
+    align-items: center;
+  }
+
+  #AraFeaturedReading-{{ section.id }} .ara-featured-reading__control {
+    padding: 0;
+    border: 0;
+    border-bottom: 1px solid transparent;
+    background: transparent;
+    color: var(--ara-reading-accent);
+    cursor: pointer;
+    font-size: var(--ara-reading-link-size);
+    font-weight: 800;
+    line-height: 1.3;
+    letter-spacing: 0.12em;
+  }
+
+  #AraFeaturedReading-{{ section.id }} .ara-featured-reading__control:hover,
+  #AraFeaturedReading-{{ section.id }} .ara-featured-reading__control:focus-visible {
+    border-color: currentColor;
+  }
+
+  #AraFeaturedReading-{{ section.id }} .ara-featured-reading__controls {
+    display: flex;
+    gap: 14px;
+    align-items: center;
+  }
+
+  #AraFeaturedReading-{{ section.id }} .ara-featured-reading__control {
+    padding: 0;
+    border: 0;
+    border-bottom: 1px solid transparent;
+    background: transparent;
+    color: var(--ara-reading-accent);
+    cursor: pointer;
+    font-family: var(--font-body-family);
+    font-size: var(--ara-reading-link-size);
+    font-style: var(--font-body-style);
+    font-weight: 800;
+    line-height: 1.3;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  #AraFeaturedReading-{{ section.id }} .ara-featured-reading__control:hover,
+  #AraFeaturedReading-{{ section.id }} .ara-featured-reading__control:focus-visible {
+    border-color: currentColor;
+  }
+
+  #AraFeaturedReading-{{ section.id }} .ara-featured-reading__counter {
+    display: flex;
+    gap: 5px;
+    align-items: baseline;
+    color: var(--ara-reading-muted);
+    font-size: var(--ara-reading-time-size);
+    font-weight: 700;
+    letter-spacing: 0.08em;
+  }
+
+  #AraFeaturedReading-{{ section.id }} .ara-featured-reading__counter b {
+    color: var(--ara-reading-text);
+    font-weight: 800;
+  }
+
+  #AraFeaturedReading-{{ section.id }} .ara-featured-reading__slider {
+    position: relative;
+    overflow: hidden;
+    touch-action: pan-y;
+  }
+
+  #AraFeaturedReading-{{ section.id }} .ara-featured-reading__track {
+    display: flex;
+    width: 100%;
+    transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: transform;
+  }
+
+  #AraFeaturedReading-{{ section.id }} .ara-featured-reading__slide {
+    flex: 0 0 100%;
+    width: 100%;
+    min-width: 0;
+    opacity: 0.45;
+    transition: opacity 0.35s ease;
+  }
+
+  #AraFeaturedReading-{{ section.id }} .ara-featured-reading__slide.is-active {
+    opacity: 1;
+  }
+
+  #AraFeaturedReading-{{ section.id }} .ara-featured-reading__slide-meta {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    align-items: center;
+    margin-bottom: 12px;
+    color: var(--ara-reading-muted);
+    font-size: var(--ara-reading-time-size);
+    font-weight: 800;
+    line-height: 1.3;
+    letter-spacing: 0.12em;
+  }
+
+  #AraFeaturedReading-{{ section.id }} .ara-featured-reading__slide-position {
+    color: var(--ara-reading-gold);
+  }
+
+  #AraFeaturedReading-{{ section.id }} .ara-featured-reading__card {
+    display: grid;
+    grid-template-columns: minmax(320px, 0.78fr) minmax(0, 1.22fr);
+    min-height: var(--ara-reading-card-height);
+    border: 1px solid var(--ara-reading-border);
+    border-radius: 14px;
+    overflow: hidden;
+    background: color-mix(in srgb, var(--ara-reading-card) 95%, transparent);
+    box-shadow: 0 12px 30px rgba(22, 27, 46, 0.07);
+    transition: box-shadow 0.35s ease, transform 0.35s ease;
+  }
+
+  #AraFeaturedReading-{{ section.id }} .ara-featured-reading__slide.is-active .ara-featured-reading__card {
+    box-shadow: 0 20px 46px rgba(22, 27, 46, 0.13);
+  }
+
+  #AraFeaturedReading-{{ section.id }} .ara-featured-reading__slide--placeholder .ara-featured-reading__card {
+    border-style: dashed;
+    box-shadow: none;
+    background: transparent;
+  }
+
+  #AraFeaturedReading-{{ section.id }} .ara-featured-reading__slide--placeholder h2,
+  #AraFeaturedReading-{{ section.id }} .ara-featured-reading__slide--placeholder .ara-featured-reading__number {
+    color: var(--ara-reading-muted);
+  }
+
+  #AraFeaturedReading-{{ section.id }} .ara-featured-reading__card--image-left {
+    grid-template-columns: minmax(0, 1.22fr) minmax(320px, 0.78fr);
+  }
+
+  #AraFeaturedReading-{{ section.id }} .ara-featured-reading__card--image-left .ara-featured-reading__content {
+    order: 2;
+  }
+
+  #AraFeaturedReading-{{ section.id }} .ara-featured-reading__card--image-left .ara-featured-reading__visual {
+    order: 1;
+    border-right: 1px solid var(--ara-reading-border);
+    border-left: 0;
+  }
+
+  #AraFeaturedReading-{{ section.id }} .ara-featured-reading__content {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    justify-content: center;
+    padding: clamp(34px, 5vw, 74px);
+  }
+
+  #AraFeaturedReading-{{ section.id }} .ara-featured-reading__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 9px;
+    align-items: center;
+  }
+
+  #AraFeaturedReading-{{ section.id }} .ara-featured-reading__tags span {
+    padding-right: 9px;
+    border-right: 1px solid var(--ara-reading-border);
+    color: var(--ara-reading-accent);
+    font-family: var(--font-body-family);
+    font-size: var(--ara-reading-tag-size);
+    font-style: var(--font-body-style);
+    font-weight: 800;
+    line-height: 1.25;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  #AraFeaturedReading-{{ section.id }} .ara-featured-reading__tags span:last-child {
+    padding-right: 0;
+    border-right: 0;
+  }
+
+  #AraFeaturedReading-{{ section.id }} .ara-featured-reading__number {
+    margin: 24px 0 0;
+    color: var(--ara-reading-gold);
+    font-family: var(--font-body-family);
+    font-size: var(--ara-reading-number-size);
+    font-style: var(--font-body-style);
+    font-weight: 800;
+    line-height: 1.25;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  #AraFeaturedReading-{{ section.id }} .ara-featured-reading__content h2 {
+    max-width: 680px;
+    margin: 16px 0 0;
+    color: var(--ara-reading-text);
+    font-family: var(--font-heading-family);
+    font-size: var(--ara-reading-heading-size);
+    font-style: var(--font-heading-style);
+    font-weight: var(--font-heading-weight);
+    line-height: 0.98;
+    letter-spacing: -0.05em;
+  }
+
+  #AraFeaturedReading-{{ section.id }} .ara-featured-reading__description {
+    max-width: 560px;
+    margin-top: 22px;
+    color: var(--ara-reading-muted);
+    font-family: var(--font-body-family);
+    font-size: var(--ara-reading-description-size);
+    font-style: var(--font-body-style);
+    font-weight: var(--font-body-weight);
+    line-height: 1.65;
+  }
+
+  #AraFeaturedReading-{{ section.id }} .ara-featured-reading__description p {
+    margin: 0;
+  }
+
+  #AraFeaturedReading-{{ section.id }} .ara-featured-reading__link {
+    display: inline-flex;
+    align-self: flex-start;
+    margin-top: 28px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid var(--ara-reading-accent);
+    color: var(--ara-reading-text);
+    font-family: var(--font-body-family);
+    font-size: var(--ara-reading-link-size);
+    font-style: var(--font-body-style);
+    font-weight: 800;
+    line-height: 1.3;
+    letter-spacing: 0.13em;
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: border-bottom-color 0.2s ease, gap 0.2s ease;
+    gap: 6px;
+  }
+
+  #AraFeaturedReading-{{ section.id }} .ara-featured-reading__link::after {
+    content: '→';
+    display: inline-block;
+    transition: transform 0.2s ease;
+  }
+
+  #AraFeaturedReading-{{ section.id }} .ara-featured-reading__link:hover {
+    border-bottom-color: var(--ara-reading-gold);
+  }
+
+  #AraFeaturedReading-{{ section.id }} .ara-featured-reading__link:hover::after {
+    transform: translateX(5px);
+  }
+
+  #AraFeaturedReading-{{ section.id }} .ara-featured-reading__visual {
+    position: relative;
+    display: flex;
+    min-width: 0;
+    min-height: var(--ara-reading-card-height);
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border-left: 1px solid var(--ara-reading-border);
+    background: var(--ara-reading-image-bg);
+  }
+
+  #AraFeaturedReading-{{ section.id }} .ara-featured-reading__visual picture {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  #AraFeaturedReading-{{ section.id }} .ara-featured-reading__image {
+    display: block;
+    width: 100%;
+    height: 100%;
+    min-height: var(--ara-reading-card-height);
+    object-fit: cover;
+    object-position: center;
+  }
+
+  #AraFeaturedReading-{{ section.id }} .ara-featured-reading__placeholder {
+    display: grid;
+    width: 100%;
+    min-height: var(--ara-reading-card-height);
+    place-items: center;
+    padding: 24px;
+    background:
+      radial-gradient(circle at 50% 52%, rgba(23, 109, 92, 0.13), transparent 23%),
+      linear-gradient(135deg, rgba(224, 165, 38, 0.12), rgba(23, 109, 92, 0.08)),
+      var(--ara-reading-card);
+    color: var(--ara-reading-accent);
+    font-family: var(--font-body-family);
+    font-size: var(--ara-reading-placeholder-size);
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-align: center;
+    text-transform: uppercase;
+  }
+
+  #AraFeaturedReading-{{ section.id }} .ara-featured-reading__navigation {
+    display: flex;
+    gap: 18px;
+    justify-content: center;
+    align-items: center;
+    margin-top: 24px;
+  }
+
+  #AraFeaturedReading-{{ section.id }} .ara-featured-reading__pagination {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    align-items: center;
+  }
+
+  #AraFeaturedReading-{{ section.id }} .ara-featured-reading__nav-button {
+    display: grid;
+    width: 58px;
+    height: 58px;
+    flex: 0 0 58px;
+    place-items: center;
+    padding: 0;
+    border: 1px solid color-mix(in srgb, var(--ara-reading-border) 88%, transparent);
+    border-radius: 50%;
+    background: color-mix(in srgb, var(--ara-reading-card) 96%, transparent);
+    color: var(--ara-reading-text);
+    cursor: pointer;
+    box-shadow: 0 8px 22px rgba(22, 27, 46, 0.08);
+    transition:
+      transform 0.2s ease,
+      background-color 0.2s ease,
+      border-color 0.2s ease,
+      color 0.2s ease,
+      box-shadow 0.2s ease;
+  }
+
+  #AraFeaturedReading-{{ section.id }} .ara-featured-reading__arrow {
+    display: block;
+    width: 12px;
+    height: 12px;
+    border-top: 2px solid currentColor;
+    border-right: 2px solid currentColor;
+  }
+
+  #AraFeaturedReading-{{ section.id }} .ara-featured-reading__arrow--left {
+    margin-left: 5px;
+    transform: rotate(-135deg);
+  }
+
+  #AraFeaturedReading-{{ section.id }} .ara-featured-reading__arrow--right {
+    margin-right: 5px;
+    transform: rotate(45deg);
+  }
+
+  #AraFeaturedReading-{{ section.id }} .ara-featured-reading__nav-button:hover,
+  #AraFeaturedReading-{{ section.id }} .ara-featured-reading__nav-button:focus-visible {
+    transform: translateY(-2px);
+    border-color: var(--ara-reading-text);
+    background: var(--ara-reading-text);
+    color: var(--ara-reading-bg);
+    box-shadow: 0 12px 26px rgba(22, 27, 46, 0.15);
+  }
+
+  #AraFeaturedReading-{{ section.id }} .ara-featured-reading__nav-button:focus-visible {
+    outline: 2px solid var(--ara-reading-accent);
+    outline-offset: 3px;
+  }
+
+  #AraFeaturedReading-{{ section.id }} .ara-featured-reading__dot {
+    width: 34px;
+    height: 3px;
+    padding: 0;
+    border: 0;
+    background: color-mix(in srgb, var(--ara-reading-border) 80%, transparent);
+    cursor: pointer;
+    transition:
+      width 0.25s ease,
+      background-color 0.25s ease;
+  }
+
+  #AraFeaturedReading-{{ section.id }} .ara-featured-reading__dot.is-active {
+    width: 56px;
+    background: var(--ara-reading-accent);
+  }
+
+  @media screen and (max-width: 899px) {
+    #AraFeaturedReading-{{ section.id }} .ara-featured-reading__card,
+    #AraFeaturedReading-{{ section.id }} .ara-featured-reading__card--image-left {
+      grid-template-columns: 1fr;
+    }
+
+    #AraFeaturedReading-{{ section.id }} .ara-featured-reading__card--image-left .ara-featured-reading__content,
+    #AraFeaturedReading-{{ section.id }} .ara-featured-reading__card--image-left .ara-featured-reading__visual {
+      order: initial;
+    }
+
+    #AraFeaturedReading-{{ section.id }} .ara-featured-reading__visual,
+    #AraFeaturedReading-{{ section.id }} .ara-featured-reading__card--image-left .ara-featured-reading__visual {
+      min-height: auto;
+      border-top: 1px solid var(--ara-reading-border);
+      border-right: 0;
+      border-left: 0;
+    }
+
+    #AraFeaturedReading-{{ section.id }} .ara-featured-reading__image {
+      width: 100%;
+      height: auto;
+      min-height: 0;
+      object-fit: cover;
+    }
+
+    #AraFeaturedReading-{{ section.id }} .ara-featured-reading__placeholder {
+      min-height: 420px;
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    #AraFeaturedReading-{{ section.id }} .ara-featured-reading__inner {
+      padding-right: 20px;
+      padding-left: 20px;
+    }
+
+    #AraFeaturedReading-{{ section.id }} .ara-featured-reading__topbar {
+      align-items: flex-start;
+      flex-direction: column;
+      margin-bottom: 20px;
+    }
+
+    #AraFeaturedReading-{{ section.id }} .ara-featured-reading__controls {
+      width: 100%;
+      justify-content: space-between;
+    }
+
+    #AraFeaturedReading-{{ section.id }} .ara-featured-reading__controls {
+      width: 100%;
+      justify-content: space-between;
+    }
+
+    #AraFeaturedReading-{{ section.id }} .ara-featured-reading__control {
+      font-size: var(--ara-reading-mobile-link-size);
+    }
+
+    #AraFeaturedReading-{{ section.id }} .ara-featured-reading__section-label {
+      font-size: var(--ara-reading-mobile-label-size);
+    }
+
+    #AraFeaturedReading-{{ section.id }} .ara-featured-reading__control {
+      font-size: var(--ara-reading-mobile-link-size);
+    }
+
+    #AraFeaturedReading-{{ section.id }} .ara-featured-reading__counter,
+    #AraFeaturedReading-{{ section.id }} .ara-featured-reading__slide-meta {
+      font-size: var(--ara-reading-mobile-time-size);
+    }
+
+    #AraFeaturedReading-{{ section.id }} .ara-featured-reading__content {
+      padding: 32px 24px 38px;
+    }
+
+    #AraFeaturedReading-{{ section.id }} .ara-featured-reading__tags span {
+      font-size: var(--ara-reading-mobile-tag-size);
+    }
+
+    #AraFeaturedReading-{{ section.id }} .ara-featured-reading__number {
+      font-size: var(--ara-reading-mobile-number-size);
+    }
+
+    #AraFeaturedReading-{{ section.id }} .ara-featured-reading__content h2 {
+      font-size: var(--ara-reading-mobile-heading-size);
+    }
+
+    #AraFeaturedReading-{{ section.id }} .ara-featured-reading__description {
+      font-size: var(--ara-reading-mobile-description-size);
+    }
+
+    #AraFeaturedReading-{{ section.id }} .ara-featured-reading__link {
+      font-size: var(--ara-reading-mobile-link-size);
+    }
+
+    #AraFeaturedReading-{{ section.id }} .ara-featured-reading__placeholder {
+      min-height: 330px;
+      font-size: var(--ara-reading-mobile-placeholder-size);
+    }
+
+    #AraFeaturedReading-{{ section.id }} .ara-featured-reading__navigation {
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    #AraFeaturedReading-{{ section.id }} .ara-featured-reading__nav-button {
+      width: 52px;
+      height: 52px;
+      flex-basis: 52px;
+    }
+
+    #AraFeaturedReading-{{ section.id }} .ara-featured-reading__nav-button span {
+      font-size: 34px;
+    }
+
+    #AraFeaturedReading-{{ section.id }} .ara-featured-reading__dot {
+      width: 24px;
+    }
+
+    #AraFeaturedReading-{{ section.id }} .ara-featured-reading__dot.is-active {
+      width: 42px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #AraFeaturedReading-{{ section.id }} .ara-featured-reading__track,
+    #AraFeaturedReading-{{ section.id }} .ara-featured-reading__slide,
+    #AraFeaturedReading-{{ section.id }} .ara-featured-reading__dot {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  (function () {
+    var sectionId = 'AraFeaturedReading-{{ section.id }}';
+
+    function initializeAraFeaturedReading() {
+      var section = document.getElementById(sectionId);
+
+      if (!section) {
+        return;
+      }
+
+      if (typeof section.araFeaturedReadingDestroy === 'function') {
+        section.araFeaturedReadingDestroy();
+      }
+
+      var slider = section.querySelector('.ara-featured-reading__slider');
+      var track = section.querySelector('.ara-featured-reading__track');
+      var slides = section.querySelectorAll('.ara-featured-reading__slide');
+      var dots = section.querySelectorAll('.ara-featured-reading__dot');
+      var topPrevious = section.querySelector('.ara-featured-reading__control--prev');
+      var topNext = section.querySelector('.ara-featured-reading__control--next');
+      var bottomPrevious = section.querySelector('.ara-featured-reading__nav-button--prev');
+      var bottomNext = section.querySelector('.ara-featured-reading__nav-button--next');
+      var currentCounter = section.querySelector('.ara-featured-reading__counter b');
+
+      if (!slider || !track || slides.length < 2) {
+        return;
+      }
+
+      var currentIndex = 0;
+      var autoplayTimer = null;
+      var touchStartX = 0;
+      var touchEndX = 0;
+      var totalSlides = slides.length;
+      var autoplayEnabled = slider.getAttribute('data-autoplay') === 'true';
+      var autoplayDelay = parseInt(slider.getAttribute('data-autoplay-delay'), 10);
+      var pauseOnHover = slider.getAttribute('data-pause-on-hover') === 'true';
+
+      if (!autoplayDelay || autoplayDelay < 1000) {
+        autoplayDelay = 6000;
+      }
+
+      function formatNumber(number) {
+        return number < 10 ? '0' + number : String(number);
+      }
+
+      function stopAutoplay() {
+        if (autoplayTimer !== null) {
+          window.clearInterval(autoplayTimer);
+          autoplayTimer = null;
+        }
+      }
+
+      function startAutoplay() {
+        stopAutoplay();
+
+        if (!autoplayEnabled || document.hidden) {
+          return;
+        }
+
+        autoplayTimer = window.setInterval(function () {
+          showSlide(currentIndex + 1, false);
+        }, autoplayDelay);
+      }
+
+      function restartAutoplay() {
+        if (autoplayEnabled) {
+          startAutoplay();
+        }
+      }
+
+      function showSlide(index, restartTimer) {
+        var i;
+
+        if (index < 0) {
+          currentIndex = totalSlides - 1;
+        } else if (index >= totalSlides) {
+          currentIndex = 0;
+        } else {
+          currentIndex = index;
+        }
+
+        track.style.transform = 'translate3d(-' + (currentIndex * 100) + '%, 0, 0)';
+
+        for (i = 0; i < slides.length; i += 1) {
+          if (i === currentIndex) {
+            slides[i].classList.add('is-active');
+            slides[i].setAttribute('aria-hidden', 'false');
+          } else {
+            slides[i].classList.remove('is-active');
+            slides[i].setAttribute('aria-hidden', 'true');
+          }
+        }
+
+        for (i = 0; i < dots.length; i += 1) {
+          if (i === currentIndex) {
+            dots[i].classList.add('is-active');
+            dots[i].setAttribute('aria-current', 'true');
+          } else {
+            dots[i].classList.remove('is-active');
+            dots[i].setAttribute('aria-current', 'false');
+          }
+        }
+
+        if (currentCounter) {
+          currentCounter.textContent = formatNumber(currentIndex + 1);
+        }
+
+        if (restartTimer !== false) {
+          restartAutoplay();
+        }
+      }
+
+      function showPrevious() {
+        showSlide(currentIndex - 1, true);
+      }
+
+      function showNext() {
+        showSlide(currentIndex + 1, true);
+      }
+
+      function bindClick(element, callback) {
+        if (element) {
+          element.addEventListener('click', callback);
+        }
+      }
+
+      function unbindClick(element, callback) {
+        if (element) {
+          element.removeEventListener('click', callback);
+        }
+      }
+
+      bindClick(topPrevious, showPrevious);
+      bindClick(topNext, showNext);
+      bindClick(bottomPrevious, showPrevious);
+      bindClick(bottomNext, showNext);
+
+      var dotHandlers = [];
+
+      for (var dotIndex = 0; dotIndex < dots.length; dotIndex += 1) {
+        (function (index) {
+          var handler = function () {
+            showSlide(index, true);
+          };
+
+          dots[index].addEventListener('click', handler);
+          dotHandlers.push({
+            element: dots[index],
+            handler: handler
+          });
+        })(dotIndex);
+      }
+
+      function handleTouchStart(event) {
+        if (!event.touches || !event.touches.length) {
+          return;
+        }
+
+        touchStartX = event.touches[0].clientX;
+        touchEndX = touchStartX;
+      }
+
+      function handleTouchMove(event) {
+        if (!event.touches || !event.touches.length) {
+          return;
+        }
+
+        touchEndX = event.touches[0].clientX;
+      }
+
+      function handleTouchEnd() {
+        var distance = touchEndX - touchStartX;
+
+        if (Math.abs(distance) > 50) {
+          if (distance < 0) {
+            showNext();
+          } else {
+            showPrevious();
+          }
+        }
+
+        touchStartX = 0;
+        touchEndX = 0;
+      }
+
+      slider.addEventListener('touchstart', handleTouchStart, { passive: true });
+      slider.addEventListener('touchmove', handleTouchMove, { passive: true });
+      slider.addEventListener('touchend', handleTouchEnd);
+
+      function handleMouseEnter() {
+        if (pauseOnHover) {
+          stopAutoplay();
+        }
+      }
+
+      function handleMouseLeave() {
+        if (pauseOnHover) {
+          startAutoplay();
+        }
+      }
+
+      if (pauseOnHover) {
+        slider.addEventListener('mouseenter', handleMouseEnter);
+        slider.addEventListener('mouseleave', handleMouseLeave);
+      }
+
+      function handleVisibilityChange() {
+        if (document.hidden) {
+          stopAutoplay();
+        } else {
+          startAutoplay();
+        }
+      }
+
+      document.addEventListener('visibilitychange', handleVisibilityChange);
+
+      function handleBlockSelect(event) {
+        var selectedSlide = event.target.closest
+          ? event.target.closest('.ara-featured-reading__slide')
+          : null;
+
+        if (!selectedSlide || !section.contains(selectedSlide)) {
+          return;
+        }
+
+        stopAutoplay();
+        showSlide(parseInt(selectedSlide.getAttribute('data-slide-index'), 10), false);
+      }
+
+      function handleBlockDeselect(event) {
+        if (section.contains(event.target)) {
+          startAutoplay();
+        }
+      }
+
+      document.addEventListener('shopify:block:select', handleBlockSelect);
+      document.addEventListener('shopify:block:deselect', handleBlockDeselect);
+
+      section.araFeaturedReadingDestroy = function () {
+        stopAutoplay();
+
+        unbindClick(topPrevious, showPrevious);
+        unbindClick(topNext, showNext);
+        unbindClick(bottomPrevious, showPrevious);
+        unbindClick(bottomNext, showNext);
+
+        for (var i = 0; i < dotHandlers.length; i += 1) {
+          dotHandlers[i].element.removeEventListener('click', dotHandlers[i].handler);
+        }
+
+        slider.removeEventListener('touchstart', handleTouchStart);
+        slider.removeEventListener('touchmove', handleTouchMove);
+        slider.removeEventListener('touchend', handleTouchEnd);
+
+        if (pauseOnHover) {
+          slider.removeEventListener('mouseenter', handleMouseEnter);
+          slider.removeEventListener('mouseleave', handleMouseLeave);
+        }
+
+        document.removeEventListener('visibilitychange', handleVisibilityChange);
+        document.removeEventListener('shopify:block:select', handleBlockSelect);
+        document.removeEventListener('shopify:block:deselect', handleBlockDeselect);
+      };
+
+      showSlide(0, false);
+      startAutoplay();
+    }
+
+    window.AraFeaturedReadingInitializers = window.AraFeaturedReadingInitializers || {};
+    window.AraFeaturedReadingInitializers[sectionId] = initializeAraFeaturedReading;
+
+    if (!window.AraFeaturedReadingSectionListenerAdded) {
+      document.addEventListener('shopify:section:load', function (event) {
+        var sections = [];
+
+        if (
+          event.target &&
+          event.target.id &&
+          event.target.id.indexOf('AraFeaturedReading-') === 0
+        ) {
+          sections.push(event.target);
+        }
+
+        if (event.target && event.target.querySelectorAll) {
+          var nestedSections = event.target.querySelectorAll('[id^="AraFeaturedReading-"]');
+
+          for (var i = 0; i < nestedSections.length; i += 1) {
+            sections.push(nestedSections[i]);
+          }
+        }
+
+        for (var sectionIndex = 0; sectionIndex < sections.length; sectionIndex += 1) {
+          var loadedSectionId = sections[sectionIndex].id;
+          var initializer = window.AraFeaturedReadingInitializers[loadedSectionId];
+
+          if (typeof initializer === 'function') {
+            initializer();
+          }
+        }
+      });
+
+      window.AraFeaturedReadingSectionListenerAdded = true;
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initializeAraFeaturedReading);
+    } else {
+      initializeAraFeaturedReading();
+    }
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Ara Featured Slider",
+  "max_blocks": 8,
+  "settings": [
+    {
+      "type": "text",
+      "id": "section_label",
+      "label": "Section label",
+      "default": "FEATURED READING"
+    },
+    {
+      "type": "header",
+      "content": "Placeholder slots"
+    },
+    {
+      "type": "range",
+      "id": "min_slides",
+      "label": "Minimum slides (fills empty spots with placeholders)",
+      "info": "If you have fewer featured articles than this, the carousel adds 'coming soon' placeholder slides to fill the extra spots.",
+      "min": 0,
+      "max": 8,
+      "step": 1,
+      "default": 6
+    },
+    {
+      "type": "text",
+      "id": "placeholder_tag",
+      "label": "Placeholder tag",
+      "default": "Reserved"
+    },
+    {
+      "type": "text",
+      "id": "placeholder_heading",
+      "label": "Placeholder heading",
+      "default": "Featured story coming soon"
+    },
+    {
+      "type": "textarea",
+      "id": "placeholder_text",
+      "label": "Placeholder description",
+      "default": "This slot is reserved for an upcoming featured read."
+    },
+    {
+      "type": "text",
+      "id": "placeholder_slide_label",
+      "label": "Placeholder image label",
+      "default": "Coming soon"
+    },
+    {
+      "type": "text",
+      "id": "placeholder_reading_time",
+      "label": "Placeholder reading-time label",
+      "default": "Coming soon"
+    },
+    {
+      "type": "text",
+      "id": "previous_label",
+      "label": "Previous button text",
+      "default": "PREVIOUS"
+    },
+    {
+      "type": "text",
+      "id": "next_label",
+      "label": "Next button text",
+      "default": "NEXT"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_pagination",
+      "label": "Show slide indicators",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_autoplay",
+      "label": "Automatically change slides",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "autoplay_delay",
+      "min": 3,
+      "max": 10,
+      "step": 1,
+      "unit": "s",
+      "label": "Time between slides",
+      "default": 6
+    },
+    {
+      "type": "checkbox",
+      "id": "pause_on_hover",
+      "label": "Pause autoplay when hovered",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Typography"
+    },
+    {
+      "type": "range",
+      "id": "desktop_section_label_size",
+      "min": 8,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "label": "Desktop section label size",
+      "default": 10
+    },
+    {
+      "type": "range",
+      "id": "desktop_reading_time_size",
+      "min": 8,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "label": "Desktop reading time size",
+      "default": 10
+    },
+    {
+      "type": "range",
+      "id": "desktop_tag_size",
+      "min": 7,
+      "max": 16,
+      "step": 1,
+      "unit": "px",
+      "label": "Desktop ticker and tags size",
+      "default": 9
+    },
+    {
+      "type": "range",
+      "id": "desktop_article_number_size",
+      "min": 7,
+      "max": 16,
+      "step": 1,
+      "unit": "px",
+      "label": "Desktop article number size",
+      "default": 9
+    },
+    {
+      "type": "range",
+      "id": "desktop_heading_size",
+      "min": 36,
+      "max": 84,
+      "step": 2,
+      "unit": "px",
+      "label": "Desktop article heading size",
+      "default": 64
+    },
+    {
+      "type": "range",
+      "id": "desktop_description_size",
+      "min": 12,
+      "max": 22,
+      "step": 1,
+      "unit": "px",
+      "label": "Desktop description size",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "desktop_link_size",
+      "min": 8,
+      "max": 16,
+      "step": 1,
+      "unit": "px",
+      "label": "Desktop links and controls size",
+      "default": 10
+    },
+    {
+      "type": "range",
+      "id": "desktop_placeholder_size",
+      "min": 8,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "label": "Desktop placeholder size",
+      "default": 11
+    },
+    {
+      "type": "range",
+      "id": "mobile_section_label_size",
+      "min": 8,
+      "max": 16,
+      "step": 1,
+      "unit": "px",
+      "label": "Mobile section label size",
+      "default": 10
+    },
+    {
+      "type": "range",
+      "id": "mobile_reading_time_size",
+      "min": 8,
+      "max": 16,
+      "step": 1,
+      "unit": "px",
+      "label": "Mobile reading time size",
+      "default": 10
+    },
+    {
+      "type": "range",
+      "id": "mobile_tag_size",
+      "min": 7,
+      "max": 15,
+      "step": 1,
+      "unit": "px",
+      "label": "Mobile ticker and tags size",
+      "default": 9
+    },
+    {
+      "type": "range",
+      "id": "mobile_article_number_size",
+      "min": 7,
+      "max": 15,
+      "step": 1,
+      "unit": "px",
+      "label": "Mobile article number size",
+      "default": 9
+    },
+    {
+      "type": "range",
+      "id": "mobile_heading_size",
+      "min": 32,
+      "max": 64,
+      "step": 2,
+      "unit": "px",
+      "label": "Mobile article heading size",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "mobile_description_size",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Mobile description size",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "mobile_link_size",
+      "min": 8,
+      "max": 15,
+      "step": 1,
+      "unit": "px",
+      "label": "Mobile links and controls size",
+      "default": 10
+    },
+    {
+      "type": "range",
+      "id": "mobile_placeholder_size",
+      "min": 8,
+      "max": 16,
+      "step": 1,
+      "unit": "px",
+      "label": "Mobile placeholder size",
+      "default": 10
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "max_width",
+      "label": "Content width",
+      "default": "1700px",
+      "options": [
+        {
+          "value": "1300px",
+          "label": "Narrow"
+        },
+        {
+          "value": "1500px",
+          "label": "Medium"
+        },
+        {
+          "value": "1700px",
+          "label": "Wide"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "card_height",
+      "min": 480,
+      "max": 720,
+      "step": 10,
+      "unit": "px",
+      "label": "Desktop card height",
+      "default": 540
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 50,
+      "max": 120,
+      "step": 5,
+      "unit": "px",
+      "label": "Top spacing",
+      "default": 70
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 50,
+      "max": 120,
+      "step": 5,
+      "unit": "px",
+      "label": "Bottom spacing",
+      "default": 70
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background",
+      "default": "#F2F8F6"
+    },
+    {
+      "type": "color",
+      "id": "card_color",
+      "label": "Card background",
+      "default": "#F7FCFA"
+    },
+    {
+      "type": "color",
+      "id": "image_background_color",
+      "label": "Image background",
+      "default": "#F2F8F6"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text",
+      "default": "#161B2E"
+    },
+    {
+      "type": "color",
+      "id": "muted_text_color",
+      "label": "Secondary text",
+      "default": "#646575"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Mint accent",
+      "default": "#176D5C"
+    },
+    {
+      "type": "color",
+      "id": "gold_color",
+      "label": "Gold accent",
+      "default": "#B88332"
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Borders",
+      "default": "#C9BEA8"
+    },
+    {
+      "type": "color",
+      "id": "line_color",
+      "label": "Paper lines",
+      "default": "#1FA88F"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "article",
+      "name": "Featured article",
+      "settings": [
+        {
+          "type": "text",
+          "id": "reading_time",
+          "label": "Reading time",
+          "default": "14 MIN READ"
+        },
+        {
+          "type": "text",
+          "id": "ticker",
+          "label": "Ticker",
+          "default": "AAPL"
+        },
+        {
+          "type": "text",
+          "id": "company",
+          "label": "Company",
+          "default": "APPLE"
+        },
+        {
+          "type": "text",
+          "id": "domain",
+          "label": "Mint domain",
+          "default": "TECHNOLOGY"
+        },
+        {
+          "type": "text",
+          "id": "article_number",
+          "label": "Article number",
+          "default": "ARTICLE 01"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Article heading",
+          "default": "Apple: The Machine That Prints Value"
+        },
+        {
+          "type": "richtext",
+          "id": "description",
+          "label": "Description",
+          "default": "<p>How Apple turned design, hardware and software into the world’s most profitable ecosystem.</p>"
+        },
+        {
+          "type": "text",
+          "id": "link_label",
+          "label": "Link text",
+          "default": "READ THE STORY"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Article link"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Desktop featured image"
+        },
+        {
+          "type": "image_picker",
+          "id": "mobile_image",
+          "label": "Mobile featured image"
+        },
+        {
+          "type": "text",
+          "id": "placeholder_label",
+          "label": "Placeholder text",
+          "default": "UPLOAD FEATURED READING IMAGE"
+        },
+        {
+          "type": "select",
+          "id": "image_position",
+          "label": "Desktop image position",
+          "default": "right",
+          "options": [
+            {
+              "value": "right",
+              "label": "Right"
+            },
+            {
+              "value": "left",
+              "label": "Left"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Ara Featured Slider",
+      "blocks": [
+        {
+          "type": "article"
+        },
+        {
+          "type": "article",
+          "settings": {
+            "reading_time": "10 MIN READ",
+            "ticker": "NVDA",
+            "company": "NVIDIA",
+            "domain": "GROWTH",
+            "article_number": "ARTICLE 02",
+            "heading": "NVIDIA: The Engine Behind Modern AI",
+            "description": "<p>How accelerated computing became the foundation of the artificial intelligence economy.</p>",
+            "link_label": "READ THE STORY"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+

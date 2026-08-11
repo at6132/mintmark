@@ -1,0 +1,60 @@
+{
+  "system": "mintmark AGENT theme-git",
+  "current_version": 4,
+  "status": "FINAL MERGE for real-code conversion — 2026-08-10",
+  "naming_rule": "Pair is always named 'AGENT BASELINE v<N> do not edit' and 'AGENT WORKING v<N> edit here', same N for both. On every resync, increment N. See AGENT.md §1.",
+  "baseline_theme_id": "190813798764",
+  "working_theme_id": "190813831532",
+  "notes": "v4 is the FULL MERGE of everything: duplicated from the theme that is currently live and published (originally named 'Manus Edits 1', which itself already contained catalog-move, market-news-reorder, inline-email-contrast-fix, both article-template email footers, and the company-final-cta cream-card contrast fix). The ONLY thing missing from that live theme was the rotating company module, which has now been added on top. As of this write, AGENT WORKING v4 = complete state, ready to hand off for conversion to a coded website. This is the reference version for that conversion.",
+  "entries": [
+    {
+      "date": "2026-08-07",
+      "agent": "Claude (chat)",
+      "action": "move_featured_company_module_to_catalog",
+      "description": "Moved 'One company. The complete file.' section from homepage to Catalog page.",
+      "files_changed": ["templates/index.json", "templates/page.cataloge.json"],
+      "status": "LIVE / IN v4"
+    },
+    {
+      "date": "2026-08-07",
+      "agent": "Claude (chat)",
+      "action": "move_market_news_section_via_css_order",
+      "description": "CSS flex order fix so Market News + Short Takes render before Featured Pitch on the homepage 'Fin. by Mintmark' section.",
+      "files_changed": ["sections/ara-editorial-newsroom-full-section.liquid"],
+      "status": "LIVE / IN v4"
+    },
+    {
+      "date": "2026-08-07",
+      "agent": "Claude (chat)",
+      "action": "fix_inline_email_contrast",
+      "description": "Fixed low-contrast heading/description text in the 'Understanding to your inbox' inline email section.",
+      "files_changed": ["sections/ara-inline-email.liquid"],
+      "status": "LIVE / IN v4"
+    },
+    {
+      "date": "2026-08-07",
+      "agent": "Claude (chat)",
+      "action": "add_email_capture_to_all_article_templates",
+      "description": "Added 'JOIN THE PAPER' email section to bottom of both article templates so every article, current and future, gets it automatically.",
+      "files_changed": ["templates/article.json", "templates/article.company-story.json"],
+      "status": "LIVE / IN v4"
+    },
+    {
+      "date": "2026-08-10",
+      "agent": "Claude (chat)",
+      "action": "fix_company_final_cta_cream_card_contrast",
+      "description": "On company pages, the Company Final CTA section's cream pathway card ('Return to the Bookshelf') had invisible text — its color was tied to panel_color, which had been set equal to paper_color on the Apple page. Fixed by pointing the cream card's text at the dedicated text-color variable instead of panel_color, so it can't break this way again on any company page.",
+      "files_changed": ["sections/ara-company-final-cta-section.liquid"],
+      "status": "LIVE / IN v4"
+    },
+    {
+      "date": "2026-08-10",
+      "agent": "Claude (chat)",
+      "action": "rotate_featured_company_module",
+      "description": "The 'One company. The complete file.' section on the Catalog page now auto-rotates through 10 companies every 4 seconds with a fade transition: Apple (FILE 01), NVIDIA (02), Alphabet/Google (03), Roblox (04), Amazon (05), Microsoft (06), Tesla (07), Netflix (08), Costco (09), Disney (10). Rotates folio number, ticker, exchange, company name, subtitle, summary, sector, headquarters, and a generated ticker-badge in place of the logo. The book/digest panel and tagged-stories panel stay static (still Apple's) — full per-company pages/data not built yet, by design.",
+      "files_changed": ["sections/ara-featured-company-module.liquid"],
+      "status": "NOT YET PUBLISHED — only in v4"
+    }
+  ],
+  "history_note": "Full session history (v1 through v3, including two mid-session drift-resyncs and one accidental theme deletion) is preserved in AGENT.md and prior changelog entries on the now-superseded v1–v3 theme pairs. This v4 changelog is intentionally condensed to just the substantive changes for handoff clarity."
+}

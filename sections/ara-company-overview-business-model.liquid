@@ -1,0 +1,1327 @@
+<section
+  id="AraCompanyOverview-{{ section.id }}"
+  class="ara-company-overview"
+  style="
+    --ara-overview-bg: {{ section.settings.background_color }};
+    --ara-overview-paper: {{ section.settings.paper_color }};
+    --ara-overview-text: {{ section.settings.text_color }};
+    --ara-overview-muted: {{ section.settings.muted_text_color }};
+    --ara-overview-mint: {{ section.settings.mint_color }};
+    --ara-overview-gold: {{ section.settings.gold_color }};
+    --ara-overview-blue: {{ section.settings.blue_color }};
+    --ara-overview-blue-deep: {{ section.settings.blue_deep_color }};
+    --ara-overview-border: {{ section.settings.border_color }};
+    --ara-overview-max: {{ section.settings.max_width }};
+    --ara-overview-top: {{ section.settings.padding_top }}px;
+    --ara-overview-bottom: {{ section.settings.padding_bottom }}px;
+    --ara-overview-heading-desktop: {{ section.settings.desktop_heading_size }}px;
+    --ara-overview-body-desktop: {{ section.settings.desktop_body_size }}px;
+    --ara-overview-label-desktop: {{ section.settings.desktop_label_size }}px;
+    --ara-overview-fact-title-desktop: {{ section.settings.desktop_fact_title_size }}px;
+    --ara-overview-step-title-desktop: {{ section.settings.desktop_step_title_size }}px;
+    --ara-overview-step-text-desktop: {{ section.settings.desktop_step_text_size }}px;
+    --ara-overview-heading-mobile: {{ section.settings.mobile_heading_size }}px;
+    --ara-overview-body-mobile: {{ section.settings.mobile_body_size }}px;
+    --ara-overview-label-mobile: {{ section.settings.mobile_label_size }}px;
+    --ara-overview-fact-title-mobile: {{ section.settings.mobile_fact_title_size }}px;
+    --ara-overview-step-title-mobile: {{ section.settings.mobile_step_title_size }}px;
+    --ara-overview-step-text-mobile: {{ section.settings.mobile_step_text_size }}px;
+  "
+>
+  <div class="ara-company-overview__lines" aria-hidden="true"></div>
+
+  <div class="ara-company-overview__inner">
+    <div class="ara-company-file__brand-rule">
+      <img
+        src="{{ 'mintmark-wordmark-ink.png' | asset_url }}"
+        alt="Mintmark"
+        width="488"
+        height="88"
+        loading="lazy"
+      >
+      <span>COMPANY FILE · MINTMARK</span>
+    </div>
+    <div class="ara-company-overview__intro">
+      <div>
+        {% if section.settings.eyebrow != blank %}
+          <span class="ara-company-overview__eyebrow">
+            {{ section.settings.eyebrow | escape }}
+          </span>
+        {% endif %}
+
+        {% if section.settings.heading != blank %}
+          <h2 class="ara-company-overview__heading">
+            {{ section.settings.heading | escape | newline_to_br }}
+          </h2>
+        {% endif %}
+      </div>
+
+      {% if section.settings.description != blank %}
+        <div class="ara-company-overview__description">
+          {{ section.settings.description }}
+        </div>
+      {% endif %}
+    </div>
+
+    <div class="ara-company-overview__layout">
+      <div class="ara-company-overview__profile-frame">
+        <div class="ara-company-overview__profile">
+          <div class="ara-company-overview__profile-head">
+            <span>{{ section.settings.profile_heading | escape }}</span>
+            <small>{{ section.settings.profile_note | escape }}</small>
+          </div>
+
+          {% if section.settings.profile_image != blank %}
+            <div class="ara-company-overview__image-frame">
+              <picture>
+                {% if section.settings.mobile_profile_image != blank %}
+                  <source
+                    media="(max-width: 749px)"
+                    srcset="
+                      {{ section.settings.mobile_profile_image | image_url: width: 800 }} 800w,
+                      {{ section.settings.mobile_profile_image | image_url: width: 1200 }} 1200w
+                    "
+                  >
+                {% endif %}
+
+                {{
+                  section.settings.profile_image
+                  | image_url: width: 1800
+                  | image_tag:
+                    widths: '600, 900, 1200, 1500, 1800',
+                    sizes: '(max-width: 749px) 100vw, 44vw',
+                    loading: 'lazy',
+                    class: 'ara-company-overview__image',
+                    alt: section.settings.profile_image.alt
+                }}
+              </picture>
+
+              {% if section.settings.image_label != blank %}
+                <span class="ara-company-overview__image-label">
+                  {{ section.settings.image_label | escape }}
+                </span>
+              {% endif %}
+            </div>
+          {% endif %}
+
+          {% if section.settings.overview_text != blank %}
+            <div class="ara-company-overview__overview-text">
+              {{ section.settings.overview_text }}
+            </div>
+          {% endif %}
+
+          <div class="ara-company-overview__facts">
+            {% if section.settings.fact_one_label != blank or section.settings.fact_one_value != blank %}
+              <div class="ara-company-overview__fact">
+                <span>{{ section.settings.fact_one_label | escape }}</span>
+                <strong>{{ section.settings.fact_one_value | escape }}</strong>
+
+                {% if section.settings.fact_one_note != blank %}
+                  <p>{{ section.settings.fact_one_note | escape }}</p>
+                {% endif %}
+              </div>
+            {% endif %}
+
+            {% if section.settings.fact_two_label != blank or section.settings.fact_two_value != blank %}
+              <div class="ara-company-overview__fact">
+                <span>{{ section.settings.fact_two_label | escape }}</span>
+                <strong>{{ section.settings.fact_two_value | escape }}</strong>
+
+                {% if section.settings.fact_two_note != blank %}
+                  <p>{{ section.settings.fact_two_note | escape }}</p>
+                {% endif %}
+              </div>
+            {% endif %}
+
+            {% if section.settings.fact_three_label != blank or section.settings.fact_three_value != blank %}
+              <div class="ara-company-overview__fact">
+                <span>{{ section.settings.fact_three_label | escape }}</span>
+                <strong>{{ section.settings.fact_three_value | escape }}</strong>
+
+                {% if section.settings.fact_three_note != blank %}
+                  <p>{{ section.settings.fact_three_note | escape }}</p>
+                {% endif %}
+              </div>
+            {% endif %}
+
+            {% if section.settings.fact_four_label != blank or section.settings.fact_four_value != blank %}
+              <div class="ara-company-overview__fact">
+                <span>{{ section.settings.fact_four_label | escape }}</span>
+                <strong>{{ section.settings.fact_four_value | escape }}</strong>
+
+                {% if section.settings.fact_four_note != blank %}
+                  <p>{{ section.settings.fact_four_note | escape }}</p>
+                {% endif %}
+              </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+
+      <div class="ara-company-overview__model-frame">
+        <div class="ara-company-overview__model">
+          <div class="ara-company-overview__model-head">
+            <div>
+              <span>{{ section.settings.model_heading | escape }}</span>
+              <small>{{ section.settings.model_note | escape }}</small>
+            </div>
+
+            {% if section.settings.model_badge != blank %}
+              <span class="ara-company-overview__model-badge">
+                {{ section.settings.model_badge | escape }}
+              </span>
+            {% endif %}
+          </div>
+
+          <div class="ara-company-overview__steps">
+            {% for block in section.blocks %}
+              <article
+                class="ara-company-overview__step ara-company-overview__step--{{ block.settings.style }}"
+                {{ block.shopify_attributes }}
+              >
+                <div class="ara-company-overview__step-top">
+                  <span>{{ forloop.index | prepend: '0' }}</span>
+
+                  {% if block.settings.kicker != blank %}
+                    <small>{{ block.settings.kicker | escape }}</small>
+                  {% endif %}
+                </div>
+
+                <div class="ara-company-overview__step-main">
+                  {% if block.settings.title != blank %}
+                    <h3>{{ block.settings.title | escape }}</h3>
+                  {% endif %}
+
+                  {% if block.settings.text != blank %}
+                    <p>{{ block.settings.text | escape }}</p>
+                  {% endif %}
+                </div>
+
+                {% if block.settings.metric_label != blank or block.settings.metric_value != blank %}
+                  <div class="ara-company-overview__step-metric">
+                    <span>{{ block.settings.metric_label | escape }}</span>
+                    <strong>{{ block.settings.metric_value | escape }}</strong>
+                  </div>
+                {% endif %}
+              </article>
+            {% endfor %}
+          </div>
+
+          {% if section.settings.model_summary != blank %}
+            <div class="ara-company-overview__model-summary">
+              <span>{{ section.settings.summary_label | escape }}</span>
+              <p>{{ section.settings.model_summary | escape }}</p>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  #AraCompanyOverview-{{ section.id }} {
+    position: relative;
+    overflow: hidden;
+    padding: var(--ara-overview-top) 0 var(--ara-overview-bottom);
+    background: var(--ara-overview-bg);
+    color: var(--ara-overview-text);
+    isolation: isolate;
+  }
+
+  #AraCompanyOverview-{{ section.id }} * {
+    box-sizing: border-box;
+  }
+
+  #AraCompanyOverview-{{ section.id }} .ara-company-overview__lines {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    opacity: 0.44;
+    background-image:
+      linear-gradient(
+        90deg,
+        transparent 0,
+        transparent 31px,
+        color-mix(in srgb, var(--ara-overview-mint) 12%, transparent) 31px,
+        color-mix(in srgb, var(--ara-overview-mint) 12%, transparent) 32px
+      ),
+      repeating-linear-gradient(
+        to bottom,
+        transparent 0,
+        transparent 35px,
+        color-mix(in srgb, var(--ara-overview-mint) 21%, transparent) 35px,
+        color-mix(in srgb, var(--ara-overview-mint) 21%, transparent) 36px
+      );
+    pointer-events: none;
+  }
+
+  #AraCompanyOverview-{{ section.id }} .ara-company-overview__inner {
+    width: min(100%, var(--ara-overview-max));
+    margin: 0 auto;
+    padding: 0 40px;
+  }
+
+  #AraCompanyOverview-{{ section.id }} .ara-company-overview__intro {
+    display: grid;
+    grid-template-columns: minmax(0, 0.95fr) minmax(320px, 0.55fr);
+    gap: clamp(30px, 5vw, 90px);
+    align-items: end;
+    margin-bottom: 44px;
+  }
+
+  #AraCompanyOverview-{{ section.id }} .ara-company-overview__eyebrow,
+  #AraCompanyOverview-{{ section.id }} .ara-company-overview__profile-head span,
+  #AraCompanyOverview-{{ section.id }} .ara-company-overview__profile-head small,
+  #AraCompanyOverview-{{ section.id }} .ara-company-overview__image-label,
+  #AraCompanyOverview-{{ section.id }} .ara-company-overview__fact span,
+  #AraCompanyOverview-{{ section.id }} .ara-company-overview__model-head span,
+  #AraCompanyOverview-{{ section.id }} .ara-company-overview__model-head small,
+  #AraCompanyOverview-{{ section.id }} .ara-company-overview__model-badge,
+  #AraCompanyOverview-{{ section.id }} .ara-company-overview__step-top span,
+  #AraCompanyOverview-{{ section.id }} .ara-company-overview__step-top small,
+  #AraCompanyOverview-{{ section.id }} .ara-company-overview__step-metric span,
+  #AraCompanyOverview-{{ section.id }} .ara-company-overview__model-summary span {
+    font-family: var(--font-body-family);
+    font-style: var(--font-body-style);
+    font-weight: 800;
+    line-height: 1.2;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  #AraCompanyOverview-{{ section.id }} .ara-company-overview__eyebrow {
+    display: inline-flex;
+    min-height: 31px;
+    align-items: center;
+    padding: 6px 11px;
+    border: 2px solid var(--ara-overview-text);
+    border-radius: 8px;
+    background: var(--ara-overview-gold);
+    color: var(--ara-overview-text);
+    font-size: var(--ara-overview-label-desktop);
+    box-shadow: 3px 3px 0 var(--ara-overview-text);
+  }
+
+  #AraCompanyOverview-{{ section.id }} .ara-company-overview__heading {
+    max-width: 900px;
+    margin: 24px 0 0;
+    font-family: var(--font-heading-family);
+    font-size: var(--ara-overview-heading-desktop);
+    font-style: var(--font-heading-style);
+    font-weight: var(--font-heading-weight);
+    line-height: 0.94;
+    letter-spacing: -0.055em;
+  }
+
+  #AraCompanyOverview-{{ section.id }} .ara-company-overview__description {
+    color: var(--ara-overview-muted);
+    font-family: var(--font-body-family);
+    font-size: var(--ara-overview-body-desktop);
+    font-style: var(--font-body-style);
+    font-weight: var(--font-body-weight);
+    line-height: 1.65;
+  }
+
+  #AraCompanyOverview-{{ section.id }} .ara-company-overview__description p {
+    margin: 0;
+  }
+
+  #AraCompanyOverview-{{ section.id }} .ara-company-overview__layout {
+    display: grid;
+    grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+    gap: 34px;
+    align-items: start;
+  }
+
+  #AraCompanyOverview-{{ section.id }} .ara-company-overview__profile-frame,
+  #AraCompanyOverview-{{ section.id }} .ara-company-overview__model-frame {
+    align-self: start;
+    height: fit-content;
+    padding: 7px;
+    border: 2px solid var(--ara-overview-text);
+    border-radius: 24px;
+    background: var(--ara-overview-paper);
+  }
+
+  #AraCompanyOverview-{{ section.id }} .ara-company-overview__profile-frame {
+    box-shadow:
+      9px 9px 0 var(--ara-overview-gold),
+      16px 16px 0 color-mix(in srgb, var(--ara-overview-mint) 66%, transparent);
+  }
+
+  #AraCompanyOverview-{{ section.id }} .ara-company-overview__profile {
+    padding: 28px;
+    border: 3px solid var(--ara-overview-text);
+    border-radius: 16px;
+    background:
+      radial-gradient(
+        circle at 112% 112%,
+        color-mix(in srgb, var(--ara-overview-mint) 15%, transparent) 0 29%,
+        transparent 30%
+      ),
+      linear-gradient(
+        145deg,
+        color-mix(in srgb, var(--ara-overview-paper) 96%, white),
+        color-mix(in srgb, var(--ara-overview-bg) 92%, transparent)
+      );
+  }
+
+  #AraCompanyOverview-{{ section.id }} .ara-company-overview__profile-head,
+  #AraCompanyOverview-{{ section.id }} .ara-company-overview__model-head,
+  #AraCompanyOverview-{{ section.id }} .ara-company-overview__step-top,
+  #AraCompanyOverview-{{ section.id }} .ara-company-overview__model-summary {
+    display: flex;
+    justify-content: space-between;
+    gap: 14px;
+    align-items: flex-start;
+  }
+
+  #AraCompanyOverview-{{ section.id }} .ara-company-overview__profile-head,
+  #AraCompanyOverview-{{ section.id }} .ara-company-overview__model-head {
+    padding-bottom: 15px;
+    border-bottom: 2px solid currentColor;
+  }
+
+  #AraCompanyOverview-{{ section.id }} .ara-company-overview__profile-head span,
+  #AraCompanyOverview-{{ section.id }} .ara-company-overview__profile-head small,
+  #AraCompanyOverview-{{ section.id }} .ara-company-overview__model-head span,
+  #AraCompanyOverview-{{ section.id }} .ara-company-overview__model-head small,
+  #AraCompanyOverview-{{ section.id }} .ara-company-overview__model-badge {
+    font-size: var(--ara-overview-label-desktop);
+  }
+
+  #AraCompanyOverview-{{ section.id }} .ara-company-overview__profile-head small {
+    color: var(--ara-overview-muted);
+    text-align: right;
+  }
+
+  #AraCompanyOverview-{{ section.id }} .ara-company-overview__image-frame {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 16 / 10;
+    margin-top: 22px;
+    padding: 6px;
+    border: 2px solid var(--ara-overview-text);
+    border-radius: 15px;
+    background: var(--ara-overview-paper);
+    box-shadow: 5px 5px 0 var(--ara-overview-blue);
+  }
+
+  #AraCompanyOverview-{{ section.id }} .ara-company-overview__image-frame picture,
+  #AraCompanyOverview-{{ section.id }} .ara-company-overview__image {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  #AraCompanyOverview-{{ section.id }} .ara-company-overview__image {
+    border: 2px solid var(--ara-overview-text);
+    border-radius: 9px;
+    object-fit: cover;
+  }
+
+  #AraCompanyOverview-{{ section.id }} .ara-company-overview__image-label {
+    position: absolute;
+    right: 14px;
+    bottom: 14px;
+    left: 14px;
+    padding: 7px 10px;
+    border: 2px solid var(--ara-overview-text);
+    border-radius: 7px;
+    background: var(--ara-overview-gold);
+    color: var(--ara-overview-text);
+    font-size: var(--ara-overview-label-desktop);
+    text-align: center;
+    box-shadow: 3px 3px 0 var(--ara-overview-text);
+  }
+
+  #AraCompanyOverview-{{ section.id }} .ara-company-overview__overview-text {
+    margin-top: 24px;
+    color: var(--ara-overview-muted);
+    font-family: var(--font-body-family);
+    font-size: var(--ara-overview-body-desktop);
+    font-style: var(--font-body-style);
+    font-weight: var(--font-body-weight);
+    line-height: 1.65;
+  }
+
+  #AraCompanyOverview-{{ section.id }} .ara-company-overview__overview-text p {
+    margin: 0;
+  }
+
+  #AraCompanyOverview-{{ section.id }} .ara-company-overview__facts {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    margin-top: 26px;
+  }
+
+  #AraCompanyOverview-{{ section.id }} .ara-company-overview__fact {
+    min-width: 0;
+    padding: 17px;
+    border: 2px solid var(--ara-overview-text);
+    border-radius: 12px;
+    background: var(--ara-overview-paper);
+    box-shadow: 3px 3px 0 var(--ara-overview-text);
+  }
+
+  #AraCompanyOverview-{{ section.id }} .ara-company-overview__fact span {
+    display: block;
+    color: var(--ara-overview-muted);
+    font-size: var(--ara-overview-label-desktop);
+  }
+
+  #AraCompanyOverview-{{ section.id }} .ara-company-overview__fact strong {
+    display: block;
+    margin-top: 9px;
+    font-family: var(--font-heading-family);
+    font-size: var(--ara-overview-fact-title-desktop);
+    font-style: var(--font-heading-style);
+    font-weight: var(--font-heading-weight);
+    line-height: 1;
+    overflow-wrap: anywhere;
+  }
+
+  #AraCompanyOverview-{{ section.id }} .ara-company-overview__fact p {
+    margin: 10px 0 0;
+    color: var(--ara-overview-muted);
+    font-family: var(--font-body-family);
+    font-size: var(--ara-overview-step-text-desktop);
+    line-height: 1.48;
+  }
+
+  #AraCompanyOverview-{{ section.id }} .ara-company-overview__model-frame {
+    box-shadow:
+      9px 9px 0 var(--ara-overview-blue-deep),
+      16px 16px 0 color-mix(in srgb, var(--ara-overview-gold) 68%, transparent);
+  }
+
+  #AraCompanyOverview-{{ section.id }} .ara-company-overview__model {
+    padding: 28px;
+    border: 3px solid var(--ara-overview-text);
+    border-radius: 16px;
+    background:
+      radial-gradient(
+        circle at 112% 112%,
+        color-mix(in srgb, var(--ara-overview-gold) 15%, transparent) 0 29%,
+        transparent 30%
+      ),
+      linear-gradient(
+        145deg,
+        var(--ara-overview-blue),
+        var(--ara-overview-blue-deep)
+      );
+    color: #FFFFFF;
+  }
+
+  #AraCompanyOverview-{{ section.id }} .ara-company-overview__model-head > div {
+    display: grid;
+    gap: 5px;
+  }
+
+  #AraCompanyOverview-{{ section.id }} .ara-company-overview__model-head small {
+    color: rgba(255, 255, 255, 0.66);
+  }
+
+  #AraCompanyOverview-{{ section.id }} .ara-company-overview__model-badge {
+    padding: 5px 9px;
+    border: 1px solid var(--ara-overview-gold);
+    border-radius: 999px;
+    color: var(--ara-overview-gold);
+  }
+
+  #AraCompanyOverview-{{ section.id }} .ara-company-overview__steps {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+    margin-top: 24px;
+  }
+
+  #AraCompanyOverview-{{ section.id }} .ara-company-overview__step {
+    display: grid;
+    align-content: space-between;
+    min-height: 245px;
+    padding: 20px;
+    border: 2px solid #FFFFFF;
+    border-radius: 13px;
+    color: var(--ara-overview-text);
+    box-shadow: 4px 4px 0 var(--ara-overview-gold);
+  }
+
+  #AraCompanyOverview-{{ section.id }} .ara-company-overview__step--cream {
+    background: var(--ara-overview-paper);
+  }
+
+  #AraCompanyOverview-{{ section.id }} .ara-company-overview__step--gold {
+    background: var(--ara-overview-gold);
+  }
+
+  #AraCompanyOverview-{{ section.id }} .ara-company-overview__step--mint {
+    background: color-mix(in srgb, var(--ara-overview-mint) 76%, white);
+  }
+
+  #AraCompanyOverview-{{ section.id }} .ara-company-overview__step--blue {
+    background: color-mix(in srgb, var(--ara-overview-blue) 82%, white);
+    color: #FFFFFF;
+  }
+
+  #AraCompanyOverview-{{ section.id }} .ara-company-overview__step-top {
+    padding-bottom: 12px;
+    border-bottom: 1px dashed currentColor;
+  }
+
+  #AraCompanyOverview-{{ section.id }} .ara-company-overview__step-top span,
+  #AraCompanyOverview-{{ section.id }} .ara-company-overview__step-top small,
+  #AraCompanyOverview-{{ section.id }} .ara-company-overview__step-metric span {
+    font-size: var(--ara-overview-label-desktop);
+  }
+
+  #AraCompanyOverview-{{ section.id }} .ara-company-overview__step-top small {
+    text-align: right;
+  }
+
+  #AraCompanyOverview-{{ section.id }} .ara-company-overview__step-main {
+    margin-top: 22px;
+  }
+
+  #AraCompanyOverview-{{ section.id }} .ara-company-overview__step h3 {
+    margin: 0;
+    font-family: var(--font-heading-family);
+    font-size: var(--ara-overview-step-title-desktop);
+    font-style: var(--font-heading-style);
+    font-weight: var(--font-heading-weight);
+    line-height: 0.98;
+  }
+
+  #AraCompanyOverview-{{ section.id }} .ara-company-overview__step p {
+    margin: 13px 0 0;
+    font-family: var(--font-body-family);
+    font-size: var(--ara-overview-step-text-desktop);
+    font-style: var(--font-body-style);
+    font-weight: var(--font-body-weight);
+    line-height: 1.5;
+  }
+
+  #AraCompanyOverview-{{ section.id }} .ara-company-overview__step-metric {
+    margin-top: 20px;
+    padding-top: 14px;
+    border-top: 1px solid currentColor;
+  }
+
+  #AraCompanyOverview-{{ section.id }} .ara-company-overview__step-metric span {
+    display: block;
+  }
+
+  #AraCompanyOverview-{{ section.id }} .ara-company-overview__step-metric strong {
+    display: block;
+    margin-top: 7px;
+    font-family: var(--font-heading-family);
+    font-size: clamp(22px, 2vw, 34px);
+    line-height: 1;
+  }
+
+  #AraCompanyOverview-{{ section.id }} .ara-company-overview__model-summary {
+    align-items: center;
+    margin-top: 24px;
+    padding: 20px;
+    border: 2px solid #FFFFFF;
+    border-radius: 12px;
+    background: var(--ara-overview-paper);
+    color: var(--ara-overview-text);
+    box-shadow: 4px 4px 0 var(--ara-overview-gold);
+  }
+
+  #AraCompanyOverview-{{ section.id }} .ara-company-overview__model-summary span {
+    flex: 0 0 110px;
+    color: var(--ara-overview-mint);
+    font-size: var(--ara-overview-label-desktop);
+  }
+
+  #AraCompanyOverview-{{ section.id }} .ara-company-overview__model-summary p {
+    margin: 0;
+    font-family: var(--font-heading-family);
+    font-size: clamp(24px, 2.4vw, 38px);
+    line-height: 1.04;
+  }
+
+  @media screen and (max-width: 1099px) {
+    #AraCompanyOverview-{{ section.id }} .ara-company-overview__intro,
+    #AraCompanyOverview-{{ section.id }} .ara-company-overview__layout {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    #AraCompanyOverview-{{ section.id }} {
+      padding-top: calc(var(--ara-overview-top) * 0.7);
+      padding-bottom: calc(var(--ara-overview-bottom) * 0.7);
+    }
+
+    #AraCompanyOverview-{{ section.id }} .ara-company-overview__inner {
+      padding: 0 20px;
+    }
+
+    #AraCompanyOverview-{{ section.id }} .ara-company-overview__intro {
+      gap: 24px;
+      margin-bottom: 32px;
+    }
+
+    #AraCompanyOverview-{{ section.id }} .ara-company-overview__heading {
+      font-size: var(--ara-overview-heading-mobile);
+    }
+
+    #AraCompanyOverview-{{ section.id }} .ara-company-overview__description,
+    #AraCompanyOverview-{{ section.id }} .ara-company-overview__overview-text {
+      font-size: var(--ara-overview-body-mobile);
+    }
+
+    #AraCompanyOverview-{{ section.id }} .ara-company-overview__eyebrow,
+    #AraCompanyOverview-{{ section.id }} .ara-company-overview__profile-head span,
+    #AraCompanyOverview-{{ section.id }} .ara-company-overview__profile-head small,
+    #AraCompanyOverview-{{ section.id }} .ara-company-overview__image-label,
+    #AraCompanyOverview-{{ section.id }} .ara-company-overview__fact span,
+    #AraCompanyOverview-{{ section.id }} .ara-company-overview__model-head span,
+    #AraCompanyOverview-{{ section.id }} .ara-company-overview__model-head small,
+    #AraCompanyOverview-{{ section.id }} .ara-company-overview__model-badge,
+    #AraCompanyOverview-{{ section.id }} .ara-company-overview__step-top span,
+    #AraCompanyOverview-{{ section.id }} .ara-company-overview__step-top small,
+    #AraCompanyOverview-{{ section.id }} .ara-company-overview__step-metric span,
+    #AraCompanyOverview-{{ section.id }} .ara-company-overview__model-summary span {
+      font-size: var(--ara-overview-label-mobile);
+    }
+
+    #AraCompanyOverview-{{ section.id }} .ara-company-overview__profile-frame,
+    #AraCompanyOverview-{{ section.id }} .ara-company-overview__model-frame {
+      padding: 5px;
+    }
+
+    #AraCompanyOverview-{{ section.id }} .ara-company-overview__profile-frame {
+      box-shadow:
+        5px 5px 0 var(--ara-overview-gold),
+        10px 10px 0 color-mix(in srgb, var(--ara-overview-mint) 66%, transparent);
+    }
+
+    #AraCompanyOverview-{{ section.id }} .ara-company-overview__model-frame {
+      box-shadow:
+        5px 5px 0 var(--ara-overview-blue-deep),
+        10px 10px 0 color-mix(in srgb, var(--ara-overview-gold) 68%, transparent);
+    }
+
+    #AraCompanyOverview-{{ section.id }} .ara-company-overview__profile,
+    #AraCompanyOverview-{{ section.id }} .ara-company-overview__model {
+      padding: 22px 18px;
+    }
+
+    #AraCompanyOverview-{{ section.id }} .ara-company-overview__profile-head,
+    #AraCompanyOverview-{{ section.id }} .ara-company-overview__model-head,
+    #AraCompanyOverview-{{ section.id }} .ara-company-overview__model-summary {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+
+    #AraCompanyOverview-{{ section.id }} .ara-company-overview__profile-head small {
+      text-align: left;
+    }
+
+    #AraCompanyOverview-{{ section.id }} .ara-company-overview__facts,
+    #AraCompanyOverview-{{ section.id }} .ara-company-overview__steps {
+      grid-template-columns: 1fr;
+    }
+
+    #AraCompanyOverview-{{ section.id }} .ara-company-overview__fact strong {
+      font-size: var(--ara-overview-fact-title-mobile);
+    }
+
+    #AraCompanyOverview-{{ section.id }} .ara-company-overview__fact p,
+    #AraCompanyOverview-{{ section.id }} .ara-company-overview__step p {
+      font-size: var(--ara-overview-step-text-mobile);
+    }
+
+    #AraCompanyOverview-{{ section.id }} .ara-company-overview__step {
+      min-height: 0;
+    }
+
+    #AraCompanyOverview-{{ section.id }} .ara-company-overview__step h3 {
+      font-size: var(--ara-overview-step-title-mobile);
+    }
+
+    #AraCompanyOverview-{{ section.id }} .ara-company-overview__model-summary span {
+      flex-basis: auto;
+    }
+  }
+</style>
+
+<style>
+  #AraCompanyOverview-{{ section.id }} .ara-company-overview__profile-frame,
+  #AraCompanyOverview-{{ section.id }} .ara-company-overview__model-frame,
+  #AraCompanyOverview-{{ section.id }} .ara-company-overview__image-frame,
+  #AraCompanyOverview-{{ section.id }} .ara-company-overview__step {
+    border-radius: 14px;
+  }
+
+  #AraCompanyOverview-{{ section.id }} [class$="__button"],
+  #AraCompanyOverview-{{ section.id }} [class*="__button--"] {
+    border-radius: 7px;
+  }
+</style>
+
+
+<style>
+  #AraCompanyOverview-{{ section.id }} .ara-company-file__brand-rule {
+    display: flex;
+    justify-content: space-between;
+    gap: 18px;
+    align-items: center;
+    margin-bottom: clamp(24px, 3vw, 38px);
+    padding: 10px 0 12px;
+    border-top: 2px solid #161B2E;
+    border-bottom: 1px solid #161B2E;
+  }
+
+  #AraCompanyOverview-{{ section.id }} .ara-company-file__brand-rule img {
+    display: block;
+    width: min(100%, 170px);
+    height: auto;
+  }
+
+  #AraCompanyOverview-{{ section.id }} .ara-company-file__brand-rule span {
+    color: #161B2E;
+    font-family: var(--font-body-family);
+    font-size: 8px;
+    font-weight: 900;
+    letter-spacing: .16em;
+    text-align: right;
+  }
+
+  #AraCompanyOverview-{{ section.id }} [class*="__card"],
+  #AraCompanyOverview-{{ section.id }} [class*="__frame"],
+  #AraCompanyOverview-{{ section.id }} [class*="__panel"] {
+    border-radius: 6px;
+  }
+
+  @media screen and (max-width: 749px) {
+    #AraCompanyOverview-{{ section.id }} .ara-company-file__brand-rule {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+
+    #AraCompanyOverview-{{ section.id }} .ara-company-file__brand-rule span {
+      text-align: left;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Ara Company Overview",
+  "max_blocks": 6,
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Small heading",
+      "default": "COMPANY OVERVIEW"
+    },
+    {
+      "type": "textarea",
+      "id": "heading",
+      "label": "Main heading",
+      "default": "What the company does.\nHow the system works."
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description",
+      "default": "<p>Understand the company as a connected system: what it creates, who it serves, how it reaches customers and what keeps them inside the ecosystem.</p>"
+    },
+    {
+      "type": "text",
+      "id": "profile_heading",
+      "label": "Profile card heading",
+      "default": "COMPANY AT A GLANCE"
+    },
+    {
+      "type": "text",
+      "id": "profile_note",
+      "label": "Profile card note",
+      "default": "WHAT IT IS"
+    },
+    {
+      "type": "image_picker",
+      "id": "profile_image",
+      "label": "Desktop overview image"
+    },
+    {
+      "type": "image_picker",
+      "id": "mobile_profile_image",
+      "label": "Mobile overview image"
+    },
+    {
+      "type": "text",
+      "id": "image_label",
+      "label": "Image label",
+      "default": "PRODUCTS · CUSTOMERS · DISTRIBUTION"
+    },
+    {
+      "type": "richtext",
+      "id": "overview_text",
+      "label": "Overview text",
+      "default": "<p>Apple is a consumer technology company that designs devices, software and services as one integrated experience. The company controls the product, operating system, retail environment and a growing layer of recurring services.</p>"
+    },
+    {
+      "type": "header",
+      "content": "Company facts"
+    },
+    {
+      "type": "text",
+      "id": "fact_one_label",
+      "label": "First fact label",
+      "default": "CORE CUSTOMER"
+    },
+    {
+      "type": "text",
+      "id": "fact_one_value",
+      "label": "First fact value",
+      "default": "GLOBAL CONSUMERS"
+    },
+    {
+      "type": "textarea",
+      "id": "fact_one_note",
+      "label": "First fact note",
+      "default": "Individuals, families, creators, professionals and enterprise teams."
+    },
+    {
+      "type": "text",
+      "id": "fact_two_label",
+      "label": "Second fact label",
+      "default": "CORE OFFERING"
+    },
+    {
+      "type": "text",
+      "id": "fact_two_value",
+      "label": "Second fact value",
+      "default": "DEVICES + SERVICES"
+    },
+    {
+      "type": "textarea",
+      "id": "fact_two_note",
+      "label": "Second fact note",
+      "default": "Hardware, operating systems, software, subscriptions and payments."
+    },
+    {
+      "type": "text",
+      "id": "fact_three_label",
+      "label": "Third fact label",
+      "default": "DISTRIBUTION"
+    },
+    {
+      "type": "text",
+      "id": "fact_three_value",
+      "label": "Third fact value",
+      "default": "DIRECT + PARTNERS"
+    },
+    {
+      "type": "textarea",
+      "id": "fact_three_note",
+      "label": "Third fact note",
+      "default": "Retail stores, online channels, carriers, resellers and enterprise sales."
+    },
+    {
+      "type": "text",
+      "id": "fact_four_label",
+      "label": "Fourth fact label",
+      "default": "RECURRING ENGINE"
+    },
+    {
+      "type": "text",
+      "id": "fact_four_value",
+      "label": "Fourth fact value",
+      "default": "INSTALLED BASE"
+    },
+    {
+      "type": "textarea",
+      "id": "fact_four_note",
+      "label": "Fourth fact note",
+      "default": "A large active-device base creates repeat purchases and service revenue."
+    },
+    {
+      "type": "header",
+      "content": "Business model panel"
+    },
+    {
+      "type": "text",
+      "id": "model_heading",
+      "label": "Business model heading",
+      "default": "HOW THE BUSINESS MODEL WORKS"
+    },
+    {
+      "type": "text",
+      "id": "model_note",
+      "label": "Business model note",
+      "default": "THE VALUE LOOP"
+    },
+    {
+      "type": "text",
+      "id": "model_badge",
+      "label": "Business model badge",
+      "default": "CONNECTED SYSTEM"
+    },
+    {
+      "type": "text",
+      "id": "summary_label",
+      "label": "Summary label",
+      "default": "THE CORE IDEA"
+    },
+    {
+      "type": "textarea",
+      "id": "model_summary",
+      "label": "Business model summary",
+      "default": "The product creates the customer relationship. The ecosystem extends it. Services monetize it again."
+    },
+    {
+      "type": "header",
+      "content": "Desktop typography"
+    },
+    {
+      "type": "range",
+      "id": "desktop_heading_size",
+      "min": 44,
+      "max": 92,
+      "step": 2,
+      "unit": "px",
+      "label": "Main heading size",
+      "default": 68
+    },
+    {
+      "type": "range",
+      "id": "desktop_body_size",
+      "min": 13,
+      "max": 22,
+      "step": 1,
+      "unit": "px",
+      "label": "Body text size",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "desktop_label_size",
+      "min": 8,
+      "max": 15,
+      "step": 1,
+      "unit": "px",
+      "label": "Small text size",
+      "default": 9
+    },
+    {
+      "type": "range",
+      "id": "desktop_fact_title_size",
+      "min": 20,
+      "max": 38,
+      "step": 1,
+      "unit": "px",
+      "label": "Fact value size",
+      "default": 26
+    },
+    {
+      "type": "range",
+      "id": "desktop_step_title_size",
+      "min": 22,
+      "max": 42,
+      "step": 1,
+      "unit": "px",
+      "label": "Business model heading size",
+      "default": 30
+    },
+    {
+      "type": "range",
+      "id": "desktop_step_text_size",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Business model text size",
+      "default": 14
+    },
+    {
+      "type": "header",
+      "content": "Mobile typography"
+    },
+    {
+      "type": "range",
+      "id": "mobile_heading_size",
+      "min": 36,
+      "max": 66,
+      "step": 2,
+      "unit": "px",
+      "label": "Main heading size",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "mobile_body_size",
+      "min": 13,
+      "max": 19,
+      "step": 1,
+      "unit": "px",
+      "label": "Body text size",
+      "default": 15
+    },
+    {
+      "type": "range",
+      "id": "mobile_label_size",
+      "min": 8,
+      "max": 14,
+      "step": 1,
+      "unit": "px",
+      "label": "Small text size",
+      "default": 9
+    },
+    {
+      "type": "range",
+      "id": "mobile_fact_title_size",
+      "min": 20,
+      "max": 34,
+      "step": 1,
+      "unit": "px",
+      "label": "Fact value size",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "mobile_step_title_size",
+      "min": 22,
+      "max": 36,
+      "step": 1,
+      "unit": "px",
+      "label": "Business model heading size",
+      "default": 27
+    },
+    {
+      "type": "range",
+      "id": "mobile_step_text_size",
+      "min": 12,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "label": "Business model text size",
+      "default": 14
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "max_width",
+      "label": "Content width",
+      "default": "1600px",
+      "options": [
+        {
+          "value": "1300px",
+          "label": "Narrow"
+        },
+        {
+          "value": "1450px",
+          "label": "Medium"
+        },
+        {
+          "value": "1600px",
+          "label": "Wide"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 40,
+      "max": 120,
+      "step": 5,
+      "unit": "px",
+      "label": "Top spacing",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 40,
+      "max": 120,
+      "step": 5,
+      "unit": "px",
+      "label": "Bottom spacing",
+      "default": 80
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Section background",
+      "default": "#F5EFE1"
+    },
+    {
+      "type": "color",
+      "id": "paper_color",
+      "label": "Paper background",
+      "default": "#F3ECDC"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Main text",
+      "default": "#161B2E"
+    },
+    {
+      "type": "color",
+      "id": "muted_text_color",
+      "label": "Secondary text",
+      "default": "#646575"
+    },
+    {
+      "type": "color",
+      "id": "mint_color",
+      "label": "Mint accent",
+      "default": "#274B44"
+    },
+    {
+      "type": "color",
+      "id": "gold_color",
+      "label": "Gold accent",
+      "default": "#E0A526"
+    },
+    {
+      "type": "color",
+      "id": "blue_color",
+      "label": "Blue accent",
+      "default": "#274B44"
+    },
+    {
+      "type": "color",
+      "id": "blue_deep_color",
+      "label": "Deep blue",
+      "default": "#161B2E"
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Soft border",
+      "default": "#C9BEA8"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "model_step",
+      "name": "Business model step",
+      "settings": [
+        {
+          "type": "select",
+          "id": "style",
+          "label": "Card color",
+          "default": "cream",
+          "options": [
+            {
+              "value": "cream",
+              "label": "Cream"
+            },
+            {
+              "value": "gold",
+              "label": "Gold"
+            },
+            {
+              "value": "mint",
+              "label": "Mint"
+            },
+            {
+              "value": "blue",
+              "label": "Blue"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "kicker",
+          "label": "Small heading",
+          "default": "CREATE"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "default": "Design desirable products"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Text",
+          "default": "Apple combines industrial design, software and proprietary chips to create premium devices."
+        },
+        {
+          "type": "text",
+          "id": "metric_label",
+          "label": "Metric label",
+          "default": "PRIMARY ENGINE"
+        },
+        {
+          "type": "text",
+          "id": "metric_value",
+          "label": "Metric value",
+          "default": "HARDWARE"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Ara Company Overview",
+      "blocks": [
+        {
+          "type": "model_step",
+          "settings": {
+            "style": "cream",
+            "kicker": "CREATE",
+            "title": "Design desirable products",
+            "text": "Apple combines industrial design, software and proprietary chips to create premium devices.",
+            "metric_label": "PRIMARY ENGINE",
+            "metric_value": "HARDWARE"
+          }
+        },
+        {
+          "type": "model_step",
+          "settings": {
+            "style": "gold",
+            "kicker": "CONNECT",
+            "title": "Link every product together",
+            "text": "Devices work better when customers use more than one Apple product and service.",
+            "metric_label": "SYSTEM EFFECT",
+            "metric_value": "ECOSYSTEM"
+          }
+        },
+        {
+          "type": "model_step",
+          "settings": {
+            "style": "mint",
+            "kicker": "RETAIN",
+            "title": "Increase switching costs",
+            "text": "Data, apps, accessories, services and familiarity make leaving the ecosystem inconvenient.",
+            "metric_label": "CUSTOMER EFFECT",
+            "metric_value": "LOYALTY"
+          }
+        },
+        {
+          "type": "model_step",
+          "settings": {
+            "style": "blue",
+            "kicker": "EXPAND",
+            "title": "Monetize the relationship again",
+            "text": "Services, subscriptions, payments and upgrades generate recurring and repeat revenue.",
+            "metric_label": "RECURRING ENGINE",
+            "metric_value": "SERVICES"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

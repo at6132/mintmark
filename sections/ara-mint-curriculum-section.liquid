@@ -1,0 +1,1264 @@
+<section
+  id="AraMintCurriculum-{{ section.id }}"
+  class="ara-mint-curriculum"
+  style="
+    --ara-curriculum-bg: {{ section.settings.background_color }};
+    --ara-curriculum-paper: {{ section.settings.paper_color }};
+    --ara-curriculum-text: {{ section.settings.text_color }};
+    --ara-curriculum-muted: {{ section.settings.muted_text_color }};
+    --ara-curriculum-mint: {{ section.settings.mint_color }};
+    --ara-curriculum-gold: {{ section.settings.gold_color }};
+    --ara-curriculum-blue: {{ section.settings.blue_color }};
+    --ara-curriculum-blue-deep: {{ section.settings.blue_deep_color }};
+    --ara-curriculum-border: {{ section.settings.border_color }};
+    --ara-curriculum-max: {{ section.settings.max_width }};
+    --ara-curriculum-top: {{ section.settings.padding_top }}px;
+    --ara-curriculum-bottom: {{ section.settings.padding_bottom }}px;
+    --ara-curriculum-heading-desktop: {{ section.settings.desktop_heading_size }}px;
+    --ara-curriculum-body-desktop: {{ section.settings.desktop_body_size }}px;
+    --ara-curriculum-label-desktop: {{ section.settings.desktop_label_size }}px;
+    --ara-curriculum-stage-desktop: {{ section.settings.desktop_stage_size }}px;
+    --ara-curriculum-detail-desktop: {{ section.settings.desktop_detail_size }}px;
+    --ara-curriculum-heading-mobile: {{ section.settings.mobile_heading_size }}px;
+    --ara-curriculum-body-mobile: {{ section.settings.mobile_body_size }}px;
+    --ara-curriculum-label-mobile: {{ section.settings.mobile_label_size }}px;
+    --ara-curriculum-stage-mobile: {{ section.settings.mobile_stage_size }}px;
+    --ara-curriculum-detail-mobile: {{ section.settings.mobile_detail_size }}px;
+  "
+>
+  <div class="ara-mint-curriculum__lines" aria-hidden="true"></div>
+
+  <div class="ara-mint-curriculum__inner">
+    <div class="ara-mint-curriculum__intro-frame">
+      <div class="ara-mint-curriculum__intro">
+        <div class="ara-mint-curriculum__intro-copy">
+          {% if section.settings.eyebrow != blank %}
+            <span class="ara-mint-curriculum__eyebrow">
+              {{ section.settings.eyebrow | escape }}
+            </span>
+          {% endif %}
+
+          {% if section.settings.heading != blank %}
+            <h2 class="ara-mint-curriculum__heading">
+              {{ section.settings.heading | escape | newline_to_br }}
+            </h2>
+          {% endif %}
+
+          {% if section.settings.description != blank %}
+            <div class="ara-mint-curriculum__description">
+              {{ section.settings.description }}
+            </div>
+          {% endif %}
+
+          {% if section.settings.note != blank %}
+            <p class="ara-mint-curriculum__note">
+              {{ section.settings.note | escape }}
+            </p>
+          {% endif %}
+        </div>
+
+        <div class="ara-mint-curriculum__index">
+          <div class="ara-mint-curriculum__index-head">
+            <span>{{ section.settings.index_label | escape }}</span>
+            <small>{{ section.blocks.size }} {{ section.settings.index_count_suffix | escape }}</small>
+          </div>
+
+          <div class="ara-mint-curriculum__stage-list" role="tablist" aria-label="Curriculum stages">
+            {% for block in section.blocks %}
+              <button
+                type="button"
+                class="ara-mint-curriculum__stage-button{% if forloop.first %} is-active{% endif %}"
+                data-curriculum-trigger="{{ block.id }}"
+                role="tab"
+                aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
+                aria-controls="AraMintCurriculumPanel-{{ block.id }}"
+                {{ block.shopify_attributes }}
+              >
+                <span class="ara-mint-curriculum__stage-number">
+                  {{ forloop.index | prepend: '0' }}
+                </span>
+
+                <span class="ara-mint-curriculum__stage-copy">
+                  <strong>{{ block.settings.title | escape }}</strong>
+
+                  {% if block.settings.short_label != blank %}
+                    <small>{{ block.settings.short_label | escape }}</small>
+                  {% endif %}
+                </span>
+              </button>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ara-mint-curriculum__board-frame">
+      <div class="ara-mint-curriculum__board">
+        <div class="ara-mint-curriculum__board-head">
+          <div>
+            <span>{{ section.settings.board_label | escape }}</span>
+            <small>{{ section.settings.board_note | escape }}</small>
+          </div>
+
+          {% if section.settings.board_badge != blank %}
+            <span class="ara-mint-curriculum__board-badge">
+              {{ section.settings.board_badge | escape }}
+            </span>
+          {% endif %}
+        </div>
+
+        <div class="ara-mint-curriculum__panels">
+          {% for block in section.blocks %}
+            <article
+              id="AraMintCurriculumPanel-{{ block.id }}"
+              class="ara-mint-curriculum__panel{% if forloop.first %} is-active{% endif %}"
+              data-curriculum-panel="{{ block.id }}"
+              role="tabpanel"
+              {% unless forloop.first %}hidden{% endunless %}
+            >
+              <div class="ara-mint-curriculum__panel-main">
+                <div class="ara-mint-curriculum__panel-meta">
+                  <span>STAGE {{ forloop.index | prepend: '0' }}</span>
+
+                  {% if block.settings.lesson_count != blank %}
+                    <small>{{ block.settings.lesson_count | escape }}</small>
+                  {% endif %}
+                </div>
+
+                <h3>{{ block.settings.title | escape }}</h3>
+
+                {% if block.settings.description != blank %}
+                  <p class="ara-mint-curriculum__panel-description">
+                    {{ block.settings.description | escape }}
+                  </p>
+                {% endif %}
+
+                <div class="ara-mint-curriculum__detail-grid">
+                  {% if block.settings.topic_one != blank %}
+                    <div class="ara-mint-curriculum__detail">
+                      <span>01</span>
+                      <p>{{ block.settings.topic_one | escape }}</p>
+                    </div>
+                  {% endif %}
+
+                  {% if block.settings.topic_two != blank %}
+                    <div class="ara-mint-curriculum__detail">
+                      <span>02</span>
+                      <p>{{ block.settings.topic_two | escape }}</p>
+                    </div>
+                  {% endif %}
+
+                  {% if block.settings.topic_three != blank %}
+                    <div class="ara-mint-curriculum__detail">
+                      <span>03</span>
+                      <p>{{ block.settings.topic_three | escape }}</p>
+                    </div>
+                  {% endif %}
+                </div>
+              </div>
+
+              <aside class="ara-mint-curriculum__outcome">
+                <div class="ara-mint-curriculum__outcome-top">
+                  <span>{{ block.settings.outcome_label | escape }}</span>
+                  <small>{{ block.settings.difficulty | escape }}</small>
+                </div>
+
+                {% if block.settings.outcome != blank %}
+                  <p>{{ block.settings.outcome | escape }}</p>
+                {% endif %}
+
+                {% if block.settings.link_label != blank %}
+                  <a
+                    class="ara-mint-curriculum__link"
+                    {% if block.settings.link != blank %}
+                      href="{{ block.settings.link }}"
+                    {% else %}
+                      role="link"
+                      aria-disabled="true"
+                    {% endif %}
+                  >
+                    {{ block.settings.link_label | escape }}
+                  </a>
+                {% endif %}
+              </aside>
+            </article>
+          {% endfor %}
+        </div>
+
+        <div class="ara-mint-curriculum__progress" aria-hidden="true">
+          {% for block in section.blocks %}
+            <span class="{% if forloop.first %}is-active{% endif %}" data-curriculum-progress="{{ block.id }}"></span>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  #AraMintCurriculum-{{ section.id }} {
+    position: relative;
+    overflow: hidden;
+    padding: var(--ara-curriculum-top) 0 var(--ara-curriculum-bottom);
+    background: var(--ara-curriculum-bg);
+    color: var(--ara-curriculum-text);
+    isolation: isolate;
+  }
+
+  #AraMintCurriculum-{{ section.id }} * {
+    box-sizing: border-box;
+  }
+
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__lines {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    opacity: 0.45;
+    background-image:
+      linear-gradient(
+        90deg,
+        transparent 0,
+        transparent 31px,
+        color-mix(in srgb, var(--ara-curriculum-mint) 12%, transparent) 31px,
+        color-mix(in srgb, var(--ara-curriculum-mint) 12%, transparent) 32px
+      ),
+      repeating-linear-gradient(
+        to bottom,
+        transparent 0,
+        transparent 35px,
+        color-mix(in srgb, var(--ara-curriculum-mint) 22%, transparent) 35px,
+        color-mix(in srgb, var(--ara-curriculum-mint) 22%, transparent) 36px
+      );
+    pointer-events: none;
+  }
+
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__inner {
+    display: grid;
+    grid-template-columns: minmax(330px, 0.72fr) minmax(0, 1.28fr);
+    gap: 34px;
+    align-items: start;
+    width: min(100%, var(--ara-curriculum-max));
+    margin: 0 auto;
+    padding: 0 40px;
+  }
+
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__intro-frame,
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__board-frame {
+    align-self: start;
+    height: fit-content;
+    padding: 7px;
+    border: 2px solid var(--ara-curriculum-text);
+    background: var(--ara-curriculum-paper);
+  }
+
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__intro-frame {
+    border-radius: 24px;
+    box-shadow:
+      9px 9px 0 var(--ara-curriculum-gold),
+      16px 16px 0 color-mix(in srgb, var(--ara-curriculum-mint) 66%, transparent);
+  }
+
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__intro {
+    display: grid;
+    gap: 38px;
+    min-height: 100%;
+    padding: 36px 30px;
+    border: 3px solid var(--ara-curriculum-text);
+    border-radius: 16px;
+    background:
+      radial-gradient(
+        circle at 112% 112%,
+        color-mix(in srgb, var(--ara-curriculum-mint) 16%, transparent) 0 30%,
+        transparent 31%
+      ),
+      linear-gradient(
+        145deg,
+        color-mix(in srgb, var(--ara-curriculum-paper) 96%, white),
+        color-mix(in srgb, var(--ara-curriculum-bg) 92%, transparent)
+      );
+  }
+
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__eyebrow,
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__note,
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__index-head span,
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__index-head small,
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__stage-number,
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__stage-copy small,
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__board-head span,
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__board-head small,
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__board-badge,
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__panel-meta span,
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__panel-meta small,
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__detail span,
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__outcome-top span,
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__outcome-top small {
+    font-family: var(--font-body-family);
+    font-style: var(--font-body-style);
+    font-weight: 800;
+    line-height: 1.2;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__eyebrow {
+    display: inline-flex;
+    min-height: 31px;
+    align-items: center;
+    padding: 6px 11px;
+    border: 2px solid var(--ara-curriculum-text);
+    border-radius: 8px;
+    background: var(--ara-curriculum-gold);
+    color: var(--ara-curriculum-text);
+    font-size: var(--ara-curriculum-label-desktop);
+    box-shadow: 3px 3px 0 var(--ara-curriculum-text);
+  }
+
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__heading {
+    margin: 24px 0 0;
+    font-family: var(--font-heading-family);
+    font-size: var(--ara-curriculum-heading-desktop);
+    font-style: var(--font-heading-style);
+    font-weight: var(--font-heading-weight);
+    line-height: 0.94;
+    letter-spacing: -0.055em;
+  }
+
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__description {
+    margin-top: 25px;
+    color: var(--ara-curriculum-muted);
+    font-family: var(--font-body-family);
+    font-size: var(--ara-curriculum-body-desktop);
+    font-style: var(--font-body-style);
+    font-weight: var(--font-body-weight);
+    line-height: 1.65;
+  }
+
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__description p {
+    margin: 0;
+  }
+
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__note {
+    margin: 44px 0 0;
+    padding-top: 15px;
+    border-top: 1px dashed color-mix(in srgb, var(--ara-curriculum-text) 34%, transparent);
+    color: var(--ara-curriculum-muted);
+    font-size: var(--ara-curriculum-label-desktop);
+  }
+
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__index {
+    align-self: end;
+  }
+
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__index-head,
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__board-head,
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__outcome-top {
+    display: flex;
+    justify-content: space-between;
+    gap: 14px;
+    align-items: flex-start;
+  }
+
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__index-head {
+    padding-bottom: 14px;
+    border-bottom: 2px solid var(--ara-curriculum-text);
+  }
+
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__index-head span,
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__index-head small {
+    font-size: var(--ara-curriculum-label-desktop);
+  }
+
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__index-head small {
+    color: var(--ara-curriculum-muted);
+    text-align: right;
+  }
+
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__stage-list {
+    display: grid;
+    margin-top: 10px;
+  }
+
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__stage-button {
+    display: grid;
+    grid-template-columns: 38px minmax(0, 1fr);
+    gap: 13px;
+    align-items: center;
+    width: 100%;
+    padding: 15px 0;
+    border: 0;
+    border-bottom: 1px dashed color-mix(in srgb, var(--ara-curriculum-text) 30%, transparent);
+    background: transparent;
+    color: var(--ara-curriculum-text);
+    text-align: left;
+    cursor: pointer;
+  }
+
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__stage-number {
+    display: grid;
+    width: 36px;
+    height: 36px;
+    place-items: center;
+    border: 2px solid var(--ara-curriculum-text);
+    border-radius: 50%;
+    background: var(--ara-curriculum-paper);
+    color: var(--ara-curriculum-mint);
+    font-size: var(--ara-curriculum-label-desktop);
+    transition:
+      background-color 0.2s ease,
+      color 0.2s ease;
+  }
+
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__stage-copy {
+    display: grid;
+    gap: 4px;
+  }
+
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__stage-copy strong {
+    font-family: var(--font-heading-family);
+    font-size: var(--ara-curriculum-stage-desktop);
+    font-style: var(--font-heading-style);
+    font-weight: var(--font-heading-weight);
+    line-height: 1;
+  }
+
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__stage-copy small {
+    color: var(--ara-curriculum-muted);
+    font-size: var(--ara-curriculum-label-desktop);
+  }
+
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__stage-button.is-active .ara-mint-curriculum__stage-number {
+    background: var(--ara-curriculum-gold);
+    color: var(--ara-curriculum-text);
+  }
+
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__board-frame {
+    border-radius: 24px;
+    box-shadow:
+      9px 9px 0 var(--ara-curriculum-blue-deep),
+      16px 16px 0 color-mix(in srgb, var(--ara-curriculum-gold) 68%, transparent);
+  }
+
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__board {
+    display: grid;
+    min-height: 100%;
+    padding: 30px;
+    border: 3px solid var(--ara-curriculum-text);
+    border-radius: 16px;
+    background:
+      radial-gradient(
+        circle at 112% 112%,
+        color-mix(in srgb, var(--ara-curriculum-gold) 15%, transparent) 0 30%,
+        transparent 31%
+      ),
+      linear-gradient(
+        145deg,
+        var(--ara-curriculum-blue),
+        var(--ara-curriculum-blue-deep)
+      );
+    color: #FFFFFF;
+  }
+
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__board-head {
+    padding-bottom: 17px;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.78);
+  }
+
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__board-head > div {
+    display: grid;
+    gap: 5px;
+  }
+
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__board-head span,
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__board-head small,
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__board-badge {
+    font-size: var(--ara-curriculum-label-desktop);
+  }
+
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__board-head small {
+    color: rgba(255, 255, 255, 0.66);
+  }
+
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__board-badge {
+    padding: 5px 9px;
+    border: 1px solid var(--ara-curriculum-gold);
+    border-radius: 999px;
+    color: var(--ara-curriculum-gold);
+  }
+
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__panels {
+    margin-top: 30px;
+  }
+
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__panel {
+    display: grid;
+    grid-template-columns: minmax(0, 1.35fr) minmax(240px, 0.65fr);
+    gap: 28px;
+    align-items: stretch;
+  }
+
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__panel[hidden] {
+    display: none !important;
+  }
+
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__panel-main {
+    min-width: 0;
+  }
+
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__panel-meta {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    padding-bottom: 14px;
+    border-bottom: 1px dashed rgba(255, 255, 255, 0.34);
+  }
+
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__panel-meta span,
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__panel-meta small {
+    font-size: var(--ara-curriculum-label-desktop);
+  }
+
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__panel-meta span {
+    color: var(--ara-curriculum-gold);
+  }
+
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__panel-meta small {
+    color: rgba(255, 255, 255, 0.64);
+    text-align: right;
+  }
+
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__panel h3 {
+    margin: 27px 0 0;
+    font-family: var(--font-heading-family);
+    font-size: clamp(38px, 4vw, 68px);
+    font-style: var(--font-heading-style);
+    font-weight: var(--font-heading-weight);
+    line-height: 0.96;
+  }
+
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__panel-description {
+    max-width: 720px;
+    margin: 21px 0 0;
+    color: rgba(255, 255, 255, 0.84);
+    font-family: var(--font-body-family);
+    font-size: var(--ara-curriculum-body-desktop);
+    font-style: var(--font-body-style);
+    font-weight: var(--font-body-weight);
+    line-height: 1.6;
+  }
+
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__detail-grid {
+    display: grid;
+    gap: 10px;
+    margin-top: 31px;
+  }
+
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__detail {
+    display: grid;
+    grid-template-columns: 38px minmax(0, 1fr);
+    gap: 14px;
+    align-items: center;
+    padding: 14px 16px;
+    border: 1px solid rgba(255, 255, 255, 0.34);
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.07);
+  }
+
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__detail span {
+    display: grid;
+    width: 32px;
+    height: 32px;
+    place-items: center;
+    border: 1px solid var(--ara-curriculum-gold);
+    border-radius: 50%;
+    color: var(--ara-curriculum-gold);
+    font-size: var(--ara-curriculum-label-desktop);
+  }
+
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__detail p {
+    margin: 0;
+    font-family: var(--font-body-family);
+    font-size: var(--ara-curriculum-detail-desktop);
+    font-style: var(--font-body-style);
+    font-weight: 700;
+    line-height: 1.4;
+  }
+
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__outcome {
+    display: grid;
+    align-content: space-between;
+    min-height: 100%;
+    padding: 22px;
+    border: 2px solid #FFFFFF;
+    border-radius: 13px;
+    background: var(--ara-curriculum-paper);
+    color: var(--ara-curriculum-text);
+    box-shadow: 5px 5px 0 var(--ara-curriculum-gold);
+  }
+
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__outcome-top {
+    padding-bottom: 14px;
+    border-bottom: 2px solid var(--ara-curriculum-text);
+  }
+
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__outcome-top span,
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__outcome-top small {
+    font-size: var(--ara-curriculum-label-desktop);
+  }
+
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__outcome-top small {
+    color: var(--ara-curriculum-muted);
+    text-align: right;
+  }
+
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__outcome > p {
+    margin: 28px 0;
+    font-family: var(--font-heading-family);
+    font-size: clamp(27px, 2.5vw, 38px);
+    font-style: var(--font-heading-style);
+    font-weight: var(--font-heading-weight);
+    line-height: 1.04;
+  }
+
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__link {
+    display: inline-flex;
+    min-height: 47px;
+    align-items: center;
+    justify-content: center;
+    padding: 11px 17px;
+    border: 2px solid var(--ara-curriculum-text);
+    border-radius: 8px;
+    background: var(--ara-curriculum-gold);
+    color: var(--ara-curriculum-text);
+    font-family: var(--font-body-family);
+    font-size: var(--ara-curriculum-label-desktop);
+    font-weight: 800;
+    letter-spacing: 0.11em;
+    text-align: center;
+    text-decoration: none;
+    text-transform: uppercase;
+    box-shadow: 3px 3px 0 var(--ara-curriculum-text);
+  }
+
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__progress {
+    display: grid;
+    grid-template-columns: repeat({{ section.blocks.size | at_least: 1 }}, minmax(0, 1fr));
+    gap: 7px;
+    align-self: end;
+    margin-top: 32px;
+  }
+
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__progress span {
+    height: 5px;
+    border: 1px solid rgba(255, 255, 255, 0.44);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.12);
+  }
+
+  #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__progress span.is-active {
+    border-color: var(--ara-curriculum-gold);
+    background: var(--ara-curriculum-gold);
+  }
+
+  @media screen and (max-width: 1099px) {
+    #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__inner {
+      grid-template-columns: 1fr;
+    }
+
+    #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__panel {
+      grid-template-columns: minmax(0, 1fr) minmax(230px, 0.52fr);
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    #AraMintCurriculum-{{ section.id }} {
+      padding-top: calc(var(--ara-curriculum-top) * 0.7);
+      padding-bottom: calc(var(--ara-curriculum-bottom) * 0.7);
+    }
+
+    #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__inner {
+      gap: 26px;
+      padding: 0 20px;
+    }
+
+    #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__intro-frame,
+    #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__board-frame {
+      padding: 5px;
+    }
+
+    #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__intro-frame {
+      box-shadow:
+        5px 5px 0 var(--ara-curriculum-gold),
+        10px 10px 0 color-mix(in srgb, var(--ara-curriculum-mint) 66%, transparent);
+    }
+
+    #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__intro {
+      padding: 31px 24px 35px;
+    }
+
+    #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__heading {
+      font-size: var(--ara-curriculum-heading-mobile);
+    }
+
+    #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__description,
+    #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__panel-description {
+      font-size: var(--ara-curriculum-body-mobile);
+    }
+
+    #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__eyebrow,
+    #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__note,
+    #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__index-head span,
+    #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__index-head small,
+    #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__stage-number,
+    #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__stage-copy small,
+    #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__board-head span,
+    #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__board-head small,
+    #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__board-badge,
+    #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__panel-meta span,
+    #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__panel-meta small,
+    #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__detail span,
+    #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__outcome-top span,
+    #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__outcome-top small,
+    #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__link {
+      font-size: var(--ara-curriculum-label-mobile);
+    }
+
+    #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__stage-copy strong {
+      font-size: var(--ara-curriculum-stage-mobile);
+    }
+
+    #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__board-frame {
+      box-shadow:
+        5px 5px 0 var(--ara-curriculum-blue-deep),
+        10px 10px 0 color-mix(in srgb, var(--ara-curriculum-gold) 68%, transparent);
+    }
+
+    #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__board {
+      padding: 25px 19px;
+    }
+
+    #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__board-head {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+
+    #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__panel {
+      grid-template-columns: 1fr;
+      gap: 22px;
+    }
+
+    #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__panel h3 {
+      font-size: clamp(36px, 12vw, 54px);
+    }
+
+    #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__detail p {
+      font-size: var(--ara-curriculum-detail-mobile);
+    }
+
+    #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__outcome {
+      min-height: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #AraMintCurriculum-{{ section.id }} .ara-mint-curriculum__stage-number {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  (() => {
+    const section = document.getElementById('AraMintCurriculum-{{ section.id }}');
+
+    if (!section || section.dataset.ready === 'true') return;
+
+    section.dataset.ready = 'true';
+
+    const triggers = [...section.querySelectorAll('[data-curriculum-trigger]')];
+    const panels = [...section.querySelectorAll('[data-curriculum-panel]')];
+    const progressItems = [...section.querySelectorAll('[data-curriculum-progress]')];
+
+    const activate = blockId => {
+      triggers.forEach(trigger => {
+        const active = trigger.dataset.curriculumTrigger === blockId;
+        trigger.classList.toggle('is-active', active);
+        trigger.setAttribute('aria-selected', String(active));
+      });
+
+      panels.forEach(panel => {
+        const active = panel.dataset.curriculumPanel === blockId;
+        panel.classList.toggle('is-active', active);
+        panel.hidden = !active;
+      });
+
+      progressItems.forEach(item => {
+        item.classList.toggle(
+          'is-active',
+          item.dataset.curriculumProgress === blockId
+        );
+      });
+    };
+
+    triggers.forEach(trigger => {
+      trigger.addEventListener('click', () => {
+        activate(trigger.dataset.curriculumTrigger);
+      });
+
+      trigger.addEventListener('keydown', event => {
+        const currentIndex = triggers.indexOf(trigger);
+        let nextIndex = currentIndex;
+
+        if (event.key === 'ArrowDown' || event.key === 'ArrowRight') {
+          nextIndex = (currentIndex + 1) % triggers.length;
+        } else if (event.key === 'ArrowUp' || event.key === 'ArrowLeft') {
+          nextIndex = (currentIndex - 1 + triggers.length) % triggers.length;
+        } else {
+          return;
+        }
+
+        event.preventDefault();
+        triggers[nextIndex].focus();
+        activate(triggers[nextIndex].dataset.curriculumTrigger);
+      });
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Ara Mint Curriculum",
+  "max_blocks": 6,
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Small heading",
+      "default": "THE CURRICULUM"
+    },
+    {
+      "type": "textarea",
+      "id": "heading",
+      "label": "Main heading",
+      "default": "A clear path through\nbusiness and finance."
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description",
+      "default": "<p>Move from the basics of a company to the systems, numbers and decisions that shape how it grows.</p>"
+    },
+    {
+      "type": "text",
+      "id": "note",
+      "label": "Bottom note",
+      "default": "LEARN IN ORDER · RETURN ANY TIME · BUILD UNDERSTANDING THAT LASTS"
+    },
+    {
+      "type": "text",
+      "id": "index_label",
+      "label": "Stage index heading",
+      "default": "LEARNING STAGES"
+    },
+    {
+      "type": "text",
+      "id": "index_count_suffix",
+      "label": "Stage count label",
+      "default": "STAGES"
+    },
+    {
+      "type": "text",
+      "id": "board_label",
+      "label": "Detail panel heading",
+      "default": "CURRENT STAGE"
+    },
+    {
+      "type": "text",
+      "id": "board_note",
+      "label": "Detail panel note",
+      "default": "FOLLOW THE SEQUENCE"
+    },
+    {
+      "type": "text",
+      "id": "board_badge",
+      "label": "Detail panel badge",
+      "default": "FREE TO EXPLORE"
+    },
+    {
+      "type": "header",
+      "content": "Desktop typography"
+    },
+    {
+      "type": "range",
+      "id": "desktop_heading_size",
+      "min": 44,
+      "max": 92,
+      "step": 2,
+      "unit": "px",
+      "label": "Main heading size",
+      "default": 68
+    },
+    {
+      "type": "range",
+      "id": "desktop_body_size",
+      "min": 13,
+      "max": 22,
+      "step": 1,
+      "unit": "px",
+      "label": "Body text size",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "desktop_label_size",
+      "min": 8,
+      "max": 15,
+      "step": 1,
+      "unit": "px",
+      "label": "Small text size",
+      "default": 9
+    },
+    {
+      "type": "range",
+      "id": "desktop_stage_size",
+      "min": 20,
+      "max": 36,
+      "step": 1,
+      "unit": "px",
+      "label": "Stage title size",
+      "default": 25
+    },
+    {
+      "type": "range",
+      "id": "desktop_detail_size",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Topic text size",
+      "default": 14
+    },
+    {
+      "type": "header",
+      "content": "Mobile typography"
+    },
+    {
+      "type": "range",
+      "id": "mobile_heading_size",
+      "min": 36,
+      "max": 66,
+      "step": 2,
+      "unit": "px",
+      "label": "Main heading size",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "mobile_body_size",
+      "min": 13,
+      "max": 19,
+      "step": 1,
+      "unit": "px",
+      "label": "Body text size",
+      "default": 15
+    },
+    {
+      "type": "range",
+      "id": "mobile_label_size",
+      "min": 8,
+      "max": 14,
+      "step": 1,
+      "unit": "px",
+      "label": "Small text size",
+      "default": 9
+    },
+    {
+      "type": "range",
+      "id": "mobile_stage_size",
+      "min": 20,
+      "max": 34,
+      "step": 1,
+      "unit": "px",
+      "label": "Stage title size",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "mobile_detail_size",
+      "min": 12,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "label": "Topic text size",
+      "default": 14
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "max_width",
+      "label": "Content width",
+      "default": "1600px",
+      "options": [
+        {
+          "value": "1300px",
+          "label": "Narrow"
+        },
+        {
+          "value": "1450px",
+          "label": "Medium"
+        },
+        {
+          "value": "1600px",
+          "label": "Wide"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 40,
+      "max": 120,
+      "step": 5,
+      "unit": "px",
+      "label": "Top spacing",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 40,
+      "max": 120,
+      "step": 5,
+      "unit": "px",
+      "label": "Bottom spacing",
+      "default": 80
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Section background",
+      "default": "#D8F0E4"
+    },
+    {
+      "type": "color",
+      "id": "paper_color",
+      "label": "Paper background",
+      "default": "#F7FCFA"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Main text",
+      "default": "#161B2E"
+    },
+    {
+      "type": "color",
+      "id": "muted_text_color",
+      "label": "Secondary text",
+      "default": "#646575"
+    },
+    {
+      "type": "color",
+      "id": "mint_color",
+      "label": "Mint accent",
+      "default": "#176D5C"
+    },
+    {
+      "type": "color",
+      "id": "gold_color",
+      "label": "Gold accent",
+      "default": "#E0A526"
+    },
+    {
+      "type": "color",
+      "id": "blue_color",
+      "label": "Blue accent",
+      "default": "#3A5BE0"
+    },
+    {
+      "type": "color",
+      "id": "blue_deep_color",
+      "label": "Deep blue",
+      "default": "#22389A"
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Soft border",
+      "default": "#C9BEA8"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "stage",
+      "name": "Curriculum stage",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Stage title",
+          "default": "Foundations"
+        },
+        {
+          "type": "text",
+          "id": "short_label",
+          "label": "Short description",
+          "default": "What a company is"
+        },
+        {
+          "type": "text",
+          "id": "lesson_count",
+          "label": "Lesson count",
+          "default": "3 LESSONS"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Stage description",
+          "default": "Start with the basic building blocks: what a company does, who it serves and how it creates value."
+        },
+        {
+          "type": "text",
+          "id": "topic_one",
+          "label": "First topic",
+          "default": "Purpose, customers and value creation"
+        },
+        {
+          "type": "text",
+          "id": "topic_two",
+          "label": "Second topic",
+          "default": "Products, services and revenue"
+        },
+        {
+          "type": "text",
+          "id": "topic_three",
+          "label": "Third topic",
+          "default": "Founders, ownership and leadership"
+        },
+        {
+          "type": "text",
+          "id": "outcome_label",
+          "label": "Outcome heading",
+          "default": "YOU WILL UNDERSTAND"
+        },
+        {
+          "type": "text",
+          "id": "difficulty",
+          "label": "Difficulty",
+          "default": "BEGINNER"
+        },
+        {
+          "type": "textarea",
+          "id": "outcome",
+          "label": "Learning outcome",
+          "default": "How a company turns an idea into something customers are willing to pay for."
+        },
+        {
+          "type": "text",
+          "id": "link_label",
+          "label": "Button text",
+          "default": "OPEN THIS STAGE"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Button link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Ara Mint Curriculum",
+      "blocks": [
+        {
+          "type": "stage",
+          "settings": {
+            "title": "Foundations",
+            "short_label": "What a company is",
+            "lesson_count": "3 LESSONS",
+            "description": "Start with the basic building blocks: what a company does, who it serves and how it creates value.",
+            "topic_one": "Purpose, customers and value creation",
+            "topic_two": "Products, services and revenue",
+            "topic_three": "Founders, ownership and leadership",
+            "outcome_label": "YOU WILL UNDERSTAND",
+            "difficulty": "BEGINNER",
+            "outcome": "How a company turns an idea into something customers are willing to pay for.",
+            "link_label": "OPEN THIS STAGE"
+          }
+        },
+        {
+          "type": "stage",
+          "settings": {
+            "title": "Business Model",
+            "short_label": "How it makes money",
+            "lesson_count": "4 LESSONS",
+            "description": "Examine the system behind revenue, costs, margins and the choices that determine how a company earns.",
+            "topic_one": "Revenue streams and pricing",
+            "topic_two": "Costs, margins and operating leverage",
+            "topic_three": "Recurring, transactional and platform models",
+            "outcome_label": "YOU WILL UNDERSTAND",
+            "difficulty": "CORE",
+            "outcome": "Why two companies selling similar products can produce very different financial results.",
+            "link_label": "OPEN THIS STAGE"
+          }
+        },
+        {
+          "type": "stage",
+          "settings": {
+            "title": "Financial Statements",
+            "short_label": "Reading the numbers",
+            "lesson_count": "5 LESSONS",
+            "description": "Learn how the income statement, balance sheet and cash flow statement tell one connected company story.",
+            "topic_one": "Revenue, expenses and profit",
+            "topic_two": "Assets, liabilities and equity",
+            "topic_three": "Cash generation and capital spending",
+            "outcome_label": "YOU WILL UNDERSTAND",
+            "difficulty": "INTERMEDIATE",
+            "outcome": "How to follow the movement from sales to profit to cash without getting lost in accounting language.",
+            "link_label": "OPEN THIS STAGE"
+          }
+        },
+        {
+          "type": "stage",
+          "settings": {
+            "title": "Competition",
+            "short_label": "Why some companies win",
+            "lesson_count": "4 LESSONS",
+            "description": "Study market structure, competitive advantages and the forces that help a business defend its position.",
+            "topic_one": "Industry structure and rivals",
+            "topic_two": "Brands, switching costs and networks",
+            "topic_three": "Scale, distribution and operating advantage",
+            "outcome_label": "YOU WILL UNDERSTAND",
+            "difficulty": "INTERMEDIATE",
+            "outcome": "What makes a strong competitive position durable—and what can cause it to disappear.",
+            "link_label": "OPEN THIS STAGE"
+          }
+        },
+        {
+          "type": "stage",
+          "settings": {
+            "title": "Valuation",
+            "short_label": "What it may be worth",
+            "lesson_count": "4 LESSONS",
+            "description": "Connect business quality, future expectations, risk and price to understand why valuation is never just one number.",
+            "topic_one": "Price, value and expectations",
+            "topic_two": "Multiples, growth and profitability",
+            "topic_three": "Risk, uncertainty and scenario thinking",
+            "outcome_label": "YOU WILL UNDERSTAND",
+            "difficulty": "ADVANCED",
+            "outcome": "How investors translate a company story into assumptions—and how those assumptions shape price.",
+            "link_label": "OPEN THIS STAGE"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,1391 @@
+{% liquid
+  assign share_url = shop.url | append: article.url | url_encode
+  assign share_title = article.title | url_encode
+%}
+
+<section
+  id="AraArticleContent-{{ section.id }}"
+  class="ara-article-content"
+  style="
+    --ara-article-bg: {{ section.settings.background_color }};
+    --ara-article-paper: {{ section.settings.paper_color }};
+    --ara-article-text: {{ section.settings.text_color }};
+    --ara-article-muted: {{ section.settings.muted_text_color }};
+    --ara-article-mint: {{ section.settings.mint_color }};
+    --ara-article-gold: {{ section.settings.gold_color }};
+    --ara-article-blue: {{ section.settings.blue_color }};
+    --ara-article-blue-deep: {{ section.settings.blue_deep_color }};
+    --ara-article-max: {{ section.settings.max_width }};
+    --ara-article-content-width: {{ section.settings.content_width }}px;
+    --ara-article-top: {{ section.settings.padding_top }}px;
+    --ara-article-bottom: {{ section.settings.padding_bottom }}px;
+    --ara-article-body-desktop: {{ section.settings.desktop_body_size }}px;
+    --ara-article-heading-desktop: {{ section.settings.desktop_heading_size }}px;
+    --ara-article-subheading-desktop: {{ section.settings.desktop_subheading_size }}px;
+    --ara-article-label-desktop: {{ section.settings.desktop_label_size }}px;
+    --ara-article-quote-desktop: {{ section.settings.desktop_quote_size }}px;
+    --ara-article-body-mobile: {{ section.settings.mobile_body_size }}px;
+    --ara-article-heading-mobile: {{ section.settings.mobile_heading_size }}px;
+    --ara-article-subheading-mobile: {{ section.settings.mobile_subheading_size }}px;
+    --ara-article-label-mobile: {{ section.settings.mobile_label_size }}px;
+    --ara-article-quote-mobile: {{ section.settings.mobile_quote_size }}px;
+  "
+>
+  <div class="ara-article-content__lines" aria-hidden="true"></div>
+
+  <div class="ara-article-content__inner">
+    {% if article != blank %}
+      <div class="ara-article-content__info-bar">
+        <div>
+          {% if section.settings.company_name != blank %}
+            <span>{{ section.settings.company_name | escape }}</span>
+          {% endif %}
+
+          {% if article.tags.size > 0 %}
+            <small>{{ article.tags.first | escape }}</small>
+          {% endif %}
+        </div>
+
+        <div>
+          {% if section.settings.reading_time != blank %}
+            <span>{{ section.settings.reading_time | escape }}</span>
+          {% endif %}
+
+          <small>{{ article.published_at | date: section.settings.date_format }}</small>
+        </div>
+      </div>
+
+      <div class="ara-article-content__layout">
+        <aside class="ara-article-content__sidebar">
+          <div class="ara-article-content__company-card">
+            <div class="ara-article-content__company-head">
+              <span>{{ section.settings.company_card_label | escape }}</span>
+              <small>{{ section.settings.company_card_note | escape }}</small>
+            </div>
+
+            {% if section.settings.company_logo != blank %}
+              <div class="ara-article-content__company-logo-wrap">
+                {{
+                  section.settings.company_logo
+                  | image_url: width: 500
+                  | image_tag:
+                    widths: '120, 180, 260, 360, 500',
+                    sizes: '90px',
+                    loading: 'lazy',
+                    class: 'ara-article-content__company-logo',
+                    alt: section.settings.company_logo.alt
+                }}
+              </div>
+            {% endif %}
+
+            {% if section.settings.company_name != blank %}
+              <h2>{{ section.settings.company_name | escape }}</h2>
+            {% endif %}
+
+            {% if section.settings.company_summary != blank %}
+              <p>{{ section.settings.company_summary | escape }}</p>
+            {% endif %}
+
+            {% if section.settings.company_link_label != blank %}
+              <a
+                class="ara-article-content__company-link"
+                {% if section.settings.company_link != blank %}
+                  href="{{ section.settings.company_link }}"
+                {% else %}
+                  role="link"
+                  aria-disabled="true"
+                {% endif %}
+              >
+                {{ section.settings.company_link_label | escape }}
+              </a>
+            {% endif %}
+          </div>
+
+          <div class="ara-article-content__file-card">
+            <div class="ara-article-content__file-head">
+              <span>{{ section.settings.file_card_label | escape }}</span>
+              <small>{{ section.settings.file_card_note | escape }}</small>
+            </div>
+
+            <dl>
+              {% if section.settings.show_author and article.author != blank %}
+                <div>
+                  <dt>{{ section.settings.author_label | escape }}</dt>
+                  <dd>{{ article.author | escape }}</dd>
+                </div>
+              {% endif %}
+
+              {% if section.settings.reading_time != blank %}
+                <div>
+                  <dt>{{ section.settings.reading_label | escape }}</dt>
+                  <dd>{{ section.settings.reading_time | escape }}</dd>
+                </div>
+              {% endif %}
+
+              {% if section.settings.show_tags and article.tags.size > 0 %}
+                <div>
+                  <dt>{{ section.settings.tags_label | escape }}</dt>
+                  <dd>
+                    {% for tag in article.tags limit: 4 %}
+                      <span>{{ tag | escape }}</span>
+                    {% endfor %}
+                  </dd>
+                </div>
+              {% endif %}
+            </dl>
+
+            {% if section.settings.show_share %}
+              <div class="ara-article-content__share">
+                <span>{{ section.settings.share_label | escape }}</span>
+
+                <div>
+                  <a
+                    href="https://twitter.com/intent/tweet?url={{ share_url }}&text={{ share_title }}"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    X
+                  </a>
+
+                  <a
+                    href="https://www.facebook.com/sharer/sharer.php?u={{ share_url }}"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    FB
+                  </a>
+
+                  <a href="mailto:?subject={{ share_title }}&body={{ share_url }}">
+                    EMAIL
+                  </a>
+                </div>
+              </div>
+            {% endif %}
+          </div>
+        </aside>
+
+        <main class="ara-article-content__main">
+          {% if section.settings.intro_note != blank %}
+            <div class="ara-article-content__intro-note">
+              <span>{{ section.settings.intro_note_label | escape }}</span>
+              <p>{{ section.settings.intro_note | escape }}</p>
+            </div>
+          {% endif %}
+
+          <div class="ara-article-content__paper-frame">
+<div
+              class="ara-article-content__paper{% if section.settings.enable_drop_cap %} ara-article-content__paper--drop-cap{% endif %}"
+            >
+              {% if article.content != blank %}
+                {{ article.content }}
+              {% else %}
+                {{ page.content }}
+              {% endif %}
+            </div>
+          </div>
+
+          {% if section.blocks.size > 0 %}
+            <div class="ara-article-content__extras">
+              {% for block in section.blocks %}
+                {% case block.type %}
+                  {% when 'pull_quote' %}
+                    <blockquote
+                      class="ara-article-content__pull-quote ara-article-content__pull-quote--{{ block.settings.style }}"
+                      {{ block.shopify_attributes }}
+                    >
+                      {% if block.settings.quote != blank %}
+                        <p>{{ block.settings.quote | escape }}</p>
+                      {% endif %}
+
+                      {% if block.settings.source != blank %}
+                        <cite>{{ block.settings.source | escape }}</cite>
+                      {% endif %}
+                    </blockquote>
+
+                  {% when 'supporting_image' %}
+                    <figure
+                      class="ara-article-content__supporting-image"
+                      {{ block.shopify_attributes }}
+                    >
+                      {% if block.settings.image != blank %}
+                        {{
+                          block.settings.image
+                          | image_url: width: 1800
+                          | image_tag:
+                            widths: '600, 900, 1200, 1500, 1800',
+                            sizes: '(max-width: 749px) 100vw, 760px',
+                            loading: 'lazy',
+                            class: 'ara-article-content__extra-image',
+                            alt: block.settings.image.alt
+                        }}
+                      {% endif %}
+
+                      {% if block.settings.caption != blank %}
+                        <figcaption>{{ block.settings.caption | escape }}</figcaption>
+                      {% endif %}
+                    </figure>
+
+                  {% when 'key_point' %}
+                    <article
+                      class="ara-article-content__key-point ara-article-content__key-point--{{ block.settings.style }}"
+                      {{ block.shopify_attributes }}
+                    >
+                      <span>{{ block.settings.label | escape }}</span>
+
+                      {% if block.settings.heading != blank %}
+                        <h3>{{ block.settings.heading | escape }}</h3>
+                      {% endif %}
+
+                      {% if block.settings.text != blank %}
+                        <p>{{ block.settings.text | escape }}</p>
+                      {% endif %}
+                    </article>
+                {% endcase %}
+              {% endfor %}
+            </div>
+          {% endif %}
+        </main>
+      </div>
+    {% else %}
+      <div class="ara-article-content__empty">
+        Add this section to a Shopify article template.
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+<style>
+  #AraArticleContent-{{ section.id }} {
+    position: relative;
+    overflow: hidden;
+    padding: var(--ara-article-top) 0 var(--ara-article-bottom);
+    background: var(--ara-article-bg);
+    color: var(--ara-article-text);
+    isolation: isolate;
+  }
+
+  #AraArticleContent-{{ section.id }} * {
+    box-sizing: border-box;
+  }
+
+  #AraArticleContent-{{ section.id }} .ara-article-content__lines {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    opacity: 0.42;
+    background-image:
+      linear-gradient(
+        90deg,
+        transparent 0,
+        transparent 31px,
+        color-mix(in srgb, var(--ara-article-mint) 12%, transparent) 31px,
+        color-mix(in srgb, var(--ara-article-mint) 12%, transparent) 32px
+      ),
+      repeating-linear-gradient(
+        to bottom,
+        transparent 0,
+        transparent 35px,
+        color-mix(in srgb, var(--ara-article-mint) 21%, transparent) 35px,
+        color-mix(in srgb, var(--ara-article-mint) 21%, transparent) 36px
+      );
+    pointer-events: none;
+  }
+
+  #AraArticleContent-{{ section.id }} .ara-article-content__inner {
+    width: min(100%, var(--ara-article-max));
+    margin: 0 auto;
+    padding: 0 40px;
+  }
+
+  #AraArticleContent-{{ section.id }} .ara-article-content__info-bar {
+    display: flex;
+    justify-content: space-between;
+    gap: 18px;
+    margin-bottom: 34px;
+    padding: 15px 18px;
+    border: 2px solid var(--ara-article-text);
+    border-radius: 12px;
+    background: var(--ara-article-gold);
+    box-shadow: 4px 4px 0 var(--ara-article-text);
+  }
+
+  #AraArticleContent-{{ section.id }} .ara-article-content__info-bar > div {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 16px;
+    align-items: center;
+  }
+
+  #AraArticleContent-{{ section.id }} .ara-article-content__info-bar span,
+  #AraArticleContent-{{ section.id }} .ara-article-content__info-bar small,
+  #AraArticleContent-{{ section.id }} .ara-article-content__company-head span,
+  #AraArticleContent-{{ section.id }} .ara-article-content__company-head small,
+  #AraArticleContent-{{ section.id }} .ara-article-content__file-head span,
+  #AraArticleContent-{{ section.id }} .ara-article-content__file-head small,
+  #AraArticleContent-{{ section.id }} .ara-article-content__intro-note span,
+  #AraArticleContent-{{ section.id }} .ara-article-content__share > span,
+  #AraArticleContent-{{ section.id }} .ara-article-content__key-point > span {
+    font-family: var(--font-body-family);
+    font-style: var(--font-body-style);
+    font-weight: 800;
+    line-height: 1.2;
+    letter-spacing: 0.11em;
+    text-transform: uppercase;
+  }
+
+  #AraArticleContent-{{ section.id }} .ara-article-content__info-bar span,
+  #AraArticleContent-{{ section.id }} .ara-article-content__info-bar small {
+    font-size: var(--ara-article-label-desktop);
+  }
+
+  #AraArticleContent-{{ section.id }} .ara-article-content__info-bar small {
+    color: color-mix(in srgb, var(--ara-article-text) 66%, transparent);
+  }
+
+  #AraArticleContent-{{ section.id }} .ara-article-content__layout {
+    display: grid;
+    grid-template-columns: 300px minmax(0, var(--ara-article-content-width));
+    gap: 42px;
+    justify-content: center;
+    align-items: start;
+  }
+
+  #AraArticleContent-{{ section.id }} .ara-article-content__sidebar {
+    position: sticky;
+    top: 24px;
+    display: grid;
+    gap: 18px;
+  }
+
+  #AraArticleContent-{{ section.id }} .ara-article-content__company-card,
+  #AraArticleContent-{{ section.id }} .ara-article-content__file-card {
+    padding: 22px;
+    border: 2px solid var(--ara-article-text);
+    border-radius: 15px;
+    background: var(--ara-article-paper);
+  }
+
+  #AraArticleContent-{{ section.id }} .ara-article-content__company-card {
+    box-shadow:
+      6px 6px 0 var(--ara-article-gold),
+      11px 11px 0 color-mix(in srgb, var(--ara-article-mint) 66%, transparent);
+  }
+
+  #AraArticleContent-{{ section.id }} .ara-article-content__file-card {
+    background: var(--ara-article-blue-deep);
+    color: #FFFFFF;
+    box-shadow: 6px 6px 0 var(--ara-article-blue);
+  }
+
+  #AraArticleContent-{{ section.id }} .ara-article-content__company-head,
+  #AraArticleContent-{{ section.id }} .ara-article-content__file-head {
+    display: flex;
+    justify-content: space-between;
+    gap: 13px;
+    padding-bottom: 13px;
+    border-bottom: 1px dashed currentColor;
+  }
+
+  #AraArticleContent-{{ section.id }} .ara-article-content__company-head span,
+  #AraArticleContent-{{ section.id }} .ara-article-content__company-head small,
+  #AraArticleContent-{{ section.id }} .ara-article-content__file-head span,
+  #AraArticleContent-{{ section.id }} .ara-article-content__file-head small {
+    font-size: var(--ara-article-label-desktop);
+  }
+
+  #AraArticleContent-{{ section.id }} .ara-article-content__company-head span,
+  #AraArticleContent-{{ section.id }} .ara-article-content__file-head span {
+    color: var(--ara-article-mint);
+  }
+
+  #AraArticleContent-{{ section.id }} .ara-article-content__file-head span {
+    color: var(--ara-article-gold);
+  }
+
+  #AraArticleContent-{{ section.id }} .ara-article-content__company-head small,
+  #AraArticleContent-{{ section.id }} .ara-article-content__file-head small {
+    text-align: right;
+  }
+
+  #AraArticleContent-{{ section.id }} .ara-article-content__company-logo-wrap {
+    display: grid;
+    width: 90px;
+    height: 90px;
+    margin-top: 21px;
+    place-items: center;
+    padding: 11px;
+    border: 2px solid var(--ara-article-text);
+    border-radius: 14px;
+    background: #FFFFFF;
+    box-shadow: 4px 4px 0 var(--ara-article-blue);
+  }
+
+  #AraArticleContent-{{ section.id }} .ara-article-content__company-logo {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  #AraArticleContent-{{ section.id }} .ara-article-content__company-card h2 {
+    margin: 21px 0 0;
+    font-family: var(--font-heading-family);
+    font-size: 34px;
+    line-height: 1;
+  }
+
+  #AraArticleContent-{{ section.id }} .ara-article-content__company-card > p {
+    margin: 14px 0 0;
+    color: var(--ara-article-muted);
+    font-family: var(--font-body-family);
+    font-size: var(--ara-article-body-desktop);
+    line-height: 1.5;
+  }
+
+  #AraArticleContent-{{ section.id }} .ara-article-content__company-link {
+    display: inline-flex;
+    min-height: 44px;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
+    padding: 10px 14px;
+    border: 2px solid var(--ara-article-text);
+    border-radius: 8px;
+    background: var(--ara-article-mint);
+    color: #FFFFFF;
+    font-family: var(--font-body-family);
+    font-size: var(--ara-article-label-desktop);
+    font-weight: 800;
+    letter-spacing: 0.09em;
+    text-align: center;
+    text-decoration: none;
+    text-transform: uppercase;
+    box-shadow: 3px 3px 0 var(--ara-article-text);
+  }
+
+  #AraArticleContent-{{ section.id }} .ara-article-content__file-card dl {
+    display: grid;
+    gap: 16px;
+    margin: 20px 0 0;
+  }
+
+  #AraArticleContent-{{ section.id }} .ara-article-content__file-card dl > div {
+    padding-bottom: 14px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  }
+
+  #AraArticleContent-{{ section.id }} .ara-article-content__file-card dt {
+    color: rgba(255, 255, 255, 0.58);
+    font-family: var(--font-body-family);
+    font-size: var(--ara-article-label-desktop);
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  #AraArticleContent-{{ section.id }} .ara-article-content__file-card dd {
+    margin: 7px 0 0;
+    font-family: var(--font-heading-family);
+    font-size: 20px;
+    line-height: 1.2;
+  }
+
+  #AraArticleContent-{{ section.id }} .ara-article-content__file-card dd span {
+    display: inline-flex;
+    margin: 0 4px 5px 0;
+    padding: 4px 7px;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    border-radius: 999px;
+    font-family: var(--font-body-family);
+    font-size: var(--ara-article-label-desktop);
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  #AraArticleContent-{{ section.id }} .ara-article-content__share {
+    margin-top: 21px;
+  }
+
+  #AraArticleContent-{{ section.id }} .ara-article-content__share > span {
+    display: block;
+    color: var(--ara-article-gold);
+    font-size: var(--ara-article-label-desktop);
+  }
+
+  #AraArticleContent-{{ section.id }} .ara-article-content__share > div {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 11px;
+  }
+
+  #AraArticleContent-{{ section.id }} .ara-article-content__share a {
+    display: inline-flex;
+    min-height: 34px;
+    align-items: center;
+    justify-content: center;
+    padding: 7px 10px;
+    border: 1px solid #FFFFFF;
+    border-radius: 6px;
+    color: #FFFFFF;
+    font-family: var(--font-body-family);
+    font-size: var(--ara-article-label-desktop);
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-decoration: none;
+  }
+
+  #AraArticleContent-{{ section.id }} .ara-article-content__main {
+    min-width: 0;
+  }
+
+  #AraArticleContent-{{ section.id }} .ara-article-content__intro-note {
+    display: grid;
+    grid-template-columns: 140px minmax(0, 1fr);
+    gap: 20px;
+    align-items: start;
+    margin-bottom: 24px;
+    padding: 20px;
+    border: 2px solid var(--ara-article-text);
+    border-radius: 12px;
+    background: var(--ara-article-gold);
+    box-shadow: 4px 4px 0 var(--ara-article-text);
+  }
+
+  #AraArticleContent-{{ section.id }} .ara-article-content__intro-note span {
+    font-size: var(--ara-article-label-desktop);
+  }
+
+  #AraArticleContent-{{ section.id }} .ara-article-content__intro-note p {
+    margin: 0;
+    font-family: var(--font-heading-family);
+    font-size: clamp(22px, 2vw, 31px);
+    line-height: 1.06;
+  }
+
+  #AraArticleContent-{{ section.id }} .ara-article-content__paper-frame {
+    padding: 7px;
+    border: 2px solid var(--ara-article-text);
+    border-radius: 22px;
+    background: var(--ara-article-paper);
+    box-shadow:
+      8px 8px 0 var(--ara-article-blue),
+      14px 14px 0 color-mix(in srgb, var(--ara-article-gold) 68%, transparent);
+  }
+
+  #AraArticleContent-{{ section.id }} .ara-article-content__paper {
+    padding: clamp(30px, 5vw, 70px);
+    border: 3px solid var(--ara-article-text);
+    border-radius: 14px;
+    background: var(--ara-article-paper);
+    color: var(--ara-article-text);
+    font-family: var(--font-body-family);
+    font-size: var(--ara-article-body-desktop);
+    line-height: 1.78;
+  }
+
+  #AraArticleContent-{{ section.id }} .ara-article-content__paper > *:first-child {
+    margin-top: 0;
+  }
+
+  #AraArticleContent-{{ section.id }} .ara-article-content__paper > *:last-child {
+    margin-bottom: 0;
+  }
+
+  #AraArticleContent-{{ section.id }} .ara-article-content__paper--drop-cap > p:first-of-type::first-letter {
+    float: left;
+    margin: 0.08em 0.12em 0 0;
+    color: var(--ara-article-mint);
+    font-family: var(--font-heading-family);
+    font-size: 4.3em;
+    font-weight: var(--font-heading-weight);
+    line-height: 0.74;
+  }
+
+  #AraArticleContent-{{ section.id }} .ara-article-content__paper h2,
+  #AraArticleContent-{{ section.id }} .ara-article-content__paper h3,
+  #AraArticleContent-{{ section.id }} .ara-article-content__paper h4 {
+    font-family: var(--font-heading-family);
+    font-style: var(--font-heading-style);
+    font-weight: var(--font-heading-weight);
+    line-height: 1.03;
+  }
+
+  #AraArticleContent-{{ section.id }} .ara-article-content__paper h2 {
+    margin: 2em 0 0.7em;
+    font-size: var(--ara-article-heading-desktop);
+  }
+
+  #AraArticleContent-{{ section.id }} .ara-article-content__paper h3 {
+    margin: 1.8em 0 0.65em;
+    font-size: var(--ara-article-subheading-desktop);
+  }
+
+  #AraArticleContent-{{ section.id }} .ara-article-content__paper h4 {
+    margin: 1.6em 0 0.6em;
+    font-size: calc(var(--ara-article-subheading-desktop) * 0.8);
+  }
+
+  #AraArticleContent-{{ section.id }} .ara-article-content__paper p,
+  #AraArticleContent-{{ section.id }} .ara-article-content__paper ul,
+  #AraArticleContent-{{ section.id }} .ara-article-content__paper ol {
+    margin: 1.25em 0;
+  }
+
+  #AraArticleContent-{{ section.id }} .ara-article-content__paper ul,
+  #AraArticleContent-{{ section.id }} .ara-article-content__paper ol {
+    padding-left: 1.35em;
+  }
+
+  #AraArticleContent-{{ section.id }} .ara-article-content__paper li + li {
+    margin-top: 0.55em;
+  }
+
+  #AraArticleContent-{{ section.id }} .ara-article-content__paper a {
+    color: var(--ara-article-mint);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 4px;
+  }
+
+  #AraArticleContent-{{ section.id }} .ara-article-content__paper blockquote {
+    margin: 2em 0;
+    padding: 22px 24px;
+    border: 2px solid var(--ara-article-text);
+    border-left: 8px solid var(--ara-article-gold);
+    border-radius: 10px;
+    background: color-mix(in srgb, var(--ara-article-mint) 12%, var(--ara-article-paper));
+    font-family: var(--font-heading-family);
+    font-size: var(--ara-article-quote-desktop);
+    line-height: 1.18;
+  }
+
+  #AraArticleContent-{{ section.id }} .ara-article-content__paper img {
+    display: block;
+    width: 100%;
+    height: auto;
+    margin: 2em auto;
+    border: 2px solid var(--ara-article-text);
+    border-radius: 12px;
+    box-shadow: 5px 5px 0 var(--ara-article-gold);
+  }
+
+  #AraArticleContent-{{ section.id }} .ara-article-content__paper table {
+    display: block;
+    width: 100%;
+    margin: 2em 0;
+    overflow-x: auto;
+    border-collapse: collapse;
+  }
+
+  #AraArticleContent-{{ section.id }} .ara-article-content__paper th,
+  #AraArticleContent-{{ section.id }} .ara-article-content__paper td {
+    padding: 12px 14px;
+    border: 1px solid var(--ara-article-text);
+    text-align: left;
+  }
+
+  #AraArticleContent-{{ section.id }} .ara-article-content__paper th {
+    background: var(--ara-article-gold);
+  }
+
+  #AraArticleContent-{{ section.id }} .ara-article-content__extras {
+    display: grid;
+    gap: 24px;
+    margin-top: 34px;
+  }
+
+  #AraArticleContent-{{ section.id }} .ara-article-content__pull-quote {
+    margin: 0;
+    padding: 30px;
+    border: 2px solid var(--ara-article-text);
+    border-radius: 15px;
+    box-shadow: 6px 6px 0 var(--ara-article-text);
+  }
+
+  #AraArticleContent-{{ section.id }} .ara-article-content__pull-quote--gold {
+    background: var(--ara-article-gold);
+    color: var(--ara-article-text);
+  }
+
+  #AraArticleContent-{{ section.id }} .ara-article-content__pull-quote--mint {
+    background: color-mix(in srgb, var(--ara-article-mint) 72%, white);
+    color: var(--ara-article-text);
+  }
+
+  #AraArticleContent-{{ section.id }} .ara-article-content__pull-quote--blue {
+    background: var(--ara-article-blue-deep);
+    color: #FFFFFF;
+  }
+
+  #AraArticleContent-{{ section.id }} .ara-article-content__pull-quote p {
+    margin: 0;
+    font-family: var(--font-heading-family);
+    font-size: var(--ara-article-quote-desktop);
+    line-height: 1.12;
+  }
+
+  #AraArticleContent-{{ section.id }} .ara-article-content__pull-quote cite {
+    display: block;
+    margin-top: 16px;
+    font-family: var(--font-body-family);
+    font-size: var(--ara-article-label-desktop);
+    font-style: normal;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  #AraArticleContent-{{ section.id }} .ara-article-content__supporting-image {
+    margin: 0;
+    padding: 7px;
+    border: 2px solid var(--ara-article-text);
+    border-radius: 16px;
+    background: var(--ara-article-paper);
+    box-shadow: 6px 6px 0 var(--ara-article-blue);
+  }
+
+  #AraArticleContent-{{ section.id }} .ara-article-content__extra-image {
+    display: block;
+    width: 100%;
+    height: auto;
+    border: 2px solid var(--ara-article-text);
+    border-radius: 10px;
+  }
+
+  #AraArticleContent-{{ section.id }} .ara-article-content__supporting-image figcaption {
+    padding: 13px 10px 6px;
+    color: var(--ara-article-muted);
+    font-family: var(--font-body-family);
+    font-size: var(--ara-article-label-desktop);
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  #AraArticleContent-{{ section.id }} .ara-article-content__key-point {
+    padding: 25px;
+    border: 2px solid var(--ara-article-text);
+    border-radius: 14px;
+    box-shadow: 5px 5px 0 var(--ara-article-text);
+  }
+
+  #AraArticleContent-{{ section.id }} .ara-article-content__key-point--cream {
+    background: var(--ara-article-paper);
+    color: var(--ara-article-text);
+  }
+
+  #AraArticleContent-{{ section.id }} .ara-article-content__key-point--gold {
+    background: var(--ara-article-gold);
+    color: var(--ara-article-text);
+  }
+
+  #AraArticleContent-{{ section.id }} .ara-article-content__key-point--blue {
+    background: var(--ara-article-blue-deep);
+    color: #FFFFFF;
+  }
+
+  #AraArticleContent-{{ section.id }} .ara-article-content__key-point > span {
+    color: var(--ara-article-mint);
+    font-size: var(--ara-article-label-desktop);
+  }
+
+  #AraArticleContent-{{ section.id }} .ara-article-content__key-point--blue > span {
+    color: var(--ara-article-gold);
+  }
+
+  #AraArticleContent-{{ section.id }} .ara-article-content__key-point h3 {
+    margin: 12px 0 0;
+    font-family: var(--font-heading-family);
+    font-size: var(--ara-article-subheading-desktop);
+    line-height: 1;
+  }
+
+  #AraArticleContent-{{ section.id }} .ara-article-content__key-point p {
+    margin: 12px 0 0;
+    font-family: var(--font-body-family);
+    font-size: var(--ara-article-body-desktop);
+    line-height: 1.55;
+  }
+
+  #AraArticleContent-{{ section.id }} .ara-article-content__empty {
+    padding: 30px;
+    border: 2px dashed var(--ara-article-text);
+    border-radius: 12px;
+    background: var(--ara-article-paper);
+    font-family: var(--font-heading-family);
+    font-size: 30px;
+    text-align: center;
+  }
+
+  @media screen and (max-width: 1099px) {
+    #AraArticleContent-{{ section.id }} .ara-article-content__layout {
+      grid-template-columns: 1fr;
+    }
+
+    #AraArticleContent-{{ section.id }} .ara-article-content__sidebar {
+      position: static;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    #AraArticleContent-{{ section.id }} .ara-article-content__main {
+      max-width: var(--ara-article-content-width);
+      margin: 0 auto;
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    #AraArticleContent-{{ section.id }} {
+      padding-top: calc(var(--ara-article-top) * 0.7);
+      padding-bottom: calc(var(--ara-article-bottom) * 0.7);
+    }
+
+    #AraArticleContent-{{ section.id }} .ara-article-content__inner {
+      padding: 0 20px;
+    }
+
+    #AraArticleContent-{{ section.id }} .ara-article-content__info-bar,
+    #AraArticleContent-{{ section.id }} .ara-article-content__info-bar > div {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+
+    #AraArticleContent-{{ section.id }} .ara-article-content__info-bar span,
+    #AraArticleContent-{{ section.id }} .ara-article-content__info-bar small,
+    #AraArticleContent-{{ section.id }} .ara-article-content__company-head span,
+    #AraArticleContent-{{ section.id }} .ara-article-content__company-head small,
+    #AraArticleContent-{{ section.id }} .ara-article-content__file-head span,
+    #AraArticleContent-{{ section.id }} .ara-article-content__file-head small,
+    #AraArticleContent-{{ section.id }} .ara-article-content__intro-note span,
+    #AraArticleContent-{{ section.id }} .ara-article-content__share > span,
+    #AraArticleContent-{{ section.id }} .ara-article-content__key-point > span,
+    #AraArticleContent-{{ section.id }} .ara-article-content__company-link,
+    #AraArticleContent-{{ section.id }} .ara-article-content__share a,
+    #AraArticleContent-{{ section.id }} .ara-article-content__file-card dt,
+    #AraArticleContent-{{ section.id }} .ara-article-content__file-card dd span,
+    #AraArticleContent-{{ section.id }} .ara-article-content__supporting-image figcaption,
+    #AraArticleContent-{{ section.id }} .ara-article-content__pull-quote cite {
+      font-size: var(--ara-article-label-mobile);
+    }
+
+    #AraArticleContent-{{ section.id }} .ara-article-content__sidebar {
+      grid-template-columns: 1fr;
+    }
+
+    #AraArticleContent-{{ section.id }} .ara-article-content__company-card > p,
+    #AraArticleContent-{{ section.id }} .ara-article-content__key-point p {
+      font-size: var(--ara-article-body-mobile);
+    }
+
+    #AraArticleContent-{{ section.id }} .ara-article-content__intro-note {
+      grid-template-columns: 1fr;
+    }
+
+    #AraArticleContent-{{ section.id }} .ara-article-content__paper-frame {
+      padding: 5px;
+      box-shadow:
+        5px 5px 0 var(--ara-article-blue),
+        10px 10px 0 color-mix(in srgb, var(--ara-article-gold) 68%, transparent);
+    }
+
+    #AraArticleContent-{{ section.id }} .ara-article-content__paper {
+      padding: 30px 22px;
+      font-size: var(--ara-article-body-mobile);
+    }
+
+    #AraArticleContent-{{ section.id }} .ara-article-content__paper h2 {
+      font-size: var(--ara-article-heading-mobile);
+    }
+
+    #AraArticleContent-{{ section.id }} .ara-article-content__paper h3 {
+      font-size: var(--ara-article-subheading-mobile);
+    }
+
+    #AraArticleContent-{{ section.id }} .ara-article-content__paper h4 {
+      font-size: calc(var(--ara-article-subheading-mobile) * 0.82);
+    }
+
+    #AraArticleContent-{{ section.id }} .ara-article-content__paper blockquote,
+    #AraArticleContent-{{ section.id }} .ara-article-content__pull-quote p {
+      font-size: var(--ara-article-quote-mobile);
+    }
+
+    #AraArticleContent-{{ section.id }} .ara-article-content__key-point h3 {
+      font-size: var(--ara-article-subheading-mobile);
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Ara Article Content",
+  "max_blocks": 8,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Company connection"
+    },
+    {
+      "type": "image_picker",
+      "id": "company_logo",
+      "label": "Company logo"
+    },
+    {
+      "type": "text",
+      "id": "company_name",
+      "label": "Company name",
+      "default": "Apple"
+    },
+    {
+      "type": "text",
+      "id": "company_card_label",
+      "label": "Company card label",
+      "default": "COMPANY MODULE"
+    },
+    {
+      "type": "text",
+      "id": "company_card_note",
+      "label": "Company card note",
+      "default": "RETURN TO THE SYSTEM"
+    },
+    {
+      "type": "textarea",
+      "id": "company_summary",
+      "label": "Company summary",
+      "default": "Return to the complete company module for the business model, revenue engines, strengths, risks and ordered stories."
+    },
+    {
+      "type": "text",
+      "id": "company_link_label",
+      "label": "Company link text",
+      "default": "RETURN TO COMPANY MODULE"
+    },
+    {
+      "type": "url",
+      "id": "company_link",
+      "label": "Company module link"
+    },
+    {
+      "type": "header",
+      "content": "Article information"
+    },
+    {
+      "type": "text",
+      "id": "file_card_label",
+      "label": "Information card label",
+      "default": "ARTICLE FILE"
+    },
+    {
+      "type": "text",
+      "id": "file_card_note",
+      "label": "Information card note",
+      "default": "READING NOTES"
+    },
+    {
+      "type": "text",
+      "id": "reading_time",
+      "label": "Reading time",
+      "default": "8 MIN READ"
+    },
+    {
+      "type": "text",
+      "id": "reading_label",
+      "label": "Reading time label",
+      "default": "READING TIME"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_author",
+      "label": "Show article author",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "author_label",
+      "label": "Author label",
+      "default": "WRITTEN BY"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_tags",
+      "label": "Show article tags",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "tags_label",
+      "label": "Tags label",
+      "default": "ARTICLE LENSES"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_share",
+      "label": "Show share links",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "share_label",
+      "label": "Share label",
+      "default": "SHARE THE STORY"
+    },
+    {
+      "type": "text",
+      "id": "date_format",
+      "label": "Article date format",
+      "default": "%B %d, %Y",
+      "info": "Uses Shopify date formatting."
+    },
+    {
+      "type": "header",
+      "content": "Article introduction"
+    },
+    {
+      "type": "text",
+      "id": "intro_note_label",
+      "label": "Intro note label",
+      "default": "WHY THIS STORY MATTERS"
+    },
+    {
+      "type": "textarea",
+      "id": "intro_note",
+      "label": "Intro note",
+      "default": "This story connects one company decision to the larger business system behind it."
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_drop_cap",
+      "label": "Use drop cap on first paragraph",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Desktop typography"
+    },
+    {
+      "type": "range",
+      "id": "desktop_body_size",
+      "min": 14,
+      "max": 22,
+      "step": 1,
+      "unit": "px",
+      "label": "Article body size",
+      "default": 17
+    },
+    {
+      "type": "range",
+      "id": "desktop_heading_size",
+      "min": 34,
+      "max": 62,
+      "step": 2,
+      "unit": "px",
+      "label": "Article section heading size",
+      "default": 46
+    },
+    {
+      "type": "range",
+      "id": "desktop_subheading_size",
+      "min": 26,
+      "max": 46,
+      "step": 2,
+      "unit": "px",
+      "label": "Article subheading size",
+      "default": 34
+    },
+    {
+      "type": "range",
+      "id": "desktop_label_size",
+      "min": 8,
+      "max": 15,
+      "step": 1,
+      "unit": "px",
+      "label": "Small text size",
+      "default": 9
+    },
+    {
+      "type": "range",
+      "id": "desktop_quote_size",
+      "min": 24,
+      "max": 44,
+      "step": 2,
+      "unit": "px",
+      "label": "Quote size",
+      "default": 32
+    },
+    {
+      "type": "header",
+      "content": "Mobile typography"
+    },
+    {
+      "type": "range",
+      "id": "mobile_body_size",
+      "min": 14,
+      "max": 19,
+      "step": 1,
+      "unit": "px",
+      "label": "Article body size",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "mobile_heading_size",
+      "min": 30,
+      "max": 48,
+      "step": 2,
+      "unit": "px",
+      "label": "Article section heading size",
+      "default": 38
+    },
+    {
+      "type": "range",
+      "id": "mobile_subheading_size",
+      "min": 24,
+      "max": 38,
+      "step": 2,
+      "unit": "px",
+      "label": "Article subheading size",
+      "default": 30
+    },
+    {
+      "type": "range",
+      "id": "mobile_label_size",
+      "min": 8,
+      "max": 14,
+      "step": 1,
+      "unit": "px",
+      "label": "Small text size",
+      "default": 9
+    },
+    {
+      "type": "range",
+      "id": "mobile_quote_size",
+      "min": 22,
+      "max": 36,
+      "step": 2,
+      "unit": "px",
+      "label": "Quote size",
+      "default": 28
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "max_width",
+      "label": "Section width",
+      "default": "1450px",
+      "options": [
+        {
+          "value": "1300px",
+          "label": "Narrow"
+        },
+        {
+          "value": "1450px",
+          "label": "Medium"
+        },
+        {
+          "value": "1600px",
+          "label": "Wide"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "content_width",
+      "min": 680,
+      "max": 940,
+      "step": 10,
+      "unit": "px",
+      "label": "Article content width",
+      "default": 820
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 40,
+      "max": 120,
+      "step": 5,
+      "unit": "px",
+      "label": "Top spacing",
+      "default": 70
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 40,
+      "max": 120,
+      "step": 5,
+      "unit": "px",
+      "label": "Bottom spacing",
+      "default": 80
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Section background",
+      "default": "#F2F8F6"
+    },
+    {
+      "type": "color",
+      "id": "paper_color",
+      "label": "Article paper",
+      "default": "#F7FCFA"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Main text",
+      "default": "#161B2E"
+    },
+    {
+      "type": "color",
+      "id": "muted_text_color",
+      "label": "Secondary text",
+      "default": "#646575"
+    },
+    {
+      "type": "color",
+      "id": "mint_color",
+      "label": "Mint accent",
+      "default": "#176D5C"
+    },
+    {
+      "type": "color",
+      "id": "gold_color",
+      "label": "Gold accent",
+      "default": "#E0A526"
+    },
+    {
+      "type": "color",
+      "id": "blue_color",
+      "label": "Blue accent",
+      "default": "#3A5BE0"
+    },
+    {
+      "type": "color",
+      "id": "blue_deep_color",
+      "label": "Deep blue",
+      "default": "#161B2E"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "pull_quote",
+      "name": "Pull quote",
+      "settings": [
+        {
+          "type": "select",
+          "id": "style",
+          "label": "Color",
+          "default": "gold",
+          "options": [
+            {
+              "value": "gold",
+              "label": "Gold"
+            },
+            {
+              "value": "mint",
+              "label": "Mint"
+            },
+            {
+              "value": "blue",
+              "label": "Dark blue"
+            }
+          ]
+        },
+        {
+          "type": "textarea",
+          "id": "quote",
+          "label": "Quote",
+          "default": "The company’s most important advantage is not one product. It is the system connecting all of them."
+        },
+        {
+          "type": "text",
+          "id": "source",
+          "label": "Source",
+          "default": "MINTMARK COMPANY NOTE"
+        }
+      ]
+    },
+    {
+      "type": "supporting_image",
+      "name": "Supporting image",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "caption",
+          "label": "Caption",
+          "default": "Supporting visual for this company story."
+        }
+      ]
+    },
+    {
+      "type": "key_point",
+      "name": "Key point",
+      "settings": [
+        {
+          "type": "select",
+          "id": "style",
+          "label": "Color",
+          "default": "cream",
+          "options": [
+            {
+              "value": "cream",
+              "label": "Cream"
+            },
+            {
+              "value": "gold",
+              "label": "Gold"
+            },
+            {
+              "value": "blue",
+              "label": "Dark blue"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Small heading",
+          "default": "KEY TAKEAWAY"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Connect the decision to the system."
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Text",
+          "default": "Ask how this decision changes customer behavior, revenue quality, competitive advantage or risk."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Ara Article Content",
+      "blocks": [
+        {
+          "type": "pull_quote"
+        },
+        {
+          "type": "key_point"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

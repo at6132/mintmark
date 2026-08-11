@@ -1,0 +1,1118 @@
+<section
+  id="AraMintHeatmap-{{ section.id }}"
+  class="ara-mint-heatmap"
+  style="
+    --ara-heat-bg: {{ section.settings.background_color }};
+    --ara-heat-paper: {{ section.settings.paper_color }};
+    --ara-heat-text: {{ section.settings.text_color }};
+    --ara-heat-muted: {{ section.settings.muted_text_color }};
+    --ara-heat-mint: {{ section.settings.mint_color }};
+    --ara-heat-gold: {{ section.settings.gold_color }};
+    --ara-heat-blue: {{ section.settings.blue_color }};
+    --ara-heat-blue-deep: {{ section.settings.blue_deep_color }};
+    --ara-heat-positive: {{ section.settings.positive_color }};
+    --ara-heat-negative: {{ section.settings.negative_color }};
+    --ara-heat-neutral: {{ section.settings.neutral_color }};
+    --ara-heat-border: {{ section.settings.border_color }};
+    --ara-heat-max: {{ section.settings.max_width }};
+    --ara-heat-top: {{ section.settings.padding_top }}px;
+    --ara-heat-bottom: {{ section.settings.padding_bottom }}px;
+    --ara-heat-heading-desktop: {{ section.settings.desktop_heading_size }}px;
+    --ara-heat-body-desktop: {{ section.settings.desktop_body_size }}px;
+    --ara-heat-label-desktop: {{ section.settings.desktop_label_size }}px;
+    --ara-heat-tile-title-desktop: {{ section.settings.desktop_tile_title_size }}px;
+    --ara-heat-tile-value-desktop: {{ section.settings.desktop_tile_value_size }}px;
+    --ara-heat-heading-mobile: {{ section.settings.mobile_heading_size }}px;
+    --ara-heat-body-mobile: {{ section.settings.mobile_body_size }}px;
+    --ara-heat-label-mobile: {{ section.settings.mobile_label_size }}px;
+    --ara-heat-tile-title-mobile: {{ section.settings.mobile_tile_title_size }}px;
+    --ara-heat-tile-value-mobile: {{ section.settings.mobile_tile_value_size }}px;
+  "
+>
+  <div class="ara-mint-heatmap__lines" aria-hidden="true"></div>
+
+  <div class="ara-mint-heatmap__inner">
+    <div class="ara-mint-heatmap__intro-frame">
+      <div class="ara-mint-heatmap__intro">
+        <div class="ara-mint-heatmap__copy">
+          {% if section.settings.eyebrow != blank %}
+            <span class="ara-mint-heatmap__eyebrow">
+              {{ section.settings.eyebrow | escape }}
+            </span>
+          {% endif %}
+
+          {% if section.settings.heading != blank %}
+            <h2 class="ara-mint-heatmap__heading">
+              {{ section.settings.heading | escape | newline_to_br }}
+            </h2>
+          {% endif %}
+
+          {% if section.settings.description != blank %}
+            <div class="ara-mint-heatmap__description">
+              {{ section.settings.description }}
+            </div>
+          {% endif %}
+
+          {% if section.settings.note != blank %}
+            <p class="ara-mint-heatmap__note">
+              {{ section.settings.note | escape }}
+            </p>
+          {% endif %}
+        </div>
+
+        <div class="ara-mint-heatmap__legend">
+          <div class="ara-mint-heatmap__legend-head">
+            <span>{{ section.settings.legend_heading | escape }}</span>
+            <small>{{ section.settings.legend_note | escape }}</small>
+          </div>
+
+          <div class="ara-mint-heatmap__legend-items">
+            <div>
+              <i class="ara-mint-heatmap__legend-color ara-mint-heatmap__legend-color--positive"></i>
+              <span>{{ section.settings.positive_label | escape }}</span>
+            </div>
+
+            <div>
+              <i class="ara-mint-heatmap__legend-color ara-mint-heatmap__legend-color--neutral"></i>
+              <span>{{ section.settings.neutral_label | escape }}</span>
+            </div>
+
+            <div>
+              <i class="ara-mint-heatmap__legend-color ara-mint-heatmap__legend-color--negative"></i>
+              <span>{{ section.settings.negative_label | escape }}</span>
+            </div>
+          </div>
+
+          {% if section.settings.live_note != blank %}
+            <div class="ara-mint-heatmap__live-note">
+              <span class="ara-mint-heatmap__live-dot"></span>
+              {{ section.settings.live_note | escape }}
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <div class="ara-mint-heatmap__board-frame">
+      <div class="ara-mint-heatmap__board">
+        <div class="ara-mint-heatmap__board-head">
+          <div>
+            <span>{{ section.settings.board_heading | escape }}</span>
+            <small>{{ section.settings.board_subheading | escape }}</small>
+          </div>
+
+          {% if section.settings.board_badge != blank %}
+            <span class="ara-mint-heatmap__board-badge">
+              {{ section.settings.board_badge | escape }}
+            </span>
+          {% endif %}
+        </div>
+
+        <div class="ara-mint-heatmap__grid">
+          {% for block in section.blocks %}
+            <article
+              class="ara-mint-heatmap__tile ara-mint-heatmap__tile--{{ block.settings.direction }} ara-mint-heatmap__tile--{{ block.settings.size }}"
+              {{ block.shopify_attributes }}
+            >
+              <div class="ara-mint-heatmap__tile-top">
+                <span>{{ forloop.index | prepend: '0' }}</span>
+
+                {% if block.settings.tag != blank %}
+                  <small>{{ block.settings.tag | escape }}</small>
+                {% endif %}
+              </div>
+
+              <div class="ara-mint-heatmap__tile-main">
+                <h3>{{ block.settings.title | escape }}</h3>
+
+                {% if block.settings.value != blank %}
+                  <strong>{{ block.settings.value | escape }}</strong>
+                {% endif %}
+
+                {% if block.settings.description != blank %}
+                  <p>{{ block.settings.description | escape }}</p>
+                {% endif %}
+              </div>
+
+              {% if block.settings.link_label != blank %}
+                <a
+                  class="ara-mint-heatmap__tile-link"
+                  {% if block.settings.link != blank %}
+                    href="{{ block.settings.link }}"
+                  {% else %}
+                    role="link"
+                    aria-disabled="true"
+                  {% endif %}
+                >
+                  {{ block.settings.link_label | escape }}
+                </a>
+              {% endif %}
+            </article>
+          {% endfor %}
+        </div>
+
+        {% if section.settings.footer_note != blank %}
+          <div class="ara-mint-heatmap__footer-note">
+            {{ section.settings.footer_note | escape }}
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  #AraMintHeatmap-{{ section.id }} {
+    position: relative;
+    overflow: hidden;
+    padding: var(--ara-heat-top) 0 var(--ara-heat-bottom);
+    background: var(--ara-heat-bg);
+    color: var(--ara-heat-text);
+    isolation: isolate;
+  }
+
+  #AraMintHeatmap-{{ section.id }} * {
+    box-sizing: border-box;
+  }
+
+  #AraMintHeatmap-{{ section.id }} .ara-mint-heatmap__lines {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    opacity: 0.45;
+    background-image:
+      repeating-linear-gradient(
+        to bottom,
+        transparent 0,
+        transparent 35px,
+        color-mix(in srgb, var(--ara-heat-mint) 22%, transparent) 35px,
+        color-mix(in srgb, var(--ara-heat-mint) 22%, transparent) 36px
+      );
+    pointer-events: none;
+  }
+
+  #AraMintHeatmap-{{ section.id }} .ara-mint-heatmap__inner {
+    width: min(100%, var(--ara-heat-max));
+    margin: 0 auto;
+    padding: 0 40px;
+  }
+
+  #AraMintHeatmap-{{ section.id }} .ara-mint-heatmap__intro-frame,
+  #AraMintHeatmap-{{ section.id }} .ara-mint-heatmap__board-frame {
+    padding: 7px;
+    border: 2px solid var(--ara-heat-text);
+    background: var(--ara-heat-paper);
+  }
+
+  #AraMintHeatmap-{{ section.id }} .ara-mint-heatmap__intro-frame {
+    border-radius: 24px;
+    box-shadow:
+      9px 9px 0 var(--ara-heat-gold),
+      16px 16px 0 color-mix(in srgb, var(--ara-heat-mint) 66%, transparent);
+  }
+
+  #AraMintHeatmap-{{ section.id }} .ara-mint-heatmap__intro {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(280px, 0.44fr);
+    gap: clamp(34px, 5vw, 82px);
+    align-items: center;
+    padding: clamp(34px, 4vw, 62px);
+    border: 3px solid var(--ara-heat-text);
+    border-radius: 16px;
+    background:
+      radial-gradient(
+        circle at 112% 112%,
+        color-mix(in srgb, var(--ara-heat-mint) 16%, transparent) 0 29%,
+        transparent 30%
+      ),
+      linear-gradient(
+        145deg,
+        color-mix(in srgb, var(--ara-heat-paper) 96%, white),
+        color-mix(in srgb, var(--ara-heat-bg) 92%, transparent)
+      );
+  }
+
+  #AraMintHeatmap-{{ section.id }} .ara-mint-heatmap__eyebrow,
+  #AraMintHeatmap-{{ section.id }} .ara-mint-heatmap__note,
+  #AraMintHeatmap-{{ section.id }} .ara-mint-heatmap__legend-head span,
+  #AraMintHeatmap-{{ section.id }} .ara-mint-heatmap__legend-head small,
+  #AraMintHeatmap-{{ section.id }} .ara-mint-heatmap__legend-items span,
+  #AraMintHeatmap-{{ section.id }} .ara-mint-heatmap__live-note,
+  #AraMintHeatmap-{{ section.id }} .ara-mint-heatmap__board-head span,
+  #AraMintHeatmap-{{ section.id }} .ara-mint-heatmap__board-head small,
+  #AraMintHeatmap-{{ section.id }} .ara-mint-heatmap__board-badge,
+  #AraMintHeatmap-{{ section.id }} .ara-mint-heatmap__tile-top span,
+  #AraMintHeatmap-{{ section.id }} .ara-mint-heatmap__tile-top small,
+  #AraMintHeatmap-{{ section.id }} .ara-mint-heatmap__tile-link,
+  #AraMintHeatmap-{{ section.id }} .ara-mint-heatmap__footer-note {
+    font-family: var(--font-body-family);
+    font-style: var(--font-body-style);
+    font-weight: 800;
+    line-height: 1.2;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  #AraMintHeatmap-{{ section.id }} .ara-mint-heatmap__eyebrow {
+    display: inline-flex;
+    min-height: 31px;
+    align-items: center;
+    padding: 6px 11px;
+    border: 2px solid var(--ara-heat-text);
+    border-radius: 8px;
+    background: var(--ara-heat-gold);
+    color: var(--ara-heat-text);
+    font-size: var(--ara-heat-label-desktop);
+    box-shadow: 3px 3px 0 var(--ara-heat-text);
+  }
+
+  #AraMintHeatmap-{{ section.id }} .ara-mint-heatmap__heading {
+    margin: 24px 0 0;
+    font-family: var(--font-heading-family);
+    font-size: var(--ara-heat-heading-desktop);
+    font-style: var(--font-heading-style);
+    font-weight: var(--font-heading-weight);
+    line-height: 0.94;
+    letter-spacing: -0.055em;
+  }
+
+  #AraMintHeatmap-{{ section.id }} .ara-mint-heatmap__description {
+    max-width: 760px;
+    margin-top: 25px;
+    color: var(--ara-heat-muted);
+    font-family: var(--font-body-family);
+    font-size: var(--ara-heat-body-desktop);
+    font-style: var(--font-body-style);
+    font-weight: var(--font-body-weight);
+    line-height: 1.65;
+  }
+
+  #AraMintHeatmap-{{ section.id }} .ara-mint-heatmap__description p {
+    margin: 0;
+  }
+
+  #AraMintHeatmap-{{ section.id }} .ara-mint-heatmap__note {
+    margin: 42px 0 0;
+    padding-top: 15px;
+    border-top: 1px dashed color-mix(in srgb, var(--ara-heat-text) 34%, transparent);
+    color: var(--ara-heat-muted);
+    font-size: var(--ara-heat-label-desktop);
+  }
+
+  #AraMintHeatmap-{{ section.id }} .ara-mint-heatmap__legend {
+    padding: 24px;
+    border: 2px solid var(--ara-heat-text);
+    border-radius: 14px;
+    background: var(--ara-heat-blue-deep);
+    color: #FFFFFF;
+    box-shadow: 6px 6px 0 var(--ara-heat-gold);
+  }
+
+  #AraMintHeatmap-{{ section.id }} .ara-mint-heatmap__legend-head,
+  #AraMintHeatmap-{{ section.id }} .ara-mint-heatmap__board-head {
+    display: flex;
+    justify-content: space-between;
+    gap: 14px;
+    align-items: flex-start;
+  }
+
+  #AraMintHeatmap-{{ section.id }} .ara-mint-heatmap__legend-head {
+    padding-bottom: 14px;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.74);
+  }
+
+  #AraMintHeatmap-{{ section.id }} .ara-mint-heatmap__legend-head span,
+  #AraMintHeatmap-{{ section.id }} .ara-mint-heatmap__legend-head small,
+  #AraMintHeatmap-{{ section.id }} .ara-mint-heatmap__legend-items span,
+  #AraMintHeatmap-{{ section.id }} .ara-mint-heatmap__live-note {
+    font-size: var(--ara-heat-label-desktop);
+  }
+
+  #AraMintHeatmap-{{ section.id }} .ara-mint-heatmap__legend-head small {
+    color: rgba(255, 255, 255, 0.62);
+    text-align: right;
+  }
+
+  #AraMintHeatmap-{{ section.id }} .ara-mint-heatmap__legend-items {
+    display: grid;
+    gap: 13px;
+    margin-top: 19px;
+  }
+
+  #AraMintHeatmap-{{ section.id }} .ara-mint-heatmap__legend-items > div {
+    display: grid;
+    grid-template-columns: 20px minmax(0, 1fr);
+    gap: 10px;
+    align-items: center;
+  }
+
+  #AraMintHeatmap-{{ section.id }} .ara-mint-heatmap__legend-color {
+    display: block;
+    width: 18px;
+    height: 18px;
+    border: 1px solid #FFFFFF;
+    border-radius: 4px;
+  }
+
+  #AraMintHeatmap-{{ section.id }} .ara-mint-heatmap__legend-color--positive {
+    background: var(--ara-heat-positive);
+  }
+
+  #AraMintHeatmap-{{ section.id }} .ara-mint-heatmap__legend-color--neutral {
+    background: var(--ara-heat-neutral);
+  }
+
+  #AraMintHeatmap-{{ section.id }} .ara-mint-heatmap__legend-color--negative {
+    background: var(--ara-heat-negative);
+  }
+
+  #AraMintHeatmap-{{ section.id }} .ara-mint-heatmap__live-note {
+    display: flex;
+    gap: 9px;
+    align-items: center;
+    margin-top: 21px;
+    padding-top: 15px;
+    border-top: 1px dashed rgba(255, 255, 255, 0.28);
+    color: var(--ara-heat-gold);
+  }
+
+  #AraMintHeatmap-{{ section.id }} .ara-mint-heatmap__live-dot {
+    display: block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--ara-heat-positive);
+    box-shadow: 0 0 0 4px rgba(126, 240, 138, 0.15);
+  }
+
+  #AraMintHeatmap-{{ section.id }} .ara-mint-heatmap__board-frame {
+    margin-top: 40px;
+    border-radius: 24px;
+    box-shadow:
+      9px 9px 0 var(--ara-heat-blue-deep),
+      16px 16px 0 color-mix(in srgb, var(--ara-heat-gold) 68%, transparent);
+  }
+
+  #AraMintHeatmap-{{ section.id }} .ara-mint-heatmap__board {
+    padding: 30px;
+    border: 3px solid var(--ara-heat-text);
+    border-radius: 16px;
+    background: var(--ara-heat-paper);
+  }
+
+  #AraMintHeatmap-{{ section.id }} .ara-mint-heatmap__board-head {
+    padding-bottom: 18px;
+    border-bottom: 2px solid var(--ara-heat-text);
+  }
+
+  #AraMintHeatmap-{{ section.id }} .ara-mint-heatmap__board-head > div {
+    display: grid;
+    gap: 5px;
+  }
+
+  #AraMintHeatmap-{{ section.id }} .ara-mint-heatmap__board-head span,
+  #AraMintHeatmap-{{ section.id }} .ara-mint-heatmap__board-head small,
+  #AraMintHeatmap-{{ section.id }} .ara-mint-heatmap__board-badge {
+    font-size: var(--ara-heat-label-desktop);
+  }
+
+  #AraMintHeatmap-{{ section.id }} .ara-mint-heatmap__board-head small {
+    color: var(--ara-heat-muted);
+  }
+
+  #AraMintHeatmap-{{ section.id }} .ara-mint-heatmap__board-badge {
+    padding: 5px 9px;
+    border: 1px solid var(--ara-heat-text);
+    border-radius: 999px;
+    background: var(--ara-heat-gold);
+  }
+
+  #AraMintHeatmap-{{ section.id }} .ara-mint-heatmap__grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-auto-flow: dense;
+    gap: 12px;
+    margin-top: 26px;
+  }
+
+  #AraMintHeatmap-{{ section.id }} .ara-mint-heatmap__tile {
+    position: relative;
+    display: grid;
+    align-content: space-between;
+    min-height: 205px;
+    padding: 19px;
+    border: 2px solid var(--ara-heat-text);
+    border-radius: 14px;
+    color: var(--ara-heat-text);
+    box-shadow: 4px 4px 0 var(--ara-heat-text);
+  }
+
+  #AraMintHeatmap-{{ section.id }} .ara-mint-heatmap__tile--wide {
+    grid-column: span 2;
+  }
+
+  #AraMintHeatmap-{{ section.id }} .ara-mint-heatmap__tile--tall {
+    grid-row: span 2;
+    min-height: 422px;
+  }
+
+  #AraMintHeatmap-{{ section.id }} .ara-mint-heatmap__tile--positive {
+    background: color-mix(in srgb, var(--ara-heat-positive) 72%, white);
+  }
+
+  #AraMintHeatmap-{{ section.id }} .ara-mint-heatmap__tile--negative {
+    background: color-mix(in srgb, var(--ara-heat-negative) 70%, white);
+  }
+
+  #AraMintHeatmap-{{ section.id }} .ara-mint-heatmap__tile--neutral {
+    background: color-mix(in srgb, var(--ara-heat-neutral) 68%, white);
+  }
+
+  #AraMintHeatmap-{{ section.id }} .ara-mint-heatmap__tile-top {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    padding-bottom: 12px;
+    border-bottom: 1px dashed color-mix(in srgb, var(--ara-heat-text) 28%, transparent);
+  }
+
+  #AraMintHeatmap-{{ section.id }} .ara-mint-heatmap__tile-top span,
+  #AraMintHeatmap-{{ section.id }} .ara-mint-heatmap__tile-top small,
+  #AraMintHeatmap-{{ section.id }} .ara-mint-heatmap__tile-link {
+    font-size: var(--ara-heat-label-desktop);
+  }
+
+  #AraMintHeatmap-{{ section.id }} .ara-mint-heatmap__tile-top small {
+    text-align: right;
+  }
+
+  #AraMintHeatmap-{{ section.id }} .ara-mint-heatmap__tile-main {
+    margin-top: 24px;
+  }
+
+  #AraMintHeatmap-{{ section.id }} .ara-mint-heatmap__tile h3 {
+    margin: 0;
+    font-family: var(--font-heading-family);
+    font-size: var(--ara-heat-tile-title-desktop);
+    font-style: var(--font-heading-style);
+    font-weight: var(--font-heading-weight);
+    line-height: 0.98;
+  }
+
+  #AraMintHeatmap-{{ section.id }} .ara-mint-heatmap__tile strong {
+    display: block;
+    margin-top: 15px;
+    font-family: var(--font-heading-family);
+    font-size: var(--ara-heat-tile-value-desktop);
+    line-height: 1;
+  }
+
+  #AraMintHeatmap-{{ section.id }} .ara-mint-heatmap__tile p {
+    margin: 14px 0 0;
+    font-family: var(--font-body-family);
+    font-size: var(--ara-heat-body-desktop);
+    font-style: var(--font-body-style);
+    font-weight: var(--font-body-weight);
+    line-height: 1.5;
+  }
+
+  #AraMintHeatmap-{{ section.id }} .ara-mint-heatmap__tile-link {
+    display: inline-block;
+    width: fit-content;
+    margin-top: 22px;
+    color: inherit;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+
+  #AraMintHeatmap-{{ section.id }} .ara-mint-heatmap__footer-note {
+    margin-top: 24px;
+    padding-top: 16px;
+    border-top: 1px dashed color-mix(in srgb, var(--ara-heat-text) 30%, transparent);
+    color: var(--ara-heat-muted);
+    font-size: var(--ara-heat-label-desktop);
+  }
+
+  @media screen and (max-width: 1099px) {
+    #AraMintHeatmap-{{ section.id }} .ara-mint-heatmap__intro {
+      grid-template-columns: 1fr;
+    }
+
+    #AraMintHeatmap-{{ section.id }} .ara-mint-heatmap__legend {
+      max-width: 720px;
+    }
+
+    #AraMintHeatmap-{{ section.id }} .ara-mint-heatmap__grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    #AraMintHeatmap-{{ section.id }} {
+      padding-top: calc(var(--ara-heat-top) * 0.7);
+      padding-bottom: calc(var(--ara-heat-bottom) * 0.7);
+    }
+
+    #AraMintHeatmap-{{ section.id }} .ara-mint-heatmap__inner {
+      padding: 0 20px;
+    }
+
+    #AraMintHeatmap-{{ section.id }} .ara-mint-heatmap__intro-frame,
+    #AraMintHeatmap-{{ section.id }} .ara-mint-heatmap__board-frame {
+      padding: 5px;
+    }
+
+    #AraMintHeatmap-{{ section.id }} .ara-mint-heatmap__intro-frame {
+      box-shadow:
+        5px 5px 0 var(--ara-heat-gold),
+        10px 10px 0 color-mix(in srgb, var(--ara-heat-mint) 66%, transparent);
+    }
+
+    #AraMintHeatmap-{{ section.id }} .ara-mint-heatmap__intro {
+      padding: 31px 24px 35px;
+    }
+
+    #AraMintHeatmap-{{ section.id }} .ara-mint-heatmap__heading {
+      font-size: var(--ara-heat-heading-mobile);
+    }
+
+    #AraMintHeatmap-{{ section.id }} .ara-mint-heatmap__description,
+    #AraMintHeatmap-{{ section.id }} .ara-mint-heatmap__tile p {
+      font-size: var(--ara-heat-body-mobile);
+    }
+
+    #AraMintHeatmap-{{ section.id }} .ara-mint-heatmap__eyebrow,
+    #AraMintHeatmap-{{ section.id }} .ara-mint-heatmap__note,
+    #AraMintHeatmap-{{ section.id }} .ara-mint-heatmap__legend-head span,
+    #AraMintHeatmap-{{ section.id }} .ara-mint-heatmap__legend-head small,
+    #AraMintHeatmap-{{ section.id }} .ara-mint-heatmap__legend-items span,
+    #AraMintHeatmap-{{ section.id }} .ara-mint-heatmap__live-note,
+    #AraMintHeatmap-{{ section.id }} .ara-mint-heatmap__board-head span,
+    #AraMintHeatmap-{{ section.id }} .ara-mint-heatmap__board-head small,
+    #AraMintHeatmap-{{ section.id }} .ara-mint-heatmap__board-badge,
+    #AraMintHeatmap-{{ section.id }} .ara-mint-heatmap__tile-top span,
+    #AraMintHeatmap-{{ section.id }} .ara-mint-heatmap__tile-top small,
+    #AraMintHeatmap-{{ section.id }} .ara-mint-heatmap__tile-link,
+    #AraMintHeatmap-{{ section.id }} .ara-mint-heatmap__footer-note {
+      font-size: var(--ara-heat-label-mobile);
+    }
+
+    #AraMintHeatmap-{{ section.id }} .ara-mint-heatmap__board-frame {
+      margin-top: 28px;
+      box-shadow:
+        5px 5px 0 var(--ara-heat-blue-deep),
+        10px 10px 0 color-mix(in srgb, var(--ara-heat-gold) 68%, transparent);
+    }
+
+    #AraMintHeatmap-{{ section.id }} .ara-mint-heatmap__board {
+      padding: 23px 18px;
+    }
+
+    #AraMintHeatmap-{{ section.id }} .ara-mint-heatmap__board-head {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+
+    #AraMintHeatmap-{{ section.id }} .ara-mint-heatmap__grid {
+      grid-template-columns: 1fr;
+    }
+
+    #AraMintHeatmap-{{ section.id }} .ara-mint-heatmap__tile--wide,
+    #AraMintHeatmap-{{ section.id }} .ara-mint-heatmap__tile--tall {
+      grid-column: auto;
+      grid-row: auto;
+      min-height: 0;
+    }
+
+    #AraMintHeatmap-{{ section.id }} .ara-mint-heatmap__tile h3 {
+      font-size: var(--ara-heat-tile-title-mobile);
+    }
+
+    #AraMintHeatmap-{{ section.id }} .ara-mint-heatmap__tile strong {
+      font-size: var(--ara-heat-tile-value-mobile);
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Ara Mint Heatmap",
+  "max_blocks": 12,
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Small heading",
+      "default": "MARKET HEAT MAP"
+    },
+    {
+      "type": "textarea",
+      "id": "heading",
+      "label": "Main heading",
+      "default": "See where momentum\nis building."
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description",
+      "default": "<p>Compare sectors, industries and companies at a glance. Each tile can represent performance, momentum, attention or another metric you choose.</p>"
+    },
+    {
+      "type": "text",
+      "id": "note",
+      "label": "Bottom note",
+      "default": "USE MANUAL VALUES NOW · CONNECT LIVE MARKET DATA LATER"
+    },
+    {
+      "type": "text",
+      "id": "legend_heading",
+      "label": "Legend heading",
+      "default": "HOW TO READ IT"
+    },
+    {
+      "type": "text",
+      "id": "legend_note",
+      "label": "Legend note",
+      "default": "MARKET DIRECTION"
+    },
+    {
+      "type": "text",
+      "id": "positive_label",
+      "label": "Positive label",
+      "default": "POSITIVE MOMENTUM"
+    },
+    {
+      "type": "text",
+      "id": "neutral_label",
+      "label": "Neutral label",
+      "default": "MIXED OR NEUTRAL"
+    },
+    {
+      "type": "text",
+      "id": "negative_label",
+      "label": "Negative label",
+      "default": "NEGATIVE MOMENTUM"
+    },
+    {
+      "type": "text",
+      "id": "live_note",
+      "label": "Live data note",
+      "default": "LIVE DATA READY STRUCTURE"
+    },
+    {
+      "type": "text",
+      "id": "board_heading",
+      "label": "Board heading",
+      "default": "SECTOR OVERVIEW"
+    },
+    {
+      "type": "text",
+      "id": "board_subheading",
+      "label": "Board subheading",
+      "default": "SELECTED MARKET SNAPSHOT"
+    },
+    {
+      "type": "text",
+      "id": "board_badge",
+      "label": "Board badge",
+      "default": "UPDATED MANUALLY"
+    },
+    {
+      "type": "text",
+      "id": "footer_note",
+      "label": "Footer note",
+      "default": "THESE VALUES ARE EDITABLE PLACEHOLDERS UNTIL A LIVE DATA SOURCE IS CONNECTED."
+    },
+    {
+      "type": "header",
+      "content": "Desktop typography"
+    },
+    {
+      "type": "range",
+      "id": "desktop_heading_size",
+      "min": 44,
+      "max": 92,
+      "step": 2,
+      "unit": "px",
+      "label": "Main heading size",
+      "default": 68
+    },
+    {
+      "type": "range",
+      "id": "desktop_body_size",
+      "min": 13,
+      "max": 22,
+      "step": 1,
+      "unit": "px",
+      "label": "Body text size",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "desktop_label_size",
+      "min": 8,
+      "max": 15,
+      "step": 1,
+      "unit": "px",
+      "label": "Small text size",
+      "default": 9
+    },
+    {
+      "type": "range",
+      "id": "desktop_tile_title_size",
+      "min": 24,
+      "max": 48,
+      "step": 1,
+      "unit": "px",
+      "label": "Tile heading size",
+      "default": 31
+    },
+    {
+      "type": "range",
+      "id": "desktop_tile_value_size",
+      "min": 28,
+      "max": 58,
+      "step": 1,
+      "unit": "px",
+      "label": "Tile value size",
+      "default": 40
+    },
+    {
+      "type": "header",
+      "content": "Mobile typography"
+    },
+    {
+      "type": "range",
+      "id": "mobile_heading_size",
+      "min": 36,
+      "max": 66,
+      "step": 2,
+      "unit": "px",
+      "label": "Main heading size",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "mobile_body_size",
+      "min": 13,
+      "max": 19,
+      "step": 1,
+      "unit": "px",
+      "label": "Body text size",
+      "default": 15
+    },
+    {
+      "type": "range",
+      "id": "mobile_label_size",
+      "min": 8,
+      "max": 14,
+      "step": 1,
+      "unit": "px",
+      "label": "Small text size",
+      "default": 9
+    },
+    {
+      "type": "range",
+      "id": "mobile_tile_title_size",
+      "min": 24,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "label": "Tile heading size",
+      "default": 29
+    },
+    {
+      "type": "range",
+      "id": "mobile_tile_value_size",
+      "min": 28,
+      "max": 48,
+      "step": 1,
+      "unit": "px",
+      "label": "Tile value size",
+      "default": 36
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "max_width",
+      "label": "Content width",
+      "default": "1600px",
+      "options": [
+        {
+          "value": "1300px",
+          "label": "Narrow"
+        },
+        {
+          "value": "1450px",
+          "label": "Medium"
+        },
+        {
+          "value": "1600px",
+          "label": "Wide"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 40,
+      "max": 120,
+      "step": 5,
+      "unit": "px",
+      "label": "Top spacing",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 40,
+      "max": 120,
+      "step": 5,
+      "unit": "px",
+      "label": "Bottom spacing",
+      "default": 80
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Section background",
+      "default": "#F2F8F6"
+    },
+    {
+      "type": "color",
+      "id": "paper_color",
+      "label": "Paper background",
+      "default": "#F7FCFA"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Main text",
+      "default": "#161B2E"
+    },
+    {
+      "type": "color",
+      "id": "muted_text_color",
+      "label": "Secondary text",
+      "default": "#646575"
+    },
+    {
+      "type": "color",
+      "id": "mint_color",
+      "label": "Mint accent",
+      "default": "#176D5C"
+    },
+    {
+      "type": "color",
+      "id": "gold_color",
+      "label": "Gold accent",
+      "default": "#E0A526"
+    },
+    {
+      "type": "color",
+      "id": "blue_color",
+      "label": "Blue accent",
+      "default": "#3A5BE0"
+    },
+    {
+      "type": "color",
+      "id": "blue_deep_color",
+      "label": "Deep blue",
+      "default": "#22389A"
+    },
+    {
+      "type": "color",
+      "id": "positive_color",
+      "label": "Positive color",
+      "default": "#7BCB83"
+    },
+    {
+      "type": "color",
+      "id": "negative_color",
+      "label": "Negative color",
+      "default": "#EF927B"
+    },
+    {
+      "type": "color",
+      "id": "neutral_color",
+      "label": "Neutral color",
+      "default": "#E3C36B"
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Soft border",
+      "default": "#C9BEA8"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "heat_tile",
+      "name": "Heatmap tile",
+      "settings": [
+        {
+          "type": "select",
+          "id": "direction",
+          "label": "Direction",
+          "default": "positive",
+          "options": [
+            {
+              "value": "positive",
+              "label": "Positive"
+            },
+            {
+              "value": "neutral",
+              "label": "Neutral"
+            },
+            {
+              "value": "negative",
+              "label": "Negative"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "size",
+          "label": "Tile size",
+          "default": "standard",
+          "options": [
+            {
+              "value": "standard",
+              "label": "Standard"
+            },
+            {
+              "value": "wide",
+              "label": "Wide"
+            },
+            {
+              "value": "tall",
+              "label": "Tall"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "tag",
+          "label": "Small tag",
+          "default": "SECTOR"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "default": "Technology"
+        },
+        {
+          "type": "text",
+          "id": "value",
+          "label": "Value",
+          "default": "+2.8%"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description",
+          "default": "Software, semiconductors and large platform companies are leading the current move."
+        },
+        {
+          "type": "text",
+          "id": "link_label",
+          "label": "Link text",
+          "default": "EXPLORE SECTOR"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Ara Mint Heatmap",
+      "blocks": [
+        {
+          "type": "heat_tile",
+          "settings": {
+            "direction": "positive",
+            "size": "wide",
+            "tag": "SECTOR",
+            "title": "Technology",
+            "value": "+2.8%",
+            "description": "Software, semiconductors and large platform companies are leading the current move.",
+            "link_label": "EXPLORE SECTOR"
+          }
+        },
+        {
+          "type": "heat_tile",
+          "settings": {
+            "direction": "neutral",
+            "size": "standard",
+            "tag": "SECTOR",
+            "title": "Financials",
+            "value": "+0.3%",
+            "description": "Banks and insurers are mixed as rates and credit conditions pull in different directions.",
+            "link_label": "EXPLORE SECTOR"
+          }
+        },
+        {
+          "type": "heat_tile",
+          "settings": {
+            "direction": "negative",
+            "size": "standard",
+            "tag": "SECTOR",
+            "title": "Consumer",
+            "value": "-1.1%",
+            "description": "Spending-sensitive companies are under pressure as demand expectations soften.",
+            "link_label": "EXPLORE SECTOR"
+          }
+        },
+        {
+          "type": "heat_tile",
+          "settings": {
+            "direction": "positive",
+            "size": "tall",
+            "tag": "LEADER",
+            "title": "Semiconductors",
+            "value": "+4.6%",
+            "description": "Chip demand, infrastructure spending and AI investment are creating strong momentum across the group.",
+            "link_label": "VIEW INDUSTRY"
+          }
+        },
+        {
+          "type": "heat_tile",
+          "settings": {
+            "direction": "neutral",
+            "size": "standard",
+            "tag": "SECTOR",
+            "title": "Healthcare",
+            "value": "+0.1%",
+            "description": "Defensive demand remains steady while company-specific results create a mixed picture.",
+            "link_label": "EXPLORE SECTOR"
+          }
+        },
+        {
+          "type": "heat_tile",
+          "settings": {
+            "direction": "negative",
+            "size": "wide",
+            "tag": "SECTOR",
+            "title": "Energy",
+            "value": "-2.2%",
+            "description": "Commodity pricing and supply expectations are weighing on the sector.",
+            "link_label": "EXPLORE SECTOR"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

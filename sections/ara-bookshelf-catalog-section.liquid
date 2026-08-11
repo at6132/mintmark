@@ -1,0 +1,2466 @@
+{% liquid
+  assign use_collection = false
+
+  if section.settings.source_mode == 'collection' and section.settings.book_collection != blank
+    assign use_collection = true
+  endif
+
+  assign book_count = section.blocks.size
+
+  if use_collection
+    assign book_count = section.settings.max_products
+    if section.settings.book_collection.products_count < book_count
+      assign book_count = section.settings.book_collection.products_count
+    endif
+  endif
+%}
+
+<section
+  id="AraBookshelfCatalog-{{ section.id }}"
+  class="ara-bookshelf-wall"
+  style="
+    --ara-bw-bg: {{ section.settings.background_color }};
+    --ara-bw-paper: {{ section.settings.paper_color }};
+    --ara-bw-ink: {{ section.settings.text_color }};
+    --ara-bw-muted: {{ section.settings.muted_text_color }};
+    --ara-bw-mint: {{ section.settings.mint_color }};
+    --ara-bw-gold: {{ section.settings.gold_color }};
+    --ara-bw-trim: {{ section.settings.trim_color }};
+    --ara-bw-trim-secondary: {{ section.settings.trim_secondary_color }};
+    --ara-bw-radius: {{ section.settings.corner_rounding }}px;
+    --ara-bw-blue: {{ section.settings.blue_color }};
+    --ara-bw-deep: {{ section.settings.blue_deep_color }};
+    --ara-bw-frame: {{ section.settings.cabinet_color }};
+    --ara-bw-frame-dark: {{ section.settings.cabinet_edge_color }};
+    --ara-bw-stage: {{ section.settings.shelf_back_color }};
+    --ara-bw-max: {{ section.settings.max_width }};
+    --ara-bw-top: {{ section.settings.padding_top }}px;
+    --ara-bw-bottom: {{ section.settings.padding_bottom }}px;
+    --ara-bw-heading-desktop: {{ section.settings.desktop_heading_size }}px;
+    --ara-bw-body-desktop: {{ section.settings.desktop_body_size }}px;
+    --ara-bw-label-desktop: {{ section.settings.desktop_label_size }}px;
+    --ara-bw-title-desktop: {{ section.settings.desktop_detail_title_size }}px;
+    --ara-bw-heading-mobile: {{ section.settings.mobile_heading_size }}px;
+    --ara-bw-body-mobile: {{ section.settings.mobile_body_size }}px;
+    --ara-bw-label-mobile: {{ section.settings.mobile_label_size }}px;
+    --ara-bw-title-mobile: {{ section.settings.mobile_detail_title_size }}px;
+  "
+>
+  <div class="ara-bookshelf-wall__rules" aria-hidden="true"></div>
+
+  <div class="ara-bookshelf-wall__inner">
+    <header class="ara-bookshelf-wall__intro">
+      <div class="ara-bookshelf-wall__intro-main">
+        {% if section.settings.eyebrow != blank %}
+          <p class="ara-bookshelf-wall__eyebrow">
+            {{ section.settings.eyebrow | escape }}
+          </p>
+        {% endif %}
+
+        {% if section.settings.heading != blank %}
+          <h2>{{ section.settings.heading | escape | newline_to_br }}</h2>
+        {% endif %}
+      </div>
+
+      <div class="ara-bookshelf-wall__intro-side">
+        {% if section.settings.description != blank %}
+          <div class="ara-bookshelf-wall__description">
+            {{ section.settings.description }}
+          </div>
+        {% endif %}
+
+        <div class="ara-bookshelf-wall__count">
+          <strong>{{ book_count | prepend: '0' | slice: -2, 2 }}</strong>
+          <span>{{ section.settings.volume_count_label | escape }}</span>
+        </div>
+      </div>
+    </header>
+
+    <div class="ara-bookshelf-wall__toolbar">
+      {% if section.settings.show_filters %}
+        <div
+          class="ara-bookshelf-wall__filters"
+          role="group"
+          aria-label="{{ section.settings.filter_accessibility_label | escape }}"
+        >
+          <button
+            type="button"
+            class="is-active"
+            data-ara-filter="all"
+            aria-pressed="true"
+          >
+            {{ section.settings.filter_all_label | escape }}
+          </button>
+
+          <button type="button" data-ara-filter="technology" aria-pressed="false">
+            {{ section.settings.filter_technology_label | escape }}
+          </button>
+
+          <button type="button" data-ara-filter="financials" aria-pressed="false">
+            {{ section.settings.filter_financials_label | escape }}
+          </button>
+
+          <button type="button" data-ara-filter="consumer" aria-pressed="false">
+            {{ section.settings.filter_consumer_label | escape }}
+          </button>
+
+          <button type="button" data-ara-filter="other" aria-pressed="false">
+            {{ section.settings.filter_other_label | escape }}
+          </button>
+        </div>
+      {% endif %}
+
+      <label class="ara-bookshelf-wall__sort">
+        <span>SORT</span>
+        <select data-ara-sort>
+          <option value="original">CURATED ORDER</option>
+          <option value="height">MARKET VALUE</option>
+          <option value="width">COMPANY AGE</option>
+          <option value="name">COMPANY A–Z</option>
+        </select>
+      </label>
+    </div>
+
+    <div class="ara-bookshelf-wall__display">
+      <aside class="ara-bookshelf-wall__selected" aria-live="polite">
+        <div class="ara-bookshelf-wall__selected-top">
+          <span data-ara-selected-volume>VOL. 01</span>
+          <span data-ara-selected-sector>TECHNOLOGY</span>
+        </div>
+
+        <div class="ara-bookshelf-wall__selected-monogram" data-ara-selected-monogram>
+          A
+        </div>
+
+        <p class="ara-bookshelf-wall__selected-label">
+          {{ section.settings.detail_eyebrow | escape }}
+        </p>
+
+        <h3 data-ara-selected-name>Apple</h3>
+
+        <div class="ara-bookshelf-wall__selected-meta">
+          <span data-ara-selected-ticker>NASDAQ: AAPL</span>
+          <span data-ara-selected-hq>CUPERTINO · USA</span>
+        </div>
+
+        <p class="ara-bookshelf-wall__selected-summary" data-ara-selected-summary>
+          Understand how Apple combines hardware, software and services into one connected economic system.
+        </p>
+
+        <div class="ara-bookshelf-wall__selected-action" data-ara-selected-action>
+          <a href="/pages/apple">OPEN COMPANY MODULE</a>
+        </div>
+
+        <div class="ara-bookshelf-wall__measure-key">
+          <div>
+            <span class="ara-bookshelf-wall__measure-line ara-bookshelf-wall__measure-line--height"></span>
+            <p>
+              <strong>{{ section.settings.shelf_one_label | escape }}</strong>
+              <small>{{ section.settings.shelf_two_note | escape }}</small>
+            </p>
+          </div>
+
+          <div>
+            <span class="ara-bookshelf-wall__measure-line ara-bookshelf-wall__measure-line--width"></span>
+            <p>
+              <strong>{{ section.settings.shelf_one_note | escape }}</strong>
+              <small>{{ section.settings.shelf_three_note | escape }}</small>
+            </p>
+          </div>
+        </div>
+      </aside>
+
+      <div class="ara-bookshelf-wall__frame">
+        <div class="ara-bookshelf-wall__frame-head">
+          <div class="ara-bookshelf-wall__brand-mark">
+            {% if section.settings.emblem != blank %}
+              {{
+                section.settings.emblem
+                | image_url: width: 360
+                | image_tag:
+                  widths: '80, 120, 180, 260, 360',
+                  sizes: '48px',
+                  loading: 'lazy',
+                  class: 'ara-bookshelf-wall__brand-image',
+                  alt: section.settings.emblem.alt
+              }}
+            {% else %}
+              <span>M</span>
+            {% endif %}
+          </div>
+
+          <div class="ara-bookshelf-wall__frame-title">
+            <span>{{ section.settings.cabinet_heading | escape }}</span>
+            <small>{{ section.settings.cabinet_note | escape }}</small>
+          </div>
+
+          <div class="ara-bookshelf-wall__frame-index">
+            <span>{{ book_count | prepend: '0' | slice: -2, 2 }}</span>
+            <small>VOLUMES</small>
+          </div>
+        </div>
+
+        <div class="ara-bookshelf-wall__stage">
+          <div class="ara-bookshelf-wall__stage-grid" aria-hidden="true"></div>
+
+          <div class="ara-bookshelf-wall__stage-labels">
+            <span>MARKET VALUE ↑</span>
+            <span>COMPANY AGE →</span>
+          </div>
+
+          <div class="ara-bookshelf-wall__viewport" data-ara-track>
+            <div class="ara-bookshelf-wall__books" data-ara-container role="list">
+              {% if use_collection %}
+                {% for product in section.settings.book_collection.products limit: section.settings.max_products %}
+                  {% liquid
+                    assign company_name = product.metafields.custom.company_name.value | default: product.title
+                    assign spine_title = product.metafields.custom.spine_title.value | default: company_name
+                    assign ticker = product.metafields.custom.company_ticker.value
+                    assign sector = product.metafields.custom.company_sector.value | default: 'other' | handleize
+                    assign headquarters = product.metafields.custom.company_headquarters.value
+                    assign summary = product.metafields.custom.company_summary.value | default: product.description | strip_html | truncatewords: 30
+                    assign module_url = product.metafields.custom.company_module_url.value
+                    assign book_height = product.metafields.custom.bookshelf_height.value | default: 350
+                    assign book_width = product.metafields.custom.bookshelf_width.value | default: 66
+                    assign color_style = product.metafields.custom.bookshelf_color.value | default: 'navy' | handleize
+                    assign volume = product.metafields.custom.volume_number.value | default: forloop.index | prepend: 'VOL. 0'
+                    assign primary_url = product.url
+                    assign primary_label = section.settings.default_product_label
+
+                    if section.settings.collection_click_target == 'module' and module_url != blank
+                      assign primary_url = module_url
+                      assign primary_label = section.settings.default_module_label
+                    endif
+
+                    assign mobile_height = book_height | times: 0.76 | round
+                    assign mobile_width = book_width | times: 0.9 | round
+                    assign monogram = company_name | slice: 0, 1
+                  %}
+
+                  <a
+                    href="{{ primary_url }}"
+                    class="ara-bookshelf-wall__book ara-bookshelf-wall__book--{{ color_style }}{% if forloop.first %} is-selected{% endif %}"
+                    style="
+                      --ara-book-height: {{ book_height }}px;
+                      --ara-book-width: {{ book_width }}px;
+                      --ara-book-height-mobile: {{ mobile_height }}px;
+                      --ara-book-width-mobile: {{ mobile_width }}px;
+                    "
+                    data-ara-book
+                    data-ara-sector="{{ sector }}"
+                    data-ara-name="{{ company_name | escape }}"
+                    data-ara-height="{{ book_height }}"
+                    data-ara-width="{{ book_width }}"
+                    data-ara-volume="{{ volume | escape }}"
+                    data-ara-status="{{ section.settings.available_label | escape }}"
+                    data-ara-ticker="{{ ticker | escape }}"
+                    data-ara-headquarters="{{ headquarters | escape }}"
+                    data-ara-summary="{{ summary | escape }}"
+                    data-ara-url="{{ primary_url }}"
+                    data-ara-link-label="{{ primary_label | escape }}"
+                    data-ara-monogram="{{ monogram | escape }}"
+                    role="listitem"
+                    aria-label="{{ primary_label | escape }}: {{ company_name | escape }}"
+                  >
+                    <span class="ara-bookshelf-wall__book-cap" aria-hidden="true"></span>
+                    <span class="ara-bookshelf-wall__book-volume">{{ volume | escape }}</span>
+                    <span class="ara-bookshelf-wall__book-name">{{ spine_title | escape }}</span>
+                    <span class="ara-bookshelf-wall__book-monogram">{{ monogram | escape }}</span>
+                    <span class="ara-bookshelf-wall__book-status">{{ section.settings.available_label | escape }}</span>
+                  </a>
+                {% endfor %}
+              {% else %}
+                {% for block in section.blocks %}
+                  {% liquid
+                    assign digest_url = block.settings.digest_link
+
+                    if block.settings.digest_product != blank and digest_url == blank
+                      assign digest_url = block.settings.digest_product.url
+                    endif
+
+                    assign primary_url = digest_url
+                    assign primary_label = block.settings.digest_button_label
+
+                    if block.settings.primary_destination == 'module'
+                      assign primary_url = block.settings.module_link
+                      assign primary_label = block.settings.module_button_label
+                    endif
+
+                    if primary_url == blank and block.settings.module_link != blank
+                      assign primary_url = block.settings.module_link
+                      assign primary_label = block.settings.module_button_label
+                    elsif primary_url == blank and digest_url != blank
+                      assign primary_url = digest_url
+                      assign primary_label = block.settings.digest_button_label
+                    endif
+
+                    assign effective_status = block.settings.status
+                    assign available = false
+
+                    if primary_url != blank
+                      assign available = true
+                    else
+                      assign effective_status = section.settings.coming_soon_label
+                    endif
+
+                    assign mobile_height = block.settings.spine_height | times: 0.76 | round
+                    assign mobile_width = block.settings.spine_width | times: 0.9 | round
+                    assign monogram = block.settings.company_name | slice: 0, 1
+                  %}
+
+                  {% if available %}
+                    <a
+                      href="{{ primary_url }}"
+                      class="ara-bookshelf-wall__book ara-bookshelf-wall__book--{{ block.settings.color }}{% if forloop.first %} is-selected{% endif %}"
+                      style="
+                        --ara-book-height: {{ block.settings.spine_height }}px;
+                        --ara-book-width: {{ block.settings.spine_width }}px;
+                        --ara-book-height-mobile: {{ mobile_height }}px;
+                        --ara-book-width-mobile: {{ mobile_width }}px;
+                      "
+                      data-ara-book
+                      data-ara-sector="{{ block.settings.sector }}"
+                      data-ara-name="{{ block.settings.company_name | escape }}"
+                      data-ara-height="{{ block.settings.spine_height }}"
+                      data-ara-width="{{ block.settings.spine_width }}"
+                      data-ara-volume="{{ block.settings.volume | escape }}"
+                      data-ara-status="{{ effective_status | escape }}"
+                      data-ara-ticker="{{ block.settings.ticker | escape }}"
+                      data-ara-headquarters="{{ block.settings.headquarters | escape }}"
+                      data-ara-summary="{{ block.settings.summary | escape }}"
+                      data-ara-url="{{ primary_url }}"
+                      data-ara-link-label="{{ primary_label | escape }}"
+                      data-ara-monogram="{{ monogram | escape }}"
+                      role="listitem"
+                      aria-label="{{ primary_label | escape }}: {{ block.settings.company_name | escape }}"
+                      {{ block.shopify_attributes }}
+                    >
+                  {% else %}
+                    <button
+                      type="button"
+                      class="ara-bookshelf-wall__book ara-bookshelf-wall__book--{{ block.settings.color }} ara-bookshelf-wall__book--unavailable{% if forloop.first %} is-selected{% endif %}"
+                      style="
+                        --ara-book-height: {{ block.settings.spine_height }}px;
+                        --ara-book-width: {{ block.settings.spine_width }}px;
+                        --ara-book-height-mobile: {{ mobile_height }}px;
+                        --ara-book-width-mobile: {{ mobile_width }}px;
+                      "
+                      data-ara-book
+                      data-ara-sector="{{ block.settings.sector }}"
+                      data-ara-name="{{ block.settings.company_name | escape }}"
+                      data-ara-height="{{ block.settings.spine_height }}"
+                      data-ara-width="{{ block.settings.spine_width }}"
+                      data-ara-volume="{{ block.settings.volume | escape }}"
+                      data-ara-status="{{ effective_status | escape }}"
+                      data-ara-ticker="{{ block.settings.ticker | escape }}"
+                      data-ara-headquarters="{{ block.settings.headquarters | escape }}"
+                      data-ara-summary="{{ block.settings.summary | escape }}"
+                      data-ara-url=""
+                      data-ara-link-label="{{ section.settings.coming_soon_label | escape }}"
+                      data-ara-monogram="{{ monogram | escape }}"
+                      role="listitem"
+                      aria-label="{{ block.settings.company_name | escape }} — {{ effective_status | escape }}"
+                      {{ block.shopify_attributes }}
+                    >
+                  {% endif %}
+
+                    <span class="ara-bookshelf-wall__book-cap" aria-hidden="true"></span>
+                    <span class="ara-bookshelf-wall__book-volume">{{ block.settings.volume | escape }}</span>
+
+                    {% if block.settings.spine_image != blank %}
+                      <span class="ara-bookshelf-wall__book-art" aria-hidden="true">
+                        {{
+                          block.settings.spine_image
+                          | image_url: width: 180
+                          | image_tag:
+                            widths: '60, 90, 120, 180',
+                            sizes: '48px',
+                            loading: 'lazy',
+                            alt: ''
+                        }}
+                      </span>
+                    {% endif %}
+
+                    <span class="ara-bookshelf-wall__book-name">
+                      {{ block.settings.spine_title | default: block.settings.company_name | escape }}
+                    </span>
+
+                    <span class="ara-bookshelf-wall__book-monogram">{{ monogram | escape }}</span>
+                    <span class="ara-bookshelf-wall__book-status">{{ effective_status | escape }}</span>
+
+                  {% if available %}
+                    </a>
+                  {% else %}
+                    </button>
+                  {% endif %}
+                {% endfor %}
+              {% endif %}
+            </div>
+          </div>
+
+          <p class="ara-bookshelf-wall__empty" data-ara-empty hidden>
+            {{ section.settings.empty_message | escape }}
+          </p>
+
+          <div class="ara-bookshelf-wall__shelf" aria-hidden="true">
+            <span></span>
+          </div>
+        </div>
+
+        <div class="ara-bookshelf-wall__frame-foot">
+          <button
+            type="button"
+            data-ara-scroll="-1"
+            aria-label="{{ section.settings.previous_label | escape }}"
+          >
+            ←
+          </button>
+
+          <div class="ara-bookshelf-wall__progress" aria-hidden="true">
+            <span data-ara-progress></span>
+          </div>
+
+          <div class="ara-bookshelf-wall__foot-note">
+            <span>{{ section.settings.base_label | escape }}</span>
+          </div>
+
+          <button
+            type="button"
+            data-ara-scroll="1"
+            aria-label="{{ section.settings.next_label | escape }}"
+          >
+            →
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <footer class="ara-bookshelf-wall__pathway">
+      <div>
+        <span>{{ section.settings.pathway_eyebrow | escape }}</span>
+        <h3>{{ section.settings.pathway_heading | escape }}</h3>
+        <p>{{ section.settings.pathway_text | escape }}</p>
+      </div>
+
+      <div class="ara-bookshelf-wall__pathway-links">
+        {% if section.settings.module_path_label != blank %}
+          <a
+            {% if section.settings.module_path_link != blank %}
+              href="{{ section.settings.module_path_link }}"
+            {% else %}
+              role="link"
+              aria-disabled="true"
+            {% endif %}
+          >
+            {{ section.settings.module_path_label | escape }}
+            <span aria-hidden="true">→</span>
+          </a>
+        {% endif %}
+
+        {% if section.settings.mint_path_label != blank %}
+          <a
+            class="ara-bookshelf-wall__pathway-link--secondary"
+            {% if section.settings.mint_path_link != blank %}
+              href="{{ section.settings.mint_path_link }}"
+            {% else %}
+              role="link"
+              aria-disabled="true"
+            {% endif %}
+          >
+            {{ section.settings.mint_path_label | escape }}
+            <span aria-hidden="true">→</span>
+          </a>
+        {% endif %}
+      </div>
+    </footer>
+  </div>
+</section>
+
+<style>
+  #AraBookshelfCatalog-{{ section.id }} {
+    position: relative;
+    overflow: hidden;
+    padding: var(--ara-bw-top) 0 var(--ara-bw-bottom);
+    background: var(--ara-bw-bg);
+    color: var(--ara-bw-ink);
+  }
+
+  #AraBookshelfCatalog-{{ section.id }} * {
+    box-sizing: border-box;
+  }
+
+  #AraBookshelfCatalog-{{ section.id }} a {
+    color: inherit;
+  }
+
+  #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__rules {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+      repeating-linear-gradient(
+        to bottom,
+        transparent 0 35px,
+        color-mix(in srgb, var(--ara-bw-mint) 10%, transparent) 35px 36px
+      );
+  }
+
+  #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__inner {
+    position: relative;
+    width: min(100%, var(--ara-bw-max));
+    margin: 0 auto;
+    padding: 0 40px;
+  }
+
+  #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__intro {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(340px, 0.85fr);
+    gap: 56px;
+    align-items: end;
+    padding: 26px 0 31px;
+    border-top: 4px solid var(--ara-bw-ink);
+    border-bottom: 1px solid var(--ara-bw-ink);
+  }
+
+  #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__eyebrow,
+  #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__pathway > div > span {
+    margin: 0;
+    color: var(--ara-bw-mint);
+    font-family: var(--font-body-family);
+    font-size: var(--ara-bw-label-desktop);
+    font-weight: 900;
+    letter-spacing: 0.17em;
+    line-height: 1.2;
+    text-transform: uppercase;
+  }
+
+  #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__intro h2 {
+    margin: 12px 0 0;
+    font-family: var(--font-heading-family);
+    font-size: var(--ara-bw-heading-desktop);
+    font-style: var(--font-heading-style);
+    font-weight: var(--font-heading-weight);
+    letter-spacing: -0.055em;
+    line-height: 0.93;
+  }
+
+  #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__intro-side {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 28px;
+    align-items: end;
+  }
+
+  #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__description {
+    color: var(--ara-bw-muted);
+    font-family: var(--font-body-family);
+    font-size: var(--ara-bw-body-desktop);
+    line-height: 1.62;
+  }
+
+  #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__description p {
+    margin: 0;
+  }
+
+  #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__count {
+    display: grid;
+    justify-items: end;
+    gap: 5px;
+  }
+
+  #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__count strong {
+    font-family: var(--font-heading-family);
+    font-size: 45px;
+    font-style: italic;
+    font-weight: 600;
+    line-height: 0.8;
+  }
+
+  #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__count span {
+    max-width: 130px;
+    color: var(--ara-bw-muted);
+    font-family: var(--font-body-family);
+    font-size: var(--ara-bw-label-desktop);
+    font-weight: 900;
+    letter-spacing: 0.12em;
+    line-height: 1.3;
+    text-align: right;
+    text-transform: uppercase;
+  }
+
+  #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__toolbar {
+    display: flex;
+    justify-content: space-between;
+    gap: 18px;
+    align-items: center;
+    padding: 18px 0 12px;
+  }
+
+  #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+  }
+
+  #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__filters button,
+  #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__sort select {
+    min-height: 36px;
+    padding: 8px 12px;
+    border: 1px solid var(--ara-bw-ink);
+    border-radius: 0;
+    background: var(--ara-bw-paper);
+    color: var(--ara-bw-ink);
+    font-family: var(--font-body-family);
+    font-size: var(--ara-bw-label-desktop);
+    font-weight: 900;
+    letter-spacing: 0.11em;
+    text-transform: uppercase;
+  }
+
+  #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__filters button {
+    cursor: pointer;
+  }
+
+  #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__filters button.is-active {
+    background: var(--ara-bw-gold);
+    box-shadow: 3px 3px 0 var(--ara-bw-ink);
+  }
+
+  #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__sort {
+    display: flex;
+    gap: 9px;
+    align-items: center;
+  }
+
+  #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__sort > span {
+    color: var(--ara-bw-muted);
+    font-family: var(--font-body-family);
+    font-size: var(--ara-bw-label-desktop);
+    font-weight: 900;
+    letter-spacing: 0.12em;
+  }
+
+  #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__display {
+    display: grid;
+    grid-template-columns: minmax(280px, 0.34fr) minmax(0, 1.66fr);
+    gap: 22px;
+    align-items: stretch;
+    margin-top: 26px;
+  }
+
+  #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__selected {
+    display: flex;
+    min-height: 610px;
+    flex-direction: column;
+    overflow: hidden;
+    padding: 25px;
+    border: 1px solid var(--ara-bw-ink);
+    border-radius: var(--ara-bw-radius);
+    background: var(--ara-bw-paper);
+    box-shadow: 8px 8px 0 color-mix(in srgb, var(--ara-bw-trim-secondary) 25%, transparent);
+  }
+
+  #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__selected-top {
+    display: flex;
+    justify-content: space-between;
+    gap: 14px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid var(--ara-bw-ink);
+  }
+
+  #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__selected-top span,
+  #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__selected-label,
+  #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__selected-meta span,
+  #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__measure-key strong,
+  #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__measure-key small {
+    font-family: var(--font-body-family);
+    font-size: var(--ara-bw-label-desktop);
+    font-weight: 900;
+    letter-spacing: 0.11em;
+    line-height: 1.3;
+    text-transform: uppercase;
+  }
+
+  #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__selected-top span:first-child,
+  #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__selected-label {
+    color: var(--ara-bw-mint);
+  }
+
+  #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__selected-monogram {
+    display: grid;
+    width: 98px;
+    height: 98px;
+    place-items: center;
+    margin-top: 32px;
+    border: 1px solid var(--ara-bw-ink);
+    background: var(--ara-bw-frame);
+    color: var(--ara-bw-paper);
+    font-family: var(--font-heading-family);
+    font-size: 50px;
+    font-weight: 700;
+  }
+
+  #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__selected-label {
+    margin: 31px 0 0;
+  }
+
+  #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__selected h3 {
+    margin: 8px 0 0;
+    font-family: var(--font-heading-family);
+    font-size: var(--ara-bw-title-desktop);
+    font-style: var(--font-heading-style);
+    font-weight: var(--font-heading-weight);
+    letter-spacing: -0.045em;
+    line-height: 0.96;
+  }
+
+  #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__selected-meta {
+    display: grid;
+    gap: 7px;
+    margin-top: 17px;
+  }
+
+  #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__selected-summary {
+    margin: 19px 0 0;
+    color: var(--ara-bw-muted);
+    font-family: var(--font-body-family);
+    font-size: var(--ara-bw-body-desktop);
+    line-height: 1.62;
+  }
+
+  #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__selected-action {
+    margin-top: 23px;
+  }
+
+  #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__selected-action a,
+  #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__selected-action span {
+    display: inline-flex;
+    min-height: 46px;
+    align-items: center;
+    justify-content: center;
+    padding: 11px 16px;
+    border: 1px solid var(--ara-bw-ink);
+    background: var(--ara-bw-ink);
+    color: #FFFFFF;
+    font-family: var(--font-body-family);
+    font-size: var(--ara-bw-label-desktop);
+    font-weight: 900;
+    letter-spacing: 0.1em;
+    text-decoration: none;
+    text-transform: uppercase;
+  }
+
+  #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__selected-action span {
+    opacity: 0.52;
+  }
+
+  #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__measure-key {
+    display: grid;
+    gap: 14px;
+    margin-top: auto;
+    padding-top: 28px;
+    border-top: 1px solid color-mix(in srgb, var(--ara-bw-ink) 28%, transparent);
+  }
+
+  #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__measure-key > div {
+    display: grid;
+    grid-template-columns: 35px minmax(0, 1fr);
+    gap: 12px;
+    align-items: center;
+  }
+
+  #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__measure-key p {
+    display: grid;
+    gap: 3px;
+    margin: 0;
+  }
+
+  #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__measure-key small {
+    color: var(--ara-bw-muted);
+    font-weight: 700;
+  }
+
+  #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__measure-line {
+    position: relative;
+    display: block;
+    background: var(--ara-bw-gold);
+  }
+
+  #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__measure-line::before,
+  #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__measure-line::after {
+    content: "";
+    position: absolute;
+    background: var(--ara-bw-gold);
+  }
+
+  #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__measure-line--height {
+    width: 2px;
+    height: 30px;
+    margin-left: 16px;
+  }
+
+  #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__measure-line--height::before,
+  #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__measure-line--height::after {
+    left: -5px;
+    width: 12px;
+    height: 2px;
+  }
+
+  #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__measure-line--height::before {
+    top: 0;
+  }
+
+  #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__measure-line--height::after {
+    bottom: 0;
+  }
+
+  #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__measure-line--width {
+    width: 30px;
+    height: 2px;
+  }
+
+  #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__measure-line--width::before,
+  #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__measure-line--width::after {
+    top: -5px;
+    width: 2px;
+    height: 12px;
+  }
+
+  #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__measure-line--width::before {
+    left: 0;
+  }
+
+  #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__measure-line--width::after {
+    right: 0;
+  }
+
+  #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__frame {
+    min-width: 0;
+    overflow: hidden;
+    border: 2px solid var(--ara-bw-ink);
+    border-radius: var(--ara-bw-radius);
+    background: var(--ara-bw-frame-dark);
+    box-shadow:
+      0 0 0 3px var(--ara-bw-trim),
+      10px 10px 0 color-mix(in srgb, var(--ara-bw-trim-secondary) 72%, transparent);
+  }
+
+  #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__frame-head {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    gap: 17px;
+    align-items: center;
+    min-height: 83px;
+    padding: 15px 20px;
+    border-bottom: 2px solid color-mix(in srgb, var(--ara-bw-trim) 82%, transparent);
+    color: #FFFFFF;
+  }
+
+  #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__brand-mark {
+    display: grid;
+    width: 47px;
+    height: 47px;
+    place-items: center;
+    border: 1px solid var(--ara-bw-trim);
+    border-radius: calc(var(--ara-bw-radius) * 0.35);
+    background: var(--ara-bw-frame);
+    color: var(--ara-bw-paper);
+    font-family: var(--font-heading-family);
+    font-size: 25px;
+    font-weight: 700;
+  }
+
+  #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__brand-image {
+    display: block;
+    width: 34px;
+    height: 34px;
+    object-fit: contain;
+  }
+
+  #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__frame-title {
+    display: grid;
+    gap: 5px;
+  }
+
+  #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__frame-title span {
+    font-family: var(--font-heading-family);
+    font-size: 26px;
+    line-height: 1;
+  }
+
+  #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__frame-title small,
+  #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__frame-index small {
+    color: rgba(255, 255, 255, 0.64);
+    font-family: var(--font-body-family);
+    font-size: var(--ara-bw-label-desktop);
+    font-weight: 900;
+    letter-spacing: 0.12em;
+    line-height: 1.35;
+    text-transform: uppercase;
+  }
+
+  #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__frame-index {
+    display: grid;
+    justify-items: end;
+  }
+
+  #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__frame-index > span {
+    color: var(--ara-bw-gold);
+    font-family: var(--font-heading-family);
+    font-size: 30px;
+    line-height: 1;
+  }
+
+  #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__stage {
+    position: relative;
+    overflow: hidden;
+    padding: 24px 25px 0;
+    background: var(--ara-bw-stage);
+  }
+
+  #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__stage-grid {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+      repeating-linear-gradient(
+        to right,
+        transparent 0 84px,
+        color-mix(in srgb, var(--ara-bw-mint) 12%, transparent) 84px 85px
+      ),
+      repeating-linear-gradient(
+        to bottom,
+        transparent 0 45px,
+        color-mix(in srgb, var(--ara-bw-mint) 10%, transparent) 45px 46px
+      );
+  }
+
+  #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__stage-labels {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    justify-content: space-between;
+    gap: 18px;
+    padding-bottom: 12px;
+    border-bottom: 1px dashed color-mix(in srgb, var(--ara-bw-ink) 30%, transparent);
+  }
+
+  #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__stage-labels span {
+    color: var(--ara-bw-muted);
+    font-family: var(--font-body-family);
+    font-size: var(--ara-bw-label-desktop);
+    font-weight: 900;
+    letter-spacing: 0.12em;
+  }
+
+  #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__viewport {
+    position: relative;
+    z-index: 2;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 29px 7px 0;
+    scrollbar-width: none;
+    scroll-behavior: smooth;
+    scroll-snap-type: x proximity;
+  }
+
+  #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__viewport::-webkit-scrollbar {
+    display: none;
+  }
+
+  #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__books {
+    display: flex;
+    min-width: max-content;
+    min-height: 460px;
+    align-items: flex-end;
+    gap: 8px;
+    padding: 0 24px;
+  }
+
+  #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__book {
+    position: relative;
+    display: grid;
+    flex: 0 0 var(--ara-book-width);
+    width: var(--ara-book-width);
+    min-width: var(--ara-book-width);
+    height: var(--ara-book-height);
+    align-content: space-between;
+    justify-items: center;
+    overflow: hidden;
+    padding: 15px 7px 13px;
+    border: 1px solid var(--ara-bw-ink);
+    border-radius: 3px 3px 0 0;
+    color: #FFF7E5;
+    text-decoration: none;
+    scroll-snap-align: start;
+    box-shadow:
+      inset 5px 0 0 rgba(255, 255, 255, 0.07),
+      inset -5px 0 0 rgba(0, 0, 0, 0.15),
+      3px 4px 0 color-mix(in srgb, var(--ara-bw-ink) 55%, transparent);
+    cursor: pointer;
+    transition:
+      transform 180ms ease,
+      box-shadow 180ms ease;
+  }
+
+  #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__book:hover,
+  #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__book:focus-visible,
+  #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__book.is-selected {
+    z-index: 4;
+    transform: translateY(-17px);
+    box-shadow:
+      inset 5px 0 0 rgba(255, 255, 255, 0.07),
+      inset -5px 0 0 rgba(0, 0, 0, 0.15),
+      0 0 0 2px var(--ara-bw-trim),
+      7px 10px 0 color-mix(in srgb, var(--ara-bw-ink) 36%, transparent);
+  }
+
+  #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__book[hidden] {
+    display: none !important;
+  }
+
+  #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__book--navy {
+    background: #161B2E;
+  }
+
+  #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__book--green {
+    background: #176D5C;
+  }
+
+  #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__book--red {
+    background: #742D2A;
+  }
+
+  #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__book--gold {
+    background: #C4932F;
+    color: #161B2E;
+  }
+
+  #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__book--cream {
+    background: #E8DDBF;
+    color: #161B2E;
+  }
+
+  #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__book--teal {
+    background: #236C72;
+  }
+
+  #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__book--blue {
+    background: #315888;
+  }
+
+  #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__book--unavailable {
+    opacity: 0.82;
+  }
+
+  #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__book-cap {
+    position: absolute;
+    top: 8px;
+    right: 7px;
+    left: 7px;
+    height: 7px;
+    border-top: 1px solid currentColor;
+    border-bottom: 1px solid currentColor;
+    opacity: 0.65;
+  }
+
+  #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__book-volume,
+  #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__book-status {
+    font-family: var(--font-body-family);
+    font-size: 7px;
+    font-weight: 900;
+    letter-spacing: 0.11em;
+    line-height: 1.15;
+    text-align: center;
+    text-transform: uppercase;
+  }
+
+  #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__book-volume {
+    width: calc(100% + 14px);
+    margin: 9px -7px 0;
+    padding: 6px 3px;
+    border-top: 1px solid currentColor;
+    border-bottom: 1px solid currentColor;
+  }
+
+  #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__book-name {
+    max-height: calc(100% - 143px);
+    overflow: hidden;
+    font-family: var(--font-heading-family);
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 0.055em;
+    line-height: 1;
+    text-align: center;
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+  }
+
+  #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__book-monogram {
+    display: grid;
+    width: 29px;
+    height: 29px;
+    place-items: center;
+    border: 1px solid currentColor;
+    font-family: var(--font-heading-family);
+    font-size: 14px;
+    font-weight: 700;
+  }
+
+  #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__book-status {
+    width: calc(100% + 14px);
+    margin: 0 -7px;
+    padding-top: 8px;
+    border-top: 1px solid currentColor;
+    opacity: 0.78;
+  }
+
+  #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__book-art {
+    display: grid;
+    width: calc(100% - 6px);
+    height: 33px;
+    place-items: center;
+    overflow: hidden;
+    border: 1px solid currentColor;
+    background: rgba(255, 255, 255, 0.78);
+  }
+
+  #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__book-art img {
+    display: block;
+    width: auto;
+    max-width: 43px;
+    max-height: 24px;
+    object-fit: contain;
+  }
+
+  #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__shelf {
+    position: relative;
+    z-index: 4;
+    height: 48px;
+    margin: 0 -25px;
+    border-top: 2px solid var(--ara-bw-ink);
+    border-bottom: 2px solid var(--ara-bw-ink);
+    background:
+      linear-gradient(
+        to bottom,
+        #C99C68 0,
+        #A77549 47%,
+        #765032 48%,
+        #513521 100%
+      );
+    box-shadow:
+      0 8px 0 var(--ara-bw-frame-dark),
+      0 13px 0 var(--ara-bw-trim);
+  }
+
+  #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__shelf span {
+    position: absolute;
+    top: 10px;
+    right: 5%;
+    left: 5%;
+    height: 8px;
+    border-top: 1px solid rgba(255, 255, 255, 0.36);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.38);
+  }
+
+  #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__empty {
+    position: relative;
+    z-index: 3;
+    margin: 25px 0 18px;
+    color: var(--ara-bw-muted);
+    font-family: var(--font-body-family);
+    font-size: var(--ara-bw-body-desktop);
+    text-align: center;
+  }
+
+  #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__frame-foot {
+    display: grid;
+    grid-template-columns: auto minmax(90px, 0.45fr) minmax(170px, 1fr) auto;
+    gap: 14px;
+    align-items: center;
+    min-height: 67px;
+    padding: 13px 17px;
+    color: #FFFFFF;
+  }
+
+  #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__frame-foot button {
+    display: grid;
+    width: 38px;
+    height: 38px;
+    place-items: center;
+    border: 1px solid rgba(255, 255, 255, 0.55);
+    border-radius: 50%;
+    background: transparent;
+    color: #FFFFFF;
+    font-size: 18px;
+    cursor: pointer;
+  }
+
+  #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__progress {
+    height: 3px;
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.18);
+  }
+
+  #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__progress span {
+    display: block;
+    width: 18%;
+    height: 100%;
+    background: var(--ara-bw-trim);
+    transform-origin: left;
+  }
+
+  #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__foot-note {
+    justify-self: end;
+  }
+
+  #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__foot-note span {
+    color: rgba(255, 255, 255, 0.7);
+    font-family: var(--font-body-family);
+    font-size: var(--ara-bw-label-desktop);
+    font-weight: 900;
+    letter-spacing: 0.12em;
+    text-align: right;
+    text-transform: uppercase;
+  }
+
+  #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__pathway {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 38px;
+    align-items: center;
+    margin-top: 45px;
+    padding-top: 25px;
+    border-top: 2px solid var(--ara-bw-ink);
+  }
+
+  #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__pathway h3 {
+    margin: 8px 0 0;
+    font-family: var(--font-heading-family);
+    font-size: 35px;
+    letter-spacing: -0.03em;
+    line-height: 1;
+  }
+
+  #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__pathway p {
+    max-width: 720px;
+    margin: 10px 0 0;
+    color: var(--ara-bw-muted);
+    font-family: var(--font-body-family);
+    font-size: var(--ara-bw-body-desktop);
+    line-height: 1.55;
+  }
+
+  #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__pathway-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: flex-end;
+  }
+
+  #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__pathway-links a {
+    display: inline-flex;
+    min-height: 46px;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+    padding: 11px 16px;
+    border: 1px solid var(--ara-bw-ink);
+    background: var(--ara-bw-ink);
+    color: #FFFFFF;
+    font-family: var(--font-body-family);
+    font-size: var(--ara-bw-label-desktop);
+    font-weight: 900;
+    letter-spacing: 0.1em;
+    text-decoration: none;
+    text-transform: uppercase;
+  }
+
+  #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__pathway-links .ara-bookshelf-wall__pathway-link--secondary {
+    background: var(--ara-bw-trim);
+    color: var(--ara-bw-ink);
+  }
+
+  @media screen and (max-width: 1100px) {
+    #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__display {
+      grid-template-columns: minmax(250px, 0.4fr) minmax(0, 1.6fr);
+    }
+
+    #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__selected {
+      padding: 21px;
+    }
+  }
+
+  @media screen and (max-width: 989px) {
+    #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__intro {
+      grid-template-columns: 1fr;
+      gap: 22px;
+    }
+
+    #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__display {
+      grid-template-columns: 1fr;
+    }
+
+    #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__selected {
+      display: grid;
+      min-height: 0;
+      grid-template-columns: auto minmax(0, 1fr);
+      gap: 18px 23px;
+    }
+
+    #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__selected-top {
+      grid-column: 1 / -1;
+    }
+
+    #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__selected-monogram {
+      grid-row: 2 / 6;
+      margin-top: 0;
+    }
+
+    #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__selected-label,
+    #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__selected h3,
+    #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__selected-meta,
+    #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__selected-summary,
+    #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__selected-action {
+      grid-column: 2;
+      margin-top: 0;
+    }
+
+    #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__measure-key {
+      grid-column: 1 / -1;
+      grid-template-columns: 1fr 1fr;
+      margin-top: 0;
+    }
+
+    #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__pathway {
+      grid-template-columns: 1fr;
+    }
+
+    #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__pathway-links {
+      justify-content: flex-start;
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__inner {
+      padding: 0 18px;
+    }
+
+    #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__intro h2 {
+      font-size: var(--ara-bw-heading-mobile);
+    }
+
+    #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__intro-side {
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+
+    #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__count {
+      justify-items: start;
+    }
+
+    #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__count span {
+      text-align: left;
+    }
+
+    #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__description,
+    #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__selected-summary,
+    #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__empty,
+    #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__pathway p {
+      font-size: var(--ara-bw-body-mobile);
+    }
+
+    #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__eyebrow,
+    #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__count span,
+    #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__filters button,
+    #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__sort > span,
+    #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__sort select,
+    #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__selected-top span,
+    #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__selected-label,
+    #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__selected-meta span,
+    #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__selected-action a,
+    #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__selected-action span,
+    #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__measure-key strong,
+    #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__measure-key small,
+    #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__frame-title small,
+    #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__frame-index small,
+    #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__stage-labels span,
+    #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__foot-note span,
+    #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__pathway > div > span,
+    #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__pathway-links a {
+      font-size: var(--ara-bw-label-mobile);
+    }
+
+    #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__toolbar {
+      align-items: stretch;
+      flex-direction: column;
+    }
+
+    #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__filters {
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      padding-bottom: 7px;
+      scrollbar-width: none;
+    }
+
+    #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__filters button {
+      flex: 0 0 auto;
+    }
+
+    #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__sort {
+      justify-content: space-between;
+    }
+
+    #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__selected {
+      grid-template-columns: 74px minmax(0, 1fr);
+      padding: 18px;
+      box-shadow: 5px 5px 0 color-mix(in srgb, var(--ara-bw-mint) 24%, transparent);
+    }
+
+    #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__selected-monogram {
+      width: 74px;
+      height: 74px;
+      font-size: 37px;
+    }
+
+    #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__selected h3 {
+      font-size: var(--ara-bw-title-mobile);
+    }
+
+    #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__measure-key {
+      grid-template-columns: 1fr;
+    }
+
+    #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__frame {
+      border-radius: calc(var(--ara-bw-radius) * 0.78);
+      box-shadow:
+        0 0 0 2px var(--ara-bw-trim),
+        6px 6px 0 color-mix(in srgb, var(--ara-bw-trim-secondary) 72%, transparent);
+    }
+
+    #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__frame-head {
+      grid-template-columns: auto minmax(0, 1fr);
+      padding: 13px;
+    }
+
+    #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__frame-index {
+      display: none;
+    }
+
+    #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__frame-title span {
+      font-size: 22px;
+    }
+
+    #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__stage {
+      padding: 18px 10px 0;
+    }
+
+    #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__stage-labels {
+      align-items: flex-start;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__viewport {
+      padding-top: 23px;
+    }
+
+    #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__books {
+      min-height: 354px;
+      gap: 7px;
+      padding: 0 13px;
+    }
+
+    #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__book {
+      width: var(--ara-book-width-mobile);
+      min-width: var(--ara-book-width-mobile);
+      height: var(--ara-book-height-mobile);
+    }
+
+    #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__book-name {
+      font-size: 14px;
+    }
+
+    #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__shelf {
+      height: 41px;
+      margin: 0 -10px;
+    }
+
+    #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__frame-foot {
+      grid-template-columns: auto minmax(80px, 1fr) auto;
+      gap: 10px;
+      padding: 11px;
+    }
+
+    #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__foot-note {
+      display: none;
+    }
+
+    #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__pathway-links {
+      display: grid;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__viewport {
+      scroll-behavior: auto;
+    }
+
+    #AraBookshelfCatalog-{{ section.id }} .ara-bookshelf-wall__book {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  (() => {
+    const section = document.getElementById('AraBookshelfCatalog-{{ section.id }}');
+
+    if (!section || section.dataset.araBookshelfReady === 'true') return;
+
+    section.dataset.araBookshelfReady = 'true';
+
+    const track = section.querySelector('[data-ara-track]');
+    const container = section.querySelector('[data-ara-container]');
+    const books = [...section.querySelectorAll('[data-ara-book]')];
+    const filters = [...section.querySelectorAll('[data-ara-filter]')];
+    const sort = section.querySelector('[data-ara-sort]');
+    const progress = section.querySelector('[data-ara-progress]');
+    const empty = section.querySelector('[data-ara-empty]');
+    const selectedVolume = section.querySelector('[data-ara-selected-volume]');
+    const selectedSector = section.querySelector('[data-ara-selected-sector]');
+    const selectedMonogram = section.querySelector('[data-ara-selected-monogram]');
+    const selectedName = section.querySelector('[data-ara-selected-name]');
+    const selectedTicker = section.querySelector('[data-ara-selected-ticker]');
+    const selectedHeadquarters = section.querySelector('[data-ara-selected-hq]');
+    const selectedSummary = section.querySelector('[data-ara-selected-summary]');
+    const selectedAction = section.querySelector('[data-ara-selected-action]');
+    const originalOrder = new Map(books.map((book, index) => [book, index]));
+
+    const visibleBooks = () => books.filter(book => !book.hidden);
+
+    const selectBook = book => {
+      if (!book) return;
+
+      books.forEach(item => {
+        item.classList.toggle('is-selected', item === book);
+      });
+
+      selectedVolume.textContent = book.dataset.araVolume || '';
+      selectedSector.textContent = (book.dataset.araSector || 'other').replaceAll('-', ' ');
+      selectedMonogram.textContent = book.dataset.araMonogram || '';
+      selectedName.textContent = book.dataset.araName || '';
+      selectedTicker.textContent = book.dataset.araTicker || '';
+      selectedHeadquarters.textContent = book.dataset.araHeadquarters || '';
+      selectedSummary.textContent = book.dataset.araSummary || '';
+
+      selectedAction.innerHTML = '';
+
+      if (book.dataset.araUrl) {
+        const link = document.createElement('a');
+        link.href = book.dataset.araUrl;
+        link.textContent = book.dataset.araLinkLabel || '';
+        selectedAction.appendChild(link);
+      } else {
+        const unavailable = document.createElement('span');
+        unavailable.textContent = book.dataset.araLinkLabel || '';
+        unavailable.setAttribute('aria-disabled', 'true');
+        selectedAction.appendChild(unavailable);
+      }
+    };
+
+    const updateProgress = () => {
+      if (!track || !progress) return;
+
+      const maximum = track.scrollWidth - track.clientWidth;
+      const ratio = maximum > 0 ? track.scrollLeft / maximum : 0;
+      const thumb = Math.min(1, track.clientWidth / Math.max(track.scrollWidth, 1));
+      const travel = Math.max(0, 1 - thumb);
+
+      progress.style.width = `${Math.max(thumb * 100, 14)}%`;
+      progress.style.transform = `translateX(${thumb > 0 ? (ratio * travel * 100) / thumb : 0}%)`;
+    };
+
+    const applySort = value => {
+      const ordered = [...books];
+
+      ordered.sort((a, b) => {
+        if (value === 'height') {
+          return Number(b.dataset.araHeight) - Number(a.dataset.araHeight);
+        }
+
+        if (value === 'width') {
+          return Number(b.dataset.araWidth) - Number(a.dataset.araWidth);
+        }
+
+        if (value === 'name') {
+          return (a.dataset.araName || '').localeCompare(b.dataset.araName || '');
+        }
+
+        return originalOrder.get(a) - originalOrder.get(b);
+      });
+
+      ordered.forEach(book => container.appendChild(book));
+
+      const first = visibleBooks()[0];
+
+      if (first) {
+        selectBook(first);
+      }
+
+      track?.scrollTo({ left: 0, behavior: 'smooth' });
+      requestAnimationFrame(updateProgress);
+    };
+
+    books.forEach(book => {
+      const update = () => selectBook(book);
+
+      book.addEventListener('mouseenter', update);
+      book.addEventListener('focus', update);
+
+      if (book.tagName === 'BUTTON') {
+        book.addEventListener('click', update);
+      }
+    });
+
+    filters.forEach(filter => {
+      filter.addEventListener('click', () => {
+        const selected = filter.dataset.araFilter;
+
+        filters.forEach(item => {
+          const active = item === filter;
+          item.classList.toggle('is-active', active);
+          item.setAttribute('aria-pressed', String(active));
+        });
+
+        books.forEach(book => {
+          book.hidden =
+            selected !== 'all' &&
+            book.dataset.araSector !== selected;
+        });
+
+        const first = visibleBooks()[0];
+
+        if (empty) {
+          empty.hidden = Boolean(first);
+        }
+
+        if (first) {
+          selectBook(first);
+        }
+
+        track?.scrollTo({ left: 0, behavior: 'smooth' });
+        requestAnimationFrame(updateProgress);
+      });
+    });
+
+    sort?.addEventListener('change', event => {
+      applySort(event.target.value);
+    });
+
+    section.querySelectorAll('[data-ara-scroll]').forEach(button => {
+      button.addEventListener('click', () => {
+        if (!track) return;
+
+        track.scrollBy({
+          left: Number(button.dataset.araScroll) * track.clientWidth * 0.76,
+          behavior: 'smooth'
+        });
+      });
+    });
+
+    track?.addEventListener('scroll', updateProgress, { passive: true });
+    window.addEventListener('resize', updateProgress);
+
+    const first = visibleBooks()[0];
+
+    if (first) {
+      selectBook(first);
+    }
+
+    requestAnimationFrame(updateProgress);
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Ara Bookshelf",
+  "max_blocks": 50,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Books"
+    },
+    {
+      "type": "select",
+      "id": "source_mode",
+      "label": "Book source",
+      "default": "blocks",
+      "options": [
+        {
+          "value": "blocks",
+          "label": "Books added in this section"
+        },
+        {
+          "value": "collection",
+          "label": "Shopify collection"
+        }
+      ]
+    },
+    {
+      "type": "collection",
+      "id": "book_collection",
+      "label": "Book collection"
+    },
+    {
+      "type": "range",
+      "id": "max_products",
+      "label": "Maximum collection books",
+      "min": 4,
+      "max": 50,
+      "step": 1,
+      "default": 12
+    },
+    {
+      "type": "select",
+      "id": "collection_click_target",
+      "label": "Collection book destination",
+      "default": "product",
+      "options": [
+        {
+          "value": "product",
+          "label": "Product page"
+        },
+        {
+          "value": "module",
+          "label": "Company module when available"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "available_label",
+      "label": "Available label",
+      "default": "AVAILABLE"
+    },
+    {
+      "type": "text",
+      "id": "coming_soon_label",
+      "label": "Coming soon label",
+      "default": "COMING SOON"
+    },
+    {
+      "type": "text",
+      "id": "default_product_label",
+      "label": "Default product link label",
+      "default": "OPEN BOOK"
+    },
+    {
+      "type": "text",
+      "id": "default_module_label",
+      "label": "Default module link label",
+      "default": "OPEN COMPANY MODULE"
+    },
+    {
+      "type": "header",
+      "content": "Introduction"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Small heading",
+      "default": "THE BOOKSHELF"
+    },
+    {
+      "type": "textarea",
+      "id": "heading",
+      "label": "Main heading",
+      "default": "A library built\none company at a time."
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description",
+      "default": "<p>A large horizontal bookshelf of real-company volumes. Book height can represent market value, book width can represent company age, and every available spine opens its matching book or company module.</p>"
+    },
+    {
+      "type": "text",
+      "id": "volume_count_label",
+      "label": "Volume count label",
+      "default": "VOLUMES ON THIS SHELF"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_filters",
+      "label": "Show sector filters",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "filter_accessibility_label",
+      "label": "Filter description",
+      "default": "Filter books by sector"
+    },
+    {
+      "type": "text",
+      "id": "filter_all_label",
+      "label": "All filter",
+      "default": "ALL"
+    },
+    {
+      "type": "text",
+      "id": "filter_technology_label",
+      "label": "Technology filter",
+      "default": "TECHNOLOGY"
+    },
+    {
+      "type": "text",
+      "id": "filter_financials_label",
+      "label": "Financials filter",
+      "default": "FINANCIALS"
+    },
+    {
+      "type": "text",
+      "id": "filter_consumer_label",
+      "label": "Consumer filter",
+      "default": "CONSUMER"
+    },
+    {
+      "type": "text",
+      "id": "filter_other_label",
+      "label": "Other filter",
+      "default": "OTHER"
+    },
+    {
+      "type": "text",
+      "id": "empty_message",
+      "label": "Empty filter message",
+      "default": "No books are available in this sector yet."
+    },
+    {
+      "type": "header",
+      "content": "Bookshelf"
+    },
+    {
+      "type": "image_picker",
+      "id": "emblem",
+      "label": "Bookshelf emblem"
+    },
+    {
+      "type": "text",
+      "id": "cabinet_heading",
+      "label": "Bookshelf name",
+      "default": "THE MINTMARK BOOKSHELF"
+    },
+    {
+      "type": "text",
+      "id": "cabinet_note",
+      "label": "Bookshelf note",
+      "default": "COMPANY BOOKS · MODULES · DIGESTS"
+    },
+    {
+      "type": "text",
+      "id": "shelf_one_label",
+      "label": "Shelf label",
+      "default": "THE COMPANY LIBRARY"
+    },
+    {
+      "type": "text",
+      "id": "shelf_one_note",
+      "label": "Shelf instruction",
+      "default": "SCROLL HORIZONTALLY · SELECT A SPINE"
+    },
+    {
+      "type": "text",
+      "id": "shelf_two_label",
+      "label": "First base label",
+      "default": "BOOK HEIGHT = MARKET VALUE"
+    },
+    {
+      "type": "text",
+      "id": "shelf_two_note",
+      "label": "Unused compatibility setting",
+      "default": "COMPARE BUSINESS MODELS"
+    },
+    {
+      "type": "text",
+      "id": "shelf_three_label",
+      "label": "Second base label",
+      "default": "BOOK WIDTH = COMPANY AGE"
+    },
+    {
+      "type": "text",
+      "id": "shelf_three_note",
+      "label": "Unused compatibility note",
+      "default": "THE LIBRARY GROWS"
+    },
+    {
+      "type": "text",
+      "id": "base_label",
+      "label": "Main base label",
+      "default": "READ · UNDERSTAND · COMPARE · RETURN"
+    },
+    {
+      "type": "text",
+      "id": "previous_label",
+      "label": "Previous button description",
+      "default": "Scroll bookshelf left"
+    },
+    {
+      "type": "text",
+      "id": "next_label",
+      "label": "Next button description",
+      "default": "Scroll bookshelf right"
+    },
+    {
+      "type": "header",
+      "content": "Selected company"
+    },
+    {
+      "type": "text",
+      "id": "detail_eyebrow",
+      "label": "Selected company label",
+      "default": "SELECTED COMPANY"
+    },
+    {
+      "type": "text",
+      "id": "digest_panel_heading",
+      "label": "Book cover label",
+      "default": "THE COMPANY DIGEST"
+    },
+    {
+      "type": "header",
+      "content": "Next path"
+    },
+    {
+      "type": "text",
+      "id": "pathway_eyebrow",
+      "label": "Small heading",
+      "default": "CONTINUE READING"
+    },
+    {
+      "type": "text",
+      "id": "pathway_heading",
+      "label": "Heading",
+      "default": "From the shelf to the full company."
+    },
+    {
+      "type": "textarea",
+      "id": "pathway_text",
+      "label": "Text",
+      "default": "Open an available company module, or continue through The Mint to see how the full curriculum is organised."
+    },
+    {
+      "type": "text",
+      "id": "module_path_label",
+      "label": "Company module button",
+      "default": "OPEN APPLE MODULE"
+    },
+    {
+      "type": "url",
+      "id": "module_path_link",
+      "label": "Company module link"
+    },
+    {
+      "type": "text",
+      "id": "mint_path_label",
+      "label": "The Mint button",
+      "default": "ENTER THE MINT"
+    },
+    {
+      "type": "url",
+      "id": "mint_path_link",
+      "label": "The Mint link"
+    },
+    {
+      "type": "header",
+      "content": "Text sizes"
+    },
+    {
+      "type": "range",
+      "id": "desktop_heading_size",
+      "label": "Desktop heading",
+      "min": 38,
+      "max": 92,
+      "step": 1,
+      "unit": "px",
+      "default": 72
+    },
+    {
+      "type": "range",
+      "id": "desktop_body_size",
+      "label": "Desktop body",
+      "min": 12,
+      "max": 22,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "desktop_label_size",
+      "label": "Desktop labels",
+      "min": 8,
+      "max": 14,
+      "step": 1,
+      "unit": "px",
+      "default": 9
+    },
+    {
+      "type": "range",
+      "id": "desktop_detail_title_size",
+      "label": "Desktop company name",
+      "min": 30,
+      "max": 68,
+      "step": 1,
+      "unit": "px",
+      "default": 50
+    },
+    {
+      "type": "range",
+      "id": "mobile_heading_size",
+      "label": "Mobile heading",
+      "min": 32,
+      "max": 62,
+      "step": 1,
+      "unit": "px",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "mobile_body_size",
+      "label": "Mobile body",
+      "min": 12,
+      "max": 19,
+      "step": 1,
+      "unit": "px",
+      "default": 15
+    },
+    {
+      "type": "range",
+      "id": "mobile_label_size",
+      "label": "Mobile labels",
+      "min": 8,
+      "max": 13,
+      "step": 1,
+      "unit": "px",
+      "default": 9
+    },
+    {
+      "type": "range",
+      "id": "mobile_detail_title_size",
+      "label": "Mobile company name",
+      "min": 28,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "default": 38
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "text",
+      "id": "max_width",
+      "label": "Maximum width",
+      "default": "1700px"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top spacing",
+      "min": 0,
+      "max": 160,
+      "step": 5,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom spacing",
+      "min": 0,
+      "max": 160,
+      "step": 5,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "header",
+      "content": "Colours"
+    },
+    {
+      "type": "color",
+      "id": "trim_color",
+      "label": "Main trim",
+      "default": "#E0A526"
+    },
+    {
+      "type": "color",
+      "id": "trim_secondary_color",
+      "label": "Secondary trim",
+      "default": "#1FA88F"
+    },
+    {
+      "type": "range",
+      "id": "corner_rounding",
+      "label": "Bookshelf corner rounding",
+      "min": 0,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "default": 18
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background",
+      "default": "#D8F0E4"
+    },
+    {
+      "type": "color",
+      "id": "paper_color",
+      "label": "Paper",
+      "default": "#FBF7EC"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text",
+      "default": "#161B2E"
+    },
+    {
+      "type": "color",
+      "id": "muted_text_color",
+      "label": "Muted text",
+      "default": "#646575"
+    },
+    {
+      "type": "color",
+      "id": "mint_color",
+      "label": "Mint",
+      "default": "#176D5C"
+    },
+    {
+      "type": "color",
+      "id": "gold_color",
+      "label": "Gold",
+      "default": "#E0A526"
+    },
+    {
+      "type": "color",
+      "id": "blue_color",
+      "label": "Blue",
+      "default": "#3A5BE0"
+    },
+    {
+      "type": "color",
+      "id": "blue_deep_color",
+      "label": "Deep blue",
+      "default": "#161B2E"
+    },
+    {
+      "type": "color",
+      "id": "cabinet_color",
+      "label": "Cabinet",
+      "default": "#176D5C"
+    },
+    {
+      "type": "color",
+      "id": "cabinet_edge_color",
+      "label": "Cabinet edge",
+      "default": "#161B2E"
+    },
+    {
+      "type": "color",
+      "id": "shelf_back_color",
+      "label": "Shelf interior",
+      "default": "#EAF3EE"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "book",
+      "name": "Company book",
+      "settings": [
+        {
+          "type": "select",
+          "id": "sector",
+          "label": "Sector",
+          "default": "other",
+          "options": [
+            {
+              "value": "technology",
+              "label": "Technology"
+            },
+            {
+              "value": "financials",
+              "label": "Financials"
+            },
+            {
+              "value": "consumer",
+              "label": "Consumer"
+            },
+            {
+              "value": "other",
+              "label": "Other"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "sector_label",
+          "label": "Sector label",
+          "default": "COMPANY"
+        },
+        {
+          "type": "select",
+          "id": "color",
+          "label": "Spine colour",
+          "default": "navy",
+          "options": [
+            {
+              "value": "navy",
+              "label": "Ink"
+            },
+            {
+              "value": "green",
+              "label": "Mint"
+            },
+            {
+              "value": "red",
+              "label": "Dark red"
+            },
+            {
+              "value": "gold",
+              "label": "Gold"
+            },
+            {
+              "value": "cream",
+              "label": "Cream"
+            },
+            {
+              "value": "teal",
+              "label": "Teal"
+            },
+            {
+              "value": "blue",
+              "label": "Blue"
+            }
+          ]
+        },
+        {
+          "type": "range",
+          "id": "spine_height",
+          "label": "Book height (market value)",
+          "info": "Use a taller book for a larger company.",
+          "min": 270,
+          "max": 440,
+          "step": 5,
+          "unit": "px",
+          "default": 350
+        },
+        {
+          "type": "range",
+          "id": "spine_width",
+          "label": "Book width (company age)",
+          "info": "Use a wider book for an older company.",
+          "min": 50,
+          "max": 92,
+          "step": 2,
+          "unit": "px",
+          "default": 66
+        },
+        {
+          "type": "image_picker",
+          "id": "spine_image",
+          "label": "Book or company image"
+        },
+        {
+          "type": "text",
+          "id": "status",
+          "label": "Status",
+          "default": "COMING SOON"
+        },
+        {
+          "type": "text",
+          "id": "company_name",
+          "label": "Company name",
+          "default": "Company"
+        },
+        {
+          "type": "text",
+          "id": "spine_title",
+          "label": "Spine title",
+          "default": "COMPANY"
+        },
+        {
+          "type": "text",
+          "id": "volume",
+          "label": "Volume",
+          "default": "VOL. 01"
+        },
+        {
+          "type": "text",
+          "id": "ticker",
+          "label": "Ticker",
+          "default": "EXCHANGE: TICKER"
+        },
+        {
+          "type": "text",
+          "id": "headquarters",
+          "label": "Headquarters",
+          "default": "CITY · COUNTRY"
+        },
+        {
+          "type": "textarea",
+          "id": "summary",
+          "label": "Company summary",
+          "default": "A concise explanation of how this company works."
+        },
+        {
+          "type": "select",
+          "id": "primary_destination",
+          "label": "Spine opens",
+          "default": "product",
+          "options": [
+            {
+              "value": "product",
+              "label": "Physical book"
+            },
+            {
+              "value": "module",
+              "label": "Company module"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "module_button_label",
+          "label": "Company module button",
+          "default": "OPEN COMPANY MODULE"
+        },
+        {
+          "type": "url",
+          "id": "module_link",
+          "label": "Company module link"
+        },
+        {
+          "type": "product",
+          "id": "digest_product",
+          "label": "Physical book product"
+        },
+        {
+          "type": "text",
+          "id": "digest_title",
+          "label": "Physical book title",
+          "default": "The Company Digest"
+        },
+        {
+          "type": "text",
+          "id": "digest_price",
+          "label": "Fallback price",
+          "default": "$24.00"
+        },
+        {
+          "type": "textarea",
+          "id": "digest_note",
+          "label": "Physical book note",
+          "default": "A printed company guide designed for reading, annotation and return."
+        },
+        {
+          "type": "text",
+          "id": "digest_button_label",
+          "label": "Physical book button",
+          "default": "VIEW PHYSICAL BOOK"
+        },
+        {
+          "type": "url",
+          "id": "digest_link",
+          "label": "Fallback physical book link"
+        },
+        {
+          "type": "text",
+          "id": "shelf",
+          "label": "Compatibility shelf number",
+          "default": "1"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Ara Bookshelf",
+      "blocks": [
+        {
+          "type": "book",
+          "settings": {
+            "sector": "technology",
+            "sector_label": "TECHNOLOGY",
+            "color": "navy",
+            "spine_height": 410,
+            "spine_width": 72,
+            "status": "AVAILABLE",
+            "company_name": "Apple",
+            "spine_title": "APPLE",
+            "volume": "VOL. 01",
+            "ticker": "NASDAQ: AAPL",
+            "headquarters": "CUPERTINO · USA",
+            "summary": "Understand how Apple combines hardware, software and services into one connected economic system.",
+            "primary_destination": "module",
+            "module_button_label": "OPEN COMPANY MODULE",
+            "module_link": "/pages/apple",
+            "digest_title": "The Apple Digest"
+          }
+        },
+        {
+          "type": "book",
+          "settings": {
+            "sector": "financials",
+            "sector_label": "FINANCIALS",
+            "color": "green",
+            "spine_height": 370,
+            "spine_width": 76,
+            "company_name": "JPMorgan Chase",
+            "spine_title": "JPMORGAN",
+            "volume": "VOL. 02",
+            "ticker": "NYSE: JPM",
+            "headquarters": "NEW YORK · USA"
+          }
+        },
+        {
+          "type": "book",
+          "settings": {
+            "sector": "consumer",
+            "sector_label": "CONSUMER",
+            "color": "red",
+            "spine_height": 390,
+            "spine_width": 70,
+            "company_name": "Toyota",
+            "spine_title": "TOYOTA",
+            "volume": "VOL. 03",
+            "ticker": "NYSE: TM",
+            "headquarters": "TOYOTA CITY · JAPAN"
+          }
+        },
+        {
+          "type": "book",
+          "settings": {
+            "sector": "technology",
+            "sector_label": "TECHNOLOGY",
+            "color": "gold",
+            "spine_height": 365,
+            "spine_width": 62,
+            "company_name": "NVIDIA",
+            "spine_title": "NVIDIA",
+            "volume": "VOL. 04",
+            "ticker": "NASDAQ: NVDA",
+            "headquarters": "SANTA CLARA · USA"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

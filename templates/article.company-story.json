@@ -1,0 +1,38 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "ara-article-content-section",
+      "settings": {}
+    },
+    "related_stories": {
+      "type": "ara-related-stories-navigation",
+      "settings": {}
+    },
+    "email_capture_footer": {
+      "type": "ara-full-email",
+      "settings": {
+        "eyebrow": "THE PAPER, DELIVERED",
+        "heading": "A clearer way to\nunderstand companies.",
+        "description": "<p>New company stories, short takes and physical digest releases—written with clarity.</p>",
+        "placeholder": "Email address",
+        "button_label": "JOIN THE PAPER",
+        "success_message": "Thank you. Your paper is on the way.",
+        "note": "Relevant updates only. Unsubscribe at any time."
+      }
+    }
+  },
+  "order": [
+    "main",
+    "related_stories",
+    "email_capture_footer"
+  ]
+}

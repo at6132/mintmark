@@ -1,0 +1,1334 @@
+<section
+  id="AraMintMap-{{ section.id }}"
+  class="ara-mint-map"
+  style="
+    --ara-map-bg: {{ section.settings.background_color }};
+    --ara-map-paper: {{ section.settings.paper_color }};
+    --ara-map-text: {{ section.settings.text_color }};
+    --ara-map-muted: {{ section.settings.muted_text_color }};
+    --ara-map-mint: {{ section.settings.mint_color }};
+    --ara-map-gold: {{ section.settings.gold_color }};
+    --ara-map-blue: {{ section.settings.blue_color }};
+    --ara-map-blue-deep: {{ section.settings.blue_deep_color }};
+    --ara-map-border: {{ section.settings.border_color }};
+    --ara-map-max: {{ section.settings.max_width }};
+    --ara-map-top: {{ section.settings.padding_top }}px;
+    --ara-map-bottom: {{ section.settings.padding_bottom }}px;
+    --ara-map-heading-desktop: {{ section.settings.desktop_heading_size }}px;
+    --ara-map-body-desktop: {{ section.settings.desktop_body_size }}px;
+    --ara-map-label-desktop: {{ section.settings.desktop_label_size }}px;
+    --ara-map-company-desktop: {{ section.settings.desktop_company_size }}px;
+    --ara-map-stat-desktop: {{ section.settings.desktop_stat_size }}px;
+    --ara-map-heading-mobile: {{ section.settings.mobile_heading_size }}px;
+    --ara-map-body-mobile: {{ section.settings.mobile_body_size }}px;
+    --ara-map-label-mobile: {{ section.settings.mobile_label_size }}px;
+    --ara-map-company-mobile: {{ section.settings.mobile_company_size }}px;
+    --ara-map-stat-mobile: {{ section.settings.mobile_stat_size }}px;
+  "
+>
+  <div class="ara-mint-map__lines" aria-hidden="true"></div>
+
+  <div class="ara-mint-map__inner">
+    <div class="ara-mint-map__heading-row">
+      <div>
+        {% if section.settings.eyebrow != blank %}
+          <span class="ara-mint-map__eyebrow">
+            {{ section.settings.eyebrow | escape }}
+          </span>
+        {% endif %}
+
+        {% if section.settings.heading != blank %}
+          <h2 class="ara-mint-map__heading">
+            {{ section.settings.heading | escape | newline_to_br }}
+          </h2>
+        {% endif %}
+      </div>
+
+      {% if section.settings.description != blank %}
+        <div class="ara-mint-map__description">
+          {{ section.settings.description }}
+        </div>
+      {% endif %}
+    </div>
+
+    <div class="ara-mint-map__layout">
+      <div class="ara-mint-map__map-frame">
+        <div class="ara-mint-map__map">
+          <picture>
+            {% if section.settings.mobile_map_image != blank %}
+              <source
+                media="(max-width: 749px)"
+                srcset="
+                  {{ section.settings.mobile_map_image | image_url: width: 900 }} 900w,
+                  {{ section.settings.mobile_map_image | image_url: width: 1300 }} 1300w
+                "
+              >
+            {% endif %}
+
+            {% if section.settings.map_image != blank %}
+              {{
+                section.settings.map_image
+                | image_url: width: 2200
+                | image_tag:
+                  widths: '800, 1100, 1500, 1800, 2200',
+                  sizes: '(max-width: 989px) 100vw, 66vw',
+                  loading: 'lazy',
+                  class: 'ara-mint-map__image',
+                  alt: section.settings.map_image.alt
+              }}
+            {% else %}
+              <div class="ara-mint-map__placeholder ara-mint-map__placeholder--world">
+                <svg
+                  class="ara-mint-map__world-svg"
+                  viewBox="0 0 1200 720"
+                  role="img"
+                  aria-label="Stylized world headquarters map"
+                >
+                  <defs>
+                    <pattern
+                      id="AraMapGrid-{{ section.id }}"
+                      width="48"
+                      height="48"
+                      patternUnits="userSpaceOnUse"
+                    >
+                      <path
+                        d="M48 0H0V48"
+                        fill="none"
+                        stroke="#176D5C"
+                        stroke-opacity="0.12"
+                        stroke-width="1"
+                      ></path>
+                    </pattern>
+                    <filter
+                      id="AraMapShadow-{{ section.id }}"
+                      x="-20%"
+                      y="-20%"
+                      width="140%"
+                      height="140%"
+                    >
+                      <feDropShadow
+                        dx="0"
+                        dy="9"
+                        stdDeviation="10"
+                        flood-color="#161B2E"
+                        flood-opacity="0.10"
+                      ></feDropShadow>
+                    </filter>
+                  </defs>
+
+                  <rect width="1200" height="720" fill="#EAF2ED"></rect>
+                  <rect width="1200" height="720" fill="url(#AraMapGrid-{{ section.id }})"></rect>
+
+                  <g
+                    fill="#F7FCFA"
+                    stroke="#161B2E"
+                    stroke-width="4"
+                    stroke-linejoin="round"
+                    filter="url(#AraMapShadow-{{ section.id }})"
+                  >
+                    <path d="M115 185L174 121L260 105L321 139L357 195L329 235L281 243L253 290L192 285L159 247L113 239L86 208Z"></path>
+                    <path d="M303 302L348 327L370 391L354 475L313 556L273 508L256 434L268 362Z"></path>
+                    <path d="M486 151L537 121L588 131L620 170L597 205L543 204L507 186Z"></path>
+                    <path d="M531 217L594 207L641 246L662 315L630 389L590 455L548 422L523 350L506 278Z"></path>
+                    <path d="M630 157L701 116L810 114L889 151L974 139L1068 189L1088 246L1031 278L955 267L904 312L830 287L774 245L706 258L661 221Z"></path>
+                    <path d="M925 424L990 401L1050 435L1079 487L1037 526L964 522L921 478Z"></path>
+                    <path d="M1080 552L1118 543L1140 570L1118 598L1082 589Z"></path>
+                  </g>
+
+                  <g
+                    fill="none"
+                    stroke="#176D5C"
+                    stroke-width="2"
+                    stroke-dasharray="7 10"
+                    opacity="0.48"
+                  >
+                    <path d="M210 219C365 116 510 148 661 212C823 281 954 211 1035 235"></path>
+                    <path d="M311 399C470 328 664 350 942 466"></path>
+                    <path d="M567 269C650 183 769 176 879 239"></path>
+                  </g>
+
+                  <g font-family="sans-serif" font-size="19" font-weight="700" fill="#161B2E">
+                    <text x="126" y="83">NORTH AMERICA</text>
+                    <text x="259" y="618">SOUTH AMERICA</text>
+                    <text x="491" y="91">EUROPE</text>
+                    <text x="527" y="520">AFRICA</text>
+                    <text x="797" y="82">ASIA</text>
+                    <text x="940" y="579">OCEANIA</text>
+                  </g>
+                </svg>
+              </div>
+            {% endif %}
+          </picture>
+
+          <div class="ara-mint-map__marker-layer">
+            {% for block in section.blocks %}
+              <button
+                type="button"
+                class="ara-mint-map__marker{% if forloop.first %} is-active{% endif %}"
+                style="
+                  --marker-x: {{ block.settings.position_x }}%;
+                  --marker-y: {{ block.settings.position_y }}%;
+                "
+                data-map-marker
+                data-block-id="{{ block.id }}"
+                aria-pressed="{% if forloop.first %}true{% else %}false{% endif %}"
+                aria-label="{{ block.settings.company_name | escape }}"
+                {{ block.shopify_attributes }}
+              >
+                <span>{{ forloop.index }}</span>
+              </button>
+            {% endfor %}
+          </div>
+
+          {% if section.settings.map_label != blank %}
+            <span class="ara-mint-map__map-label">
+              {{ section.settings.map_label | escape }}
+            </span>
+          {% endif %}
+        </div>
+      </div>
+
+      <div class="ara-mint-map__panel-frame">
+        <div class="ara-mint-map__panel">
+          <div class="ara-mint-map__panel-top">
+            <span>{{ section.settings.panel_label | escape }}</span>
+            <small>{{ section.settings.panel_note | escape }}</small>
+          </div>
+
+          <div class="ara-mint-map__panels">
+            {% for block in section.blocks %}
+              <article
+                class="ara-mint-map__company-panel{% if forloop.first %} is-active{% endif %}"
+                data-map-panel="{{ block.id }}"
+                {% unless forloop.first %}hidden{% endunless %}
+              >
+                <div class="ara-mint-map__company-head">
+                  <div class="ara-mint-map__company-logo">
+                    {% if block.settings.logo != blank %}
+                      {{
+                        block.settings.logo
+                        | image_url: width: 400
+                        | image_tag:
+                          widths: '100, 160, 240, 320, 400',
+                          sizes: '72px',
+                          loading: 'lazy',
+                          class: 'ara-mint-map__company-logo-image',
+                          alt: block.settings.logo.alt
+                      }}
+                    {% else %}
+                      <span>
+                        {{ block.settings.company_name | slice: 0 | upcase }}
+                      </span>
+                    {% endif %}
+                  </div>
+
+                  <div>
+                    {% if block.settings.kicker != blank %}
+                      <span class="ara-mint-map__company-kicker">
+                        {{ block.settings.kicker | escape }}
+                      </span>
+                    {% endif %}
+
+                    <h3 class="ara-mint-map__company-name">
+                      {{ block.settings.company_name | escape }}
+                    </h3>
+
+                    {% if block.settings.location != blank %}
+                      <p class="ara-mint-map__company-location">
+                        {{ block.settings.location | escape }}
+                      </p>
+                    {% endif %}
+                  </div>
+                </div>
+
+                {% if block.settings.description != blank %}
+                  <p class="ara-mint-map__company-description">
+                    {{ block.settings.description | escape }}
+                  </p>
+                {% endif %}
+
+                <div class="ara-mint-map__stats">
+                  {% if block.settings.stat_one_label != blank or block.settings.stat_one_value != blank %}
+                    <div class="ara-mint-map__stat">
+                      <span>{{ block.settings.stat_one_label | escape }}</span>
+                      <strong>{{ block.settings.stat_one_value | escape }}</strong>
+                    </div>
+                  {% endif %}
+
+                  {% if block.settings.stat_two_label != blank or block.settings.stat_two_value != blank %}
+                    <div class="ara-mint-map__stat">
+                      <span>{{ block.settings.stat_two_label | escape }}</span>
+                      <strong>{{ block.settings.stat_two_value | escape }}</strong>
+                    </div>
+                  {% endif %}
+
+                  {% if block.settings.stat_three_label != blank or block.settings.stat_three_value != blank %}
+                    <div class="ara-mint-map__stat">
+                      <span>{{ block.settings.stat_three_label | escape }}</span>
+                      <strong>{{ block.settings.stat_three_value | escape }}</strong>
+                    </div>
+                  {% endif %}
+                </div>
+
+                {% if block.settings.link_label != blank %}
+                  <a
+                    class="ara-mint-map__company-link"
+                    {% if block.settings.link != blank %}
+                      href="{{ block.settings.link }}"
+                    {% else %}
+                      role="link"
+                      aria-disabled="true"
+                    {% endif %}
+                  >
+                    {{ block.settings.link_label | escape }}
+                  </a>
+                {% endif %}
+              </article>
+            {% endfor %}
+          </div>
+
+          <div class="ara-mint-map__selector" aria-label="Companies on the map">
+            {% for block in section.blocks %}
+              <button
+                type="button"
+                class="ara-mint-map__selector-button{% if forloop.first %} is-active{% endif %}"
+                data-map-selector
+                data-block-id="{{ block.id }}"
+                aria-pressed="{% if forloop.first %}true{% else %}false{% endif %}"
+              >
+                <span>{{ forloop.index | prepend: '0' }}</span>
+                <strong>{{ block.settings.company_name | escape }}</strong>
+              </button>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  #AraMintMap-{{ section.id }} {
+    position: relative;
+    overflow: hidden;
+    padding: var(--ara-map-top) 0 var(--ara-map-bottom);
+    background: var(--ara-map-bg);
+    color: var(--ara-map-text);
+    isolation: isolate;
+  }
+
+  #AraMintMap-{{ section.id }} * {
+    box-sizing: border-box;
+  }
+
+  #AraMintMap-{{ section.id }} .ara-mint-map__lines {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    opacity: 0.44;
+    background-image:
+      repeating-linear-gradient(
+        to bottom,
+        transparent 0,
+        transparent 35px,
+        color-mix(in srgb, var(--ara-map-mint) 20%, transparent) 35px,
+        color-mix(in srgb, var(--ara-map-mint) 20%, transparent) 36px
+      );
+    pointer-events: none;
+  }
+
+  #AraMintMap-{{ section.id }} .ara-mint-map__inner {
+    width: min(100%, var(--ara-map-max));
+    margin: 0 auto;
+    padding: 0 40px;
+  }
+
+  #AraMintMap-{{ section.id }} .ara-mint-map__heading-row {
+    display: grid;
+    grid-template-columns: minmax(0, 0.95fr) minmax(320px, 0.55fr);
+    gap: clamp(30px, 5vw, 90px);
+    align-items: end;
+    margin-bottom: 46px;
+  }
+
+  #AraMintMap-{{ section.id }} .ara-mint-map__eyebrow,
+  #AraMintMap-{{ section.id }} .ara-mint-map__map-label,
+  #AraMintMap-{{ section.id }} .ara-mint-map__panel-top span,
+  #AraMintMap-{{ section.id }} .ara-mint-map__panel-top small,
+  #AraMintMap-{{ section.id }} .ara-mint-map__company-kicker,
+  #AraMintMap-{{ section.id }} .ara-mint-map__company-location,
+  #AraMintMap-{{ section.id }} .ara-mint-map__stat span,
+  #AraMintMap-{{ section.id }} .ara-mint-map__selector-button span {
+    font-family: var(--font-body-family);
+    font-style: var(--font-body-style);
+    font-weight: 800;
+    line-height: 1.2;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  #AraMintMap-{{ section.id }} .ara-mint-map__eyebrow {
+    display: inline-flex;
+    min-height: 31px;
+    align-items: center;
+    padding: 6px 11px;
+    border: 2px solid var(--ara-map-text);
+    border-radius: 8px;
+    background: var(--ara-map-gold);
+    color: var(--ara-map-text);
+    font-size: var(--ara-map-label-desktop);
+    box-shadow: 3px 3px 0 var(--ara-map-text);
+  }
+
+  #AraMintMap-{{ section.id }} .ara-mint-map__heading {
+    max-width: 860px;
+    margin: 22px 0 0;
+    font-family: var(--font-heading-family);
+    font-size: var(--ara-map-heading-desktop);
+    font-style: var(--font-heading-style);
+    font-weight: var(--font-heading-weight);
+    line-height: 0.94;
+    letter-spacing: -0.055em;
+  }
+
+  #AraMintMap-{{ section.id }} .ara-mint-map__description {
+    color: var(--ara-map-muted);
+    font-family: var(--font-body-family);
+    font-size: var(--ara-map-body-desktop);
+    font-style: var(--font-body-style);
+    font-weight: var(--font-body-weight);
+    line-height: 1.65;
+  }
+
+  #AraMintMap-{{ section.id }} .ara-mint-map__description p {
+    margin: 0;
+  }
+
+  #AraMintMap-{{ section.id }} .ara-mint-map__layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1.55fr) minmax(330px, 0.65fr);
+    gap: 34px;
+    align-items: start;
+  }
+
+  #AraMintMap-{{ section.id }} .ara-mint-map__map-frame,
+  #AraMintMap-{{ section.id }} .ara-mint-map__panel-frame {
+    padding: 7px;
+    border: 2px solid var(--ara-map-text);
+    background: var(--ara-map-paper);
+  }
+
+  #AraMintMap-{{ section.id }} .ara-mint-map__map-frame {
+    align-self: start;
+    height: fit-content;
+    border-radius: 24px;
+    box-shadow:
+      9px 9px 0 var(--ara-map-gold),
+      16px 16px 0 color-mix(in srgb, var(--ara-map-mint) 65%, transparent);
+  }
+
+  #AraMintMap-{{ section.id }} .ara-mint-map__map {
+    position: relative;
+    overflow: hidden;
+    min-height: 620px;
+    border: 3px solid var(--ara-map-text);
+    border-radius: 16px;
+    background: var(--ara-map-paper);
+  }
+
+  #AraMintMap-{{ section.id }} .ara-mint-map__map picture,
+  #AraMintMap-{{ section.id }} .ara-mint-map__image,
+  #AraMintMap-{{ section.id }} .ara-mint-map__placeholder,
+  #AraMintMap-{{ section.id }} .ara-mint-map__placeholder-svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  #AraMintMap-{{ section.id }} .ara-mint-map__image,
+  #AraMintMap-{{ section.id }} .ara-mint-map__placeholder-svg {
+    min-height: 620px;
+    object-fit: cover;
+  }
+
+  #AraMintMap-{{ section.id }} .ara-mint-map__placeholder-svg {
+    background: var(--ara-map-paper);
+  }
+
+  #AraMintMap-{{ section.id }} .ara-mint-map__marker-layer {
+    position: absolute;
+    inset: 0;
+  }
+
+  #AraMintMap-{{ section.id }} .ara-mint-map__marker {
+    position: absolute;
+    top: var(--marker-y);
+    left: var(--marker-x);
+    display: grid;
+    width: 36px;
+    height: 36px;
+    place-items: center;
+    padding: 0;
+    border: 2px solid var(--ara-map-text);
+    border-radius: 50%;
+    background: var(--ara-map-paper);
+    color: var(--ara-map-text);
+    box-shadow: 3px 3px 0 var(--ara-map-text);
+    cursor: pointer;
+    transform: translate(-50%, -50%);
+    transition:
+      transform 0.2s ease,
+      background-color 0.2s ease,
+      color 0.2s ease;
+  }
+
+  #AraMintMap-{{ section.id }} .ara-mint-map__marker span {
+    font-family: var(--font-body-family);
+    font-size: 10px;
+    font-weight: 800;
+    line-height: 1;
+  }
+
+  #AraMintMap-{{ section.id }} .ara-mint-map__marker:hover,
+  #AraMintMap-{{ section.id }} .ara-mint-map__marker.is-active {
+    background: var(--ara-map-gold);
+    color: var(--ara-map-text);
+    transform: translate(-50%, -50%) scale(1.12);
+  }
+
+  #AraMintMap-{{ section.id }} .ara-mint-map__map-label {
+    position: absolute;
+    right: 18px;
+    bottom: 18px;
+    padding: 8px 12px;
+    border: 2px solid var(--ara-map-text);
+    border-radius: 8px;
+    background: var(--ara-map-paper);
+    color: var(--ara-map-text);
+    font-size: var(--ara-map-label-desktop);
+    box-shadow: 3px 3px 0 var(--ara-map-text);
+  }
+
+  #AraMintMap-{{ section.id }} .ara-mint-map__panel-frame {
+    align-self: start;
+    height: fit-content;
+    border-radius: 22px;
+    box-shadow:
+      8px 8px 0 var(--ara-map-blue-deep),
+      14px 14px 0 color-mix(in srgb, var(--ara-map-gold) 68%, transparent);
+  }
+
+  #AraMintMap-{{ section.id }} .ara-mint-map__panel {
+    display: grid;
+    min-height: 100%;
+    padding: 25px 22px 22px;
+    border: 3px solid var(--ara-map-text);
+    border-radius: 14px;
+    background:
+      radial-gradient(
+        circle at 115% 115%,
+        color-mix(in srgb, var(--ara-map-gold) 14%, transparent) 0 28%,
+        transparent 29%
+      ),
+      linear-gradient(145deg, var(--ara-map-blue), var(--ara-map-blue-deep));
+    color: #FFFFFF;
+  }
+
+  #AraMintMap-{{ section.id }} .ara-mint-map__panel-top {
+    display: flex;
+    justify-content: space-between;
+    gap: 14px;
+    padding-bottom: 16px;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.78);
+  }
+
+  #AraMintMap-{{ section.id }} .ara-mint-map__panel-top span,
+  #AraMintMap-{{ section.id }} .ara-mint-map__panel-top small {
+    font-size: var(--ara-map-label-desktop);
+  }
+
+  #AraMintMap-{{ section.id }} .ara-mint-map__panel-top small {
+    color: rgba(255, 255, 255, 0.66);
+    text-align: right;
+  }
+
+  #AraMintMap-{{ section.id }} .ara-mint-map__panels {
+    position: relative;
+    margin-top: 24px;
+  }
+
+  #AraMintMap-{{ section.id }} .ara-mint-map__company-panel {
+    display: grid;
+    gap: 24px;
+  }
+
+  #AraMintMap-{{ section.id }} .ara-mint-map__company-panel[hidden] {
+    display: none !important;
+  }
+
+  #AraMintMap-{{ section.id }} .ara-mint-map__company-head {
+    display: grid;
+    grid-template-columns: 78px minmax(0, 1fr);
+    gap: 17px;
+    align-items: center;
+  }
+
+  #AraMintMap-{{ section.id }} .ara-mint-map__company-logo {
+    display: grid;
+    width: 72px;
+    height: 72px;
+    place-items: center;
+    overflow: hidden;
+    border: 2px solid rgba(255, 255, 255, 0.88);
+    border-radius: 12px;
+    background: var(--ara-map-paper);
+    color: var(--ara-map-text);
+  }
+
+  #AraMintMap-{{ section.id }} .ara-mint-map__company-logo-image {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    padding: 8px;
+  }
+
+  #AraMintMap-{{ section.id }} .ara-mint-map__company-logo span {
+    font-family: var(--font-heading-family);
+    font-size: 30px;
+    font-weight: 800;
+  }
+
+  #AraMintMap-{{ section.id }} .ara-mint-map__company-kicker {
+    color: var(--ara-map-gold);
+    font-size: var(--ara-map-label-desktop);
+  }
+
+  #AraMintMap-{{ section.id }} .ara-mint-map__company-name {
+    margin: 7px 0 0;
+    font-family: var(--font-heading-family);
+    font-size: var(--ara-map-company-desktop);
+    font-style: var(--font-heading-style);
+    font-weight: var(--font-heading-weight);
+    line-height: 1;
+  }
+
+  #AraMintMap-{{ section.id }} .ara-mint-map__company-location {
+    margin: 8px 0 0;
+    color: rgba(255, 255, 255, 0.66);
+    font-size: var(--ara-map-label-desktop);
+  }
+
+  #AraMintMap-{{ section.id }} .ara-mint-map__company-description {
+    margin: 0;
+    color: rgba(255, 255, 255, 0.86);
+    font-family: var(--font-body-family);
+    font-size: var(--ara-map-body-desktop);
+    font-style: var(--font-body-style);
+    font-weight: var(--font-body-weight);
+    line-height: 1.58;
+  }
+
+  #AraMintMap-{{ section.id }} .ara-mint-map__stats {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  #AraMintMap-{{ section.id }} .ara-mint-map__stat {
+    min-width: 0;
+    padding: 13px 10px;
+    border: 1px solid rgba(255, 255, 255, 0.48);
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.08);
+  }
+
+  #AraMintMap-{{ section.id }} .ara-mint-map__stat span {
+    display: block;
+    color: rgba(255, 255, 255, 0.62);
+    font-size: var(--ara-map-label-desktop);
+  }
+
+  #AraMintMap-{{ section.id }} .ara-mint-map__stat strong {
+    display: block;
+    margin-top: 7px;
+    font-family: var(--font-heading-family);
+    font-size: var(--ara-map-stat-desktop);
+    line-height: 1;
+  }
+
+  #AraMintMap-{{ section.id }} .ara-mint-map__company-link {
+    display: inline-flex;
+    width: fit-content;
+    min-height: 46px;
+    align-items: center;
+    justify-content: center;
+    padding: 11px 18px;
+    border: 2px solid #FFFFFF;
+    border-radius: 8px;
+    background: var(--ara-map-gold);
+    color: var(--ara-map-text);
+    font-family: var(--font-body-family);
+    font-size: var(--ara-map-label-desktop);
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-decoration: none;
+    text-transform: uppercase;
+    box-shadow: 3px 3px 0 #FFFFFF;
+  }
+
+  #AraMintMap-{{ section.id }} .ara-mint-map__selector {
+    display: grid;
+    gap: 8px;
+    align-self: end;
+    margin-top: 28px;
+  }
+
+  #AraMintMap-{{ section.id }} .ara-mint-map__selector-button {
+    display: grid;
+    grid-template-columns: 30px minmax(0, 1fr);
+    gap: 10px;
+    align-items: center;
+    padding: 10px 12px;
+    border: 1px solid rgba(255, 255, 255, 0.38);
+    border-radius: 9px;
+    background: rgba(255, 255, 255, 0.06);
+    color: #FFFFFF;
+    text-align: left;
+    cursor: pointer;
+  }
+
+  #AraMintMap-{{ section.id }} .ara-mint-map__selector-button.is-active {
+    border-color: var(--ara-map-gold);
+    background: rgba(255, 255, 255, 0.14);
+  }
+
+  #AraMintMap-{{ section.id }} .ara-mint-map__selector-button span {
+    color: var(--ara-map-gold);
+    font-size: var(--ara-map-label-desktop);
+  }
+
+  #AraMintMap-{{ section.id }} .ara-mint-map__selector-button strong {
+    overflow: hidden;
+    font-family: var(--font-body-family);
+    font-size: var(--ara-map-label-desktop);
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-overflow: ellipsis;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  @media screen and (max-width: 1099px) {
+    #AraMintMap-{{ section.id }} .ara-mint-map__heading-row,
+    #AraMintMap-{{ section.id }} .ara-mint-map__layout {
+      grid-template-columns: 1fr;
+    }
+
+    #AraMintMap-{{ section.id }} .ara-mint-map__panel-frame {
+      max-width: 760px;
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    #AraMintMap-{{ section.id }} {
+      padding-top: calc(var(--ara-map-top) * 0.7);
+      padding-bottom: calc(var(--ara-map-bottom) * 0.7);
+    }
+
+    #AraMintMap-{{ section.id }} .ara-mint-map__inner {
+      padding: 0 20px;
+    }
+
+    #AraMintMap-{{ section.id }} .ara-mint-map__heading-row {
+      gap: 24px;
+      margin-bottom: 34px;
+    }
+
+    #AraMintMap-{{ section.id }} .ara-mint-map__eyebrow,
+    #AraMintMap-{{ section.id }} .ara-mint-map__map-label,
+    #AraMintMap-{{ section.id }} .ara-mint-map__panel-top span,
+    #AraMintMap-{{ section.id }} .ara-mint-map__panel-top small,
+    #AraMintMap-{{ section.id }} .ara-mint-map__company-kicker,
+    #AraMintMap-{{ section.id }} .ara-mint-map__company-location,
+    #AraMintMap-{{ section.id }} .ara-mint-map__stat span,
+    #AraMintMap-{{ section.id }} .ara-mint-map__selector-button span,
+    #AraMintMap-{{ section.id }} .ara-mint-map__selector-button strong,
+    #AraMintMap-{{ section.id }} .ara-mint-map__company-link {
+      font-size: var(--ara-map-label-mobile);
+    }
+
+    #AraMintMap-{{ section.id }} .ara-mint-map__heading {
+      font-size: var(--ara-map-heading-mobile);
+    }
+
+    #AraMintMap-{{ section.id }} .ara-mint-map__description,
+    #AraMintMap-{{ section.id }} .ara-mint-map__company-description {
+      font-size: var(--ara-map-body-mobile);
+    }
+
+    #AraMintMap-{{ section.id }} .ara-mint-map__map-frame,
+    #AraMintMap-{{ section.id }} .ara-mint-map__panel-frame {
+      padding: 5px;
+    }
+
+    #AraMintMap-{{ section.id }} .ara-mint-map__map-frame {
+      box-shadow:
+        5px 5px 0 var(--ara-map-gold),
+        10px 10px 0 color-mix(in srgb, var(--ara-map-mint) 65%, transparent);
+    }
+
+    #AraMintMap-{{ section.id }} .ara-mint-map__map,
+    #AraMintMap-{{ section.id }} .ara-mint-map__image,
+    #AraMintMap-{{ section.id }} .ara-mint-map__placeholder-svg {
+      min-height: 430px;
+    }
+
+    #AraMintMap-{{ section.id }} .ara-mint-map__marker {
+      width: 32px;
+      height: 32px;
+    }
+
+    #AraMintMap-{{ section.id }} .ara-mint-map__map-label {
+      right: 12px;
+      bottom: 12px;
+      left: 12px;
+      text-align: center;
+    }
+
+    #AraMintMap-{{ section.id }} .ara-mint-map__panel-frame {
+      box-shadow:
+        5px 5px 0 var(--ara-map-blue-deep),
+        10px 10px 0 color-mix(in srgb, var(--ara-map-gold) 68%, transparent);
+    }
+
+    #AraMintMap-{{ section.id }} .ara-mint-map__panel {
+      padding: 22px 18px;
+    }
+
+    #AraMintMap-{{ section.id }} .ara-mint-map__company-head {
+      grid-template-columns: 66px minmax(0, 1fr);
+    }
+
+    #AraMintMap-{{ section.id }} .ara-mint-map__company-logo {
+      width: 62px;
+      height: 62px;
+    }
+
+    #AraMintMap-{{ section.id }} .ara-mint-map__company-name {
+      font-size: var(--ara-map-company-mobile);
+    }
+
+    #AraMintMap-{{ section.id }} .ara-mint-map__stats {
+      grid-template-columns: 1fr;
+    }
+
+    #AraMintMap-{{ section.id }} .ara-mint-map__stat strong {
+      font-size: var(--ara-map-stat-mobile);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #AraMintMap-{{ section.id }} .ara-mint-map__marker {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  (() => {
+    const section = document.getElementById('AraMintMap-{{ section.id }}');
+
+    if (!section || section.dataset.ready === 'true') return;
+
+    section.dataset.ready = 'true';
+
+    const markers = [...section.querySelectorAll('[data-map-marker]')];
+    const selectors = [...section.querySelectorAll('[data-map-selector]')];
+    const panels = [...section.querySelectorAll('[data-map-panel]')];
+
+    const activate = blockId => {
+      markers.forEach(marker => {
+        const active = marker.dataset.blockId === blockId;
+        marker.classList.toggle('is-active', active);
+        marker.setAttribute('aria-pressed', String(active));
+      });
+
+      selectors.forEach(selector => {
+        const active = selector.dataset.blockId === blockId;
+        selector.classList.toggle('is-active', active);
+        selector.setAttribute('aria-pressed', String(active));
+      });
+
+      panels.forEach(panel => {
+        const active = panel.dataset.mapPanel === blockId;
+        panel.classList.toggle('is-active', active);
+        panel.hidden = !active;
+      });
+    };
+
+    [...markers, ...selectors].forEach(control => {
+      control.addEventListener('click', () => {
+        activate(control.dataset.blockId);
+      });
+    });
+  })();
+</script>
+
+
+<style>
+  #AraMintMap-{{ section.id }} .ara-mint-map__placeholder--world {
+    display: block;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    min-height: 560px;
+    overflow: hidden;
+    background: #EAF2ED;
+  }
+
+  #AraMintMap-{{ section.id }} .ara-mint-map__world-svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+    min-height: 560px;
+    object-fit: cover;
+  }
+
+  @media screen and (max-width: 749px) {
+    #AraMintMap-{{ section.id }} .ara-mint-map__placeholder--world,
+    #AraMintMap-{{ section.id }} .ara-mint-map__world-svg {
+      min-height: 390px;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Ara Mint HQ Map",
+  "max_blocks": 12,
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Small heading",
+      "default": "COMPANY HEADQUARTERS"
+    },
+    {
+      "type": "textarea",
+      "id": "heading",
+      "label": "Main heading",
+      "default": "Where companies\nshape the world."
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description",
+      "default": "<p>Select a headquarters marker to explore where a company operates, what it builds and why its location matters.</p>"
+    },
+    {
+      "type": "image_picker",
+      "id": "map_image",
+      "label": "Desktop map graphic"
+    },
+    {
+      "type": "image_picker",
+      "id": "mobile_map_image",
+      "label": "Mobile map graphic"
+    },
+    {
+      "type": "text",
+      "id": "map_label",
+      "label": "Map label",
+      "default": "SELECT A MARKER TO OPEN A COMPANY"
+    },
+    {
+      "type": "text",
+      "id": "panel_label",
+      "label": "Company panel heading",
+      "default": "COMPANY FILE"
+    },
+    {
+      "type": "text",
+      "id": "panel_note",
+      "label": "Company panel note",
+      "default": "HEADQUARTERS INDEX"
+    },
+    {
+      "type": "header",
+      "content": "Desktop typography"
+    },
+    {
+      "type": "range",
+      "id": "desktop_heading_size",
+      "min": 44,
+      "max": 96,
+      "step": 2,
+      "unit": "px",
+      "label": "Main heading size",
+      "default": 72
+    },
+    {
+      "type": "range",
+      "id": "desktop_body_size",
+      "min": 13,
+      "max": 22,
+      "step": 1,
+      "unit": "px",
+      "label": "Body text size",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "desktop_label_size",
+      "min": 8,
+      "max": 15,
+      "step": 1,
+      "unit": "px",
+      "label": "Small text size",
+      "default": 9
+    },
+    {
+      "type": "range",
+      "id": "desktop_company_size",
+      "min": 28,
+      "max": 54,
+      "step": 1,
+      "unit": "px",
+      "label": "Company heading size",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "desktop_stat_size",
+      "min": 18,
+      "max": 34,
+      "step": 1,
+      "unit": "px",
+      "label": "Statistic value size",
+      "default": 24
+    },
+    {
+      "type": "header",
+      "content": "Mobile typography"
+    },
+    {
+      "type": "range",
+      "id": "mobile_heading_size",
+      "min": 36,
+      "max": 68,
+      "step": 2,
+      "unit": "px",
+      "label": "Main heading size",
+      "default": 50
+    },
+    {
+      "type": "range",
+      "id": "mobile_body_size",
+      "min": 13,
+      "max": 19,
+      "step": 1,
+      "unit": "px",
+      "label": "Body text size",
+      "default": 15
+    },
+    {
+      "type": "range",
+      "id": "mobile_label_size",
+      "min": 8,
+      "max": 14,
+      "step": 1,
+      "unit": "px",
+      "label": "Small text size",
+      "default": 9
+    },
+    {
+      "type": "range",
+      "id": "mobile_company_size",
+      "min": 26,
+      "max": 44,
+      "step": 1,
+      "unit": "px",
+      "label": "Company heading size",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "mobile_stat_size",
+      "min": 18,
+      "max": 30,
+      "step": 1,
+      "unit": "px",
+      "label": "Statistic value size",
+      "default": 22
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "max_width",
+      "label": "Content width",
+      "default": "1600px",
+      "options": [
+        {
+          "value": "1300px",
+          "label": "Narrow"
+        },
+        {
+          "value": "1450px",
+          "label": "Medium"
+        },
+        {
+          "value": "1600px",
+          "label": "Wide"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 40,
+      "max": 120,
+      "step": 5,
+      "unit": "px",
+      "label": "Top spacing",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 40,
+      "max": 120,
+      "step": 5,
+      "unit": "px",
+      "label": "Bottom spacing",
+      "default": 80
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Section background",
+      "default": "#F2F8F6"
+    },
+    {
+      "type": "color",
+      "id": "paper_color",
+      "label": "Paper background",
+      "default": "#F7FCFA"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Main text",
+      "default": "#161B2E"
+    },
+    {
+      "type": "color",
+      "id": "muted_text_color",
+      "label": "Secondary text",
+      "default": "#646575"
+    },
+    {
+      "type": "color",
+      "id": "mint_color",
+      "label": "Mint accent",
+      "default": "#176D5C"
+    },
+    {
+      "type": "color",
+      "id": "gold_color",
+      "label": "Gold accent",
+      "default": "#E0A526"
+    },
+    {
+      "type": "color",
+      "id": "blue_color",
+      "label": "Blue accent",
+      "default": "#3A5BE0"
+    },
+    {
+      "type": "color",
+      "id": "blue_deep_color",
+      "label": "Deep blue",
+      "default": "#22389A"
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Soft border",
+      "default": "#C9BEA8"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "company",
+      "name": "Company marker",
+      "settings": [
+        {
+          "type": "range",
+          "id": "position_x",
+          "min": 5,
+          "max": 95,
+          "step": 1,
+          "unit": "%",
+          "label": "Horizontal position",
+          "default": 50
+        },
+        {
+          "type": "range",
+          "id": "position_y",
+          "min": 5,
+          "max": 95,
+          "step": 1,
+          "unit": "%",
+          "label": "Vertical position",
+          "default": 50
+        },
+        {
+          "type": "image_picker",
+          "id": "logo",
+          "label": "Company logo"
+        },
+        {
+          "type": "text",
+          "id": "kicker",
+          "label": "Small heading",
+          "default": "TECHNOLOGY"
+        },
+        {
+          "type": "text",
+          "id": "company_name",
+          "label": "Company name",
+          "default": "Apple"
+        },
+        {
+          "type": "text",
+          "id": "location",
+          "label": "Headquarters location",
+          "default": "Cupertino, California"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description",
+          "default": "A global technology company built around hardware, software, services and one of the world’s most valuable consumer ecosystems."
+        },
+        {
+          "type": "text",
+          "id": "stat_one_label",
+          "label": "First statistic label",
+          "default": "FOUNDED"
+        },
+        {
+          "type": "text",
+          "id": "stat_one_value",
+          "label": "First statistic value",
+          "default": "1976"
+        },
+        {
+          "type": "text",
+          "id": "stat_two_label",
+          "label": "Second statistic label",
+          "default": "SECTOR"
+        },
+        {
+          "type": "text",
+          "id": "stat_two_value",
+          "label": "Second statistic value",
+          "default": "TECH"
+        },
+        {
+          "type": "text",
+          "id": "stat_three_label",
+          "label": "Third statistic label",
+          "default": "REGION"
+        },
+        {
+          "type": "text",
+          "id": "stat_three_value",
+          "label": "Third statistic value",
+          "default": "USA"
+        },
+        {
+          "type": "text",
+          "id": "link_label",
+          "label": "Button text",
+          "default": "OPEN COMPANY MODULE"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Button link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Ara Mint HQ Map",
+      "blocks": [
+        {
+          "type": "company",
+          "settings": {
+            "position_x": 22,
+            "position_y": 46,
+            "kicker": "TECHNOLOGY",
+            "company_name": "Apple",
+            "location": "Cupertino, California",
+            "description": "A global technology company built around hardware, software, services and one of the world’s most valuable consumer ecosystems.",
+            "stat_one_label": "FOUNDED",
+            "stat_one_value": "1976",
+            "stat_two_label": "SECTOR",
+            "stat_two_value": "TECH",
+            "stat_three_label": "REGION",
+            "stat_three_value": "USA",
+            "link_label": "OPEN COMPANY MODULE"
+          }
+        },
+        {
+          "type": "company",
+          "settings": {
+            "position_x": 51,
+            "position_y": 38,
+            "kicker": "FINANCE",
+            "company_name": "JPMorgan Chase",
+            "location": "New York City, New York",
+            "description": "A diversified financial institution operating across consumer banking, investment banking, asset management and global markets.",
+            "stat_one_label": "FOUNDED",
+            "stat_one_value": "1799",
+            "stat_two_label": "SECTOR",
+            "stat_two_value": "BANKING",
+            "stat_three_label": "REGION",
+            "stat_three_value": "USA",
+            "link_label": "OPEN COMPANY MODULE"
+          }
+        },
+        {
+          "type": "company",
+          "settings": {
+            "position_x": 72,
+            "position_y": 49,
+            "kicker": "AUTOMOTIVE",
+            "company_name": "Toyota",
+            "location": "Toyota City, Japan",
+            "description": "A global automotive manufacturer known for scale, operational efficiency, hybrid technology and a tightly managed production system.",
+            "stat_one_label": "FOUNDED",
+            "stat_one_value": "1937",
+            "stat_two_label": "SECTOR",
+            "stat_two_value": "AUTO",
+            "stat_three_label": "REGION",
+            "stat_three_value": "JAPAN",
+            "link_label": "OPEN COMPANY MODULE"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

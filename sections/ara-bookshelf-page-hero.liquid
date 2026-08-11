@@ -1,0 +1,1028 @@
+<section
+  id="AraBookshelfPageHero-{{ section.id }}"
+  class="ara-bookshelf-page-hero"
+  style="
+    --ara-bph-bg: {{ section.settings.background_color }};
+    --ara-bph-paper: {{ section.settings.paper_color }};
+    --ara-bph-text: {{ section.settings.text_color }};
+    --ara-bph-muted: {{ section.settings.muted_text_color }};
+    --ara-bph-mint: {{ section.settings.mint_color }};
+    --ara-bph-gold: {{ section.settings.gold_color }};
+    --ara-bph-blue: {{ section.settings.blue_color }};
+    --ara-bph-blue-deep: {{ section.settings.blue_deep_color }};
+    --ara-bph-max: {{ section.settings.max_width }};
+    --ara-bph-top: {{ section.settings.padding_top }}px;
+    --ara-bph-bottom: {{ section.settings.padding_bottom }}px;
+    --ara-bph-heading-desktop: {{ section.settings.desktop_heading_size }}px;
+    --ara-bph-body-desktop: {{ section.settings.desktop_body_size }}px;
+    --ara-bph-label-desktop: {{ section.settings.desktop_label_size }}px;
+    --ara-bph-card-title-desktop: {{ section.settings.desktop_card_title_size }}px;
+    --ara-bph-card-text-desktop: {{ section.settings.desktop_card_text_size }}px;
+    --ara-bph-heading-mobile: {{ section.settings.mobile_heading_size }}px;
+    --ara-bph-body-mobile: {{ section.settings.mobile_body_size }}px;
+    --ara-bph-label-mobile: {{ section.settings.mobile_label_size }}px;
+    --ara-bph-card-title-mobile: {{ section.settings.mobile_card_title_size }}px;
+    --ara-bph-card-text-mobile: {{ section.settings.mobile_card_text_size }}px;
+  "
+>
+  <div class="ara-bookshelf-page-hero__lines" aria-hidden="true"></div>
+
+  <div class="ara-bookshelf-page-hero__inner">
+    <div class="ara-bookshelf-page-hero__frame">
+      <div class="ara-bookshelf-page-hero__panel">
+        <div class="ara-bookshelf-page-hero__copy">
+          <div class="ara-bookshelf-page-hero__meta">
+            {% if section.settings.eyebrow != blank %}
+              <span class="ara-bookshelf-page-hero__eyebrow">
+                {{ section.settings.eyebrow | escape }}
+              </span>
+            {% endif %}
+
+            {% if section.settings.folio != blank %}
+              <span class="ara-bookshelf-page-hero__folio">
+                {{ section.settings.folio | escape }}
+              </span>
+            {% endif %}
+          </div>
+
+          {% if section.settings.heading != blank %}
+            <h1 class="ara-bookshelf-page-hero__heading">
+              {{ section.settings.heading | escape | newline_to_br }}
+            </h1>
+          {% endif %}
+
+          {% if section.settings.description != blank %}
+            <div class="ara-bookshelf-page-hero__description">
+              {{ section.settings.description }}
+            </div>
+          {% endif %}
+
+          <div class="ara-bookshelf-page-hero__buttons">
+            {% if section.settings.primary_button_label != blank %}
+              <a
+                class="ara-bookshelf-page-hero__button ara-bookshelf-page-hero__button--primary"
+                {% if section.settings.primary_button_link != blank %}
+                  href="{{ section.settings.primary_button_link }}"
+                {% else %}
+                  href="#AraBookshelfCatalog"
+                {% endif %}
+              >
+                {{ section.settings.primary_button_label | escape }}
+              </a>
+            {% endif %}
+
+            {% if section.settings.secondary_button_label != blank %}
+              <a
+                class="ara-bookshelf-page-hero__button ara-bookshelf-page-hero__button--secondary"
+                {% if section.settings.secondary_button_link != blank %}
+                  href="{{ section.settings.secondary_button_link }}"
+                {% else %}
+                  role="link"
+                  aria-disabled="true"
+                {% endif %}
+              >
+                {{ section.settings.secondary_button_label | escape }}
+              </a>
+            {% endif %}
+          </div>
+
+          {% if section.settings.bottom_note != blank %}
+            <p class="ara-bookshelf-page-hero__bottom-note">
+              {{ section.settings.bottom_note | escape }}
+            </p>
+          {% endif %}
+        </div>
+
+        <div class="ara-bookshelf-page-hero__visual">
+          <div class="ara-bookshelf-page-hero__pediment" aria-hidden="true">
+            <span></span>
+          </div>
+
+          <div class="ara-bookshelf-page-hero__visual-frame">
+            {% if section.settings.desktop_image != blank %}
+              <picture>
+                {% if section.settings.mobile_image != blank %}
+                  <source
+                    media="(max-width: 749px)"
+                    srcset="
+                      {{ section.settings.mobile_image | image_url: width: 800 }} 800w,
+                      {{ section.settings.mobile_image | image_url: width: 1200 }} 1200w
+                    "
+                  >
+                {% endif %}
+
+                {{
+                  section.settings.desktop_image
+                  | image_url: width: 1800
+                  | image_tag:
+                    widths: '600, 900, 1200, 1500, 1800',
+                    sizes: '(max-width: 749px) 100vw, 48vw',
+                    loading: 'eager',
+                    class: 'ara-bookshelf-page-hero__image',
+                    alt: section.settings.desktop_image.alt
+                }}
+              </picture>
+            {% else %}
+              <div class="ara-bookshelf-page-hero__placeholder">
+                {{ 'collection-1' | placeholder_svg_tag: 'ara-bookshelf-page-hero__placeholder-svg' }}
+              </div>
+            {% endif %}
+
+            {% if section.settings.image_label != blank %}
+              <span class="ara-bookshelf-page-hero__image-label">
+                {{ section.settings.image_label | escape }}
+              </span>
+            {% endif %}
+          </div>
+
+          {% if section.settings.emblem != blank %}
+            <div class="ara-bookshelf-page-hero__emblem" aria-hidden="true">
+              {{
+                section.settings.emblem
+                | image_url: width: 600
+                | image_tag:
+                  widths: '180, 260, 360, 480, 600',
+                  sizes: '(max-width: 749px) 110px, 150px',
+                  loading: 'eager',
+                  class: 'ara-bookshelf-page-hero__emblem-image',
+                  alt: ''
+              }}
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    {% if section.blocks.size > 0 %}
+      <div class="ara-bookshelf-page-hero__pathways">
+        {% for block in section.blocks %}
+          <article
+            class="ara-bookshelf-page-hero__pathway ara-bookshelf-page-hero__pathway--{{ block.settings.style }}"
+            {{ block.shopify_attributes }}
+          >
+            <span class="ara-bookshelf-page-hero__pathway-number">
+              {{ forloop.index | prepend: '0' }}
+            </span>
+
+            <div>
+              {% if block.settings.title != blank %}
+                <h2>{{ block.settings.title | escape }}</h2>
+              {% endif %}
+
+              {% if block.settings.text != blank %}
+                <p>{{ block.settings.text | escape }}</p>
+              {% endif %}
+
+              {% if block.settings.link_label != blank %}
+                <a
+                  class="ara-bookshelf-page-hero__pathway-link"
+                  {% if block.settings.link != blank %}
+                    href="{{ block.settings.link }}"
+                  {% else %}
+                    role="link"
+                    aria-disabled="true"
+                  {% endif %}
+                >
+                  {{ block.settings.link_label | escape }}
+                </a>
+              {% endif %}
+            </div>
+          </article>
+        {% endfor %}
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+<style>
+  #AraBookshelfPageHero-{{ section.id }} {
+    position: relative;
+    overflow: hidden;
+    padding: var(--ara-bph-top) 0 var(--ara-bph-bottom);
+    background: var(--ara-bph-bg);
+    color: var(--ara-bph-text);
+    isolation: isolate;
+  }
+
+  #AraBookshelfPageHero-{{ section.id }} * {
+    box-sizing: border-box;
+  }
+
+  #AraBookshelfPageHero-{{ section.id }} .ara-bookshelf-page-hero__lines {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    opacity: 0.44;
+    background-image:
+      linear-gradient(
+        90deg,
+        transparent 0,
+        transparent 31px,
+        color-mix(in srgb, var(--ara-bph-mint) 12%, transparent) 31px,
+        color-mix(in srgb, var(--ara-bph-mint) 12%, transparent) 32px
+      ),
+      repeating-linear-gradient(
+        to bottom,
+        transparent 0,
+        transparent 35px,
+        color-mix(in srgb, var(--ara-bph-mint) 21%, transparent) 35px,
+        color-mix(in srgb, var(--ara-bph-mint) 21%, transparent) 36px
+      );
+    pointer-events: none;
+  }
+
+  #AraBookshelfPageHero-{{ section.id }} .ara-bookshelf-page-hero__inner {
+    width: min(100%, var(--ara-bph-max));
+    margin: 0 auto;
+    padding: 0 40px;
+  }
+
+  #AraBookshelfPageHero-{{ section.id }} .ara-bookshelf-page-hero__frame {
+    padding: 8px;
+    border: 2px solid var(--ara-bph-text);
+    border-radius: 26px;
+    background: var(--ara-bph-paper);
+    box-shadow:
+      10px 10px 0 var(--ara-bph-gold),
+      18px 18px 0 color-mix(in srgb, var(--ara-bph-mint) 68%, transparent);
+  }
+
+  #AraBookshelfPageHero-{{ section.id }} .ara-bookshelf-page-hero__panel {
+    display: grid;
+    grid-template-columns: minmax(0, 1.02fr) minmax(380px, 0.98fr);
+    gap: clamp(38px, 5vw, 82px);
+    align-items: center;
+    padding: clamp(38px, 5vw, 74px);
+    border: 3px solid var(--ara-bph-text);
+    border-radius: 17px;
+    background:
+      radial-gradient(
+        circle at 112% 112%,
+        color-mix(in srgb, var(--ara-bph-mint) 15%, transparent) 0 29%,
+        transparent 30%
+      ),
+      linear-gradient(
+        145deg,
+        color-mix(in srgb, var(--ara-bph-paper) 96%, white),
+        color-mix(in srgb, var(--ara-bph-bg) 92%, transparent)
+      );
+  }
+
+  #AraBookshelfPageHero-{{ section.id }} .ara-bookshelf-page-hero__meta {
+    display: flex;
+    justify-content: space-between;
+    gap: 18px;
+    align-items: flex-start;
+  }
+
+  #AraBookshelfPageHero-{{ section.id }} .ara-bookshelf-page-hero__eyebrow,
+  #AraBookshelfPageHero-{{ section.id }} .ara-bookshelf-page-hero__folio,
+  #AraBookshelfPageHero-{{ section.id }} .ara-bookshelf-page-hero__bottom-note,
+  #AraBookshelfPageHero-{{ section.id }} .ara-bookshelf-page-hero__image-label,
+  #AraBookshelfPageHero-{{ section.id }} .ara-bookshelf-page-hero__pathway-number {
+    font-family: var(--font-body-family);
+    font-style: var(--font-body-style);
+    font-weight: 800;
+    line-height: 1.2;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  #AraBookshelfPageHero-{{ section.id }} .ara-bookshelf-page-hero__eyebrow {
+    display: inline-flex;
+    min-height: 31px;
+    align-items: center;
+    padding: 6px 11px;
+    border: 2px solid var(--ara-bph-text);
+    border-radius: 8px;
+    background: var(--ara-bph-gold);
+    color: var(--ara-bph-text);
+    font-size: var(--ara-bph-label-desktop);
+    box-shadow: 3px 3px 0 var(--ara-bph-text);
+  }
+
+  #AraBookshelfPageHero-{{ section.id }} .ara-bookshelf-page-hero__folio {
+    color: var(--ara-bph-muted);
+    font-size: var(--ara-bph-label-desktop);
+    text-align: right;
+  }
+
+  #AraBookshelfPageHero-{{ section.id }} .ara-bookshelf-page-hero__heading {
+    max-width: 780px;
+    margin: 27px 0 0;
+    font-family: var(--font-heading-family);
+    font-size: var(--ara-bph-heading-desktop);
+    font-style: var(--font-heading-style);
+    font-weight: var(--font-heading-weight);
+    line-height: 0.93;
+    letter-spacing: -0.055em;
+  }
+
+  #AraBookshelfPageHero-{{ section.id }} .ara-bookshelf-page-hero__description {
+    max-width: 700px;
+    margin-top: 27px;
+    color: var(--ara-bph-muted);
+    font-family: var(--font-body-family);
+    font-size: var(--ara-bph-body-desktop);
+    font-style: var(--font-body-style);
+    font-weight: var(--font-body-weight);
+    line-height: 1.65;
+  }
+
+  #AraBookshelfPageHero-{{ section.id }} .ara-bookshelf-page-hero__description p {
+    margin: 0;
+  }
+
+  #AraBookshelfPageHero-{{ section.id }} .ara-bookshelf-page-hero__buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-top: 32px;
+  }
+
+  #AraBookshelfPageHero-{{ section.id }} .ara-bookshelf-page-hero__button {
+    display: inline-flex;
+    min-width: 188px;
+    min-height: 50px;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 22px;
+    border: 2px solid currentColor;
+    border-radius: 8px;
+    font-family: var(--font-body-family);
+    font-size: var(--ara-bph-label-desktop);
+    font-weight: 800;
+    letter-spacing: 0.11em;
+    text-align: center;
+    text-decoration: none;
+    text-transform: uppercase;
+    box-shadow: 4px 4px 0 currentColor;
+  }
+
+  #AraBookshelfPageHero-{{ section.id }} .ara-bookshelf-page-hero__button--primary {
+    background: var(--ara-bph-mint);
+    color: #FFFFFF;
+  }
+
+  #AraBookshelfPageHero-{{ section.id }} .ara-bookshelf-page-hero__button--secondary {
+    background: var(--ara-bph-gold);
+    color: var(--ara-bph-text);
+  }
+
+  #AraBookshelfPageHero-{{ section.id }} .ara-bookshelf-page-hero__bottom-note {
+    margin: 47px 0 0;
+    padding-top: 16px;
+    border-top: 1px dashed color-mix(in srgb, var(--ara-bph-text) 34%, transparent);
+    color: var(--ara-bph-muted);
+    font-size: var(--ara-bph-label-desktop);
+  }
+
+  #AraBookshelfPageHero-{{ section.id }} .ara-bookshelf-page-hero__visual {
+    position: relative;
+    min-width: 0;
+    padding-top: 44px;
+  }
+
+  #AraBookshelfPageHero-{{ section.id }} .ara-bookshelf-page-hero__pediment {
+    position: absolute;
+    z-index: 3;
+    top: 0;
+    right: 13%;
+    left: 13%;
+    height: 70px;
+  }
+
+  #AraBookshelfPageHero-{{ section.id }} .ara-bookshelf-page-hero__pediment > span {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border: 3px solid var(--ara-bph-text);
+    background: var(--ara-bph-mint);
+    clip-path: polygon(50% 0, 100% 100%, 0 100%);
+    filter: drop-shadow(7px 7px 0 var(--ara-bph-gold));
+  }
+
+  #AraBookshelfPageHero-{{ section.id }} .ara-bookshelf-page-hero__visual-frame {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 4 / 3;
+    padding: 7px;
+    border: 2px solid var(--ara-bph-text);
+    border-radius: 18px;
+    background: var(--ara-bph-paper);
+    box-shadow:
+      8px 8px 0 var(--ara-bph-blue),
+      14px 14px 0 color-mix(in srgb, var(--ara-bph-gold) 72%, transparent);
+  }
+
+  #AraBookshelfPageHero-{{ section.id }} .ara-bookshelf-page-hero__visual-frame picture,
+  #AraBookshelfPageHero-{{ section.id }} .ara-bookshelf-page-hero__image,
+  #AraBookshelfPageHero-{{ section.id }} .ara-bookshelf-page-hero__placeholder,
+  #AraBookshelfPageHero-{{ section.id }} .ara-bookshelf-page-hero__placeholder-svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  #AraBookshelfPageHero-{{ section.id }} .ara-bookshelf-page-hero__image,
+  #AraBookshelfPageHero-{{ section.id }} .ara-bookshelf-page-hero__placeholder-svg {
+    border: 3px solid var(--ara-bph-text);
+    border-radius: 11px;
+    object-fit: cover;
+  }
+
+  #AraBookshelfPageHero-{{ section.id }} .ara-bookshelf-page-hero__image-label {
+    position: absolute;
+    right: 18px;
+    bottom: 18px;
+    left: 18px;
+    padding: 8px 12px;
+    border: 2px solid var(--ara-bph-text);
+    border-radius: 8px;
+    background: var(--ara-bph-gold);
+    color: var(--ara-bph-text);
+    font-size: var(--ara-bph-label-desktop);
+    text-align: center;
+    box-shadow: 3px 3px 0 var(--ara-bph-text);
+  }
+
+  #AraBookshelfPageHero-{{ section.id }} .ara-bookshelf-page-hero__emblem {
+    position: absolute;
+    z-index: 4;
+    right: -14px;
+    bottom: -26px;
+    display: grid;
+    width: 150px;
+    height: 150px;
+    place-items: center;
+    padding: 18px;
+    border: 2px solid var(--ara-bph-text);
+    border-radius: 50%;
+    background: var(--ara-bph-blue-deep);
+    box-shadow: 5px 5px 0 var(--ara-bph-gold);
+  }
+
+  #AraBookshelfPageHero-{{ section.id }} .ara-bookshelf-page-hero__emblem-image {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  #AraBookshelfPageHero-{{ section.id }} .ara-bookshelf-page-hero__pathways {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 18px;
+    margin-top: 42px;
+  }
+
+  #AraBookshelfPageHero-{{ section.id }} .ara-bookshelf-page-hero__pathway {
+    display: grid;
+    grid-template-columns: 42px minmax(0, 1fr);
+    gap: 15px;
+    align-items: start;
+    min-height: 178px;
+    padding: 22px;
+    border: 2px solid var(--ara-bph-text);
+    border-radius: 15px;
+    box-shadow: 5px 5px 0 var(--ara-bph-text);
+  }
+
+  #AraBookshelfPageHero-{{ section.id }} .ara-bookshelf-page-hero__pathway--cream {
+    background: var(--ara-bph-paper);
+    color: var(--ara-bph-text);
+  }
+
+  #AraBookshelfPageHero-{{ section.id }} .ara-bookshelf-page-hero__pathway--gold {
+    background: var(--ara-bph-gold);
+    color: var(--ara-bph-text);
+  }
+
+  #AraBookshelfPageHero-{{ section.id }} .ara-bookshelf-page-hero__pathway--blue {
+    background: var(--ara-bph-blue);
+    color: #FFFFFF;
+  }
+
+  #AraBookshelfPageHero-{{ section.id }} .ara-bookshelf-page-hero__pathway-number {
+    display: grid;
+    width: 38px;
+    height: 38px;
+    place-items: center;
+    border: 2px solid currentColor;
+    border-radius: 50%;
+    font-size: var(--ara-bph-label-desktop);
+  }
+
+  #AraBookshelfPageHero-{{ section.id }} .ara-bookshelf-page-hero__pathway h2 {
+    margin: 0;
+    font-family: var(--font-heading-family);
+    font-size: var(--ara-bph-card-title-desktop);
+    font-style: var(--font-heading-style);
+    font-weight: var(--font-heading-weight);
+    line-height: 1;
+  }
+
+  #AraBookshelfPageHero-{{ section.id }} .ara-bookshelf-page-hero__pathway p {
+    margin: 11px 0 0;
+    font-family: var(--font-body-family);
+    font-size: var(--ara-bph-card-text-desktop);
+    line-height: 1.5;
+  }
+
+  #AraBookshelfPageHero-{{ section.id }} .ara-bookshelf-page-hero__pathway-link {
+    display: inline-flex;
+    margin-top: 18px;
+    color: inherit;
+    font-family: var(--font-body-family);
+    font-size: var(--ara-bph-label-desktop);
+    font-weight: 800;
+    letter-spacing: 0.11em;
+    text-decoration: underline;
+    text-underline-offset: 5px;
+    text-transform: uppercase;
+  }
+
+  @media screen and (max-width: 1099px) {
+    #AraBookshelfPageHero-{{ section.id }} .ara-bookshelf-page-hero__panel {
+      grid-template-columns: 1fr;
+    }
+
+    #AraBookshelfPageHero-{{ section.id }} .ara-bookshelf-page-hero__visual {
+      max-width: 760px;
+    }
+  }
+
+  @media screen and (max-width: 899px) {
+    #AraBookshelfPageHero-{{ section.id }} .ara-bookshelf-page-hero__pathways {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    #AraBookshelfPageHero-{{ section.id }} {
+      padding-top: calc(var(--ara-bph-top) * 0.7);
+      padding-bottom: calc(var(--ara-bph-bottom) * 0.7);
+    }
+
+    #AraBookshelfPageHero-{{ section.id }} .ara-bookshelf-page-hero__inner {
+      padding: 0 20px;
+    }
+
+    #AraBookshelfPageHero-{{ section.id }} .ara-bookshelf-page-hero__frame {
+      padding: 5px;
+      box-shadow:
+        5px 5px 0 var(--ara-bph-gold),
+        10px 10px 0 color-mix(in srgb, var(--ara-bph-mint) 68%, transparent);
+    }
+
+    #AraBookshelfPageHero-{{ section.id }} .ara-bookshelf-page-hero__panel {
+      padding: 31px 23px 38px;
+    }
+
+    #AraBookshelfPageHero-{{ section.id }} .ara-bookshelf-page-hero__meta {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+
+    #AraBookshelfPageHero-{{ section.id }} .ara-bookshelf-page-hero__eyebrow,
+    #AraBookshelfPageHero-{{ section.id }} .ara-bookshelf-page-hero__folio,
+    #AraBookshelfPageHero-{{ section.id }} .ara-bookshelf-page-hero__bottom-note,
+    #AraBookshelfPageHero-{{ section.id }} .ara-bookshelf-page-hero__image-label,
+    #AraBookshelfPageHero-{{ section.id }} .ara-bookshelf-page-hero__pathway-number,
+    #AraBookshelfPageHero-{{ section.id }} .ara-bookshelf-page-hero__button,
+    #AraBookshelfPageHero-{{ section.id }} .ara-bookshelf-page-hero__pathway-link {
+      font-size: var(--ara-bph-label-mobile);
+    }
+
+    #AraBookshelfPageHero-{{ section.id }} .ara-bookshelf-page-hero__folio {
+      text-align: left;
+    }
+
+    #AraBookshelfPageHero-{{ section.id }} .ara-bookshelf-page-hero__heading {
+      font-size: var(--ara-bph-heading-mobile);
+    }
+
+    #AraBookshelfPageHero-{{ section.id }} .ara-bookshelf-page-hero__description {
+      font-size: var(--ara-bph-body-mobile);
+    }
+
+    #AraBookshelfPageHero-{{ section.id }} .ara-bookshelf-page-hero__buttons {
+      display: grid;
+    }
+
+    #AraBookshelfPageHero-{{ section.id }} .ara-bookshelf-page-hero__button {
+      width: 100%;
+    }
+
+    #AraBookshelfPageHero-{{ section.id }} .ara-bookshelf-page-hero__visual {
+      padding-top: 33px;
+    }
+
+    #AraBookshelfPageHero-{{ section.id }} .ara-bookshelf-page-hero__pediment {
+      right: 17%;
+      left: 17%;
+      height: 54px;
+    }
+
+    #AraBookshelfPageHero-{{ section.id }} .ara-bookshelf-page-hero__visual-frame {
+      box-shadow:
+        5px 5px 0 var(--ara-bph-blue),
+        10px 10px 0 color-mix(in srgb, var(--ara-bph-gold) 72%, transparent);
+    }
+
+    #AraBookshelfPageHero-{{ section.id }} .ara-bookshelf-page-hero__emblem {
+      right: -6px;
+      bottom: -20px;
+      width: 108px;
+      height: 108px;
+      padding: 13px;
+    }
+
+    #AraBookshelfPageHero-{{ section.id }} .ara-bookshelf-page-hero__pathway {
+      min-height: 0;
+    }
+
+    #AraBookshelfPageHero-{{ section.id }} .ara-bookshelf-page-hero__pathway h2 {
+      font-size: var(--ara-bph-card-title-mobile);
+    }
+
+    #AraBookshelfPageHero-{{ section.id }} .ara-bookshelf-page-hero__pathway p {
+      font-size: var(--ara-bph-card-text-mobile);
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Ara Bookshelf Page Hero",
+  "max_blocks": 3,
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Small heading",
+      "default": "THE BOOKSHELF"
+    },
+    {
+      "type": "text",
+      "id": "folio",
+      "label": "Top note",
+      "default": "COMPANY MODULES · PHYSICAL DIGESTS"
+    },
+    {
+      "type": "textarea",
+      "id": "heading",
+      "label": "Main heading",
+      "default": "A library built\nto understand companies."
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description",
+      "default": "<p>Each shelf connects a company module, its ordered stories and a physical digest. Begin with one company, follow the system and return whenever you need the full picture again.</p>"
+    },
+    {
+      "type": "text",
+      "id": "primary_button_label",
+      "label": "First button text",
+      "default": "BROWSE THE LIBRARY"
+    },
+    {
+      "type": "url",
+      "id": "primary_button_link",
+      "label": "First button link"
+    },
+    {
+      "type": "text",
+      "id": "secondary_button_label",
+      "label": "Second button text",
+      "default": "EXPLORE THE MINT"
+    },
+    {
+      "type": "url",
+      "id": "secondary_button_link",
+      "label": "Second button link"
+    },
+    {
+      "type": "text",
+      "id": "bottom_note",
+      "label": "Bottom note",
+      "default": "READ THE COMPANY · FOLLOW THE STORIES · KEEP THE DIGEST"
+    },
+    {
+      "type": "header",
+      "content": "Hero graphic"
+    },
+    {
+      "type": "image_picker",
+      "id": "desktop_image",
+      "label": "Desktop bookshelf graphic"
+    },
+    {
+      "type": "image_picker",
+      "id": "mobile_image",
+      "label": "Mobile bookshelf graphic"
+    },
+    {
+      "type": "image_picker",
+      "id": "emblem",
+      "label": "Optional official Mint emblem"
+    },
+    {
+      "type": "text",
+      "id": "image_label",
+      "label": "Image label",
+      "default": "MODULES · DIGESTS · COMPANY STORIES"
+    },
+    {
+      "type": "header",
+      "content": "Desktop typography"
+    },
+    {
+      "type": "range",
+      "id": "desktop_heading_size",
+      "min": 44,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "Main heading size",
+      "default": 76
+    },
+    {
+      "type": "range",
+      "id": "desktop_body_size",
+      "min": 13,
+      "max": 22,
+      "step": 1,
+      "unit": "px",
+      "label": "Description size",
+      "default": 17
+    },
+    {
+      "type": "range",
+      "id": "desktop_label_size",
+      "min": 8,
+      "max": 15,
+      "step": 1,
+      "unit": "px",
+      "label": "Small text size",
+      "default": 9
+    },
+    {
+      "type": "range",
+      "id": "desktop_card_title_size",
+      "min": 22,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "label": "Pathway heading size",
+      "default": 28
+    },
+    {
+      "type": "range",
+      "id": "desktop_card_text_size",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Pathway text size",
+      "default": 14
+    },
+    {
+      "type": "header",
+      "content": "Mobile typography"
+    },
+    {
+      "type": "range",
+      "id": "mobile_heading_size",
+      "min": 36,
+      "max": 70,
+      "step": 2,
+      "unit": "px",
+      "label": "Main heading size",
+      "default": 52
+    },
+    {
+      "type": "range",
+      "id": "mobile_body_size",
+      "min": 13,
+      "max": 19,
+      "step": 1,
+      "unit": "px",
+      "label": "Description size",
+      "default": 15
+    },
+    {
+      "type": "range",
+      "id": "mobile_label_size",
+      "min": 8,
+      "max": 14,
+      "step": 1,
+      "unit": "px",
+      "label": "Small text size",
+      "default": 9
+    },
+    {
+      "type": "range",
+      "id": "mobile_card_title_size",
+      "min": 22,
+      "max": 36,
+      "step": 1,
+      "unit": "px",
+      "label": "Pathway heading size",
+      "default": 26
+    },
+    {
+      "type": "range",
+      "id": "mobile_card_text_size",
+      "min": 12,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "label": "Pathway text size",
+      "default": 14
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "max_width",
+      "label": "Content width",
+      "default": "1600px",
+      "options": [
+        {
+          "value": "1300px",
+          "label": "Narrow"
+        },
+        {
+          "value": "1450px",
+          "label": "Medium"
+        },
+        {
+          "value": "1600px",
+          "label": "Wide"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 40,
+      "max": 120,
+      "step": 5,
+      "unit": "px",
+      "label": "Top spacing",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 40,
+      "max": 120,
+      "step": 5,
+      "unit": "px",
+      "label": "Bottom spacing",
+      "default": 80
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Section background",
+      "default": "#D8F0E4"
+    },
+    {
+      "type": "color",
+      "id": "paper_color",
+      "label": "Paper background",
+      "default": "#F7FCFA"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Main text",
+      "default": "#161B2E"
+    },
+    {
+      "type": "color",
+      "id": "muted_text_color",
+      "label": "Secondary text",
+      "default": "#646575"
+    },
+    {
+      "type": "color",
+      "id": "mint_color",
+      "label": "Mint accent",
+      "default": "#176D5C"
+    },
+    {
+      "type": "color",
+      "id": "gold_color",
+      "label": "Gold accent",
+      "default": "#E0A526"
+    },
+    {
+      "type": "color",
+      "id": "blue_color",
+      "label": "Blue accent",
+      "default": "#3A5BE0"
+    },
+    {
+      "type": "color",
+      "id": "blue_deep_color",
+      "label": "Deep blue",
+      "default": "#161B2E"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "pathway",
+      "name": "Bookshelf pathway",
+      "settings": [
+        {
+          "type": "select",
+          "id": "style",
+          "label": "Card color",
+          "default": "cream",
+          "options": [
+            {
+              "value": "cream",
+              "label": "Cream"
+            },
+            {
+              "value": "gold",
+              "label": "Gold"
+            },
+            {
+              "value": "blue",
+              "label": "Blue"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "default": "Choose a company"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Text",
+          "default": "Begin with the company module that interests you most and follow the full business system."
+        },
+        {
+          "type": "text",
+          "id": "link_label",
+          "label": "Link text",
+          "default": "BROWSE COMPANIES"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Ara Bookshelf Page Hero",
+      "blocks": [
+        {
+          "type": "pathway",
+          "settings": {
+            "style": "cream",
+            "title": "Choose a company",
+            "text": "Begin with the company module that interests you most and follow the full business system.",
+            "link_label": "BROWSE COMPANIES"
+          }
+        },
+        {
+          "type": "pathway",
+          "settings": {
+            "style": "gold",
+            "title": "Follow the stories",
+            "text": "Read the decisions, launches and financial developments connected to each company.",
+            "link_label": "READ COMPANY STORIES"
+          }
+        },
+        {
+          "type": "pathway",
+          "settings": {
+            "style": "blue",
+            "title": "Keep the digest",
+            "text": "Use the physical company digest as a lasting reference for reading, annotation and return.",
+            "link_label": "VIEW PHYSICAL DIGESTS"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
