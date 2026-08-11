@@ -3,14 +3,18 @@
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { homeContent } from "@/data/home";
+import { appHref, assets } from "@/lib/assets";
 import { stripHtml } from "@/lib/format";
 
 export function HomeHero() {
-  const hero = homeContent.hero;
-  const news = hero.blocks.filter((b) => b.type === "market_news");
-  const items = hero.blocks.filter((b) => b.type === "market_item");
+  const hero = homeContent.hero as Record<string, unknown>;
+  const blocks = (homeContent.hero.blocks || []) as unknown as Array<Record<string, string>>;
+  const news = blocks.filter((b) => b.type === "market_news");
+  const items = blocks.filter((b) => b.type === "market_item");
   const [dateLabel, setDateLabel] = useState("");
-  const [flipIndex, setFlipIndex] = useState(0);
+  const [highlightWord, setHighlightWord] = useState("read");
+  const [isSwapping, setIsSwapping] = useState(false);
+  const [highlightMinWidth, setHighlightMinWidth] = useState<number | undefined>(undefined);
 
   useEffect(() => {
     setDateLabel(
@@ -22,107 +26,242 @@ export function HomeHero() {
     );
   }, []);
 
-  useEffect(() => {
-    if (news.length === 0) return;
-    const id = window.setInterval(() => {
-      setFlipIndex((i) => (i + 1) % news.length);
-    }, 3200);
-    return () => window.clearInterval(id);
-  }, [news.length]);
+  const style = {
+    ["--ara-hero-bg" as string]: String(hero.background_color || "#f2fbf7"),
+    ["--ara-hero-text" as string]: String(hero.text_color || "#161b2e"),
+    ["--ara-hero-muted" as string]: String(hero.muted_text_color || "#646575"),
+    ["--ara-hero-accent" as string]: String(hero.accent_color || "#176d5c"),
+    ["--ara-hero-gold" as string]: String(hero.gold_color || "#b88332"),
+    ["--ara-hero-border" as string]: String(hero.border_color || "#c9bea8"),
+    ["--ara-hero-panel" as string]: String(hero.panel_color || "#f6fcf9"),
+    ["--ara-hero-deep-bg" as string]: String(hero.deep_background_color || "#e4f5ed"),
+    ["--ara-hero-blue" as string]: String(hero.blue_color || "#3a5be0"),
+    ["--ara-hero-blue-deep" as string]: String(hero.blue_deep_color || "#22389a"),
+    ["--ara-hero-line" as string]: String(hero.line_color || "#70bfa1"),
+    ["--ara-hero-overlay" as string]: String(Number(hero.overlay_strength || 60) / 100),
+    ["--ara-hero-max" as string]: String(hero.max_width || "1700px"),
+    ["--ara-hero-min-height" as string]: `${hero.minimum_height || 760}px`,
+    ["--ara-hero-padding-top" as string]: `${hero.padding_top || 70}px`,
+    ["--ara-hero-padding-bottom" as string]: `${hero.padding_bottom || 70}px`,
+    ["--ara-hero-image-position" as string]: String(hero.image_position || "82% center"),
+    ["--ara-hero-mobile-image-position" as string]: String(hero.mobile_image_position || "82% center"),
+    ["--ara-hero-mobile-min-height" as string]: `${hero.mobile_minimum_height || 820}px`,
+    ["--ara-hero-eyebrow-size" as string]: `${hero.desktop_eyebrow_size || 15}px`,
+    ["--ara-hero-heading-size" as string]: `${hero.desktop_heading_size || 88}px`,
+    ["--ara-hero-description-size" as string]: `${hero.desktop_description_size || 16}px`,
+    ["--ara-hero-button-size" as string]: `${hero.desktop_button_size || 12}px`,
+    ["--ara-hero-folio-size" as string]: `${hero.desktop_folio_size || 8}px`,
+    ["--ara-hero-market-heading-size" as string]: `${hero.desktop_market_heading_size || 10}px`,
+    ["--ara-hero-market-item-size" as string]: `${hero.desktop_market_item_size || 9}px`,
+    ["--ara-hero-market-note-size" as string]: `${hero.desktop_market_note_size || 9}px`,
+    ["--ara-hero-mobile-eyebrow-size" as string]: `${hero.mobile_eyebrow_size || 10}px`,
+    ["--ara-hero-mobile-heading-size" as string]: `${hero.mobile_heading_size || 56}px`,
+    ["--ara-hero-mobile-description-size" as string]: `${hero.mobile_description_size || 14}px`,
+    ["--ara-hero-mobile-button-size" as string]: `${hero.mobile_button_size || 10}px`,
+    ["--ara-hero-mobile-folio-size" as string]: `${hero.mobile_folio_size || 8}px`,
+    ["--ara-hero-mobile-market-heading-size" as string]: `${hero.mobile_market_heading_size || 10}px`,
+    ["--ara-hero-mobile-market-item-size" as string]: `${hero.mobile_market_item_size || 9}px`,
+    ["--ara-hero-mobile-market-note-size" as string]: `${hero.mobile_market_note_size || 9}px`,
+  };
 
-  const headingHtml = useMemo(() => {
-    const safe = hero.heading
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(/\n/g, "<br/>")
-      .replace(/\bread\b/i, "<mark>read</mark>");
-    return safe;
+  // Live theme wraps "read" in `.mm-hl` (neon marker), then cycles words.
+  const headingParts = useMemo(() => {
+    const raw = String(hero.heading || "");
+    const match = raw.match(/\bread\b/i);
+    if (!match || match.index === undefined) {
+      return { before: raw, after: "", original: "read", hasHighlight: false };
+    }
+    return {
+      before: raw.slice(0, match.index),
+      after: raw.slice(match.index + match[0].length),
+      original: match[0],
+      hasHighlight: true,
+    };
   }, [hero.heading]);
 
-  return (
-    <section className="hero">
-      <div className="hero__media" aria-hidden>
-        <div className="hero__columns" />
-        <div className="hero__books">
-          {["APPLE", "COSTCO", "NVIDIA", "AMAZON", "NIKE"].map((label) => (
-            <div key={label} className="hero-book">
-              <span>{label}</span>
-            </div>
-          ))}
-        </div>
-      </div>
-      <div className="hero__paper-lines" aria-hidden />
-      <div className="hero__overlay" aria-hidden />
+  useEffect(() => {
+    if (!headingParts.hasHighlight) return;
+    setHighlightWord(headingParts.original);
+  }, [headingParts.hasHighlight, headingParts.original]);
 
-      <div className="hero__inner">
-        <div>
-          <div className="hero__meta">
-            <p className="hero__eyebrow">{hero.eyebrow}</p>
-            <span className="hero__folio">{hero.folio_text}</span>
+  useEffect(() => {
+    if (!headingParts.hasHighlight) return;
+    const seq = ["learn", "invest", "grow", "create", headingParts.original];
+    let max = 0;
+    const measure = document.createElement("span");
+    measure.style.cssText =
+      "position:absolute;visibility:hidden;white-space:nowrap;pointer-events:none;font:inherit;";
+    const host = document.querySelector(".ara-mintmark-hero .ara-mintmark-hero__heading");
+    if (!host) return;
+    host.appendChild(measure);
+    for (const word of seq) {
+      measure.textContent = word;
+      max = Math.max(max, measure.offsetWidth);
+    }
+    host.removeChild(measure);
+    if (max > 0) setHighlightMinWidth(max);
+
+    let ix = 0;
+    const swapTimers: number[] = [];
+    const iv = window.setInterval(() => {
+      const word = seq[ix % seq.length];
+      ix += 1;
+      setIsSwapping(true);
+      const t = window.setTimeout(() => {
+        setHighlightWord(word);
+        setIsSwapping(false);
+      }, 220);
+      swapTimers.push(t);
+    }, 2400);
+
+    return () => {
+      window.clearInterval(iv);
+      for (const t of swapTimers) window.clearTimeout(t);
+    };
+  }, [headingParts.hasHighlight, headingParts.original]);
+
+  const primaryHref = appHref(String(hero.primary_button_link || "")) || "/bookshelf";
+  const secondaryHref = appHref(String(hero.secondary_button_link || "")) || "/mint";
+
+  const renderHeadingLines = (text: string) =>
+    text.split("\n").map((line, i, arr) => (
+      <span key={`${line}-${i}`}>
+        {line}
+        {i < arr.length - 1 ? <br /> : null}
+      </span>
+    ));
+
+  return (
+    <section className="ara-mintmark-hero" style={style}>
+      <div className="ara-mintmark-hero__media">
+        <picture>
+          <img
+            className="ara-mintmark-hero__background-image"
+            src={assets.heroBooks}
+            alt=""
+            width={2000}
+            height={1200}
+            fetchPriority="high"
+          />
+        </picture>
+      </div>
+      <div className="ara-mintmark-hero__paper-lines" aria-hidden="true" />
+      <div className="ara-mintmark-hero__overlay" aria-hidden="true" />
+
+      <div className="ara-mintmark-hero__inner">
+        <div className="ara-mintmark-hero__content-frame">
+          <div className="ara-mintmark-hero__content">
+            <div className="ara-mintmark-hero__meta">
+              {hero.eyebrow ? <p className="ara-mintmark-hero__eyebrow">{String(hero.eyebrow)}</p> : null}
+              {hero.folio_text ? (
+                <span className="ara-mintmark-hero__folio">{String(hero.folio_text)}</span>
+              ) : null}
+            </div>
+
+            <h1 className="ara-mintmark-hero__heading">
+              {headingParts.hasHighlight ? (
+                <>
+                  {renderHeadingLines(headingParts.before)}
+                  <mark>
+                    <span
+                      className={`mm-hl${isSwapping ? " is-swap" : ""}`}
+                      style={
+                        highlightMinWidth
+                          ? { minWidth: highlightMinWidth, textAlign: "center" as const }
+                          : undefined
+                      }
+                    >
+                      {highlightWord}
+                    </span>
+                  </mark>
+                  {renderHeadingLines(headingParts.after)}
+                </>
+              ) : (
+                renderHeadingLines(String(hero.heading || ""))
+              )}
+            </h1>
+
+            {hero.description ? (
+              <div className="ara-mintmark-hero__description">
+                <p>{stripHtml(String(hero.description))}</p>
+              </div>
+            ) : null}
+
+            <div className="ara-mintmark-hero__buttons">
+              {hero.primary_button_label ? (
+                <Link className="ara-mintmark-hero__button ara-mintmark-hero__button--primary" href={primaryHref}>
+                  {String(hero.primary_button_label)}
+                </Link>
+              ) : null}
+              {hero.secondary_button_label ? (
+                <Link className="ara-mintmark-hero__button ara-mintmark-hero__button--secondary" href={secondaryHref}>
+                  {String(hero.secondary_button_label)}
+                </Link>
+              ) : null}
+            </div>
+
+            {hero.bottom_note ? (
+              <span className="ara-mintmark-hero__bottom-note">{String(hero.bottom_note)}</span>
+            ) : null}
           </div>
-          <h1 className="hero__heading" dangerouslySetInnerHTML={{ __html: headingHtml }} />
-          <div className="hero__description">
-            <p>{stripHtml(hero.description)}</p>
-          </div>
-          <div className="hero__buttons">
-            <Link className="btn btn-primary" href={hero.primary_button_link || "/bookshelf"}>
-              {hero.primary_button_label}
-            </Link>
-            <Link className="btn btn-secondary" href={hero.secondary_button_link || "/mint"}>
-              {hero.secondary_button_label}
-            </Link>
-          </div>
-          <span className="hero__bottom-note">{hero.bottom_note}</span>
         </div>
 
         {hero.show_market_snapshot ? (
-          <aside className="hero__market" aria-label="Market snapshot">
-            <div className="hero__market-head">
-              <div>
-                <span>{hero.market_heading}</span>
-                <small>{dateLabel}</small>
+          <div className="ara-mintmark-hero__market-frame">
+            <aside className="ara-mintmark-hero__market">
+              <div className="ara-mintmark-hero__market-head">
+                <div>
+                  <span>{String(hero.market_heading || "MARKET SNAPSHOT")}</span>
+                  <small>{dateLabel}</small>
+                </div>
+                {hero.market_badge ? (
+                  <span className="ara-mintmark-hero__market-badge">{String(hero.market_badge)}</span>
+                ) : null}
               </div>
-              <span className="hero__market-badge">{hero.market_badge}</span>
-            </div>
 
-            <div className="hero__market-news">
-              {news.map((block, i) => (
-                <div
-                  key={block.id}
-                  className={`market-news-strip${i === flipIndex ? " is-flipped" : ""}`}
-                >
-                  <div className="market-news-strip__inner">
-                    <div className="market-news-strip__face">
-                      <strong>{block.market_name}</strong>
-                      <p>{block.headline}</p>
+              {news.length > 0 ? (
+                <div className="ara-mintmark-hero__market-news">
+                  {news.map((block) => (
+                    <div key={block.id} className="ara-mintmark-hero__market-news-strip">
+                      <div className="ara-mintmark-hero__market-news-strip-inner">
+                        <div className="ara-mintmark-hero__market-news-front">
+                          <strong>{block.market_name}</strong>
+                          <p>{block.headline}</p>
+                        </div>
+                        <div className="ara-mintmark-hero__market-news-back">
+                          <strong>{block.market_name}</strong>
+                          <span>{block.market_value}</span>
+                          <em className={`ara-mintmark-hero__market-change ara-mintmark-hero__market-change--${block.direction}`}>
+                            {block.direction === "up" ? "▲" : block.direction === "down" ? "▼" : "—"} {block.change}
+                          </em>
+                        </div>
+                      </div>
                     </div>
-                    <div className="market-news-strip__face market-news-strip__back">
-                      <strong>{block.market_name}</strong>
-                      <span>{block.market_value}</span>
-                      <em className={block.direction === "up" ? "change-up" : "change-down"}>
-                        {block.direction === "up" ? "▲" : "▼"} {block.change}
+                  ))}
+                </div>
+              ) : null}
+
+              {items.length > 0 ? (
+                <div className="ara-mintmark-hero__market-list">
+                  {items.map((block) => (
+                    <div key={block.id} className="ara-mintmark-hero__market-item">
+                      <div>
+                        <strong>{block.market_name}</strong>
+                        {block.market_value ? <span>{block.market_value}</span> : null}
+                      </div>
+                      <em className={`ara-mintmark-hero__market-change ara-mintmark-hero__market-change--${block.direction}`}>
+                        {block.direction === "up" ? "▲" : block.direction === "down" ? "▼" : "—"} {block.change}
                       </em>
                     </div>
-                  </div>
+                  ))}
                 </div>
-              ))}
-            </div>
+              ) : null}
 
-            <div className="hero__market-list">
-              {items.map((block) => (
-                <div key={block.id} className="market-item">
-                  <div>
-                    <strong>{block.market_name}</strong>
-                    <span>{block.market_value}</span>
-                  </div>
-                  <em className={block.direction === "up" ? "change-up" : "change-down"}>
-                    {block.direction === "up" ? "▲" : "▼"} {block.change}
-                  </em>
-                </div>
-              ))}
-            </div>
-          </aside>
+              {hero.market_note ? (
+                <p className="ara-mintmark-hero__market-note">{String(hero.market_note)}</p>
+              ) : null}
+            </aside>
+          </div>
         ) : null}
       </div>
     </section>

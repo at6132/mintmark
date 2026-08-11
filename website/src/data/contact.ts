@@ -10,7 +10,7 @@
     "form_heading": "Write to the team.",
     "name_label": "NAME",
     "email_label": "EMAIL",
-    "phone_label": "PHONE Â· OPTIONAL",
+    "phone_label": "PHONE · OPTIONAL",
     "topic_label": "TOPIC",
     "message_label": "MESSAGE",
     "topic_general": "General question",

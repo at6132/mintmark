@@ -1,165 +1,486 @@
+"use client";
+
 import Link from "next/link";
+import { useEffect, useRef, useState } from "react";
 import { homeContent } from "@/data/home";
+import { appHref, assets } from "@/lib/assets";
 import { stripHtml } from "@/lib/format";
 
-export function HomeNewsroom() {
-  const ed = homeContent.editorial;
-  const marketNews = ed.blocks.filter((b) => b.type === "market_news");
-  const lead = ed.blocks.find((b) => b.type === "lead_story");
-  const featured = ed.blocks.filter((b) => b.type === "featured_story");
-  const question = ed.blocks.find((b) => b.type === "question");
-  const quads = ed.blocks.filter((b) => b.type === "quick_take");
-  const reports = ed.blocks.filter((b) => b.type === "stock_report");
+type Block = Record<string, string>;
 
-  const tickerItems = [...marketNews, ...marketNews];
+export function HomeNewsroom() {
+  const ed = homeContent.editorial as Record<string, unknown>;
+  const blocks = (homeContent.editorial.blocks || []) as unknown as Block[];
+  const marketNews = blocks.filter((b) => b.type === "market_news");
+  const lead = blocks.find((b) => b.type === "lead_story");
+  const featured = blocks.filter((b) => b.type === "featured_story");
+  const question = blocks.find((b) => b.type === "question");
+  const quads = blocks.filter((b) => b.type === "quick_take");
+  const reports = blocks.filter((b) => b.type === "stock_report");
+  const [dateLabel, setDateLabel] = useState("");
+  const rootRef = useRef<HTMLElement | null>(null);
+
+  useEffect(() => {
+    setDateLabel(
+      new Date().toLocaleDateString("en-US", {
+        weekday: "long",
+        month: "long",
+        day: "numeric",
+        year: "numeric",
+      }),
+    );
+  }, []);
+
+  // Shopify polish kit: staggered scroll reveal on cards + sections
+  useEffect(() => {
+    const root = rootRef.current;
+    if (!root) return;
+
+    const reduce =
+      typeof window !== "undefined" &&
+      window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+    root.classList.add("is-animate");
+
+    const sel =
+      ".ara-editorial-front-page__lead, .ara-nr-strip, .ara-editorial-front-page__question," +
+      ".ara-nr-sq, .ara-editorial-front-page__featured-story, .ara-nr-map__chip," +
+      ".ara-editorial-front-page__section-heading";
+    const targets = Array.from(root.querySelectorAll<HTMLElement>(sel));
+    targets.forEach((el) => el.classList.add("ara-nr-reveal"));
+
+    if (reduce || !("IntersectionObserver" in window)) {
+      targets.forEach((el) => el.classList.add("is-in"));
+      return;
+    }
+
+    [".ara-nr-strip", ".ara-nr-band3 .ara-nr-sq", ".ara-nr-map__chip", ".ara-editorial-front-page__featured-story"].forEach(
+      (g) => {
+        Array.from(root.querySelectorAll<HTMLElement>(g)).forEach((el, i) => {
+          el.style.transitionDelay = `${(i % 6) * 70}ms`;
+          el.setAttribute("data-rd", String((i % 6) * 70));
+        });
+      },
+    );
+
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (!e.isIntersecting) return;
+          const el = e.target as HTMLElement;
+          el.style.transitionDelay = `${el.getAttribute("data-rd") || 0}ms`;
+          el.classList.add("is-in");
+          io.unobserve(el);
+        });
+      },
+      { threshold: 0.12, rootMargin: "0px 0px -8% 0px" },
+    );
+
+    targets.forEach((el) => io.observe(el));
+    return () => io.disconnect();
+  }, []);
+
+  const style = {
+    ["--ara-news-bg" as string]: String(ed.background_color || "#f2f8f6"),
+    ["--ara-news-paper" as string]: String(ed.paper_color || "#f7fcfa"),
+    ["--ara-news-text" as string]: String(ed.text_color || "#161b2e"),
+    ["--ara-news-muted" as string]: String(ed.muted_text_color || "#646575"),
+    ["--ara-news-mint" as string]: String(ed.mint_color || "#176d5c"),
+    ["--ara-news-gold" as string]: String(ed.gold_color || "#e0a526"),
+    ["--ara-news-blue" as string]: String(ed.blue_color || "#3a5be0"),
+    ["--ara-news-border" as string]: String(ed.border_color || "#c9bea8"),
+    ["--ara-news-line" as string]: String(ed.line_color || "#1fa88f"),
+    ["--ara-news-rise" as string]: String(ed.rise_color || "#00c805"),
+    ["--ara-news-fall" as string]: String(ed.fall_color || "#c93a32"),
+    ["--ara-news-max" as string]: String(ed.max_width || "1700px"),
+    ["--ara-news-top" as string]: `${ed.padding_top || 70}px`,
+    ["--ara-news-bottom" as string]: `${ed.padding_bottom || 45}px`,
+    ["--ara-news-lead-title" as string]: `${ed.desktop_main_title_size || 60}px`,
+    ["--ara-news-feature-title" as string]: `${ed.desktop_side_title_size || 27}px`,
+    ["--ara-news-row-title" as string]: `${ed.desktop_row_title_size || 26}px`,
+    ["--ara-news-body" as string]: `${ed.desktop_body_size || 14}px`,
+    ["--ara-news-label" as string]: `${ed.desktop_label_size || 10}px`,
+    ["--ara-news-mobile-lead-title" as string]: `${ed.mobile_main_title_size || 44}px`,
+    ["--ara-news-mobile-feature-title" as string]: `${ed.mobile_side_title_size || 26}px`,
+    ["--ara-news-mobile-row-title" as string]: `${ed.mobile_row_title_size || 23}px`,
+    ["--ara-news-mobile-body" as string]: `${ed.mobile_body_size || 14}px`,
+    ["--ara-news-mobile-label" as string]: `${ed.mobile_label_size || 10}px`,
+  };
+
+  const tickerItems = [
+    ...(lead
+      ? [{ key: "lead", ticker: "LEAD", heading: lead.heading, link: lead.link }]
+      : []),
+    ...marketNews.map((m) => ({
+      key: m.id,
+      ticker: m.ticker,
+      heading: m.heading,
+      link: m.link,
+    })),
+  ];
+  const tickerLoop = [...tickerItems, ...tickerItems];
 
   return (
-    <section className="newsroom">
-      <div className="shell">
-        <div className="newsroom__head">
-          <div>
-            <div className="newsroom__edition">
-              {ed.edition_label} · {ed.edition_note}
+    <section ref={rootRef} className="ara-editorial-front-page" style={style}>
+      <div className="ara-editorial-front-page__inner">
+        <header className="ara-editorial-front-page__masthead">
+          <div className="ara-editorial-front-page__edition">
+            <span>{String(ed.edition_label || "MINTMARK DAILY")}</span>
+            <span>{dateLabel}</span>
+            <span>{String(ed.edition_note || "")}</span>
+          </div>
+          <div className="ara-editorial-front-page__title-row">
+            <div>
+              {ed.eyebrow ? <p className="ara-editorial-front-page__eyebrow">{String(ed.eyebrow)}</p> : null}
+              {ed.heading ? <h2>{String(ed.heading)}</h2> : null}
             </div>
-            <p className="eyebrow" style={{ marginTop: 12 }}>
-              {ed.eyebrow}
-            </p>
-            <h2>{ed.heading}</h2>
+            {ed.header_note ? (
+              <p className="ara-editorial-front-page__intro">{String(ed.header_note)}</p>
+            ) : null}
           </div>
-          <p className="newsroom__note">{ed.header_note}</p>
-        </div>
+        </header>
 
-        <div className="ticker" aria-label="Latest market news">
-          <div className="ticker__label">
-            <span className="ticker__dot" aria-hidden />
-            {ed.ticker_label}
-          </div>
-          <div className="ticker__viewport">
-            <div className="ticker__track" style={{ animationDuration: `${ed.ticker_speed || 45}s` }}>
-              {tickerItems.map((item, idx) => (
-                <span key={`${item.id}-${idx}`} className="ticker__item">
-                  <b>{item.ticker}</b>
-                  {item.heading}
-                </span>
-              ))}
+        {ed.show_ticker !== false ? (
+          <div
+            className="ara-nr-ticker"
+            style={{ ["--ara-ticker-speed" as string]: `${ed.ticker_speed || 45}s` }}
+            role="marquee"
+            aria-label="Latest headlines"
+          >
+            <div className="ara-nr-ticker__label">
+              <span className="ara-nr-ticker__dot" aria-hidden="true" />
+              {String(ed.ticker_label || "LATEST")}
             </div>
-          </div>
-        </div>
-
-        <div className="newsroom__grid">
-          {lead ? (
-            <article className="lead-story">
-              <div className="lead-story__art">
-                <span className="lead-story__chip">
-                  {lead.ticker} · {lead.domain || lead.company}
-                </span>
-              </div>
-              <div className="lead-story__body">
-                <div className="lead-story__meta">
-                  <span>{lead.article_number}</span>
-                  <span>{lead.story_type}</span>
-                  <span>{lead.company}</span>
+            <div className="ara-nr-ticker__win">
+              <div className="ara-nr-ticker__track">
+                <div className="ara-nr-ticker__set">
+                  {tickerLoop.map((item, i) => (
+                    <a
+                      key={`${item.key}-${i}`}
+                      className="ara-nr-ticker__item"
+                      href={appHref(item.link) || "#"}
+                    >
+                      {item.ticker ? <b>{item.ticker}</b> : null}
+                      <span>{item.heading}</span>
+                    </a>
+                  ))}
                 </div>
-                <h3>{lead.heading}</h3>
-                <p>{stripHtml(lead.description || "")}</p>
-                <div style={{ display: "flex", gap: 10, flexWrap: "wrap", marginTop: 18 }}>
-                  <Link className="btn btn-mint" href={lead.link || "/digests/nvidia"}>
-                    {lead.link_label}
+              </div>
+            </div>
+          </div>
+        ) : null}
+
+        <section className="ara-nr-band1">
+          {lead ? (
+            <article
+              className="ara-editorial-front-page__lead ara-nr-hero"
+              style={{ ["--ara-story-accent" as string]: lead.accent_color || "#176d5c" }}
+            >
+              <a
+                className="ara-editorial-front-page__lead-media"
+                href={appHref(lead.link) || "/digests/nvidia"}
+              >
+                <picture>
+                  <img
+                    className="ara-editorial-front-page__lead-image"
+                    src={assets.nvdaLead}
+                    alt={lead.heading || lead.company || "Featured pitch"}
+                    width={1200}
+                    height={900}
+                  />
+                </picture>
+                <span className="ara-editorial-front-page__lead-label">
+                  {lead.article_number || "FEATURED PITCH"}
+                </span>
+              </a>
+
+              <div className="ara-editorial-front-page__lead-copy">
+                <div className="ara-editorial-front-page__meta">
+                  {lead.story_type ? <span>{lead.story_type}</span> : null}
+                  {lead.company ? <span>{lead.company}</span> : null}
+                  {lead.ticker ? <span>{lead.ticker}</span> : null}
+                  {lead.domain ? <span>{lead.domain}</span> : null}
+                </div>
+                {lead.heading ? (
+                  <h3>
+                    <Link href={appHref(lead.link) || "/digests/nvidia"}>{lead.heading}</Link>
+                  </h3>
+                ) : null}
+                {lead.description ? <p>{stripHtml(lead.description)}</p> : null}
+                <div className="ara-editorial-front-page__lead-links">
+                  <Link href={appHref(lead.link) || "/digests/nvidia"}>
+                    {lead.link_label || "READ THE PITCH"} <span aria-hidden="true">→</span>
                   </Link>
+                  {lead.company_module_link ? (
+                    <Link href={appHref(lead.company_module_link) || "/companies"}>
+                      {lead.company_module_label || "OPEN COMPANY FILE"}
+                    </Link>
+                  ) : null}
                 </div>
               </div>
             </article>
           ) : null}
 
-          <div className="side-stories">
-            {featured.map((story) => (
-              <Link
-                key={story.id}
-                href={story.link || story.company_module_link || "/companies"}
-                className="side-story"
-                style={{ ["--accent" as string]: story.accent_color || "var(--mint)" }}
-              >
-                <div className="side-story__thumb" aria-hidden />
-                <div>
-                  <div className="side-story__num">
-                    {story.number} · {story.ticker}
+          <div className="ara-nr-strips" style={{ ["--sec" as string]: "#176d5c" }}>
+            <div className="ara-editorial-front-page__section-heading">
+              <div>
+                <h3>{String(ed.market_heading || "Market News")}</h3>
+                <span>{String(ed.market_note || "LIVE")}</span>
+              </div>
+              <i />
+            </div>
+            {marketNews.slice(0, Number(ed.market_strip_count) || 8).map((m) => (
+              <div key={m.id} className="ara-nr-flip ara-nr-strip">
+                <div className="ara-nr-flip__inner">
+                  <div className="ara-nr-flip__face ara-nr-flip__front">
+                    <div className="ara-nr-strip__tick">
+                      <b>{m.ticker}</b>
+                      <small>{m.time_label}</small>
+                    </div>
+                    <h4>{m.heading}</h4>
                   </div>
-                  <h4>{story.heading}</h4>
-                  {story.show_excerpt ? <p>{story.summary}</p> : null}
+                  <div className="ara-nr-flip__face ara-nr-flip__back">
+                    <div className="ara-nr-strip__tick">
+                      <b>{m.ticker}</b>
+                    </div>
+                    <p>{m.summary || "Tap to read the full story."}</p>
+                    <a
+                      className="ara-nr-strip__go"
+                      href={appHref(m.link) || "#"}
+                    >
+                      Read <span aria-hidden="true">→</span>
+                    </a>
+                  </div>
                 </div>
-              </Link>
+              </div>
             ))}
           </div>
-        </div>
+        </section>
 
         {question ? (
-          <div className="question-banner">
-            <div>
-              <span>{question.label}</span>
-              <h3>{question.heading}</h3>
-              <p style={{ margin: "12px 0 0", color: "#c9d0dc" }}>{question.description}</p>
-            </div>
-            <Link className="btn btn-secondary" href={question.link || "/bookshelf"} style={{ color: "#fff", borderColor: "#fff" }}>
-              {question.link_label}
-            </Link>
-          </div>
+          <section className="ara-nr-band2">
+            <article
+              className="ara-editorial-front-page__question"
+              style={{
+                ["--ara-question-bg" as string]: question.background_color || "#161b2e",
+                ["--ara-question-text" as string]: question.text_color || "#f2f8f6",
+                ["--ara-question-ratio" as string]: question.image_ratio || "16 / 10",
+              }}
+            >
+              <div className="ara-editorial-front-page__question-copy">
+                <div className="ara-editorial-front-page__question-label">
+                  <span>{question.label}</span>
+                  <i />
+                </div>
+                <h3>{question.heading}</h3>
+                <p>{question.description}</p>
+                <Link
+                  className="ara-editorial-front-page__question-link"
+                  href={appHref(question.link) || "/bookshelf"}
+                >
+                  {question.link_label || "EXPLORE THE QUESTION"} <span aria-hidden="true">→</span>
+                </Link>
+              </div>
+              <a
+                className="ara-editorial-front-page__question-media"
+                href={appHref(question.link) || "/bookshelf"}
+                aria-label={question.link_label || "Explore the question"}
+              >
+                <img
+                  className="ara-editorial-front-page__question-image"
+                  src={assets.questionCostco}
+                  alt=""
+                  width={1400}
+                  height={1000}
+                />
+              </a>
+            </article>
+          </section>
         ) : null}
 
-        <div className="quick-takes">
-          <div className="section-label">
-            <h3>{ed.quick_heading}</h3>
-            <span>{ed.quick_note}</span>
-          </div>
-          <div className="quick-grid">
-            {quads.map((q) => (
-              <Link
-                key={q.id}
-                href={q.link || "/companies"}
-                className="quick-card"
-                style={{ ["--accent" as string]: q.accent_color || "var(--mint)" }}
-              >
-                <div className="quick-card__top">
-                  <span>
-                    {q.number} · {q.ticker}
-                  </span>
-                  <span className={q.direction === "up" ? "change-up" : "change-down"}>
-                    {q.direction === "up" ? "▲" : "▼"} {q.change}
-                  </span>
+        <section className="ara-nr-band3">
+          <div className="ara-nr-col" style={{ ["--sec" as string]: "#c15a3c" }}>
+            <div className="ara-editorial-front-page__section-heading">
+              <div>
+                <h3>{String(ed.quick_heading || "Short Takes")}</h3>
+                <span>{String(ed.quick_note || "MARKET SNAPSHOTS")}</span>
+              </div>
+              <i />
+            </div>
+            <div className="ara-nr-sqgrid">
+              {quads.slice(0, 4).map((q) => (
+                <div key={q.id} className="ara-nr-flip ara-nr-sq">
+                  <div className="ara-nr-flip__inner">
+                    <div className="ara-nr-flip__face ara-nr-flip__front">
+                      <div className="ara-nr-sq__num">
+                        <span>{q.number}</span>
+                        {q.ticker ? <b>{q.ticker}</b> : null}
+                      </div>
+                      {q.heading ? <h4>{q.heading}</h4> : null}
+                      <div className="ara-nr-sq__foot">
+                        {q.change ? (
+                          <span className={`ara-nr-sq__chg ara-nr-sq__chg--${q.direction || "up"}`}>
+                            {q.change}
+                          </span>
+                        ) : (
+                          <span />
+                        )}
+                        <span>Tap</span>
+                      </div>
+                    </div>
+                    <div className="ara-nr-flip__face ara-nr-flip__back">
+                      {q.summary ? <p>{q.summary}</p> : null}
+                      <a className="ara-nr-sq__go" href={appHref(q.link) || "#"}>
+                        Read <span aria-hidden="true">→</span>
+                      </a>
+                    </div>
+                  </div>
                 </div>
-                <div style={{ fontFamily: "var(--font-ui)", fontSize: 10, fontWeight: 800, letterSpacing: "0.1em" }}>
-                  {q.mark} · {q.company}
-                </div>
-                <h4>{q.heading}</h4>
-                <p>{q.summary}</p>
-                <div className="sparkline" aria-hidden />
-              </Link>
-            ))}
+              ))}
+            </div>
           </div>
-        </div>
 
-        <div className="reports">
-          <div className="section-label">
-            <h3>{ed.reports_heading}</h3>
-            <span>{ed.reports_note}</span>
-          </div>
-          <div className="reports-grid">
-            {reports.map((r) => (
-              <article key={r.id} className="report-card">
-                <div className="report-card__head">
-                  <span>
-                    {r.ticker} · {r.company}
-                  </span>
-                  <span className={r.direction === "up" ? "change-up" : "change-down"}>{r.change}</span>
+          <div className="ara-nr-col" style={{ ["--sec" as string]: "#c0881e" }}>
+            <div className="ara-editorial-front-page__section-heading">
+              <div>
+                <h3>{String(ed.reports_heading || "Company Pitches")}</h3>
+                <span>{String(ed.reports_note || "IDEAS TO EXPLORE")}</span>
+              </div>
+              <i />
+            </div>
+            <div className="ara-nr-sqgrid">
+              {reports.slice(0, 4).map((r, i) => (
+                <div key={r.id} className="ara-nr-flip ara-nr-sq ara-nr-sq--pitch">
+                  <div className="ara-nr-flip__inner">
+                    <div className="ara-nr-flip__face ara-nr-flip__front">
+                      <div className="ara-nr-sq__num">
+                        <span>{String(i + 1).padStart(2, "0")}</span>
+                        {r.ticker ? <b>{r.ticker}</b> : null}
+                      </div>
+                      {r.heading ? <h4>{r.heading}</h4> : null}
+                      <div className="ara-nr-sq__foot">
+                        <span>Pitch</span>
+                        <span>Tap</span>
+                      </div>
+                    </div>
+                    <div className="ara-nr-flip__face ara-nr-flip__back">
+                      {r.summary ? <p>{r.summary}</p> : null}
+                      <a className="ara-nr-sq__go" href={appHref(r.link) || "#"}>
+                        Read the pitch <span aria-hidden="true">→</span>
+                      </a>
+                    </div>
+                  </div>
                 </div>
-                <h4>{r.heading}</h4>
-                <p>{r.summary}</p>
-                <Link href={r.link || "/bookshelf"} className="btn btn-secondary">
-                  {r.link_label}
-                </Link>
-              </article>
-            ))}
+              ))}
+            </div>
           </div>
-        </div>
+        </section>
+
+        <section className="ara-nr-band4">
+          <div className="ara-nr-col" style={{ ["--sec" as string]: "#7a4e86" }}>
+            <div className="ara-editorial-front-page__section-heading">
+              <div>
+                <h3>{String(ed.featured_heading || "More Stories")}</h3>
+                <span>{String(ed.featured_note || "")}</span>
+              </div>
+              <i />
+            </div>
+            <div className="ara-nr-featcol">
+              {featured.slice(0, 3).map((story) => (
+                <article
+                  key={story.id}
+                  className="ara-editorial-front-page__featured-story"
+                  style={{ ["--ara-story-accent" as string]: story.accent_color || "#176d5c" }}
+                >
+                  {story.show_image !== "false" ? (
+                    <a
+                      className="ara-editorial-front-page__featured-media"
+                      href={appHref(story.link) || appHref(story.company_module_link) || "#"}
+                    >
+                      <img
+                        className="ara-editorial-front-page__featured-image"
+                        src={
+                          /apple/i.test(`${story.company} ${story.ticker} ${story.heading}`)
+                            ? assets.appleFeature
+                            : /costco/i.test(`${story.company} ${story.ticker} ${story.heading}`)
+                              ? assets.costcoFeature
+                              : assets.nvdaLead
+                        }
+                        alt={story.heading || story.company || "Featured story"}
+                        width={900}
+                        height={600}
+                      />
+                    </a>
+                  ) : null}
+                  <div className="ara-editorial-front-page__featured-copy">
+                    <div className="ara-editorial-front-page__featured-number">
+                      <span>{story.number}</span>
+                      {story.ticker ? <strong>{story.ticker}</strong> : null}
+                    </div>
+                    <div className="ara-editorial-front-page__meta">
+                      {story.story_type ? <span>{story.story_type}</span> : null}
+                      {story.company ? <span>{story.company}</span> : null}
+                    </div>
+                    {story.heading ? (
+                      <h4>
+                        <Link
+                          href={
+                            appHref(story.link) ||
+                            appHref(story.company_module_link) ||
+                            "/companies"
+                          }
+                        >
+                          {story.heading}
+                        </Link>
+                      </h4>
+                    ) : null}
+                    {story.show_excerpt !== "false" && story.summary ? <p>{story.summary}</p> : null}
+                    <div className="ara-editorial-front-page__story-links">
+                      <Link href={appHref(story.link) || appHref(story.company_module_link) || "#"}>
+                        {story.link_label || "READ"} <span aria-hidden="true">→</span>
+                      </Link>
+                      {story.company_module_link ? (
+                        <Link href={appHref(story.company_module_link) || "/companies"}>
+                          {story.company_module_label || "COMPANY FILE"}
+                        </Link>
+                      ) : null}
+                    </div>
+                  </div>
+                </article>
+              ))}
+            </div>
+          </div>
+
+          <div className="ara-nr-col" style={{ ["--sec" as string]: "#2f7e8c" }}>
+            <div className="ara-editorial-front-page__section-heading">
+              <div>
+                <h3>{String(ed.map_heading || "Market Map")}</h3>
+                <span>{String(ed.map_note || "")}</span>
+              </div>
+              <i />
+            </div>
+            <div className="ara-nr-map">
+              <div className="ara-nr-map__grid">
+                {[...quads, ...reports].slice(0, 9).map((m) =>
+                  m.ticker ? (
+                    <a
+                      key={m.id}
+                      className={`ara-nr-map__chip ara-nr-map__chip--${m.direction || "up"}`}
+                      href={appHref(m.link) || "/companies"}
+                    >
+                      <b>{m.ticker}</b>
+                      {m.change ? <small>{m.change}</small> : null}
+                    </a>
+                  ) : null,
+                )}
+              </div>
+              <div className="ara-nr-map__foot">
+                <span className="ara-editorial-front-page__eyebrow">
+                  {String(ed.map_caption || "U.S. companies")}
+                </span>
+              </div>
+            </div>
+          </div>
+        </section>
       </div>
     </section>
   );

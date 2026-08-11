@@ -13,7 +13,7 @@
     "volume": "VOL. 01",
     "color": "green",
     "moduleLink": "/apple",
-    "headquarters": "CUPERTINO Â· USA",
+    "headquarters": "CUPERTINO · USA",
     "spineHeight": 425,
     "spineWidth": 74
   },
@@ -31,7 +31,7 @@
     "volume": "VOL. 02",
     "color": "navy",
     "moduleLink": "",
-    "headquarters": "NEW YORK Â· USA",
+    "headquarters": "NEW YORK · USA",
     "spineHeight": 390,
     "spineWidth": 80
   },
@@ -49,7 +49,7 @@
     "volume": "VOL. 03",
     "color": "cream",
     "moduleLink": "",
-    "headquarters": "TOYOTA CITY Â· JAPAN",
+    "headquarters": "TOYOTA CITY · JAPAN",
     "spineHeight": 400,
     "spineWidth": 72
   },
@@ -67,7 +67,7 @@
     "volume": "VOL. 04",
     "color": "green",
     "moduleLink": "",
-    "headquarters": "SANTA CLARA Â· USA",
+    "headquarters": "SANTA CLARA · USA",
     "spineHeight": 380,
     "spineWidth": 64
   },
@@ -85,7 +85,7 @@
     "volume": "VOL. 05",
     "color": "teal",
     "moduleLink": "",
-    "headquarters": "ISSAQUAH Â· USA",
+    "headquarters": "ISSAQUAH · USA",
     "spineHeight": 410,
     "spineWidth": 82
   },
@@ -103,7 +103,7 @@
     "volume": "VOL. 06",
     "color": "navy",
     "moduleLink": "",
-    "headquarters": "BEAVERTON Â· USA",
+    "headquarters": "BEAVERTON · USA",
     "spineHeight": 360,
     "spineWidth": 70
   },
@@ -121,7 +121,7 @@
     "volume": "VOL. 07",
     "color": "gold",
     "moduleLink": "",
-    "headquarters": "SEATTLE Â· USA",
+    "headquarters": "SEATTLE · USA",
     "spineHeight": 395,
     "spineWidth": 84
   },
@@ -139,7 +139,7 @@
     "volume": "VOL. 08",
     "color": "green",
     "moduleLink": "",
-    "headquarters": "REDMOND Â· USA",
+    "headquarters": "REDMOND · USA",
     "spineHeight": 415,
     "spineWidth": 72
   },
@@ -157,7 +157,7 @@
     "volume": "VOL. 09",
     "color": "cream",
     "moduleLink": "",
-    "headquarters": "OMAHA Â· USA",
+    "headquarters": "OMAHA · USA",
     "spineHeight": 375,
     "spineWidth": 86
   },
@@ -175,7 +175,7 @@
     "volume": "VOL. 10",
     "color": "red",
     "moduleLink": "",
-    "headquarters": "AUSTIN Â· USA",
+    "headquarters": "AUSTIN · USA",
     "spineHeight": 365,
     "spineWidth": 68
   }

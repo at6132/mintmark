@@ -15,10 +15,10 @@ export default function NvidiaDigestPage() {
       <div className="shell article-layout">
         <div className="article-body">
           <p className="eyebrow">COMPANY DIGEST</p>
-          <h1 style={{ fontFamily: "var(--font-display)", fontSize: "clamp(40px,6vw,64px)", margin: "8px 0" }}>
+          <h1 style={{ fontFamily: "var(--font-heading-family)", fontSize: "clamp(40px,6vw,64px)", margin: "8px 0" }}>
             NVIDIA: The Factory of Intelligence
           </h1>
-          <p style={{ color: "var(--muted)", fontFamily: "var(--font-ui)", fontSize: 12, letterSpacing: "0.1em" }}>
+          <p style={{ color: "var(--muted)", fontFamily: "var(--font-body-family)", fontSize: 12, letterSpacing: "0.1em" }}>
             {settings.reading_time} · {settings.intro_note_label}
           </p>
           <p style={{ marginTop: 16 }}>{settings.intro_note}</p>
@@ -53,10 +53,10 @@ export default function NvidiaDigestPage() {
 
         <aside className="company-card-rail">
           <p className="eyebrow">{settings.company_card_label}</p>
-          <h2 style={{ fontFamily: "var(--font-display)", fontSize: 34, margin: "8px 0" }}>
+          <h2 style={{ fontFamily: "var(--font-heading-family)", fontSize: 34, margin: "8px 0" }}>
             {settings.company_name}
           </h2>
-          <p style={{ fontFamily: "var(--font-ui)", fontSize: 11, letterSpacing: "0.1em", color: "var(--muted)" }}>
+          <p style={{ fontFamily: "var(--font-body-family)", fontSize: 11, letterSpacing: "0.1em", color: "var(--muted)" }}>
             {settings.company_card_note}
           </p>
           <p style={{ marginTop: 12, color: "var(--muted)" }}>{settings.company_summary}</p>

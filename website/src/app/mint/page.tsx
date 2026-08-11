@@ -1,149 +1,288 @@
 "use client";
 
-import Link from "next/link";
 import { useMemo, useState } from "react";
+import { MintMarketMaps } from "@/components/MintMarketMaps";
 import { mintContent } from "@/data/mint";
+import { assets } from "@/lib/assets";
 import { stripHtml } from "@/lib/format";
 
-const CONCEPT_KEYS = [
-  ["raise_title", "raise_text"],
-  ["build_title", "build_text"],
-  ["sell_title", "sell_text"],
-  ["grow_title", "grow_text"],
-  ["allocate_title", "allocate_text"],
-  ["defend_title", "defend_text"],
+const CONCEPTS = [
+  { domain: "raise", title: "raise_title", text: "raise_text", label: "RAISE" },
+  { domain: "build", title: "build_title", text: "build_text", label: "BUILD" },
+  { domain: "sell", title: "sell_title", text: "sell_text", label: "SELL" },
+  { domain: "grow", title: "grow_title", text: "grow_text", label: "GROW" },
+  { domain: "allocate", title: "allocate_title", text: "allocate_text", label: "ALLOCATE" },
+  { domain: "defend", title: "defend_title", text: "defend_text", label: "DEFEND" },
 ] as const;
 
 export default function MintPage() {
-  const { curriculum, markets } = mintContent;
-  const { settings, levels } = curriculum;
-  const [openId, setOpenId] = useState(
-    levels.find((l) => l.open_by_default)?.id || levels[0]?.id || "",
-  );
+  const curriculum = mintContent.curriculum as {
+    settings: Record<string, unknown>;
+    levels: Array<Record<string, unknown>>;
+  };
+  const settings = curriculum.settings;
+  const levels = curriculum.levels;
+  const defaultOpen =
+    levels.find((l) => l.open_by_default)?.id || (levels[0]?.id as string) || "";
+  const [activeId, setActiveId] = useState(String(defaultOpen));
+  const [domain, setDomain] = useState("all");
   const [query, setQuery] = useState("");
 
-  const filteredLevels = useMemo(() => {
+  const active = levels.find((l) => String(l.id) === activeId) || levels[0];
+
+  const filteredConcepts = useMemo(() => {
+    if (!active) return [];
     const q = query.trim().toLowerCase();
-    if (!q) return levels;
-    return levels.filter((level) => {
-      const blob = JSON.stringify(level).toLowerCase();
-      return blob.includes(q);
+    return CONCEPTS.filter((c) => {
+      if (domain !== "all" && c.domain !== domain) return false;
+      if (!q) return true;
+      const title = String(active[c.title] || "").toLowerCase();
+      const text = String(active[c.text] || "").toLowerCase();
+      return title.includes(q) || text.includes(q) || String(active.title).toLowerCase().includes(q);
     });
-  }, [levels, query]);
+  }, [active, domain, query]);
+
+  const style = {
+    ["--ara-mint-bg" as string]: String(settings.background_color || "#F5EFE1"),
+    ["--ara-mint-paper" as string]: String(settings.paper_color || "#F3ECDC"),
+    ["--ara-mint-ink" as string]: String(settings.text_color || "#161B2E"),
+    ["--ara-mint-muted" as string]: String(settings.muted_color || "#646575"),
+    ["--ara-mint-mint" as string]: String(settings.mint_color || "#A6DECB"),
+    ["--ara-mint-gold" as string]: String(settings.gold_color || "#E0A526"),
+    ["--ara-mint-border" as string]: String(settings.border_color || "#C9BEA8"),
+    ["--ara-mint-max" as string]: String(settings.max_width || "1450px"),
+    ["--ara-mint-top" as string]: `${settings.padding_top || 70}px`,
+    ["--ara-mint-bottom" as string]: `${settings.padding_bottom || 100}px`,
+    ["--ara-mint-heading-desktop" as string]: `${settings.desktop_heading_size || 64}px`,
+    ["--ara-mint-level-desktop" as string]: `${settings.desktop_level_size || 28}px`,
+    ["--ara-mint-body-desktop" as string]: `${settings.desktop_body_size || 16}px`,
+    ["--ara-mint-label-desktop" as string]: `${settings.desktop_label_size || 10}px`,
+    ["--ara-mint-heading-mobile" as string]: `${settings.mobile_heading_size || 42}px`,
+    ["--ara-mint-level-mobile" as string]: `${settings.mobile_level_size || 24}px`,
+    ["--ara-mint-body-mobile" as string]: `${settings.mobile_body_size || 15}px`,
+    ["--ara-mint-label-mobile" as string]: `${settings.mobile_label_size || 9}px`,
+  };
 
   return (
     <>
-      <section className="mint-hero page-section cream">
-        <div className="shell">
-          <p className="eyebrow">{settings.eyebrow}</p>
-          <h1>{settings.heading}</h1>
-          <p className="lede">{stripHtml(settings.description)}</p>
+    <section className="ara-mint-curriculum" style={style}>
+      <div className="ara-mint-curriculum__rules" aria-hidden="true" />
+      <div className="ara-mint-curriculum__inner">
+        <div className="ara-mint-curriculum__masthead">
+          <img
+            src={assets.wordmarkInk}
+            className="ara-mint-curriculum__wordmark"
+            alt="Mintmark"
+            width={488}
+            height={88}
+          />
+          <div className="ara-mint-curriculum__masthead-center">
+            <span>THE MINT</span>
+            <small>CURRICULUM · SIX LEVELS · THIRTY-SIX CONCEPTS</small>
+          </div>
+          <img
+            src={assets.mintEmblem}
+            className="ara-mint-curriculum__mint-emblem"
+            alt=""
+            width={270}
+            height={183}
+          />
+        </div>
 
-          <div style={{ display: "flex", flexWrap: "wrap", gap: 10, marginTop: 18 }}>
-            {[settings.progress_one, settings.progress_two, settings.progress_three].map((step, i) => (
-              <span
-                key={step}
-                style={{
-                  border: "1px solid var(--rule)",
-                  background: "#fff",
-                  borderRadius: 999,
-                  padding: "8px 12px",
-                  fontFamily: "var(--font-ui)",
-                  fontSize: 11,
-                  fontWeight: 700,
-                  letterSpacing: "0.04em",
-                }}
-              >
-                0{i + 1}. {step}
-              </span>
-            ))}
+        <header className="ara-mint-curriculum__cover">
+          <div className="ara-mint-curriculum__cover-copy">
+            <div className="ara-mint-curriculum__folio">
+              <span>THE MINTMARK CURRICULUM</span>
+              <span>EDITION · 01</span>
+            </div>
+            {settings.eyebrow ? (
+              <p className="ara-mint-curriculum__eyebrow">{String(settings.eyebrow)}</p>
+            ) : null}
+            {settings.heading ? <h1>{String(settings.heading)}</h1> : null}
+            {settings.description ? (
+              <div className="ara-mint-curriculum__description">
+                <p>{stripHtml(String(settings.description))}</p>
+              </div>
+            ) : null}
+            <div className="ara-mint-curriculum__strike-path">
+              <div>
+                <b>01</b>
+                <span>{String(settings.progress_one || "")}</span>
+              </div>
+              <i aria-hidden="true" />
+              <div>
+                <b>02</b>
+                <span>{String(settings.progress_two || "")}</span>
+              </div>
+              <i aria-hidden="true" />
+              <div>
+                <b>03</b>
+                <span>{String(settings.progress_three || "")}</span>
+              </div>
+            </div>
           </div>
 
-          <div className="email-form" style={{ marginTop: 28, maxWidth: 560 }}>
-            <input
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              placeholder={settings.search_placeholder}
-              aria-label={settings.search_label}
-            />
-            <button type="button" onClick={() => undefined}>
-              {settings.search_label}
-            </button>
+          <div className="ara-mint-curriculum__coin-feature">
+            <div className="ara-mint-curriculum__coin-head">
+              <div>
+                <span>THE COIN SYSTEM</span>
+                <strong>METALS ARE THE CURRICULUM</strong>
+              </div>
+              <span className="ara-mint-curriculum__coin-folio">COMPANY COIN · SAMPLE</span>
+            </div>
+            <div className="ara-mint-curriculum__coin-stage">
+              <img
+                src={assets.companyCoinNvda}
+                alt="Mintmark company coin sample for Nvidia"
+                className="ara-mint-curriculum__company-coin"
+                width={802}
+                height={741}
+              />
+              <img
+                src={assets.markTransparent}
+                alt=""
+                className="ara-mint-curriculum__mark-watermark"
+                width={250}
+                height={251}
+              />
+            </div>
+            <div className="ara-mint-curriculum__coin-key">
+              <span>ONE CELL = ONE CONCEPT</span>
+              <span>METAL = TOPIC</span>
+              <span>TREATMENT = DIFFICULTY</span>
+            </div>
           </div>
-          <p style={{ color: "var(--muted)", fontSize: 13, marginTop: 8 }}>{settings.search_note}</p>
+        </header>
 
-          <div className="levels">
-            {filteredLevels.map((level) => {
-              const open = openId === level.id;
+        <section className="ara-mint-curriculum__index" aria-label="Curriculum index">
+          <div className="ara-mint-curriculum__section-heading">
+            <div>
+              <span>THE SIX LEVELS</span>
+              <h2>From first principles to the corner office.</h2>
+            </div>
+            <p>Select a metal plate to open its six concepts. Each level keeps the supplied curriculum intact.</p>
+          </div>
+
+          <div className="ara-mint-curriculum__level-tabs" role="tablist" aria-label="Mint curriculum levels">
+            {levels.map((level, i) => {
+              const id = String(level.id);
+              const selected = id === activeId;
               return (
-                <article key={level.id} className="level" data-open={open}>
-                  <button
-                    type="button"
-                    className="level__toggle"
-                    aria-expanded={open}
-                    onClick={() => setOpenId(open ? "" : level.id)}
-                  >
-                    <span className="level__num">{level.number}</span>
-                    <div>
-                      <h3>{level.title}</h3>
-                      <p>{level.subtitle}</p>
-                    </div>
-                    <span className="level__metal">{level.metal}</span>
-                  </button>
-                  <div className="level__body">
-                    {CONCEPT_KEYS.map(([titleKey, textKey]) => {
-                      const row = level as unknown as Record<string, string>;
-                      return (
-                        <div key={titleKey} className="concept">
-                          <span>{level.status}</span>
-                          <h4>{row[titleKey]}</h4>
-                          <p>{row[textKey]}</p>
-                        </div>
-                      );
-                    })}
-                  </div>
-                </article>
+                <button
+                  key={id}
+                  type="button"
+                  className={`ara-mint-curriculum__level-tab${selected ? " is-active" : ""}`}
+                  role="tab"
+                  aria-selected={selected}
+                  onClick={() => setActiveId(id)}
+                >
+                  <span className="ara-mint-curriculum__metal-plate" aria-hidden="true">
+                    <span className="ara-mint-curriculum__metal-inner">
+                      <small>LEVEL</small>
+                      <strong>{String(level.number || i + 1)}</strong>
+                      <em>{String(level.metal || "")}</em>
+                      <img src={assets.markTransparent} alt="" width={250} height={251} />
+                    </span>
+                  </span>
+                  <span className="ara-mint-curriculum__level-tab-copy">
+                    <small>{String(level.status || "")}</small>
+                    <strong>{String(level.title || "")}</strong>
+                    <span>{String(level.subtitle || "")}</span>
+                  </span>
+                </button>
               );
             })}
           </div>
+        </section>
 
-          <div className="map-panel">
-            <div className="section-label">
-              <h3>{settings.matrix_heading || "Market maps"}</h3>
-              <span>LIVE POSITIONS</span>
+        <section className="ara-mint-curriculum__tools">
+          <div className="ara-mint-curriculum__filters" role="group" aria-label="Filter curriculum by business function">
+            {[
+              ["all", "ALL", "36 CONCEPTS"],
+              ["raise", "RAISE", "CAPITAL"],
+              ["build", "BUILD", "PRODUCT"],
+              ["sell", "SELL", "CUSTOMER"],
+              ["grow", "GROW", "TEAM"],
+              ["allocate", "ALLOCATE", "CAPITAL"],
+              ["defend", "DEFEND", "ADVANTAGE"],
+            ].map(([id, label, sub]) => (
+              <button
+                key={id}
+                type="button"
+                className={domain === id ? "is-active" : undefined}
+                aria-pressed={domain === id}
+                onClick={() => setDomain(id)}
+              >
+                <span>{label}</span>
+                <small>{sub}</small>
+              </button>
+            ))}
+          </div>
+
+          <label className="ara-mint-curriculum__search">
+            <span>{String(settings.search_label || "FIND A BOOK")}</span>
+            <input
+              type="search"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder={String(settings.search_placeholder || "")}
+            />
+            <small>{String(settings.search_note || "")}</small>
+          </label>
+        </section>
+
+        {active ? (
+          <section className="ara-mint-curriculum__panel">
+            <div className="ara-mint-curriculum__panel-head">
+              <span>{String(active.metal)}</span>
+              <h2>
+                {String(active.number)} · {String(active.title)}
+              </h2>
+              <p>{String(active.subtitle)}</p>
             </div>
-            <p className="lede" style={{ marginBottom: 16 }}>
-              {settings.matrix_description}
-            </p>
-            <div className="map-canvas" aria-label="Company headquarters map">
-              {markets.companies.map((c) => {
-                const left = ((Number(c.longitude) + 180) / 360) * 100;
-                const top = ((90 - Number(c.latitude)) / 180) * 100;
-                const up = Number(c.daily_move) >= 0;
-                return (
-                  <Link
-                    key={c.id}
-                    href={c.module_link || "/companies"}
-                    className="map-dot"
-                    data-up={up}
-                    style={{ left: `${left}%`, top: `${top}%` }}
-                    title={`${c.company_name} ${c.daily_move}%`}
-                  />
-                );
-              })}
-            </div>
-            <div className="map-legend">
-              {markets.companies.slice(0, 12).map((c) => (
-                <span key={c.id}>
-                  {c.ticker} {Number(c.daily_move) >= 0 ? "▲" : "▼"}
-                  {c.daily_move}%
-                </span>
+            <div className="ara-mint-curriculum__concept-grid">
+              {filteredConcepts.map((c) => (
+                <article key={c.domain} className="ara-mint-curriculum__concept" data-domain={c.domain}>
+                  <span>{c.label}</span>
+                  <h3>{String(active[c.title] || "")}</h3>
+                  <p>{String(active[c.text] || "")}</p>
+                </article>
               ))}
             </div>
-            <p style={{ color: "var(--muted)", fontSize: 14, marginTop: 16 }}>{settings.matrix_footer}</p>
+          </section>
+        ) : null}
+
+        <section className="ara-mint-curriculum__matrix">
+          <div className="ara-mint-curriculum__section-heading">
+            <div>
+              <span>THE WHOLE MAP</span>
+              <h2>{String(settings.matrix_heading || "The whole map")}</h2>
+            </div>
+            <p>{String(settings.matrix_description || "")}</p>
           </div>
-        </div>
-      </section>
+          <div className="ara-mint-curriculum__matrix-table" role="table">
+            <div className="ara-mint-curriculum__matrix-row ara-mint-curriculum__matrix-row--head" role="row">
+              <span>LEVEL</span>
+              {CONCEPTS.map((c) => (
+                <span key={c.domain}>{c.label}</span>
+              ))}
+            </div>
+            {levels.map((level) => (
+              <div key={String(level.id)} className="ara-mint-curriculum__matrix-row" role="row">
+                <strong>
+                  {String(level.number)} · {String(level.metal)}
+                </strong>
+                {CONCEPTS.map((c) => (
+                  <span key={c.domain}>{String(level[c.title] || "")}</span>
+                ))}
+              </div>
+            ))}
+          </div>
+          <p className="ara-mint-curriculum__matrix-footer">{String(settings.matrix_footer || "")}</p>
+        </section>
+      </div>
+    </section>
+    <MintMarketMaps />
     </>
   );
 }

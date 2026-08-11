@@ -24,7 +24,7 @@
     "action_label": "EXPLORE MINTMARK",
     "action_link": "",
     "mobile_menu_label": "EXPLORE MINTMARK",
-    "mobile_menu_note": "BUSINESS Â· MARKETS Â· MONEY",
+    "mobile_menu_note": "BUSINESS · MARKETS · MONEY",
     "desktop_nav_size": 12,
     "desktop_subtitle_size": 9,
     "mobile_nav_size": 30,

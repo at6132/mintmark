@@ -38,12 +38,12 @@ export default function ShopPage() {
                 {p.company}
               </div>
               <div className="product-card__body">
-                <div style={{ fontFamily: "var(--font-ui)", fontSize: 10, fontWeight: 800, letterSpacing: "0.1em" }}>
+                <div style={{ fontFamily: "var(--font-body-family)", fontSize: 10, fontWeight: 800, letterSpacing: "0.1em" }}>
                   {p.volume} · {p.status}
                 </div>
                 <h3>{p.title}</h3>
                 <p>{p.summary}</p>
-                <strong style={{ fontFamily: "var(--font-ui)" }}>{money(p.price)}</strong>
+                <strong style={{ fontFamily: "var(--font-body-family)" }}>{money(p.price)}</strong>
                 <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
                   <button
                     type="button"
