@@ -1,0 +1,13 @@
+# Next.js
+node_modules
+.next
+out
+.vercel
+*.log
+.env*.local
+.DS_Store
+
+# Runtime data (optional persistence — recreate empty on deploy)
+# data/*.json kept for seed products
+
+.turbo
