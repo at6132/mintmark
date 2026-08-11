@@ -1,0 +1,616 @@
+
+  {
+    overflow: hidden;
+    border-top: 1px solid var(--ara-dc-border);
+    border-bottom: 1px solid var(--ara-dc-border);
+    background-color: var(--ara-dc-bg);
+    background-image:
+      linear-gradient(
+        90deg,
+        transparent 0,
+        transparent 31px,
+        color-mix(in srgb, var(--ara-dc-line) 14%, transparent) 31px,
+        color-mix(in srgb, var(--ara-dc-line) 14%, transparent) 32px
+      ),
+      repeating-linear-gradient(
+        to bottom,
+        transparent 0,
+        transparent 34px,
+        color-mix(in srgb, var(--ara-dc-line) 34%, transparent) 34px,
+        color-mix(in srgb, var(--ara-dc-line) 34%, transparent) 35px
+      );
+    color: var(--ara-dc-text);
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  .ara-digest-coin__inner {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--ara-dc-gap);
+    width: min(100%, var(--ara-dc-max));
+    margin: 0 auto;
+    padding: var(--ara-dc-top) 40px var(--ara-dc-bottom);
+  }
+
+  .ara-digest-coin__frame {
+    position: relative;
+    min-width: 0;
+    padding: 7px;
+    border: 2px solid var(--ara-dc-text);
+    border-radius: 22px;
+    background: var(--ara-dc-bg);
+  }
+
+  .ara-digest-coin__frame--digest {
+    box-shadow:
+      8px 8px 0 var(--ara-dc-gold),
+      14px 14px 0 color-mix(in srgb, var(--ara-dc-accent) 70%, transparent);
+  }
+
+  .ara-digest-coin__frame--coin {
+    box-shadow:
+      8px 8px 0 var(--ara-dc-blue-deep),
+      14px 14px 0 color-mix(in srgb, var(--ara-dc-gold) 65%, transparent);
+  }
+
+  .ara-digest-coin__panel {
+    position: relative;
+    min-height: 100%;
+    overflow: hidden;
+    padding: clamp(28px, 3vw, 48px);
+    border: 3px solid var(--ara-dc-text);
+    border-radius: 15px;
+  }
+
+  .ara-digest-coin__panel--digest {
+    background:
+      radial-gradient(
+        circle at 112% 112%,
+        color-mix(in srgb, var(--ara-dc-accent) 15%, transparent) 0 30%,
+        transparent 31%
+      ),
+      linear-gradient(
+        145deg,
+        color-mix(in srgb, var(--ara-dc-deep-bg) 84%, white),
+        var(--ara-dc-card)
+      );
+    color: var(--ara-dc-text);
+  }
+
+  .ara-digest-coin__panel--coin {
+    background:
+      radial-gradient(
+        circle at 104% 106%,
+        color-mix(in srgb, var(--ara-dc-gold) 14%, transparent) 0 28%,
+        transparent 29%
+      ),
+      linear-gradient(
+        145deg,
+        var(--ara-dc-blue),
+        var(--ara-dc-blue-deep)
+      );
+    color: #FFFFFF;
+  }
+
+  .ara-digest-coin__panel::before {
+    content: "";
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    width: 62px;
+    height: 9px;
+    border-top: 2px solid currentColor;
+    border-bottom: 2px solid currentColor;
+    opacity: 0.38;
+  }
+
+  .ara-digest-coin__panel::after {
+    content: "";
+    position: absolute;
+    right: 20px;
+    bottom: 20px;
+    width: 38px;
+    height: 38px;
+    border-right: 3px solid var(--ara-dc-gold);
+    border-bottom: 3px solid var(--ara-dc-gold);
+    opacity: 0.8;
+  }
+
+  .ara-digest-coin__topline {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    align-items: center;
+    margin-bottom: 30px;
+    padding-bottom: 16px;
+    border-bottom: 2px solid currentColor;
+  }
+
+  .ara-digest-coin__label {
+    display: inline-flex;
+    min-height: 30px;
+    align-items: center;
+    padding: 5px 11px;
+    border: 2px solid var(--ara-dc-text);
+    border-radius: 8px;
+    background: var(--ara-dc-gold);
+    color: var(--ara-dc-text);
+    font-family: var(--font-body-family);
+    font-size: var(--ara-dc-label-size);
+    font-style: var(--font-body-style);
+    font-weight: 800;
+    line-height: 1.2;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    box-shadow: 3px 3px 0 var(--ara-dc-text);
+  }
+
+  .ara-digest-coin__label--coin {
+    background: var(--ara-dc-gold);
+    color: var(--ara-dc-text);
+  }
+
+  .ara-digest-coin__folio {
+    color: var(--ara-dc-muted);
+    font-family: var(--font-body-family);
+    font-size: var(--ara-dc-folio-size);
+    font-style: var(--font-body-style);
+    font-weight: 800;
+    line-height: 1.2;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .ara-digest-coin__folio--coin {
+    color: rgba(255, 255, 255, 0.72);
+  }
+
+  .ara-digest-coin__digest-layout,
+  .ara-digest-coin__coin-layout {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    gap: clamp(26px, 3vw, 44px);
+    align-items: center;
+  }
+
+  .ara-digest-coin__digest-layout {
+    grid-template-columns: minmax(210px, 0.9fr) minmax(0, 1.1fr);
+  }
+
+  .ara-digest-coin__coin-layout {
+    grid-template-columns: minmax(0, 1.05fr) minmax(230px, 0.95fr);
+  }
+
+  .ara-digest-coin__cover-stage,
+  .ara-digest-coin__coin-stage {
+    position: relative;
+    min-width: 0;
+  }
+
+  .ara-digest-coin__cover-stage {
+    padding: 25px 19px 20px;
+    border: 2px solid var(--ara-dc-text);
+    border-radius: 16px;
+    background:
+      repeating-linear-gradient(
+        135deg,
+        color-mix(in srgb, var(--ara-dc-accent) 8%, transparent) 0 6px,
+        transparent 6px 12px
+      ),
+      color-mix(in srgb, var(--ara-dc-card) 88%, white);
+  }
+
+  .ara-digest-coin__coin-stage {
+    padding: 28px 20px 20px;
+    border: 2px solid rgba(255, 255, 255, 0.78);
+    border-radius: 50% 50% 18px 18px;
+    background:
+      radial-gradient(
+        circle,
+        color-mix(in srgb, var(--ara-dc-gold) 17%, transparent),
+        transparent 65%
+      ),
+      rgba(255, 255, 255, 0.06);
+  }
+
+  .ara-digest-coin__cover-ticket,
+  .ara-digest-coin__coin-ticket {
+    position: absolute;
+    z-index: 3;
+    top: -2px;
+    right: 18px;
+    padding: 6px 11px 7px;
+    border: 2px solid var(--ara-dc-text);
+    border-top: 0;
+    border-radius: 0 0 8px 8px;
+    background: var(--ara-dc-gold);
+    color: var(--ara-dc-text);
+    font-family: var(--font-body-family);
+    font-size: var(--ara-dc-folio-size);
+    font-style: var(--font-body-style);
+    font-weight: 800;
+    line-height: 1.2;
+    letter-spacing: 0.11em;
+    text-transform: uppercase;
+  }
+
+  .ara-digest-coin__coin-ticket {
+    border-color: rgba(255, 255, 255, 0.8);
+  }
+
+  .ara-digest-coin__cover-wrap,
+  .ara-digest-coin__coin-image-wrap {
+    display: grid;
+    place-items: center;
+  }
+
+  .ara-digest-coin__cover {
+    display: block;
+    width: min(100%, 300px);
+    height: auto;
+    aspect-ratio: 0.73;
+    object-fit: cover;
+    border: 2px solid var(--ara-dc-text);
+    box-shadow:
+      0 18px 24px rgba(22, 27, 46, 0.22),
+      8px 8px 0 color-mix(in srgb, var(--ara-dc-gold) 58%, transparent);
+  }
+
+  .ara-digest-coin__coin-image {
+    display: block;
+    width: min(100%, 360px);
+    height: auto;
+    aspect-ratio: 1;
+    object-fit: contain;
+    filter:
+      drop-shadow(0 18px 18px rgba(10, 14, 38, 0.32))
+      drop-shadow(0 0 18px color-mix(in srgb, var(--ara-dc-gold) 20%, transparent));
+  }
+
+  .ara-digest-coin__image-placeholder {
+    display: grid;
+    min-height: 390px;
+    place-items: center;
+    padding: 24px;
+    border: 2px dashed var(--ara-dc-accent);
+    background: color-mix(in srgb, var(--ara-dc-card) 85%, white);
+    color: var(--ara-dc-accent);
+    font-family: var(--font-body-family);
+    font-size: var(--ara-dc-folio-size);
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-align: center;
+    text-transform: uppercase;
+  }
+
+  .ara-digest-coin__image-placeholder--coin {
+    width: min(100%, 330px);
+    min-height: 330px;
+    border-radius: 50%;
+    border-color: rgba(255, 255, 255, 0.72);
+    background: rgba(255, 255, 255, 0.08);
+    color: #FFFFFF;
+  }
+
+  .ara-digest-coin__image-note {
+    display: block;
+    margin-top: 18px;
+    color: var(--ara-dc-muted);
+    font-family: var(--font-body-family);
+    font-size: var(--ara-dc-folio-size);
+    font-style: var(--font-body-style);
+    font-weight: 800;
+    line-height: 1.25;
+    letter-spacing: 0.1em;
+    text-align: center;
+    text-transform: uppercase;
+  }
+
+  .ara-digest-coin__image-note--coin {
+    color: rgba(255, 255, 255, 0.7);
+  }
+
+  .ara-digest-coin__digest-title,
+  .ara-digest-coin__coin-title {
+    margin: 0;
+    font-family: var(--font-heading-family);
+    font-style: var(--font-heading-style);
+    font-weight: var(--font-heading-weight);
+    line-height: 0.96;
+    letter-spacing: -0.05em;
+  }
+
+  .ara-digest-coin__digest-title {
+    color: var(--ara-dc-text);
+    font-size: var(--ara-dc-digest-title-size);
+  }
+
+  .ara-digest-coin__coin-title {
+    color: #FFFFFF;
+    font-size: var(--ara-dc-coin-title-size);
+  }
+
+  .ara-digest-coin__digest-issue {
+    margin: 10px 0 0;
+    color: var(--ara-dc-accent);
+    font-family: var(--font-heading-family);
+    font-size: var(--ara-dc-issue-size);
+    font-style: italic;
+    font-weight: 400;
+    line-height: 1.05;
+  }
+
+  .ara-digest-coin__coin-emphasis {
+    margin: 8px 0 0;
+    color: var(--ara-dc-gold);
+    font-family: var(--font-heading-family);
+    font-size: var(--ara-dc-emphasis-size);
+    font-style: italic;
+    font-weight: 400;
+    line-height: 1;
+  }
+
+  .ara-digest-coin__description {
+    margin-top: 21px;
+    color: var(--ara-dc-muted);
+    font-family: var(--font-body-family);
+    font-size: var(--ara-dc-description-size);
+    font-style: var(--font-body-style);
+    font-weight: var(--font-body-weight);
+    line-height: 1.65;
+  }
+
+  .ara-digest-coin__description--coin {
+    color: rgba(255, 255, 255, 0.78);
+  }
+
+  .ara-digest-coin__description p {
+    margin: 0;
+  }
+
+  .ara-digest-coin__feature-list {
+    display: grid;
+    gap: 10px;
+    margin-top: 24px;
+  }
+
+  .ara-digest-coin__feature {
+    display: grid;
+    grid-template-columns: 44px minmax(0, 1fr);
+    gap: 14px;
+    align-items: start;
+    padding: 14px 0;
+    border-top: 1px dashed color-mix(in srgb, var(--ara-dc-text) 34%, transparent);
+  }
+
+  .ara-digest-coin__feature:last-child {
+    border-bottom: 1px dashed color-mix(in srgb, var(--ara-dc-text) 34%, transparent);
+  }
+
+  .ara-digest-coin__feature--coin {
+    border-color: rgba(255, 255, 255, 0.24);
+  }
+
+  .ara-digest-coin__feature--coin:last-child {
+    border-color: rgba(255, 255, 255, 0.24);
+  }
+
+  .ara-digest-coin__feature-number {
+    display: grid;
+    width: 36px;
+    height: 36px;
+    place-items: center;
+    border: 2px solid currentColor;
+    border-radius: 50%;
+    color: var(--ara-dc-accent);
+    font-family: var(--font-heading-family);
+    font-size: var(--ara-dc-folio-size);
+    font-weight: 800;
+    line-height: 1;
+  }
+
+  .ara-digest-coin__feature--coin .ara-digest-coin__feature-number {
+    color: var(--ara-dc-gold);
+  }
+
+  .ara-digest-coin__feature strong {
+    color: var(--ara-dc-text);
+    font-family: var(--font-body-family);
+    font-size: var(--ara-dc-feature-heading-size);
+    font-style: var(--font-body-style);
+    font-weight: 800;
+    line-height: 1.3;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+  }
+
+  .ara-digest-coin__feature--coin strong {
+    color: #FFFFFF;
+  }
+
+  .ara-digest-coin__feature p {
+    margin: 4px 0 0;
+    color: var(--ara-dc-muted);
+    font-family: var(--font-body-family);
+    font-size: var(--ara-dc-feature-text-size);
+    font-style: var(--font-body-style);
+    font-weight: var(--font-body-weight);
+    line-height: 1.45;
+  }
+
+  .ara-digest-coin__feature--coin p {
+    color: rgba(255, 255, 255, 0.68);
+  }
+
+  .ara-digest-coin__digest-footer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 18px;
+    align-items: center;
+    margin-top: 26px;
+    padding-top: 20px;
+    border-top: 2px solid var(--ara-dc-text);
+  }
+
+  .ara-digest-coin__price {
+    min-width: 86px;
+    color: var(--ara-dc-accent);
+    font-family: var(--font-heading-family);
+    font-size: var(--ara-dc-price-size);
+    font-style: var(--font-heading-style);
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  .ara-digest-coin__button {
+    display: inline-flex;
+    min-height: 46px;
+    align-items: center;
+    justify-content: center;
+    padding: 11px 23px;
+    border: 2px solid currentColor;
+    border-radius: 8px;
+    font-family: var(--font-body-family);
+    font-size: var(--ara-dc-button-size);
+    font-style: var(--font-body-style);
+    font-weight: 800;
+    line-height: 1.2;
+    letter-spacing: 0.12em;
+    text-decoration: none;
+    text-transform: uppercase;
+    box-shadow: 4px 4px 0 currentColor;
+    transition:
+      transform 0.2s ease,
+      box-shadow 0.2s ease;
+  }
+
+  .ara-digest-coin__button:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0 currentColor;
+  }
+
+  .ara-digest-coin__button--primary {
+    min-width: 150px;
+    background: var(--ara-dc-accent);
+    color: #FFFFFF;
+  }
+
+  .ara-digest-coin__button--secondary {
+    align-self: flex-start;
+    min-width: 130px;
+    margin-top: 24px;
+    background: var(--ara-dc-gold);
+    color: var(--ara-dc-text);
+  }
+
+  @media screen and (max-width: 1180px) {
+    .ara-digest-coin__inner {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    .ara-digest-coin__inner {
+      gap: 28px;
+      padding-right: 20px;
+      padding-left: 20px;
+    }
+
+    .ara-digest-coin__frame--digest {
+      box-shadow:
+        5px 5px 0 var(--ara-dc-gold),
+        10px 10px 0 color-mix(in srgb, var(--ara-dc-accent) 65%, transparent);
+    }
+
+    .ara-digest-coin__frame--coin {
+      box-shadow:
+        5px 5px 0 var(--ara-dc-blue-deep),
+        10px 10px 0 color-mix(in srgb, var(--ara-dc-gold) 60%, transparent);
+    }
+
+    .ara-digest-coin__panel {
+      padding: 28px 22px 34px;
+    }
+
+    .ara-digest-coin__topline {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+
+    .ara-digest-coin__digest-layout,
+    .ara-digest-coin__coin-layout {
+      grid-template-columns: 1fr;
+    }
+
+    .ara-digest-coin__cover {
+      width: min(72vw, 300px);
+    }
+
+    .ara-digest-coin__coin-stage {
+      order: -1;
+    }
+
+    .ara-digest-coin__coin-image {
+      width: min(78vw, 350px);
+    }
+
+    .ara-digest-coin__label {
+      font-size: var(--ara-dc-mobile-label-size);
+    }
+
+    .ara-digest-coin__digest-title {
+      font-size: var(--ara-dc-mobile-digest-title-size);
+    }
+
+    .ara-digest-coin__digest-issue {
+      font-size: var(--ara-dc-mobile-issue-size);
+    }
+
+    .ara-digest-coin__coin-title {
+      font-size: var(--ara-dc-mobile-coin-title-size);
+    }
+
+    .ara-digest-coin__coin-emphasis {
+      font-size: var(--ara-dc-mobile-emphasis-size);
+    }
+
+    .ara-digest-coin__description {
+      font-size: var(--ara-dc-mobile-description-size);
+    }
+
+    .ara-digest-coin__feature strong {
+      font-size: var(--ara-dc-mobile-feature-heading-size);
+    }
+
+    .ara-digest-coin__feature p {
+      font-size: var(--ara-dc-mobile-feature-text-size);
+    }
+
+    .ara-digest-coin__price {
+      font-size: var(--ara-dc-mobile-price-size);
+    }
+
+    .ara-digest-coin__button {
+      font-size: var(--ara-dc-mobile-button-size);
+    }
+
+    .ara-digest-coin__folio,
+    .ara-digest-coin__cover-ticket,
+    .ara-digest-coin__coin-ticket,
+    .ara-digest-coin__image-note,
+    .ara-digest-coin__feature-number {
+      font-size: var(--ara-dc-mobile-folio-size);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ara-digest-coin__button {
+      transition: none;
+    }
+  }

@@ -1,0 +1,466 @@
+
+  {
+    position: relative;
+    overflow: hidden;
+    padding: var(--ara-intro-top) 0 var(--ara-intro-bottom);
+    background: var(--ara-intro-bg);
+    color: var(--ara-intro-text);
+    isolation: isolate;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  .ara-mint-intro__lines {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    opacity: 0.48;
+    background-image:
+      repeating-linear-gradient(
+        to bottom,
+        transparent 0,
+        transparent 35px,
+        color-mix(in srgb, var(--ara-intro-mint) 22%, transparent) 35px,
+        color-mix(in srgb, var(--ara-intro-mint) 22%, transparent) 36px
+      );
+    pointer-events: none;
+  }
+
+  .ara-mint-intro__inner {
+    width: min(100%, var(--ara-intro-max));
+    margin: 0 auto;
+    padding: 0 40px;
+  }
+
+  .ara-mint-intro__main-frame {
+    padding: 8px;
+    border: 2px solid var(--ara-intro-text);
+    border-radius: 26px;
+    background: var(--ara-intro-paper);
+    box-shadow:
+      10px 10px 0 var(--ara-intro-gold),
+      18px 18px 0 color-mix(in srgb, var(--ara-intro-mint) 68%, transparent);
+  }
+
+  .ara-mint-intro__main {
+    display: grid;
+    grid-template-columns: minmax(0, 1.02fr) minmax(360px, 0.98fr);
+    gap: clamp(34px, 5vw, 82px);
+    align-items: center;
+    padding: clamp(34px, 5vw, 74px);
+    border: 3px solid var(--ara-intro-text);
+    border-radius: 17px;
+    background:
+      radial-gradient(
+        circle at 110% 110%,
+        color-mix(in srgb, var(--ara-intro-mint) 15%, transparent) 0 28%,
+        transparent 29%
+      ),
+      linear-gradient(
+        145deg,
+        color-mix(in srgb, var(--ara-intro-paper) 96%, white),
+        color-mix(in srgb, var(--ara-intro-bg) 94%, transparent)
+      );
+  }
+
+  .ara-mint-intro__copy {
+    min-width: 0;
+  }
+
+  .ara-mint-intro__meta {
+    display: flex;
+    justify-content: space-between;
+    gap: 18px;
+    align-items: center;
+    margin-bottom: 25px;
+  }
+
+  .ara-mint-intro__eyebrow,
+  .ara-mint-intro__folio,
+  .ara-mint-intro__image-label,
+  .ara-mint-intro__side-note,
+  .ara-mint-intro__note,
+  .ara-mint-intro__card-number {
+    font-family: var(--font-body-family);
+    font-style: var(--font-body-style);
+    font-weight: 800;
+    line-height: 1.2;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .ara-mint-intro__eyebrow {
+    display: inline-flex;
+    min-height: 32px;
+    align-items: center;
+    padding: 6px 11px;
+    border: 2px solid var(--ara-intro-text);
+    border-radius: 8px;
+    background: var(--ara-intro-gold);
+    color: var(--ara-intro-text);
+    font-size: var(--ara-intro-label-desktop);
+    box-shadow: 3px 3px 0 var(--ara-intro-text);
+  }
+
+  .ara-mint-intro__folio {
+    color: var(--ara-intro-muted);
+    font-size: var(--ara-intro-label-desktop);
+    text-align: right;
+  }
+
+  .ara-mint-intro__heading {
+    max-width: 820px;
+    margin: 0;
+    color: var(--ara-intro-text);
+    font-family: var(--font-heading-family);
+    font-size: var(--ara-intro-heading-desktop);
+    font-style: var(--font-heading-style);
+    font-weight: var(--font-heading-weight);
+    line-height: 0.93;
+    letter-spacing: -0.055em;
+    text-wrap: balance;
+  }
+
+  .ara-mint-intro__description {
+    max-width: 690px;
+    margin-top: 27px;
+    color: var(--ara-intro-muted);
+    font-family: var(--font-body-family);
+    font-size: var(--ara-intro-body-desktop);
+    font-style: var(--font-body-style);
+    font-weight: var(--font-body-weight);
+    line-height: 1.64;
+  }
+
+  .ara-mint-intro__description p {
+    margin: 0;
+  }
+
+  .ara-mint-intro__buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-top: 31px;
+  }
+
+  .ara-mint-intro__button {
+    display: inline-flex;
+    min-width: 188px;
+    min-height: 50px;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 22px;
+    border: 2px solid currentColor;
+    border-radius: 8px;
+    font-family: var(--font-body-family);
+    font-size: var(--ara-intro-button-desktop);
+    font-style: var(--font-body-style);
+    font-weight: 800;
+    line-height: 1.2;
+    letter-spacing: 0.12em;
+    text-align: center;
+    text-decoration: none;
+    text-transform: uppercase;
+    box-shadow: 4px 4px 0 currentColor;
+    transition:
+      transform 0.2s ease,
+      box-shadow 0.2s ease;
+  }
+
+  .ara-mint-intro__button:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0 currentColor;
+  }
+
+  .ara-mint-intro__button--primary {
+    background: var(--ara-intro-mint);
+    color: #FFFFFF;
+  }
+
+  .ara-mint-intro__button--secondary {
+    background: var(--ara-intro-gold);
+    color: var(--ara-intro-text);
+  }
+
+  .ara-mint-intro__note {
+    margin: 48px 0 0;
+    padding-top: 16px;
+    border-top: 1px dashed color-mix(in srgb, var(--ara-intro-text) 34%, transparent);
+    color: var(--ara-intro-muted);
+    font-size: var(--ara-intro-label-desktop);
+  }
+
+  .ara-mint-intro__visual {
+    position: relative;
+    min-width: 0;
+  }
+
+  .ara-mint-intro__visual-frame {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 4 / 3;
+    padding: 7px;
+    border: 2px solid var(--ara-intro-text);
+    border-radius: 22px;
+    background: var(--ara-intro-paper);
+    box-shadow:
+      8px 8px 0 var(--ara-intro-blue),
+      14px 14px 0 color-mix(in srgb, var(--ara-intro-gold) 72%, transparent);
+  }
+
+  .ara-mint-intro__image,
+  .ara-mint-intro__placeholder,
+  .ara-mint-intro__placeholder-svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  .ara-mint-intro__image,
+  .ara-mint-intro__placeholder-svg {
+    border: 3px solid var(--ara-intro-text);
+    border-radius: 14px;
+    object-fit: cover;
+  }
+
+  .ara-mint-intro__placeholder-svg {
+    background: var(--ara-intro-paper);
+  }
+
+  .ara-mint-intro__image-label {
+    position: absolute;
+    right: 18px;
+    bottom: 18px;
+    left: 18px;
+    padding: 8px 12px;
+    border: 2px solid var(--ara-intro-text);
+    border-radius: 8px;
+    background: var(--ara-intro-gold);
+    color: var(--ara-intro-text);
+    font-size: var(--ara-intro-label-desktop);
+    text-align: center;
+    box-shadow: 3px 3px 0 var(--ara-intro-text);
+  }
+
+  .ara-mint-intro__side-note {
+    position: absolute;
+    top: 30px;
+    right: -42px;
+    width: 180px;
+    padding: 9px 12px;
+    border: 2px solid var(--ara-intro-text);
+    border-radius: 8px;
+    background: var(--ara-intro-blue);
+    color: #FFFFFF;
+    font-size: var(--ara-intro-label-desktop);
+    text-align: center;
+    transform: rotate(4deg);
+    box-shadow: 3px 3px 0 var(--ara-intro-text);
+  }
+
+  .ara-mint-intro__cards {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 24px;
+    margin-top: 42px;
+  }
+
+  .ara-mint-intro__card {
+    position: relative;
+    display: grid;
+    grid-template-columns: 48px minmax(0, 1fr);
+    gap: 18px;
+    min-height: 190px;
+    align-content: start;
+    padding: 26px;
+    border: 2px solid var(--ara-intro-text);
+    border-radius: 16px;
+    box-shadow: 6px 6px 0 var(--ara-intro-text);
+  }
+
+  .ara-mint-intro__card--cream {
+    background: var(--ara-intro-paper);
+  }
+
+  .ara-mint-intro__card--mint {
+    background: var(--ara-intro-mint);
+    color: #FFFFFF;
+  }
+
+  .ara-mint-intro__card--gold {
+    background: var(--ara-intro-gold);
+  }
+
+  .ara-mint-intro__card--blue {
+    background: var(--ara-intro-blue);
+    color: #FFFFFF;
+  }
+
+  .ara-mint-intro__card-number {
+    display: grid;
+    width: 42px;
+    height: 42px;
+    place-items: center;
+    border: 2px solid currentColor;
+    border-radius: 50%;
+    font-size: var(--ara-intro-label-desktop);
+  }
+
+  .ara-mint-intro__card-copy {
+    min-width: 0;
+  }
+
+  .ara-mint-intro__card h2 {
+    margin: 0;
+    font-family: var(--font-heading-family);
+    font-size: var(--ara-intro-card-title-desktop);
+    font-style: var(--font-heading-style);
+    font-weight: var(--font-heading-weight);
+    line-height: 1.03;
+  }
+
+  .ara-mint-intro__card p {
+    margin: 14px 0 0;
+    font-family: var(--font-body-family);
+    font-size: var(--ara-intro-card-text-desktop);
+    font-style: var(--font-body-style);
+    font-weight: var(--font-body-weight);
+    line-height: 1.55;
+  }
+
+  .ara-mint-intro__card-link {
+    grid-column: 2;
+    align-self: end;
+    margin-top: 18px;
+    color: inherit;
+    font-family: var(--font-body-family);
+    font-size: var(--ara-intro-label-desktop);
+    font-style: var(--font-body-style);
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    text-transform: uppercase;
+  }
+
+  @media screen and (max-width: 1099px) {
+    .ara-mint-intro__main {
+      grid-template-columns: 1fr;
+    }
+
+    .ara-mint-intro__visual {
+      max-width: 720px;
+    }
+
+    .ara-mint-intro__side-note {
+      right: 20px;
+    }
+  }
+
+  @media screen and (max-width: 899px) {
+    .ara-mint-intro__cards {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    {
+      padding-top: calc(var(--ara-intro-top) * 0.7);
+      padding-bottom: calc(var(--ara-intro-bottom) * 0.7);
+    }
+
+    .ara-mint-intro__inner {
+      padding: 0 20px;
+    }
+
+    .ara-mint-intro__main-frame {
+      padding: 5px;
+      border-radius: 19px;
+      box-shadow:
+        5px 5px 0 var(--ara-intro-gold),
+        10px 10px 0 color-mix(in srgb, var(--ara-intro-mint) 68%, transparent);
+    }
+
+    .ara-mint-intro__main {
+      gap: 34px;
+      padding: 32px 24px 37px;
+      border-radius: 13px;
+    }
+
+    .ara-mint-intro__meta {
+      align-items: flex-start;
+      flex-direction: column;
+      margin-bottom: 22px;
+    }
+
+    .ara-mint-intro__eyebrow,
+    .ara-mint-intro__folio,
+    .ara-mint-intro__note,
+    .ara-mint-intro__image-label,
+    .ara-mint-intro__side-note,
+    .ara-mint-intro__card-number,
+    .ara-mint-intro__card-link {
+      font-size: var(--ara-intro-label-mobile);
+    }
+
+    .ara-mint-intro__folio {
+      text-align: left;
+    }
+
+    .ara-mint-intro__heading {
+      font-size: var(--ara-intro-heading-mobile);
+    }
+
+    .ara-mint-intro__description {
+      font-size: var(--ara-intro-body-mobile);
+    }
+
+    .ara-mint-intro__buttons {
+      display: grid;
+    }
+
+    .ara-mint-intro__button {
+      width: 100%;
+      font-size: var(--ara-intro-button-mobile);
+    }
+
+    .ara-mint-intro__visual-frame {
+      box-shadow:
+        5px 5px 0 var(--ara-intro-blue),
+        10px 10px 0 color-mix(in srgb, var(--ara-intro-gold) 72%, transparent);
+    }
+
+    .ara-mint-intro__side-note {
+      top: 15px;
+      right: 15px;
+      width: 150px;
+      transform: rotate(2deg);
+    }
+
+    .ara-mint-intro__cards {
+      gap: 18px;
+      margin-top: 32px;
+    }
+
+    .ara-mint-intro__card {
+      grid-template-columns: 42px minmax(0, 1fr);
+      min-height: 0;
+      padding: 22px;
+    }
+
+    .ara-mint-intro__card h2 {
+      font-size: var(--ara-intro-card-title-mobile);
+    }
+
+    .ara-mint-intro__card p {
+      font-size: var(--ara-intro-card-text-mobile);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ara-mint-intro__button {
+      transition: none;
+    }
+  }

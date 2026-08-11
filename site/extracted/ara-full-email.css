@@ -1,0 +1,192 @@
+
+  {
+    background:
+      linear-gradient(
+        135deg,
+        color-mix(in srgb, var(--ara-email-accent) 9%, transparent),
+        transparent 42%
+      ),
+      var(--ara-email-bg);
+    color: var(--ara-email-text);
+  }
+
+  .ara-full-email__inner {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(440px, 0.82fr);
+    gap: clamp(50px, 7vw, 110px);
+    align-items: end;
+    width: min(100%, var(--ara-email-max));
+    margin: 0 auto;
+    padding: var(--ara-email-top) 40px var(--ara-email-bottom);
+  }
+
+  .ara-full-email__eyebrow {
+    margin: 0 0 14px;
+    color: var(--ara-email-gold);
+    font-family: var(--font-body-family);
+    font-size: var(--ara-email-eyebrow-size);
+    font-style: var(--font-body-style);
+    font-weight: 800;
+    line-height: 1.3;
+    letter-spacing: 0.17em;
+    text-transform: uppercase;
+  }
+
+  .ara-full-email__copy h2 {
+    max-width: 920px;
+    margin: 0;
+    color: var(--ara-email-text);
+    font-family: var(--font-heading-family);
+    font-size: var(--ara-email-heading-size);
+    font-style: var(--font-heading-style);
+    font-weight: var(--font-heading-weight);
+    line-height: 0.96;
+    letter-spacing: -0.05em;
+  }
+
+  .ara-full-email__description {
+    max-width: 650px;
+    margin-top: 24px;
+    color: var(--ara-email-muted);
+    font-family: var(--font-body-family);
+    font-size: var(--ara-email-description-size);
+    font-style: var(--font-body-style);
+    font-weight: var(--font-body-weight);
+    line-height: 1.65;
+  }
+
+  .ara-full-email__description p {
+    margin: 0;
+  }
+
+  .ara-full-email__form-wrap {
+    position: relative;
+    padding: 34px 32px 28px;
+    border: 1px solid var(--ara-email-border);
+    background: color-mix(in srgb, var(--ara-email-field) 22%, transparent);
+  }
+
+  .ara-full-email__form {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 10px;
+  }
+
+  .ara-full-email__input {
+    min-height: 56px;
+    padding: 13px 16px;
+    border: 1px solid var(--ara-email-border);
+    border-radius: 0;
+    outline: 0;
+    background: var(--ara-email-field);
+    color: var(--ara-email-text);
+    font-family: var(--font-body-family);
+    font-size: var(--ara-email-input-size);
+    font-style: var(--font-body-style);
+    font-weight: var(--font-body-weight);
+  }
+
+  .ara-full-email__input::placeholder {
+    color: var(--ara-email-muted);
+  }
+
+  .ara-full-email__input:focus {
+    border-color: var(--ara-email-accent);
+    box-shadow: 0 0 0 1px var(--ara-email-accent);
+  }
+
+  .ara-full-email__button {
+    min-width: 180px;
+    min-height: 56px;
+    padding: 13px 24px;
+    border: 1px solid var(--ara-email-button);
+    border-radius: 0;
+    background: var(--ara-email-button);
+    color: var(--ara-email-button-text);
+    cursor: pointer;
+    font-family: var(--font-body-family);
+    font-size: var(--ara-email-button-size);
+    font-style: var(--font-body-style);
+    font-weight: 800;
+    line-height: 1.3;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+  }
+
+  .ara-full-email__message {
+    grid-column: 1 / -1;
+    margin: 0;
+    color: var(--ara-email-gold);
+    font-family: var(--font-body-family);
+    font-size: var(--ara-email-message-size);
+    font-style: var(--font-body-style);
+    line-height: 1.5;
+  }
+
+  .ara-full-email__message--error {
+    color: #FF8A7B;
+  }
+
+  .ara-full-email__note {
+    margin: 14px 0 0;
+    color: var(--ara-email-muted);
+    font-family: var(--font-body-family);
+    font-size: var(--ara-email-note-size);
+    font-style: var(--font-body-style);
+    font-weight: var(--font-body-weight);
+    line-height: 1.5;
+  }
+
+  @media screen and (max-width: 949px) {
+    .ara-full-email__inner {
+      grid-template-columns: 1fr;
+      align-items: start;
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    .ara-full-email__inner {
+      padding-right: 20px;
+      padding-left: 20px;
+    }
+
+    .ara-full-email__eyebrow {
+      font-size: var(--ara-email-mobile-eyebrow-size);
+    }
+
+    .ara-full-email__copy h2 {
+      font-size: var(--ara-email-mobile-heading-size);
+    }
+
+    .ara-full-email__description {
+      font-size: var(--ara-email-mobile-description-size);
+    }
+
+    .ara-full-email__input {
+      font-size: var(--ara-email-mobile-input-size);
+    }
+
+    .ara-full-email__button {
+      font-size: var(--ara-email-mobile-button-size);
+    }
+
+    .ara-full-email__message {
+      font-size: var(--ara-email-mobile-message-size);
+    }
+
+    .ara-full-email__note {
+      font-size: var(--ara-email-mobile-note-size);
+    }
+
+    .ara-full-email__form-wrap {
+      padding: 32px 20px 24px;
+    }
+
+    .ara-full-email__form {
+      grid-template-columns: 1fr;
+    }
+
+    .ara-full-email__button {
+      width: 100%;
+    }
+  }

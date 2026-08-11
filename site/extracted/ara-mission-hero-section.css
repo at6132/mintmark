@@ -1,0 +1,448 @@
+
+  {
+    position: relative;
+    overflow: hidden;
+    padding: var(--ara-mission-top) 0 var(--ara-mission-bottom);
+    background: var(--ara-mission-bg);
+    color: var(--ara-mission-text);
+    isolation: isolate;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  .ara-mission-hero__lines {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    opacity: 0.46;
+    background-image:
+      linear-gradient(
+        90deg,
+        transparent 0,
+        transparent 31px,
+        color-mix(in srgb, var(--ara-mission-mint) 12%, transparent) 31px,
+        color-mix(in srgb, var(--ara-mission-mint) 12%, transparent) 32px
+      ),
+      repeating-linear-gradient(
+        to bottom,
+        transparent 0,
+        transparent 35px,
+        color-mix(in srgb, var(--ara-mission-mint) 22%, transparent) 35px,
+        color-mix(in srgb, var(--ara-mission-mint) 22%, transparent) 36px
+      );
+    pointer-events: none;
+  }
+
+  .ara-mission-hero__inner {
+    width: min(100%, var(--ara-mission-max));
+    margin: 0 auto;
+    padding: 0 40px;
+  }
+
+  .ara-mission-hero__frame {
+    padding: 8px;
+    border: 2px solid var(--ara-mission-text);
+    border-radius: 26px;
+    background: var(--ara-mission-paper);
+    box-shadow:
+      10px 10px 0 var(--ara-mission-gold),
+      18px 18px 0 color-mix(in srgb, var(--ara-mission-mint) 68%, transparent);
+  }
+
+  .ara-mission-hero__panel {
+    display: grid;
+    grid-template-columns: minmax(0, 1.05fr) minmax(360px, 0.95fr);
+    gap: clamp(36px, 5vw, 82px);
+    align-items: center;
+    padding: clamp(38px, 5vw, 76px);
+    border: 3px solid var(--ara-mission-text);
+    border-radius: 17px;
+    background:
+      radial-gradient(
+        circle at 112% 112%,
+        color-mix(in srgb, var(--ara-mission-mint) 15%, transparent) 0 29%,
+        transparent 30%
+      ),
+      linear-gradient(
+        145deg,
+        color-mix(in srgb, var(--ara-mission-paper) 96%, white),
+        color-mix(in srgb, var(--ara-mission-bg) 92%, transparent)
+      );
+  }
+
+  .ara-mission-hero__meta {
+    display: flex;
+    justify-content: space-between;
+    gap: 18px;
+    align-items: flex-start;
+  }
+
+  .ara-mission-hero__eyebrow,
+  .ara-mission-hero__folio,
+  .ara-mission-hero__bottom-note,
+  .ara-mission-hero__image-label,
+  .ara-mission-hero__quote cite,
+  .ara-mission-hero__value-number {
+    font-family: var(--font-body-family);
+    font-style: var(--font-body-style);
+    font-weight: 800;
+    line-height: 1.2;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .ara-mission-hero__eyebrow {
+    display: inline-flex;
+    min-height: 31px;
+    align-items: center;
+    padding: 6px 11px;
+    border: 2px solid var(--ara-mission-text);
+    border-radius: 8px;
+    background: var(--ara-mission-gold);
+    color: var(--ara-mission-text);
+    font-size: var(--ara-mission-label-desktop);
+    box-shadow: 3px 3px 0 var(--ara-mission-text);
+  }
+
+  .ara-mission-hero__folio {
+    color: var(--ara-mission-muted);
+    font-size: var(--ara-mission-label-desktop);
+    text-align: right;
+  }
+
+  .ara-mission-hero__heading {
+    max-width: 860px;
+    margin: 26px 0 0;
+    font-family: var(--font-heading-family);
+    font-size: var(--ara-mission-heading-desktop);
+    font-style: var(--font-heading-style);
+    font-weight: var(--font-heading-weight);
+    line-height: 0.93;
+    letter-spacing: -0.055em;
+  }
+
+  .ara-mission-hero__description {
+    max-width: 720px;
+    margin-top: 27px;
+    color: var(--ara-mission-muted);
+    font-family: var(--font-body-family);
+    font-size: var(--ara-mission-body-desktop);
+    font-style: var(--font-body-style);
+    font-weight: var(--font-body-weight);
+    line-height: 1.65;
+  }
+
+  .ara-mission-hero__description p {
+    margin: 0;
+  }
+
+  .ara-mission-hero__buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-top: 32px;
+  }
+
+  .ara-mission-hero__button {
+    display: inline-flex;
+    min-width: 188px;
+    min-height: 50px;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 22px;
+    border: 2px solid currentColor;
+    border-radius: 8px;
+    font-family: var(--font-body-family);
+    font-size: var(--ara-mission-button-desktop);
+    font-style: var(--font-body-style);
+    font-weight: 800;
+    line-height: 1.2;
+    letter-spacing: 0.12em;
+    text-align: center;
+    text-decoration: none;
+    text-transform: uppercase;
+    box-shadow: 4px 4px 0 currentColor;
+    transition:
+      transform 0.2s ease,
+      box-shadow 0.2s ease;
+  }
+
+  .ara-mission-hero__button:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0 currentColor;
+  }
+
+  .ara-mission-hero__button--primary {
+    background: var(--ara-mission-mint);
+    color: #FFFFFF;
+  }
+
+  .ara-mission-hero__button--secondary {
+    background: var(--ara-mission-gold);
+    color: var(--ara-mission-text);
+  }
+
+  .ara-mission-hero__bottom-note {
+    margin: 48px 0 0;
+    padding-top: 16px;
+    border-top: 1px dashed color-mix(in srgb, var(--ara-mission-text) 34%, transparent);
+    color: var(--ara-mission-muted);
+    font-size: var(--ara-mission-label-desktop);
+  }
+
+  .ara-mission-hero__visual {
+    position: relative;
+    min-width: 0;
+  }
+
+  .ara-mission-hero__visual-frame {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 4 / 3;
+    padding: 7px;
+    border: 2px solid var(--ara-mission-text);
+    border-radius: 22px;
+    background: var(--ara-mission-paper);
+    box-shadow:
+      8px 8px 0 var(--ara-mission-blue),
+      14px 14px 0 color-mix(in srgb, var(--ara-mission-gold) 72%, transparent);
+  }
+
+  .ara-mission-hero__image,
+  .ara-mission-hero__placeholder,
+  .ara-mission-hero__placeholder-svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  .ara-mission-hero__image,
+  .ara-mission-hero__placeholder-svg {
+    border: 3px solid var(--ara-mission-text);
+    border-radius: 14px;
+    object-fit: cover;
+  }
+
+  .ara-mission-hero__placeholder-svg {
+    background: var(--ara-mission-paper);
+  }
+
+  .ara-mission-hero__image-label {
+    position: absolute;
+    right: 18px;
+    bottom: 18px;
+    left: 18px;
+    padding: 8px 12px;
+    border: 2px solid var(--ara-mission-text);
+    border-radius: 8px;
+    background: var(--ara-mission-gold);
+    color: var(--ara-mission-text);
+    font-size: var(--ara-mission-label-desktop);
+    text-align: center;
+    box-shadow: 3px 3px 0 var(--ara-mission-text);
+  }
+
+  .ara-mission-hero__quote {
+    position: absolute;
+    right: -26px;
+    bottom: -30px;
+    width: min(88%, 360px);
+    margin: 0;
+    padding: 20px;
+    border: 2px solid var(--ara-mission-text);
+    border-radius: 14px;
+    background: var(--ara-mission-blue);
+    color: #FFFFFF;
+    box-shadow: 5px 5px 0 var(--ara-mission-gold);
+    transform: rotate(2deg);
+  }
+
+  .ara-mission-hero__quote p {
+    margin: 0;
+    font-family: var(--font-heading-family);
+    font-size: clamp(24px, 2.4vw, 36px);
+    font-style: var(--font-heading-style);
+    font-weight: var(--font-heading-weight);
+    line-height: 1.05;
+  }
+
+  .ara-mission-hero__quote cite {
+    display: block;
+    margin-top: 16px;
+    color: var(--ara-mission-gold);
+    font-size: var(--ara-mission-label-desktop);
+    font-style: normal;
+  }
+
+  .ara-mission-hero__values {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 20px;
+    margin-top: 42px;
+  }
+
+  .ara-mission-hero__value {
+    display: grid;
+    grid-template-columns: 44px minmax(0, 1fr);
+    gap: 16px;
+    min-height: 170px;
+    align-content: start;
+    padding: 24px;
+    border: 2px solid var(--ara-mission-text);
+    border-radius: 16px;
+    box-shadow: 5px 5px 0 var(--ara-mission-text);
+  }
+
+  .ara-mission-hero__value--cream {
+    background: var(--ara-mission-paper);
+  }
+
+  .ara-mission-hero__value--gold {
+    background: var(--ara-mission-gold);
+  }
+
+  .ara-mission-hero__value--blue {
+    background: var(--ara-mission-blue);
+    color: #FFFFFF;
+  }
+
+  .ara-mission-hero__value-number {
+    display: grid;
+    width: 40px;
+    height: 40px;
+    place-items: center;
+    border: 2px solid currentColor;
+    border-radius: 50%;
+    font-size: var(--ara-mission-label-desktop);
+  }
+
+  .ara-mission-hero__value h2 {
+    margin: 0;
+    font-family: var(--font-heading-family);
+    font-size: var(--ara-mission-value-title-desktop);
+    font-style: var(--font-heading-style);
+    font-weight: var(--font-heading-weight);
+    line-height: 1;
+  }
+
+  .ara-mission-hero__value p {
+    margin: 12px 0 0;
+    font-family: var(--font-body-family);
+    font-size: var(--ara-mission-value-text-desktop);
+    font-style: var(--font-body-style);
+    font-weight: var(--font-body-weight);
+    line-height: 1.5;
+  }
+
+  @media screen and (max-width: 1099px) {
+    .ara-mission-hero__panel {
+      grid-template-columns: 1fr;
+    }
+
+    .ara-mission-hero__visual {
+      max-width: 760px;
+    }
+  }
+
+  @media screen and (max-width: 899px) {
+    .ara-mission-hero__values {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    {
+      padding-top: calc(var(--ara-mission-top) * 0.7);
+      padding-bottom: calc(var(--ara-mission-bottom) * 0.7);
+    }
+
+    .ara-mission-hero__inner {
+      padding: 0 20px;
+    }
+
+    .ara-mission-hero__frame {
+      padding: 5px;
+      box-shadow:
+        5px 5px 0 var(--ara-mission-gold),
+        10px 10px 0 color-mix(in srgb, var(--ara-mission-mint) 68%, transparent);
+    }
+
+    .ara-mission-hero__panel {
+      padding: 32px 24px 40px;
+    }
+
+    .ara-mission-hero__meta {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+
+    .ara-mission-hero__eyebrow,
+    .ara-mission-hero__folio,
+    .ara-mission-hero__bottom-note,
+    .ara-mission-hero__image-label,
+    .ara-mission-hero__quote cite,
+    .ara-mission-hero__value-number {
+      font-size: var(--ara-mission-label-mobile);
+    }
+
+    .ara-mission-hero__folio {
+      text-align: left;
+    }
+
+    .ara-mission-hero__heading {
+      font-size: var(--ara-mission-heading-mobile);
+    }
+
+    .ara-mission-hero__description {
+      font-size: var(--ara-mission-body-mobile);
+    }
+
+    .ara-mission-hero__buttons {
+      display: grid;
+    }
+
+    .ara-mission-hero__button {
+      width: 100%;
+      font-size: var(--ara-mission-button-mobile);
+    }
+
+    .ara-mission-hero__visual-frame {
+      box-shadow:
+        5px 5px 0 var(--ara-mission-blue),
+        10px 10px 0 color-mix(in srgb, var(--ara-mission-gold) 72%, transparent);
+    }
+
+    .ara-mission-hero__quote {
+      position: relative;
+      right: auto;
+      bottom: auto;
+      width: calc(100% - 24px);
+      margin: -20px auto 0;
+      transform: rotate(1deg);
+    }
+
+    .ara-mission-hero__values {
+      margin-top: 32px;
+    }
+
+    .ara-mission-hero__value {
+      min-height: 0;
+      padding: 22px;
+    }
+
+    .ara-mission-hero__value h2 {
+      font-size: var(--ara-mission-value-title-mobile);
+    }
+
+    .ara-mission-hero__value p {
+      font-size: var(--ara-mission-value-text-mobile);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ara-mission-hero__button {
+      transition: none;
+    }
+  }

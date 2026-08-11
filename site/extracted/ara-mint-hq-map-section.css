@@ -1,0 +1,553 @@
+
+  {
+    position: relative;
+    overflow: hidden;
+    padding: var(--ara-map-top) 0 var(--ara-map-bottom);
+    background: var(--ara-map-bg);
+    color: var(--ara-map-text);
+    isolation: isolate;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  .ara-mint-map__lines {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    opacity: 0.44;
+    background-image:
+      repeating-linear-gradient(
+        to bottom,
+        transparent 0,
+        transparent 35px,
+        color-mix(in srgb, var(--ara-map-mint) 20%, transparent) 35px,
+        color-mix(in srgb, var(--ara-map-mint) 20%, transparent) 36px
+      );
+    pointer-events: none;
+  }
+
+  .ara-mint-map__inner {
+    width: min(100%, var(--ara-map-max));
+    margin: 0 auto;
+    padding: 0 40px;
+  }
+
+  .ara-mint-map__heading-row {
+    display: grid;
+    grid-template-columns: minmax(0, 0.95fr) minmax(320px, 0.55fr);
+    gap: clamp(30px, 5vw, 90px);
+    align-items: end;
+    margin-bottom: 46px;
+  }
+
+  .ara-mint-map__eyebrow,
+  .ara-mint-map__map-label,
+  .ara-mint-map__panel-top span,
+  .ara-mint-map__panel-top small,
+  .ara-mint-map__company-kicker,
+  .ara-mint-map__company-location,
+  .ara-mint-map__stat span,
+  .ara-mint-map__selector-button span {
+    font-family: var(--font-body-family);
+    font-style: var(--font-body-style);
+    font-weight: 800;
+    line-height: 1.2;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .ara-mint-map__eyebrow {
+    display: inline-flex;
+    min-height: 31px;
+    align-items: center;
+    padding: 6px 11px;
+    border: 2px solid var(--ara-map-text);
+    border-radius: 8px;
+    background: var(--ara-map-gold);
+    color: var(--ara-map-text);
+    font-size: var(--ara-map-label-desktop);
+    box-shadow: 3px 3px 0 var(--ara-map-text);
+  }
+
+  .ara-mint-map__heading {
+    max-width: 860px;
+    margin: 22px 0 0;
+    font-family: var(--font-heading-family);
+    font-size: var(--ara-map-heading-desktop);
+    font-style: var(--font-heading-style);
+    font-weight: var(--font-heading-weight);
+    line-height: 0.94;
+    letter-spacing: -0.055em;
+  }
+
+  .ara-mint-map__description {
+    color: var(--ara-map-muted);
+    font-family: var(--font-body-family);
+    font-size: var(--ara-map-body-desktop);
+    font-style: var(--font-body-style);
+    font-weight: var(--font-body-weight);
+    line-height: 1.65;
+  }
+
+  .ara-mint-map__description p {
+    margin: 0;
+  }
+
+  .ara-mint-map__layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1.55fr) minmax(330px, 0.65fr);
+    gap: 34px;
+    align-items: start;
+  }
+
+  .ara-mint-map__map-frame,
+  .ara-mint-map__panel-frame {
+    padding: 7px;
+    border: 2px solid var(--ara-map-text);
+    background: var(--ara-map-paper);
+  }
+
+  .ara-mint-map__map-frame {
+    align-self: start;
+    height: fit-content;
+    border-radius: 24px;
+    box-shadow:
+      9px 9px 0 var(--ara-map-gold),
+      16px 16px 0 color-mix(in srgb, var(--ara-map-mint) 65%, transparent);
+  }
+
+  .ara-mint-map__map {
+    position: relative;
+    overflow: hidden;
+    min-height: 620px;
+    border: 3px solid var(--ara-map-text);
+    border-radius: 16px;
+    background: var(--ara-map-paper);
+  }
+
+  .ara-mint-map__map picture,
+  .ara-mint-map__image,
+  .ara-mint-map__placeholder,
+  .ara-mint-map__placeholder-svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  .ara-mint-map__image,
+  .ara-mint-map__placeholder-svg {
+    min-height: 620px;
+    object-fit: cover;
+  }
+
+  .ara-mint-map__placeholder-svg {
+    background: var(--ara-map-paper);
+  }
+
+  .ara-mint-map__marker-layer {
+    position: absolute;
+    inset: 0;
+  }
+
+  .ara-mint-map__marker {
+    position: absolute;
+    top: var(--marker-y);
+    left: var(--marker-x);
+    display: grid;
+    width: 36px;
+    height: 36px;
+    place-items: center;
+    padding: 0;
+    border: 2px solid var(--ara-map-text);
+    border-radius: 50%;
+    background: var(--ara-map-paper);
+    color: var(--ara-map-text);
+    box-shadow: 3px 3px 0 var(--ara-map-text);
+    cursor: pointer;
+    transform: translate(-50%, -50%);
+    transition:
+      transform 0.2s ease,
+      background-color 0.2s ease,
+      color 0.2s ease;
+  }
+
+  .ara-mint-map__marker span {
+    font-family: var(--font-body-family);
+    font-size: 10px;
+    font-weight: 800;
+    line-height: 1;
+  }
+
+  .ara-mint-map__marker:hover,
+  .ara-mint-map__marker.is-active {
+    background: var(--ara-map-gold);
+    color: var(--ara-map-text);
+    transform: translate(-50%, -50%) scale(1.12);
+  }
+
+  .ara-mint-map__map-label {
+    position: absolute;
+    right: 18px;
+    bottom: 18px;
+    padding: 8px 12px;
+    border: 2px solid var(--ara-map-text);
+    border-radius: 8px;
+    background: var(--ara-map-paper);
+    color: var(--ara-map-text);
+    font-size: var(--ara-map-label-desktop);
+    box-shadow: 3px 3px 0 var(--ara-map-text);
+  }
+
+  .ara-mint-map__panel-frame {
+    align-self: start;
+    height: fit-content;
+    border-radius: 22px;
+    box-shadow:
+      8px 8px 0 var(--ara-map-blue-deep),
+      14px 14px 0 color-mix(in srgb, var(--ara-map-gold) 68%, transparent);
+  }
+
+  .ara-mint-map__panel {
+    display: grid;
+    min-height: 100%;
+    padding: 25px 22px 22px;
+    border: 3px solid var(--ara-map-text);
+    border-radius: 14px;
+    background:
+      radial-gradient(
+        circle at 115% 115%,
+        color-mix(in srgb, var(--ara-map-gold) 14%, transparent) 0 28%,
+        transparent 29%
+      ),
+      linear-gradient(145deg, var(--ara-map-blue), var(--ara-map-blue-deep));
+    color: #FFFFFF;
+  }
+
+  .ara-mint-map__panel-top {
+    display: flex;
+    justify-content: space-between;
+    gap: 14px;
+    padding-bottom: 16px;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.78);
+  }
+
+  .ara-mint-map__panel-top span,
+  .ara-mint-map__panel-top small {
+    font-size: var(--ara-map-label-desktop);
+  }
+
+  .ara-mint-map__panel-top small {
+    color: rgba(255, 255, 255, 0.66);
+    text-align: right;
+  }
+
+  .ara-mint-map__panels {
+    position: relative;
+    margin-top: 24px;
+  }
+
+  .ara-mint-map__company-panel {
+    display: grid;
+    gap: 24px;
+  }
+
+  .ara-mint-map__company-panel[hidden] {
+    display: none !important;
+  }
+
+  .ara-mint-map__company-head {
+    display: grid;
+    grid-template-columns: 78px minmax(0, 1fr);
+    gap: 17px;
+    align-items: center;
+  }
+
+  .ara-mint-map__company-logo {
+    display: grid;
+    width: 72px;
+    height: 72px;
+    place-items: center;
+    overflow: hidden;
+    border: 2px solid rgba(255, 255, 255, 0.88);
+    border-radius: 12px;
+    background: var(--ara-map-paper);
+    color: var(--ara-map-text);
+  }
+
+  .ara-mint-map__company-logo-image {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    padding: 8px;
+  }
+
+  .ara-mint-map__company-logo span {
+    font-family: var(--font-heading-family);
+    font-size: 30px;
+    font-weight: 800;
+  }
+
+  .ara-mint-map__company-kicker {
+    color: var(--ara-map-gold);
+    font-size: var(--ara-map-label-desktop);
+  }
+
+  .ara-mint-map__company-name {
+    margin: 7px 0 0;
+    font-family: var(--font-heading-family);
+    font-size: var(--ara-map-company-desktop);
+    font-style: var(--font-heading-style);
+    font-weight: var(--font-heading-weight);
+    line-height: 1;
+  }
+
+  .ara-mint-map__company-location {
+    margin: 8px 0 0;
+    color: rgba(255, 255, 255, 0.66);
+    font-size: var(--ara-map-label-desktop);
+  }
+
+  .ara-mint-map__company-description {
+    margin: 0;
+    color: rgba(255, 255, 255, 0.86);
+    font-family: var(--font-body-family);
+    font-size: var(--ara-map-body-desktop);
+    font-style: var(--font-body-style);
+    font-weight: var(--font-body-weight);
+    line-height: 1.58;
+  }
+
+  .ara-mint-map__stats {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .ara-mint-map__stat {
+    min-width: 0;
+    padding: 13px 10px;
+    border: 1px solid rgba(255, 255, 255, 0.48);
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.08);
+  }
+
+  .ara-mint-map__stat span {
+    display: block;
+    color: rgba(255, 255, 255, 0.62);
+    font-size: var(--ara-map-label-desktop);
+  }
+
+  .ara-mint-map__stat strong {
+    display: block;
+    margin-top: 7px;
+    font-family: var(--font-heading-family);
+    font-size: var(--ara-map-stat-desktop);
+    line-height: 1;
+  }
+
+  .ara-mint-map__company-link {
+    display: inline-flex;
+    width: fit-content;
+    min-height: 46px;
+    align-items: center;
+    justify-content: center;
+    padding: 11px 18px;
+    border: 2px solid #FFFFFF;
+    border-radius: 8px;
+    background: var(--ara-map-gold);
+    color: var(--ara-map-text);
+    font-family: var(--font-body-family);
+    font-size: var(--ara-map-label-desktop);
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-decoration: none;
+    text-transform: uppercase;
+    box-shadow: 3px 3px 0 #FFFFFF;
+  }
+
+  .ara-mint-map__selector {
+    display: grid;
+    gap: 8px;
+    align-self: end;
+    margin-top: 28px;
+  }
+
+  .ara-mint-map__selector-button {
+    display: grid;
+    grid-template-columns: 30px minmax(0, 1fr);
+    gap: 10px;
+    align-items: center;
+    padding: 10px 12px;
+    border: 1px solid rgba(255, 255, 255, 0.38);
+    border-radius: 9px;
+    background: rgba(255, 255, 255, 0.06);
+    color: #FFFFFF;
+    text-align: left;
+    cursor: pointer;
+  }
+
+  .ara-mint-map__selector-button.is-active {
+    border-color: var(--ara-map-gold);
+    background: rgba(255, 255, 255, 0.14);
+  }
+
+  .ara-mint-map__selector-button span {
+    color: var(--ara-map-gold);
+    font-size: var(--ara-map-label-desktop);
+  }
+
+  .ara-mint-map__selector-button strong {
+    overflow: hidden;
+    font-family: var(--font-body-family);
+    font-size: var(--ara-map-label-desktop);
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-overflow: ellipsis;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  @media screen and (max-width: 1099px) {
+    .ara-mint-map__heading-row,
+    .ara-mint-map__layout {
+      grid-template-columns: 1fr;
+    }
+
+    .ara-mint-map__panel-frame {
+      max-width: 760px;
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    {
+      padding-top: calc(var(--ara-map-top) * 0.7);
+      padding-bottom: calc(var(--ara-map-bottom) * 0.7);
+    }
+
+    .ara-mint-map__inner {
+      padding: 0 20px;
+    }
+
+    .ara-mint-map__heading-row {
+      gap: 24px;
+      margin-bottom: 34px;
+    }
+
+    .ara-mint-map__eyebrow,
+    .ara-mint-map__map-label,
+    .ara-mint-map__panel-top span,
+    .ara-mint-map__panel-top small,
+    .ara-mint-map__company-kicker,
+    .ara-mint-map__company-location,
+    .ara-mint-map__stat span,
+    .ara-mint-map__selector-button span,
+    .ara-mint-map__selector-button strong,
+    .ara-mint-map__company-link {
+      font-size: var(--ara-map-label-mobile);
+    }
+
+    .ara-mint-map__heading {
+      font-size: var(--ara-map-heading-mobile);
+    }
+
+    .ara-mint-map__description,
+    .ara-mint-map__company-description {
+      font-size: var(--ara-map-body-mobile);
+    }
+
+    .ara-mint-map__map-frame,
+    .ara-mint-map__panel-frame {
+      padding: 5px;
+    }
+
+    .ara-mint-map__map-frame {
+      box-shadow:
+        5px 5px 0 var(--ara-map-gold),
+        10px 10px 0 color-mix(in srgb, var(--ara-map-mint) 65%, transparent);
+    }
+
+    .ara-mint-map__map,
+    .ara-mint-map__image,
+    .ara-mint-map__placeholder-svg {
+      min-height: 430px;
+    }
+
+    .ara-mint-map__marker {
+      width: 32px;
+      height: 32px;
+    }
+
+    .ara-mint-map__map-label {
+      right: 12px;
+      bottom: 12px;
+      left: 12px;
+      text-align: center;
+    }
+
+    .ara-mint-map__panel-frame {
+      box-shadow:
+        5px 5px 0 var(--ara-map-blue-deep),
+        10px 10px 0 color-mix(in srgb, var(--ara-map-gold) 68%, transparent);
+    }
+
+    .ara-mint-map__panel {
+      padding: 22px 18px;
+    }
+
+    .ara-mint-map__company-head {
+      grid-template-columns: 66px minmax(0, 1fr);
+    }
+
+    .ara-mint-map__company-logo {
+      width: 62px;
+      height: 62px;
+    }
+
+    .ara-mint-map__company-name {
+      font-size: var(--ara-map-company-mobile);
+    }
+
+    .ara-mint-map__stats {
+      grid-template-columns: 1fr;
+    }
+
+    .ara-mint-map__stat strong {
+      font-size: var(--ara-map-stat-mobile);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ara-mint-map__marker {
+      transition: none;
+    }
+  }
+
+
+
+  .ara-mint-map__placeholder--world {
+    display: block;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    min-height: 560px;
+    overflow: hidden;
+    background: #EAF2ED;
+  }
+
+  .ara-mint-map__world-svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+    min-height: 560px;
+    object-fit: cover;
+  }
+
+  @media screen and (max-width: 749px) {
+    .ara-mint-map__placeholder--world,
+    .ara-mint-map__world-svg {
+      min-height: 390px;
+    }
+  }

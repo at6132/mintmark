@@ -1,0 +1,532 @@
+
+  {
+    overflow: hidden;
+    border-top: 1px solid var(--ara-mint-border);
+    border-bottom: 1px solid var(--ara-mint-border);
+    background-color: var(--ara-mint-bg);
+    background-image:
+      linear-gradient(
+        90deg,
+        transparent 0,
+        transparent 31px,
+        color-mix(in srgb, var(--ara-mint-line) 15%, transparent) 31px,
+        color-mix(in srgb, var(--ara-mint-line) 15%, transparent) 32px
+      ),
+      repeating-linear-gradient(
+        to bottom,
+        transparent 0,
+        transparent 34px,
+        color-mix(in srgb, var(--ara-mint-line) 34%, transparent) 34px,
+        color-mix(in srgb, var(--ara-mint-line) 34%, transparent) 35px
+      );
+    color: var(--ara-mint-text);
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  .ara-mint-domains__inner {
+    display: grid;
+    grid-template-columns: minmax(300px, 0.72fr) minmax(0, 2.28fr);
+    gap: clamp(38px, 4.5vw, 76px);
+    align-items: stretch;
+    width: min(100%, var(--ara-mint-max));
+    margin: 0 auto;
+    padding: var(--ara-mint-top) 40px var(--ara-mint-bottom);
+  }
+
+  .ara-mint-domains__intro-frame {
+    position: relative;
+    align-self: start;
+    padding: 7px;
+    border: 2px solid var(--ara-mint-text);
+    border-radius: 22px;
+    background: var(--ara-mint-bg);
+    box-shadow:
+      8px 8px 0 var(--ara-mint-gold),
+      14px 14px 0 color-mix(in srgb, var(--ara-mint-accent) 70%, transparent);
+  }
+
+  .ara-mint-domains__intro {
+    position: relative;
+    display: flex;
+    min-height: 100%;
+    flex-direction: column;
+    justify-content: center;
+    overflow: hidden;
+    padding: clamp(34px, 4vw, 58px);
+    border: 3px solid var(--ara-mint-text);
+    border-radius: 15px;
+    background:
+      radial-gradient(
+        circle at 105% 110%,
+        color-mix(in srgb, var(--ara-mint-accent) 16%, transparent) 0 30%,
+        transparent 31%
+      ),
+      linear-gradient(
+        145deg,
+        color-mix(in srgb, var(--ara-mint-deep-bg) 82%, white),
+        var(--ara-mint-bg)
+      );
+  }
+
+  .ara-mint-domains__intro::before {
+    content: "";
+    position: absolute;
+    top: 17px;
+    right: 17px;
+    width: 58px;
+    height: 9px;
+    border-top: 2px solid var(--ara-mint-text);
+    border-bottom: 2px solid var(--ara-mint-text);
+    opacity: 0.55;
+  }
+
+  .ara-mint-domains__intro::after {
+    content: "";
+    position: absolute;
+    right: 22px;
+    bottom: 22px;
+    width: 36px;
+    height: 36px;
+    border-right: 3px solid var(--ara-mint-accent);
+    border-bottom: 3px solid var(--ara-mint-accent);
+  }
+
+  .ara-mint-domains__eyebrow {
+    position: relative;
+    z-index: 1;
+    display: inline-flex;
+    align-self: flex-start;
+    margin: 0 0 22px;
+    padding: 6px 11px;
+    border: 2px solid var(--ara-mint-text);
+    border-radius: 8px;
+    background: var(--ara-mint-gold);
+    color: var(--ara-mint-text);
+    font-family: var(--font-body-family);
+    font-size: var(--ara-mint-eyebrow-size);
+    font-style: var(--font-body-style);
+    font-weight: 800;
+    line-height: 1.2;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    box-shadow: 3px 3px 0 var(--ara-mint-text);
+  }
+
+  .ara-mint-domains__eyebrow-media {
+    position: relative;
+    z-index: 1;
+    display: block;
+    width: var(--ara-mint-eyebrow-media-width);
+    max-width: 100%;
+    margin: 0 0 22px;
+  }
+
+  .ara-mint-domains__eyebrow-image,
+  .ara-mint-domains__eyebrow-media svg {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+  }
+
+  .ara-mint-domains__eyebrow-media--svg svg {
+    overflow: visible;
+  }
+
+  .ara-mint-domains__intro h2 {
+    position: relative;
+    z-index: 1;
+    max-width: 470px;
+    margin: 0;
+    color: var(--ara-mint-text);
+    font-family: var(--font-heading-family);
+    font-size: var(--ara-mint-heading-size);
+    font-style: var(--font-heading-style);
+    font-weight: var(--font-heading-weight);
+    line-height: 0.94;
+    letter-spacing: -0.05em;
+  }
+
+  .ara-mint-domains__description {
+    position: relative;
+    z-index: 1;
+    max-width: 390px;
+    margin-top: 25px;
+    color: var(--ara-mint-muted);
+    font-family: var(--font-body-family);
+    font-size: var(--ara-mint-description-size);
+    font-style: var(--font-body-style);
+    font-weight: var(--font-body-weight);
+    line-height: 1.65;
+  }
+
+  .ara-mint-domains__description p {
+    margin: 0;
+  }
+
+  .ara-mint-domains__link {
+    position: relative;
+    z-index: 1;
+    display: inline-flex;
+    align-self: flex-start;
+    margin-top: 31px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--ara-mint-accent);
+    color: var(--ara-mint-accent);
+    font-family: var(--font-body-family);
+    font-size: var(--ara-mint-link-size);
+    font-style: var(--font-body-style);
+    font-weight: 800;
+    line-height: 1.3;
+    letter-spacing: 0.13em;
+    text-decoration: none;
+    text-transform: uppercase;
+  }
+
+  .ara-mint-domains__intro-note {
+    position: relative;
+    z-index: 1;
+    display: block;
+    margin-top: 60px;
+    padding-top: 16px;
+    border-top: 1px dashed color-mix(in srgb, var(--ara-mint-text) 35%, transparent);
+    color: var(--ara-mint-muted);
+    font-family: var(--font-body-family);
+    font-size: var(--ara-domain-footer-size);
+    font-style: var(--font-body-style);
+    font-weight: 800;
+    line-height: 1.3;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .ara-mint-domains__cards {
+    display: grid;
+    grid-template-columns: repeat(var(--ara-mint-columns), minmax(0, 1fr));
+    gap: var(--ara-card-gap);
+    align-content: start;
+    min-width: 0;
+  }
+
+  .ara-mint-domains__card-shell {
+    position: relative;
+    min-width: 0;
+    padding: 6px;
+    border: 2px solid var(--ara-mint-text);
+    border-radius: 19px;
+    background: var(--ara-mint-bg);
+    color: var(--ara-domain-text);
+    text-decoration: none;
+    box-shadow: 7px 7px 0 var(--ara-domain-rule);
+    transition:
+      transform 0.2s ease,
+      box-shadow 0.2s ease;
+  }
+
+  .ara-mint-domains__card-shell:hover {
+    transform: translate(-3px, -3px);
+    box-shadow: 10px 10px 0 var(--ara-domain-rule);
+  }
+
+  .ara-mint-domains__card {
+    position: relative;
+    display: flex;
+    min-height: var(--ara-card-min-height);
+    flex-direction: column;
+    overflow: hidden;
+    padding: 46px 24px 22px;
+    border: 3px solid var(--ara-mint-text);
+    border-radius: 13px;
+    background:
+      linear-gradient(
+        135deg,
+        color-mix(in srgb, var(--ara-domain-color) 10%, transparent),
+        transparent 42%
+      ),
+      var(--ara-domain-bg);
+    color: var(--ara-domain-text);
+  }
+
+  .ara-mint-domains__card::before {
+    content: "";
+    position: absolute;
+    inset: 10px;
+    border: 1px solid color-mix(in srgb, var(--ara-domain-text) 18%, transparent);
+    border-radius: 7px;
+    pointer-events: none;
+  }
+
+  .ara-mint-domains__tab {
+    position: absolute;
+    z-index: 3;
+    top: -1px;
+    right: 20px;
+    padding: 6px 12px 7px;
+    border: 2px solid var(--ara-mint-text);
+    border-top: 0;
+    border-radius: 0 0 8px 8px;
+    background: var(--ara-domain-color);
+    color: var(--ara-domain-text);
+    font-family: var(--font-body-family);
+    font-size: var(--ara-domain-tab-size);
+    font-style: var(--font-body-style);
+    font-weight: 800;
+    line-height: 1.2;
+    letter-spacing: 0.11em;
+    text-transform: uppercase;
+  }
+
+  .ara-mint-domains__card-shell--paper .ara-mint-domains__tab,
+  .ara-mint-domains__card-shell--gold .ara-mint-domains__tab {
+    color: var(--ara-mint-text);
+  }
+
+  .ara-mint-domains__card-shell--blue .ara-mint-domains__tab,
+  .ara-mint-domains__card-shell--ink .ara-mint-domains__tab,
+  .ara-mint-domains__card-shell--mint .ara-mint-domains__tab {
+    color: var(--ara-mint-text);
+    background: var(--ara-mint-gold);
+  }
+
+  .ara-mint-domains__corner-trim {
+    position: absolute;
+    z-index: 2;
+    top: 17px;
+    left: 17px;
+    width: 35px;
+    height: 35px;
+    border-top: 3px solid var(--ara-domain-color);
+    border-left: 3px solid var(--ara-domain-color);
+  }
+
+  .ara-mint-domains__icon-frame {
+    position: relative;
+    z-index: 1;
+    padding: 5px;
+    border: 2px solid var(--ara-mint-text);
+    border-radius: 15px;
+    background: color-mix(in srgb, var(--ara-domain-bg) 85%, white);
+  }
+
+  .ara-mint-domains__icon-wrap {
+    display: grid;
+    min-height: calc(var(--ara-icon-height) + 28px);
+    place-items: center;
+    padding: 14px;
+    border: 2px dashed color-mix(in srgb, var(--ara-domain-text) 45%, transparent);
+    border-radius: 10px;
+    background:
+      repeating-linear-gradient(
+        45deg,
+        color-mix(in srgb, var(--ara-domain-color) 9%, transparent) 0 1px,
+        transparent 1px 12px
+      );
+  }
+
+  .ara-mint-domains__icon {
+    display: block;
+    width: auto;
+    max-width: 140px;
+    height: var(--ara-icon-height);
+    object-fit: contain;
+    object-position: center;
+  }
+
+  .ara-mint-domains__icon-placeholder {
+    display: grid;
+    width: 110px;
+    height: var(--ara-icon-height);
+    place-items: center;
+    border: 1px dashed var(--ara-domain-color);
+    border-radius: 6px;
+    color: var(--ara-domain-color);
+    font-family: var(--font-body-family);
+    font-size: var(--ara-domain-placeholder-size);
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-align: center;
+    text-transform: uppercase;
+  }
+
+  .ara-mint-domains__card-copy {
+    position: relative;
+    z-index: 1;
+    padding: 0 4px;
+  }
+
+  .ara-mint-domains__card-rule {
+    display: block;
+    width: 74px;
+    height: 3px;
+    margin: 23px 0 18px;
+    border-radius: 4px;
+    background: var(--ara-domain-color);
+  }
+
+  .ara-mint-domains__card h3 {
+    margin: 0;
+    color: var(--ara-domain-text);
+    font-family: var(--font-body-family);
+    font-size: var(--ara-domain-title-size);
+    font-style: var(--font-body-style);
+    font-weight: 900;
+    line-height: 1.25;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .ara-mint-domains__card p {
+    margin: 14px 0 0;
+    color: var(--ara-domain-muted);
+    font-family: var(--font-body-family);
+    font-size: var(--ara-domain-description-size);
+    font-style: var(--font-body-style);
+    font-weight: var(--font-body-weight);
+    line-height: 1.55;
+    opacity: 0.78;
+  }
+
+  .ara-mint-domains__footer {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    align-items: flex-end;
+    margin-top: auto;
+    padding: 25px 4px 0;
+    border-top: 1px dashed color-mix(in srgb, var(--ara-domain-text) 38%, transparent);
+  }
+
+  .ara-mint-domains__number {
+    color: var(--ara-domain-color);
+    font-family: var(--font-heading-family);
+    font-size: var(--ara-domain-number-size);
+    font-style: var(--font-heading-style);
+    font-weight: 800;
+    line-height: 0.9;
+  }
+
+  .ara-mint-domains__footer-label {
+    max-width: 120px;
+    color: var(--ara-domain-muted);
+    font-family: var(--font-body-family);
+    font-size: var(--ara-domain-footer-size);
+    font-style: var(--font-body-style);
+    font-weight: 800;
+    line-height: 1.25;
+    letter-spacing: 0.1em;
+    text-align: right;
+    text-transform: uppercase;
+    opacity: 0.72;
+  }
+
+  @media screen and (max-width: 1240px) {
+    .ara-mint-domains__inner {
+      grid-template-columns: 1fr;
+    }
+
+    .ara-mint-domains__intro-frame {
+      max-width: 720px;
+    }
+  }
+
+  @media screen and (max-width: 989px) {
+    .ara-mint-domains__cards {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    .ara-mint-domains__inner {
+      gap: 38px;
+      padding-right: 20px;
+      padding-left: 20px;
+    }
+
+    .ara-mint-domains__intro-frame {
+      box-shadow:
+        5px 5px 0 var(--ara-mint-gold),
+        10px 10px 0 color-mix(in srgb, var(--ara-mint-accent) 65%, transparent);
+    }
+
+    .ara-mint-domains__intro {
+      padding: 34px 26px 38px;
+    }
+
+    .ara-mint-domains__eyebrow {
+      font-size: var(--ara-mint-mobile-eyebrow-size);
+    }
+
+    .ara-mint-domains__eyebrow-media {
+      width: var(--ara-mint-mobile-eyebrow-media-width);
+    }
+
+    .ara-mint-domains__intro h2 {
+      font-size: var(--ara-mint-mobile-heading-size);
+    }
+
+    .ara-mint-domains__description {
+      font-size: var(--ara-mint-mobile-description-size);
+    }
+
+    .ara-mint-domains__link {
+      font-size: var(--ara-mint-mobile-link-size);
+    }
+
+    .ara-mint-domains__intro-note {
+      margin-top: 44px;
+      font-size: var(--ara-domain-mobile-footer-size);
+    }
+
+    .ara-mint-domains__cards {
+      grid-template-columns: 1fr;
+      gap: 18px;
+    }
+
+    .ara-mint-domains__card-shell {
+      box-shadow: 5px 5px 0 var(--ara-domain-rule);
+    }
+
+    .ara-mint-domains__card {
+      min-height: 0;
+      padding: 44px 21px 21px;
+    }
+
+    .ara-mint-domains__icon {
+      max-width: 120px;
+    }
+
+    .ara-mint-domains__icon-placeholder {
+      font-size: var(--ara-domain-mobile-placeholder-size);
+    }
+
+    .ara-mint-domains__tab {
+      font-size: var(--ara-domain-mobile-tab-size);
+    }
+
+    .ara-mint-domains__card h3 {
+      font-size: var(--ara-domain-mobile-title-size);
+    }
+
+    .ara-mint-domains__card p {
+      font-size: var(--ara-domain-mobile-description-size);
+    }
+
+    .ara-mint-domains__number {
+      font-size: var(--ara-domain-mobile-number-size);
+    }
+
+    .ara-mint-domains__footer-label {
+      font-size: var(--ara-domain-mobile-footer-size);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ara-mint-domains__card-shell {
+      transition: none;
+    }
+  }

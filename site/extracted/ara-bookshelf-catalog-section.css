@@ -1,0 +1,1034 @@
+
+  {
+    position: relative;
+    overflow: hidden;
+    padding: var(--ara-bw-top) 0 var(--ara-bw-bottom);
+    background: var(--ara-bw-bg);
+    color: var(--ara-bw-ink);
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  a {
+    color: inherit;
+  }
+
+  .ara-bookshelf-wall__rules {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+      repeating-linear-gradient(
+        to bottom,
+        transparent 0 35px,
+        color-mix(in srgb, var(--ara-bw-mint) 10%, transparent) 35px 36px
+      );
+  }
+
+  .ara-bookshelf-wall__inner {
+    position: relative;
+    width: min(100%, var(--ara-bw-max));
+    margin: 0 auto;
+    padding: 0 40px;
+  }
+
+  .ara-bookshelf-wall__intro {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(340px, 0.85fr);
+    gap: 56px;
+    align-items: end;
+    padding: 26px 0 31px;
+    border-top: 4px solid var(--ara-bw-ink);
+    border-bottom: 1px solid var(--ara-bw-ink);
+  }
+
+  .ara-bookshelf-wall__eyebrow,
+  .ara-bookshelf-wall__pathway > div > span {
+    margin: 0;
+    color: var(--ara-bw-mint);
+    font-family: var(--font-body-family);
+    font-size: var(--ara-bw-label-desktop);
+    font-weight: 900;
+    letter-spacing: 0.17em;
+    line-height: 1.2;
+    text-transform: uppercase;
+  }
+
+  .ara-bookshelf-wall__intro h2 {
+    margin: 12px 0 0;
+    font-family: var(--font-heading-family);
+    font-size: var(--ara-bw-heading-desktop);
+    font-style: var(--font-heading-style);
+    font-weight: var(--font-heading-weight);
+    letter-spacing: -0.055em;
+    line-height: 0.93;
+  }
+
+  .ara-bookshelf-wall__intro-side {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 28px;
+    align-items: end;
+  }
+
+  .ara-bookshelf-wall__description {
+    color: var(--ara-bw-muted);
+    font-family: var(--font-body-family);
+    font-size: var(--ara-bw-body-desktop);
+    line-height: 1.62;
+  }
+
+  .ara-bookshelf-wall__description p {
+    margin: 0;
+  }
+
+  .ara-bookshelf-wall__count {
+    display: grid;
+    justify-items: end;
+    gap: 5px;
+  }
+
+  .ara-bookshelf-wall__count strong {
+    font-family: var(--font-heading-family);
+    font-size: 45px;
+    font-style: italic;
+    font-weight: 600;
+    line-height: 0.8;
+  }
+
+  .ara-bookshelf-wall__count span {
+    max-width: 130px;
+    color: var(--ara-bw-muted);
+    font-family: var(--font-body-family);
+    font-size: var(--ara-bw-label-desktop);
+    font-weight: 900;
+    letter-spacing: 0.12em;
+    line-height: 1.3;
+    text-align: right;
+    text-transform: uppercase;
+  }
+
+  .ara-bookshelf-wall__toolbar {
+    display: flex;
+    justify-content: space-between;
+    gap: 18px;
+    align-items: center;
+    padding: 18px 0 12px;
+  }
+
+  .ara-bookshelf-wall__filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+  }
+
+  .ara-bookshelf-wall__filters button,
+  .ara-bookshelf-wall__sort select {
+    min-height: 36px;
+    padding: 8px 12px;
+    border: 1px solid var(--ara-bw-ink);
+    border-radius: 0;
+    background: var(--ara-bw-paper);
+    color: var(--ara-bw-ink);
+    font-family: var(--font-body-family);
+    font-size: var(--ara-bw-label-desktop);
+    font-weight: 900;
+    letter-spacing: 0.11em;
+    text-transform: uppercase;
+  }
+
+  .ara-bookshelf-wall__filters button {
+    cursor: pointer;
+  }
+
+  .ara-bookshelf-wall__filters button.is-active {
+    background: var(--ara-bw-gold);
+    box-shadow: 3px 3px 0 var(--ara-bw-ink);
+  }
+
+  .ara-bookshelf-wall__sort {
+    display: flex;
+    gap: 9px;
+    align-items: center;
+  }
+
+  .ara-bookshelf-wall__sort > span {
+    color: var(--ara-bw-muted);
+    font-family: var(--font-body-family);
+    font-size: var(--ara-bw-label-desktop);
+    font-weight: 900;
+    letter-spacing: 0.12em;
+  }
+
+  .ara-bookshelf-wall__display {
+    display: grid;
+    grid-template-columns: minmax(280px, 0.34fr) minmax(0, 1.66fr);
+    gap: 22px;
+    align-items: stretch;
+    margin-top: 26px;
+  }
+
+  .ara-bookshelf-wall__selected {
+    display: flex;
+    min-height: 610px;
+    flex-direction: column;
+    overflow: hidden;
+    padding: 25px;
+    border: 1px solid var(--ara-bw-ink);
+    border-radius: var(--ara-bw-radius);
+    background: var(--ara-bw-paper);
+    box-shadow: 8px 8px 0 color-mix(in srgb, var(--ara-bw-trim-secondary) 25%, transparent);
+  }
+
+  .ara-bookshelf-wall__selected-top {
+    display: flex;
+    justify-content: space-between;
+    gap: 14px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid var(--ara-bw-ink);
+  }
+
+  .ara-bookshelf-wall__selected-top span,
+  .ara-bookshelf-wall__selected-label,
+  .ara-bookshelf-wall__selected-meta span,
+  .ara-bookshelf-wall__measure-key strong,
+  .ara-bookshelf-wall__measure-key small {
+    font-family: var(--font-body-family);
+    font-size: var(--ara-bw-label-desktop);
+    font-weight: 900;
+    letter-spacing: 0.11em;
+    line-height: 1.3;
+    text-transform: uppercase;
+  }
+
+  .ara-bookshelf-wall__selected-top span:first-child,
+  .ara-bookshelf-wall__selected-label {
+    color: var(--ara-bw-mint);
+  }
+
+  .ara-bookshelf-wall__selected-monogram {
+    display: grid;
+    width: 98px;
+    height: 98px;
+    place-items: center;
+    margin-top: 32px;
+    border: 1px solid var(--ara-bw-ink);
+    background: var(--ara-bw-frame);
+    color: var(--ara-bw-paper);
+    font-family: var(--font-heading-family);
+    font-size: 50px;
+    font-weight: 700;
+  }
+
+  .ara-bookshelf-wall__selected-label {
+    margin: 31px 0 0;
+  }
+
+  .ara-bookshelf-wall__selected h3 {
+    margin: 8px 0 0;
+    font-family: var(--font-heading-family);
+    font-size: var(--ara-bw-title-desktop);
+    font-style: var(--font-heading-style);
+    font-weight: var(--font-heading-weight);
+    letter-spacing: -0.045em;
+    line-height: 0.96;
+  }
+
+  .ara-bookshelf-wall__selected-meta {
+    display: grid;
+    gap: 7px;
+    margin-top: 17px;
+  }
+
+  .ara-bookshelf-wall__selected-summary {
+    margin: 19px 0 0;
+    color: var(--ara-bw-muted);
+    font-family: var(--font-body-family);
+    font-size: var(--ara-bw-body-desktop);
+    line-height: 1.62;
+  }
+
+  .ara-bookshelf-wall__selected-action {
+    margin-top: 23px;
+  }
+
+  .ara-bookshelf-wall__selected-action a,
+  .ara-bookshelf-wall__selected-action span {
+    display: inline-flex;
+    min-height: 46px;
+    align-items: center;
+    justify-content: center;
+    padding: 11px 16px;
+    border: 1px solid var(--ara-bw-ink);
+    background: var(--ara-bw-ink);
+    color: #FFFFFF;
+    font-family: var(--font-body-family);
+    font-size: var(--ara-bw-label-desktop);
+    font-weight: 900;
+    letter-spacing: 0.1em;
+    text-decoration: none;
+    text-transform: uppercase;
+  }
+
+  .ara-bookshelf-wall__selected-action span {
+    opacity: 0.52;
+  }
+
+  .ara-bookshelf-wall__measure-key {
+    display: grid;
+    gap: 14px;
+    margin-top: auto;
+    padding-top: 28px;
+    border-top: 1px solid color-mix(in srgb, var(--ara-bw-ink) 28%, transparent);
+  }
+
+  .ara-bookshelf-wall__measure-key > div {
+    display: grid;
+    grid-template-columns: 35px minmax(0, 1fr);
+    gap: 12px;
+    align-items: center;
+  }
+
+  .ara-bookshelf-wall__measure-key p {
+    display: grid;
+    gap: 3px;
+    margin: 0;
+  }
+
+  .ara-bookshelf-wall__measure-key small {
+    color: var(--ara-bw-muted);
+    font-weight: 700;
+  }
+
+  .ara-bookshelf-wall__measure-line {
+    position: relative;
+    display: block;
+    background: var(--ara-bw-gold);
+  }
+
+  .ara-bookshelf-wall__measure-line::before,
+  .ara-bookshelf-wall__measure-line::after {
+    content: "";
+    position: absolute;
+    background: var(--ara-bw-gold);
+  }
+
+  .ara-bookshelf-wall__measure-line--height {
+    width: 2px;
+    height: 30px;
+    margin-left: 16px;
+  }
+
+  .ara-bookshelf-wall__measure-line--height::before,
+  .ara-bookshelf-wall__measure-line--height::after {
+    left: -5px;
+    width: 12px;
+    height: 2px;
+  }
+
+  .ara-bookshelf-wall__measure-line--height::before {
+    top: 0;
+  }
+
+  .ara-bookshelf-wall__measure-line--height::after {
+    bottom: 0;
+  }
+
+  .ara-bookshelf-wall__measure-line--width {
+    width: 30px;
+    height: 2px;
+  }
+
+  .ara-bookshelf-wall__measure-line--width::before,
+  .ara-bookshelf-wall__measure-line--width::after {
+    top: -5px;
+    width: 2px;
+    height: 12px;
+  }
+
+  .ara-bookshelf-wall__measure-line--width::before {
+    left: 0;
+  }
+
+  .ara-bookshelf-wall__measure-line--width::after {
+    right: 0;
+  }
+
+  .ara-bookshelf-wall__frame {
+    min-width: 0;
+    overflow: hidden;
+    border: 2px solid var(--ara-bw-ink);
+    border-radius: var(--ara-bw-radius);
+    background: var(--ara-bw-frame-dark);
+    box-shadow:
+      0 0 0 3px var(--ara-bw-trim),
+      10px 10px 0 color-mix(in srgb, var(--ara-bw-trim-secondary) 72%, transparent);
+  }
+
+  .ara-bookshelf-wall__frame-head {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    gap: 17px;
+    align-items: center;
+    min-height: 83px;
+    padding: 15px 20px;
+    border-bottom: 2px solid color-mix(in srgb, var(--ara-bw-trim) 82%, transparent);
+    color: #FFFFFF;
+  }
+
+  .ara-bookshelf-wall__brand-mark {
+    display: grid;
+    width: 47px;
+    height: 47px;
+    place-items: center;
+    border: 1px solid var(--ara-bw-trim);
+    border-radius: calc(var(--ara-bw-radius) * 0.35);
+    background: var(--ara-bw-frame);
+    color: var(--ara-bw-paper);
+    font-family: var(--font-heading-family);
+    font-size: 25px;
+    font-weight: 700;
+  }
+
+  .ara-bookshelf-wall__brand-image {
+    display: block;
+    width: 34px;
+    height: 34px;
+    object-fit: contain;
+  }
+
+  .ara-bookshelf-wall__frame-title {
+    display: grid;
+    gap: 5px;
+  }
+
+  .ara-bookshelf-wall__frame-title span {
+    font-family: var(--font-heading-family);
+    font-size: 26px;
+    line-height: 1;
+  }
+
+  .ara-bookshelf-wall__frame-title small,
+  .ara-bookshelf-wall__frame-index small {
+    color: rgba(255, 255, 255, 0.64);
+    font-family: var(--font-body-family);
+    font-size: var(--ara-bw-label-desktop);
+    font-weight: 900;
+    letter-spacing: 0.12em;
+    line-height: 1.35;
+    text-transform: uppercase;
+  }
+
+  .ara-bookshelf-wall__frame-index {
+    display: grid;
+    justify-items: end;
+  }
+
+  .ara-bookshelf-wall__frame-index > span {
+    color: var(--ara-bw-gold);
+    font-family: var(--font-heading-family);
+    font-size: 30px;
+    line-height: 1;
+  }
+
+  .ara-bookshelf-wall__stage {
+    position: relative;
+    overflow: hidden;
+    padding: 24px 25px 0;
+    background: var(--ara-bw-stage);
+  }
+
+  .ara-bookshelf-wall__stage-grid {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+      repeating-linear-gradient(
+        to right,
+        transparent 0 84px,
+        color-mix(in srgb, var(--ara-bw-mint) 12%, transparent) 84px 85px
+      ),
+      repeating-linear-gradient(
+        to bottom,
+        transparent 0 45px,
+        color-mix(in srgb, var(--ara-bw-mint) 10%, transparent) 45px 46px
+      );
+  }
+
+  .ara-bookshelf-wall__stage-labels {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    justify-content: space-between;
+    gap: 18px;
+    padding-bottom: 12px;
+    border-bottom: 1px dashed color-mix(in srgb, var(--ara-bw-ink) 30%, transparent);
+  }
+
+  .ara-bookshelf-wall__stage-labels span {
+    color: var(--ara-bw-muted);
+    font-family: var(--font-body-family);
+    font-size: var(--ara-bw-label-desktop);
+    font-weight: 900;
+    letter-spacing: 0.12em;
+  }
+
+  .ara-bookshelf-wall__viewport {
+    position: relative;
+    z-index: 2;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 29px 7px 0;
+    scrollbar-width: none;
+    scroll-behavior: smooth;
+    scroll-snap-type: x proximity;
+  }
+
+  .ara-bookshelf-wall__viewport::-webkit-scrollbar {
+    display: none;
+  }
+
+  .ara-bookshelf-wall__books {
+    display: flex;
+    min-width: max-content;
+    min-height: 460px;
+    align-items: flex-end;
+    gap: 8px;
+    padding: 0 24px;
+  }
+
+  .ara-bookshelf-wall__book {
+    position: relative;
+    display: grid;
+    flex: 0 0 var(--ara-book-width);
+    width: var(--ara-book-width);
+    min-width: var(--ara-book-width);
+    height: var(--ara-book-height);
+    align-content: space-between;
+    justify-items: center;
+    overflow: hidden;
+    padding: 15px 7px 13px;
+    border: 1px solid var(--ara-bw-ink);
+    border-radius: 3px 3px 0 0;
+    color: #FFF7E5;
+    text-decoration: none;
+    scroll-snap-align: start;
+    box-shadow:
+      inset 5px 0 0 rgba(255, 255, 255, 0.07),
+      inset -5px 0 0 rgba(0, 0, 0, 0.15),
+      3px 4px 0 color-mix(in srgb, var(--ara-bw-ink) 55%, transparent);
+    cursor: pointer;
+    transition:
+      transform 180ms ease,
+      box-shadow 180ms ease;
+  }
+
+  .ara-bookshelf-wall__book:hover,
+  .ara-bookshelf-wall__book:focus-visible,
+  .ara-bookshelf-wall__book.is-selected {
+    z-index: 4;
+    transform: translateY(-17px);
+    box-shadow:
+      inset 5px 0 0 rgba(255, 255, 255, 0.07),
+      inset -5px 0 0 rgba(0, 0, 0, 0.15),
+      0 0 0 2px var(--ara-bw-trim),
+      7px 10px 0 color-mix(in srgb, var(--ara-bw-ink) 36%, transparent);
+  }
+
+  .ara-bookshelf-wall__book[hidden] {
+    display: none !important;
+  }
+
+  .ara-bookshelf-wall__book--navy {
+    background: #161B2E;
+  }
+
+  .ara-bookshelf-wall__book--green {
+    background: #176D5C;
+  }
+
+  .ara-bookshelf-wall__book--red {
+    background: #742D2A;
+  }
+
+  .ara-bookshelf-wall__book--gold {
+    background: #C4932F;
+    color: #161B2E;
+  }
+
+  .ara-bookshelf-wall__book--cream {
+    background: #E8DDBF;
+    color: #161B2E;
+  }
+
+  .ara-bookshelf-wall__book--teal {
+    background: #236C72;
+  }
+
+  .ara-bookshelf-wall__book--blue {
+    background: #315888;
+  }
+
+  .ara-bookshelf-wall__book--unavailable {
+    opacity: 0.82;
+  }
+
+  .ara-bookshelf-wall__book-cap {
+    position: absolute;
+    top: 8px;
+    right: 7px;
+    left: 7px;
+    height: 7px;
+    border-top: 1px solid currentColor;
+    border-bottom: 1px solid currentColor;
+    opacity: 0.65;
+  }
+
+  .ara-bookshelf-wall__book-volume,
+  .ara-bookshelf-wall__book-status {
+    font-family: var(--font-body-family);
+    font-size: 7px;
+    font-weight: 900;
+    letter-spacing: 0.11em;
+    line-height: 1.15;
+    text-align: center;
+    text-transform: uppercase;
+  }
+
+  .ara-bookshelf-wall__book-volume {
+    width: calc(100% + 14px);
+    margin: 9px -7px 0;
+    padding: 6px 3px;
+    border-top: 1px solid currentColor;
+    border-bottom: 1px solid currentColor;
+  }
+
+  .ara-bookshelf-wall__book-name {
+    max-height: calc(100% - 143px);
+    overflow: hidden;
+    font-family: var(--font-heading-family);
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 0.055em;
+    line-height: 1;
+    text-align: center;
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+  }
+
+  .ara-bookshelf-wall__book-monogram {
+    display: grid;
+    width: 29px;
+    height: 29px;
+    place-items: center;
+    border: 1px solid currentColor;
+    font-family: var(--font-heading-family);
+    font-size: 14px;
+    font-weight: 700;
+  }
+
+  .ara-bookshelf-wall__book-status {
+    width: calc(100% + 14px);
+    margin: 0 -7px;
+    padding-top: 8px;
+    border-top: 1px solid currentColor;
+    opacity: 0.78;
+  }
+
+  .ara-bookshelf-wall__book-art {
+    display: grid;
+    width: calc(100% - 6px);
+    height: 33px;
+    place-items: center;
+    overflow: hidden;
+    border: 1px solid currentColor;
+    background: rgba(255, 255, 255, 0.78);
+  }
+
+  .ara-bookshelf-wall__book-art img {
+    display: block;
+    width: auto;
+    max-width: 43px;
+    max-height: 24px;
+    object-fit: contain;
+  }
+
+  .ara-bookshelf-wall__shelf {
+    position: relative;
+    z-index: 4;
+    height: 48px;
+    margin: 0 -25px;
+    border-top: 2px solid var(--ara-bw-ink);
+    border-bottom: 2px solid var(--ara-bw-ink);
+    background:
+      linear-gradient(
+        to bottom,
+        #C99C68 0,
+        #A77549 47%,
+        #765032 48%,
+        #513521 100%
+      );
+    box-shadow:
+      0 8px 0 var(--ara-bw-frame-dark),
+      0 13px 0 var(--ara-bw-trim);
+  }
+
+  .ara-bookshelf-wall__shelf span {
+    position: absolute;
+    top: 10px;
+    right: 5%;
+    left: 5%;
+    height: 8px;
+    border-top: 1px solid rgba(255, 255, 255, 0.36);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.38);
+  }
+
+  .ara-bookshelf-wall__empty {
+    position: relative;
+    z-index: 3;
+    margin: 25px 0 18px;
+    color: var(--ara-bw-muted);
+    font-family: var(--font-body-family);
+    font-size: var(--ara-bw-body-desktop);
+    text-align: center;
+  }
+
+  .ara-bookshelf-wall__frame-foot {
+    display: grid;
+    grid-template-columns: auto minmax(90px, 0.45fr) minmax(170px, 1fr) auto;
+    gap: 14px;
+    align-items: center;
+    min-height: 67px;
+    padding: 13px 17px;
+    color: #FFFFFF;
+  }
+
+  .ara-bookshelf-wall__frame-foot button {
+    display: grid;
+    width: 38px;
+    height: 38px;
+    place-items: center;
+    border: 1px solid rgba(255, 255, 255, 0.55);
+    border-radius: 50%;
+    background: transparent;
+    color: #FFFFFF;
+    font-size: 18px;
+    cursor: pointer;
+  }
+
+  .ara-bookshelf-wall__progress {
+    height: 3px;
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.18);
+  }
+
+  .ara-bookshelf-wall__progress span {
+    display: block;
+    width: 18%;
+    height: 100%;
+    background: var(--ara-bw-trim);
+    transform-origin: left;
+  }
+
+  .ara-bookshelf-wall__foot-note {
+    justify-self: end;
+  }
+
+  .ara-bookshelf-wall__foot-note span {
+    color: rgba(255, 255, 255, 0.7);
+    font-family: var(--font-body-family);
+    font-size: var(--ara-bw-label-desktop);
+    font-weight: 900;
+    letter-spacing: 0.12em;
+    text-align: right;
+    text-transform: uppercase;
+  }
+
+  .ara-bookshelf-wall__pathway {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 38px;
+    align-items: center;
+    margin-top: 45px;
+    padding-top: 25px;
+    border-top: 2px solid var(--ara-bw-ink);
+  }
+
+  .ara-bookshelf-wall__pathway h3 {
+    margin: 8px 0 0;
+    font-family: var(--font-heading-family);
+    font-size: 35px;
+    letter-spacing: -0.03em;
+    line-height: 1;
+  }
+
+  .ara-bookshelf-wall__pathway p {
+    max-width: 720px;
+    margin: 10px 0 0;
+    color: var(--ara-bw-muted);
+    font-family: var(--font-body-family);
+    font-size: var(--ara-bw-body-desktop);
+    line-height: 1.55;
+  }
+
+  .ara-bookshelf-wall__pathway-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: flex-end;
+  }
+
+  .ara-bookshelf-wall__pathway-links a {
+    display: inline-flex;
+    min-height: 46px;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+    padding: 11px 16px;
+    border: 1px solid var(--ara-bw-ink);
+    background: var(--ara-bw-ink);
+    color: #FFFFFF;
+    font-family: var(--font-body-family);
+    font-size: var(--ara-bw-label-desktop);
+    font-weight: 900;
+    letter-spacing: 0.1em;
+    text-decoration: none;
+    text-transform: uppercase;
+  }
+
+  .ara-bookshelf-wall__pathway-links .ara-bookshelf-wall__pathway-link--secondary {
+    background: var(--ara-bw-trim);
+    color: var(--ara-bw-ink);
+  }
+
+  @media screen and (max-width: 1100px) {
+    .ara-bookshelf-wall__display {
+      grid-template-columns: minmax(250px, 0.4fr) minmax(0, 1.6fr);
+    }
+
+    .ara-bookshelf-wall__selected {
+      padding: 21px;
+    }
+  }
+
+  @media screen and (max-width: 989px) {
+    .ara-bookshelf-wall__intro {
+      grid-template-columns: 1fr;
+      gap: 22px;
+    }
+
+    .ara-bookshelf-wall__display {
+      grid-template-columns: 1fr;
+    }
+
+    .ara-bookshelf-wall__selected {
+      display: grid;
+      min-height: 0;
+      grid-template-columns: auto minmax(0, 1fr);
+      gap: 18px 23px;
+    }
+
+    .ara-bookshelf-wall__selected-top {
+      grid-column: 1 / -1;
+    }
+
+    .ara-bookshelf-wall__selected-monogram {
+      grid-row: 2 / 6;
+      margin-top: 0;
+    }
+
+    .ara-bookshelf-wall__selected-label,
+    .ara-bookshelf-wall__selected h3,
+    .ara-bookshelf-wall__selected-meta,
+    .ara-bookshelf-wall__selected-summary,
+    .ara-bookshelf-wall__selected-action {
+      grid-column: 2;
+      margin-top: 0;
+    }
+
+    .ara-bookshelf-wall__measure-key {
+      grid-column: 1 / -1;
+      grid-template-columns: 1fr 1fr;
+      margin-top: 0;
+    }
+
+    .ara-bookshelf-wall__pathway {
+      grid-template-columns: 1fr;
+    }
+
+    .ara-bookshelf-wall__pathway-links {
+      justify-content: flex-start;
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    .ara-bookshelf-wall__inner {
+      padding: 0 18px;
+    }
+
+    .ara-bookshelf-wall__intro h2 {
+      font-size: var(--ara-bw-heading-mobile);
+    }
+
+    .ara-bookshelf-wall__intro-side {
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+
+    .ara-bookshelf-wall__count {
+      justify-items: start;
+    }
+
+    .ara-bookshelf-wall__count span {
+      text-align: left;
+    }
+
+    .ara-bookshelf-wall__description,
+    .ara-bookshelf-wall__selected-summary,
+    .ara-bookshelf-wall__empty,
+    .ara-bookshelf-wall__pathway p {
+      font-size: var(--ara-bw-body-mobile);
+    }
+
+    .ara-bookshelf-wall__eyebrow,
+    .ara-bookshelf-wall__count span,
+    .ara-bookshelf-wall__filters button,
+    .ara-bookshelf-wall__sort > span,
+    .ara-bookshelf-wall__sort select,
+    .ara-bookshelf-wall__selected-top span,
+    .ara-bookshelf-wall__selected-label,
+    .ara-bookshelf-wall__selected-meta span,
+    .ara-bookshelf-wall__selected-action a,
+    .ara-bookshelf-wall__selected-action span,
+    .ara-bookshelf-wall__measure-key strong,
+    .ara-bookshelf-wall__measure-key small,
+    .ara-bookshelf-wall__frame-title small,
+    .ara-bookshelf-wall__frame-index small,
+    .ara-bookshelf-wall__stage-labels span,
+    .ara-bookshelf-wall__foot-note span,
+    .ara-bookshelf-wall__pathway > div > span,
+    .ara-bookshelf-wall__pathway-links a {
+      font-size: var(--ara-bw-label-mobile);
+    }
+
+    .ara-bookshelf-wall__toolbar {
+      align-items: stretch;
+      flex-direction: column;
+    }
+
+    .ara-bookshelf-wall__filters {
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      padding-bottom: 7px;
+      scrollbar-width: none;
+    }
+
+    .ara-bookshelf-wall__filters button {
+      flex: 0 0 auto;
+    }
+
+    .ara-bookshelf-wall__sort {
+      justify-content: space-between;
+    }
+
+    .ara-bookshelf-wall__selected {
+      grid-template-columns: 74px minmax(0, 1fr);
+      padding: 18px;
+      box-shadow: 5px 5px 0 color-mix(in srgb, var(--ara-bw-mint) 24%, transparent);
+    }
+
+    .ara-bookshelf-wall__selected-monogram {
+      width: 74px;
+      height: 74px;
+      font-size: 37px;
+    }
+
+    .ara-bookshelf-wall__selected h3 {
+      font-size: var(--ara-bw-title-mobile);
+    }
+
+    .ara-bookshelf-wall__measure-key {
+      grid-template-columns: 1fr;
+    }
+
+    .ara-bookshelf-wall__frame {
+      border-radius: calc(var(--ara-bw-radius) * 0.78);
+      box-shadow:
+        0 0 0 2px var(--ara-bw-trim),
+        6px 6px 0 color-mix(in srgb, var(--ara-bw-trim-secondary) 72%, transparent);
+    }
+
+    .ara-bookshelf-wall__frame-head {
+      grid-template-columns: auto minmax(0, 1fr);
+      padding: 13px;
+    }
+
+    .ara-bookshelf-wall__frame-index {
+      display: none;
+    }
+
+    .ara-bookshelf-wall__frame-title span {
+      font-size: 22px;
+    }
+
+    .ara-bookshelf-wall__stage {
+      padding: 18px 10px 0;
+    }
+
+    .ara-bookshelf-wall__stage-labels {
+      align-items: flex-start;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .ara-bookshelf-wall__viewport {
+      padding-top: 23px;
+    }
+
+    .ara-bookshelf-wall__books {
+      min-height: 354px;
+      gap: 7px;
+      padding: 0 13px;
+    }
+
+    .ara-bookshelf-wall__book {
+      width: var(--ara-book-width-mobile);
+      min-width: var(--ara-book-width-mobile);
+      height: var(--ara-book-height-mobile);
+    }
+
+    .ara-bookshelf-wall__book-name {
+      font-size: 14px;
+    }
+
+    .ara-bookshelf-wall__shelf {
+      height: 41px;
+      margin: 0 -10px;
+    }
+
+    .ara-bookshelf-wall__frame-foot {
+      grid-template-columns: auto minmax(80px, 1fr) auto;
+      gap: 10px;
+      padding: 11px;
+    }
+
+    .ara-bookshelf-wall__foot-note {
+      display: none;
+    }
+
+    .ara-bookshelf-wall__pathway-links {
+      display: grid;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ara-bookshelf-wall__viewport {
+      scroll-behavior: auto;
+    }
+
+    .ara-bookshelf-wall__book {
+      transition: none;
+    }
+  }

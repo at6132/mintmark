@@ -1,0 +1,665 @@
+
+  {
+    position: relative;
+    overflow: hidden;
+    padding: var(--ara-company-top) 0 var(--ara-company-bottom);
+    background: var(--ara-company-bg);
+    color: var(--ara-company-text);
+    isolation: isolate;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  .ara-company-hero__lines {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    opacity: 0.46;
+    background-image:
+      linear-gradient(
+        90deg,
+        transparent 0,
+        transparent 31px,
+        color-mix(in srgb, var(--ara-company-mint) 12%, transparent) 31px,
+        color-mix(in srgb, var(--ara-company-mint) 12%, transparent) 32px
+      ),
+      repeating-linear-gradient(
+        to bottom,
+        transparent 0,
+        transparent 35px,
+        color-mix(in srgb, var(--ara-company-mint) 22%, transparent) 35px,
+        color-mix(in srgb, var(--ara-company-mint) 22%, transparent) 36px
+      );
+    pointer-events: none;
+  }
+
+  .ara-company-hero__inner {
+    width: min(100%, var(--ara-company-max));
+    margin: 0 auto;
+    padding: 0 40px;
+  }
+
+  .ara-company-hero__frame {
+    padding: 8px;
+    border: 2px solid var(--ara-company-text);
+    border-radius: 26px;
+    background: var(--ara-company-paper);
+    box-shadow:
+      10px 10px 0 var(--ara-company-gold),
+      18px 18px 0 color-mix(in srgb, var(--ara-company-mint) 68%, transparent);
+  }
+
+  .ara-company-hero__panel {
+    display: grid;
+    grid-template-columns: minmax(0, 1.06fr) minmax(380px, 0.94fr);
+    gap: clamp(38px, 5vw, 84px);
+    align-items: start;
+    padding: clamp(38px, 5vw, 66px);
+    border: 3px solid var(--ara-company-text);
+    border-radius: 17px;
+    background:
+      radial-gradient(
+        circle at 112% 112%,
+        color-mix(in srgb, var(--ara-company-mint) 15%, transparent) 0 29%,
+        transparent 30%
+      ),
+      linear-gradient(
+        145deg,
+        color-mix(in srgb, var(--ara-company-paper) 96%, white),
+        color-mix(in srgb, var(--ara-company-bg) 92%, transparent)
+      );
+  }
+
+  .ara-company-hero__topline {
+    display: flex;
+    justify-content: space-between;
+    gap: 18px;
+    align-items: flex-start;
+  }
+
+  .ara-company-hero__eyebrow,
+  .ara-company-hero__folio,
+  .ara-company-hero__identity-meta span,
+  .ara-company-hero__stat span,
+  .ara-company-hero__stat small,
+  .ara-company-hero__image-label,
+  .ara-company-hero__digest-top span,
+  .ara-company-hero__digest-top small {
+    font-family: var(--font-body-family);
+    font-style: var(--font-body-style);
+    font-weight: 800;
+    line-height: 1.2;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .ara-company-hero__eyebrow {
+    display: inline-flex;
+    min-height: 31px;
+    align-items: center;
+    padding: 6px 11px;
+    border: 2px solid var(--ara-company-text);
+    border-radius: 8px;
+    background: var(--ara-company-gold);
+    color: var(--ara-company-text);
+    font-size: var(--ara-company-label-desktop);
+    box-shadow: 3px 3px 0 var(--ara-company-text);
+  }
+
+  .ara-company-hero__folio {
+    color: var(--ara-company-muted);
+    font-size: var(--ara-company-label-desktop);
+    text-align: right;
+  }
+
+  .ara-company-hero__identity {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 20px;
+    align-items: center;
+    margin-top: 30px;
+  }
+
+  .ara-company-hero__logo-wrap {
+    display: grid;
+    width: 96px;
+    height: 96px;
+    place-items: center;
+    padding: 12px;
+    border: 2px solid var(--ara-company-text);
+    border-radius: 15px;
+    background: var(--ara-company-paper);
+    box-shadow: 5px 5px 0 var(--ara-company-blue);
+  }
+
+  .ara-company-hero__logo {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .ara-company-hero__title {
+    margin: 0;
+    font-family: var(--font-heading-family);
+    font-size: var(--ara-company-title-desktop);
+    font-style: var(--font-heading-style);
+    font-weight: var(--font-heading-weight);
+    line-height: 0.92;
+    letter-spacing: -0.055em;
+  }
+
+  .ara-company-hero__identity-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 13px;
+  }
+
+  .ara-company-hero__identity-meta span {
+    padding: 5px 8px;
+    border: 1px solid var(--ara-company-text);
+    border-radius: 999px;
+    background: var(--ara-company-paper);
+    color: var(--ara-company-text);
+    font-size: var(--ara-company-label-desktop);
+  }
+
+  .ara-company-hero__subtitle {
+    max-width: 760px;
+    margin: 34px 0 0;
+    font-family: var(--font-heading-family);
+    font-size: var(--ara-company-subtitle-desktop);
+    font-style: var(--font-heading-style);
+    font-weight: var(--font-heading-weight);
+    line-height: 1;
+  }
+
+  .ara-company-hero__summary {
+    max-width: 720px;
+    margin-top: 21px;
+    color: var(--ara-company-muted);
+    font-family: var(--font-body-family);
+    font-size: var(--ara-company-body-desktop);
+    font-style: var(--font-body-style);
+    font-weight: var(--font-body-weight);
+    line-height: 1.65;
+  }
+
+  .ara-company-hero__summary p {
+    margin: 0;
+  }
+
+  .ara-company-hero__stats {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 10px;
+    margin-top: 30px;
+  }
+
+  .ara-company-hero__stat {
+    display: flex;
+    min-width: 0;
+    min-height: 112px;
+    flex-direction: column;
+    padding: 15px 12px;
+    border: 2px solid var(--ara-company-text);
+    border-radius: 11px;
+    background: var(--ara-company-paper);
+    box-shadow: 3px 3px 0 var(--ara-company-text);
+  }
+
+  .ara-company-hero__stat span,
+  .ara-company-hero__stat small {
+    display: block;
+    font-size: var(--ara-company-label-desktop);
+  }
+
+  .ara-company-hero__stat span {
+    color: var(--ara-company-muted);
+  }
+
+  .ara-company-hero__stat strong {
+    display: block;
+    max-width: 100%;
+    margin-top: 8px;
+    font-family: var(--font-heading-family);
+    font-size: clamp(16px, 1.45vw, var(--ara-company-stat-desktop));
+    line-height: 0.98;
+    letter-spacing: -0.025em;
+    overflow-wrap: anywhere;
+    word-break: normal;
+  }
+
+  .ara-company-hero__stat small {
+    margin-top: 6px;
+    color: var(--ara-company-mint);
+  }
+
+  .ara-company-hero__buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-top: 31px;
+  }
+
+  .ara-company-hero__button {
+    display: inline-flex;
+    min-width: 180px;
+    min-height: 49px;
+    align-items: center;
+    justify-content: center;
+    padding: 11px 20px;
+    border: 2px solid currentColor;
+    border-radius: 8px;
+    font-family: var(--font-body-family);
+    font-size: var(--ara-company-label-desktop);
+    font-weight: 800;
+    letter-spacing: 0.11em;
+    text-align: center;
+    text-decoration: none;
+    text-transform: uppercase;
+    box-shadow: 4px 4px 0 currentColor;
+  }
+
+  .ara-company-hero__button--primary {
+    background: var(--ara-company-mint);
+    color: #FFFFFF;
+  }
+
+  .ara-company-hero__button--secondary {
+    background: var(--ara-company-gold);
+    color: var(--ara-company-text);
+  }
+
+  .ara-company-hero__visual-column {
+    display: grid;
+    gap: 22px;
+    min-width: 0;
+    align-self: start;
+  }
+
+  .ara-company-hero__visual-frame {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 4 / 3;
+    padding: 7px;
+    border: 2px solid var(--ara-company-text);
+    border-radius: 22px;
+    background: var(--ara-company-paper);
+    box-shadow:
+      8px 8px 0 var(--ara-company-blue),
+      14px 14px 0 color-mix(in srgb, var(--ara-company-gold) 72%, transparent);
+  }
+
+  .ara-company-hero__visual-frame picture,
+  .ara-company-hero__image,
+  .ara-company-hero__placeholder,
+  .ara-company-hero__placeholder-svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  .ara-company-hero__image,
+  .ara-company-hero__placeholder-svg {
+    border: 3px solid var(--ara-company-text);
+    border-radius: 14px;
+    object-fit: cover;
+  }
+
+  .ara-company-hero__image-label {
+    position: absolute;
+    right: 18px;
+    bottom: 18px;
+    left: 18px;
+    padding: 8px 12px;
+    border: 2px solid var(--ara-company-text);
+    border-radius: 8px;
+    background: var(--ara-company-gold);
+    color: var(--ara-company-text);
+    font-size: var(--ara-company-label-desktop);
+    text-align: center;
+    box-shadow: 3px 3px 0 var(--ara-company-text);
+  }
+
+  .ara-company-hero__digest {
+    padding: 20px;
+    border: 2px solid var(--ara-company-text);
+    border-radius: 15px;
+    background: var(--ara-company-blue-deep);
+    color: #FFFFFF;
+    box-shadow: 6px 6px 0 var(--ara-company-gold);
+  }
+
+  .ara-company-hero__digest-top {
+    display: flex;
+    justify-content: space-between;
+    gap: 14px;
+    padding-bottom: 13px;
+    border-bottom: 1px dashed rgba(255, 255, 255, 0.4);
+  }
+
+  .ara-company-hero__digest-top span,
+  .ara-company-hero__digest-top small {
+    font-size: var(--ara-company-label-desktop);
+  }
+
+  .ara-company-hero__digest-top span {
+    color: var(--ara-company-gold);
+  }
+
+  .ara-company-hero__digest-top small {
+    text-align: right;
+  }
+
+  .ara-company-hero__digest-body {
+    display: grid;
+    grid-template-columns: minmax(105px, 135px) minmax(0, 1fr);
+    gap: 20px;
+    align-items: center;
+    margin-top: 18px;
+  }
+
+  .ara-company-hero__digest-cover {
+    overflow: hidden;
+    aspect-ratio: 3 / 4;
+    border: 2px solid #FFFFFF;
+    border-radius: 8px;
+    background: var(--ara-company-paper);
+  }
+
+  .ara-company-hero__digest-image {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .ara-company-hero__digest h3 {
+    margin: 0;
+    font-family: var(--font-heading-family);
+    font-size: var(--ara-company-digest-title-desktop);
+    line-height: 1;
+  }
+
+  .ara-company-hero__digest p {
+    margin: 12px 0 0;
+    color: rgba(255, 255, 255, 0.82);
+    font-family: var(--font-body-family);
+    font-size: var(--ara-company-body-desktop);
+    line-height: 1.5;
+  }
+
+  .ara-company-hero__digest-link {
+    display: inline-flex;
+    margin-top: 16px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid var(--ara-company-gold);
+    color: var(--ara-company-gold);
+    font-family: var(--font-body-family);
+    font-size: var(--ara-company-label-desktop);
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-decoration: none;
+    text-transform: uppercase;
+  }
+
+
+  @media screen and (min-width: 750px) and (max-width: 1299px) {
+    .ara-company-hero__stats {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .ara-company-hero__stat strong {
+      font-size: min(var(--ara-company-stat-desktop), 24px);
+    }
+  }
+
+  @media screen and (max-width: 1099px) {
+    .ara-company-hero__panel {
+      grid-template-columns: 1fr;
+    }
+
+    .ara-company-hero__visual-column {
+      max-width: 760px;
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    {
+      padding-top: calc(var(--ara-company-top) * 0.7);
+      padding-bottom: calc(var(--ara-company-bottom) * 0.7);
+    }
+
+    .ara-company-hero__inner {
+      padding: 0 20px;
+    }
+
+    .ara-company-hero__frame {
+      padding: 5px;
+      box-shadow:
+        5px 5px 0 var(--ara-company-gold),
+        10px 10px 0 color-mix(in srgb, var(--ara-company-mint) 68%, transparent);
+    }
+
+    .ara-company-hero__panel {
+      padding: 31px 23px 37px;
+    }
+
+    .ara-company-hero__topline {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+
+    .ara-company-hero__eyebrow,
+    .ara-company-hero__folio,
+    .ara-company-hero__identity-meta span,
+    .ara-company-hero__stat span,
+    .ara-company-hero__stat small,
+    .ara-company-hero__image-label,
+    .ara-company-hero__digest-top span,
+    .ara-company-hero__digest-top small,
+    .ara-company-hero__button,
+    .ara-company-hero__digest-link {
+      font-size: var(--ara-company-label-mobile);
+    }
+
+    .ara-company-hero__folio {
+      text-align: left;
+    }
+
+    .ara-company-hero__identity {
+      grid-template-columns: 72px minmax(0, 1fr);
+      gap: 14px;
+    }
+
+    .ara-company-hero__logo-wrap {
+      width: 72px;
+      height: 72px;
+      padding: 9px;
+    }
+
+    .ara-company-hero__title {
+      font-size: var(--ara-company-title-mobile);
+    }
+
+    .ara-company-hero__subtitle {
+      font-size: var(--ara-company-subtitle-mobile);
+    }
+
+    .ara-company-hero__summary,
+    .ara-company-hero__digest p {
+      font-size: var(--ara-company-body-mobile);
+    }
+
+    .ara-company-hero__stats {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .ara-company-hero__stat {
+      min-height: 104px;
+    }
+
+    .ara-company-hero__stat strong {
+      font-size: clamp(16px, 5vw, var(--ara-company-stat-mobile));
+    }
+
+    .ara-company-hero__buttons {
+      display: grid;
+    }
+
+    .ara-company-hero__button {
+      width: 100%;
+    }
+
+    .ara-company-hero__visual-frame {
+      box-shadow:
+        5px 5px 0 var(--ara-company-blue),
+        10px 10px 0 color-mix(in srgb, var(--ara-company-gold) 72%, transparent);
+    }
+
+    .ara-company-hero__digest-body {
+      grid-template-columns: 110px minmax(0, 1fr);
+      gap: 16px;
+    }
+
+    .ara-company-hero__digest h3 {
+      font-size: var(--ara-company-digest-title-mobile);
+    }
+  }
+
+  @media screen and (max-width: 430px) {
+    .ara-company-hero__stats,
+    .ara-company-hero__digest-body {
+      grid-template-columns: 1fr;
+    }
+
+    .ara-company-hero__digest-cover {
+      width: 118px;
+    }
+  }
+
+
+
+  .ara-company-hero__frame,
+  .ara-company-hero__panel,
+  .ara-company-hero__visual-frame,
+  .ara-company-hero__digest {
+    border-radius: 14px;
+  }
+
+  [class$="__button"],
+  [class*="__button--"] {
+    border-radius: 7px;
+  }
+
+
+
+  {
+    --ara-brand-ink: #161B2E;
+    --ara-brand-mint: #A6DECB;
+    --ara-brand-cream: #F5EFE1;
+    --ara-brand-paper: #F3ECDC;
+    --ara-brand-verdigris: #274B44;
+  }
+
+  .ara-company-hero__brand-masthead {
+    display: grid;
+    grid-template-columns: minmax(190px, 320px) minmax(0, 1fr) 54px;
+    gap: 20px;
+    align-items: center;
+    margin-bottom: 26px;
+    padding: 14px 0 16px;
+    border-top: 3px solid var(--ara-brand-ink);
+    border-bottom: 1px solid var(--ara-brand-ink);
+  }
+
+  .ara-company-hero__brand-wordmark {
+    display: block;
+    width: min(100%, 280px);
+    height: auto;
+  }
+
+  .ara-company-hero__brand-masthead > span {
+    justify-self: end;
+    font-family: var(--font-body-family);
+    font-size: 9px;
+    font-weight: 900;
+    letter-spacing: .17em;
+    text-align: right;
+  }
+
+  .ara-company-hero__brand-mark {
+    display: block;
+    width: 48px;
+    height: 48px;
+    border-radius: 11px;
+    object-fit: cover;
+  }
+
+  .ara-company-hero__frame,
+  .ara-company-hero__panel,
+  .ara-company-hero__visual-frame,
+  .ara-company-hero__digest {
+    border-radius: 6px;
+  }
+
+  .ara-company-hero__frame {
+    border: 2px solid var(--ara-brand-ink);
+    box-shadow:
+      inset 0 0 0 5px var(--ara-brand-paper),
+      8px 8px 0 var(--ara-brand-mint);
+  }
+
+  .ara-company-hero__panel {
+    background:
+      repeating-linear-gradient(
+        to bottom,
+        transparent 0 35px,
+        color-mix(in srgb, var(--ara-brand-mint) 15%, transparent) 35px 36px
+      ),
+      var(--ara-brand-cream);
+  }
+
+  .ara-company-hero__digest {
+    border-color: var(--ara-brand-ink);
+    background: var(--ara-brand-paper);
+  }
+
+  .ara-company-hero__digest-brand {
+    padding: 12px 14px 0;
+  }
+
+  .ara-company-hero__digest-brand img {
+    display: block;
+    width: min(100%, 118px);
+    height: auto;
+    border-radius: 5px;
+  }
+
+  [class$="__button"],
+  [class*="__button--"] {
+    border-radius: 3px;
+  }
+
+  @media screen and (max-width: 749px) {
+    .ara-company-hero__brand-masthead {
+      grid-template-columns: minmax(0, 1fr) 44px;
+    }
+
+    .ara-company-hero__brand-masthead > span {
+      grid-column: 1 / -1;
+      grid-row: 2;
+      justify-self: start;
+      text-align: left;
+    }
+
+    .ara-company-hero__brand-mark {
+      width: 42px;
+      height: 42px;
+      justify-self: end;
+    }
+  }
