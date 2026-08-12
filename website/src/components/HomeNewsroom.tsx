@@ -3,51 +3,11 @@
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { homeContent } from "@/data/home";
-import { marketMapsContent } from "@/data/marketMaps";
 import { appHref, assets } from "@/lib/assets";
 import { stripHtml } from "@/lib/format";
+import { HomeMarketMaps } from "@/components/HomeMarketMaps";
 
 type Block = Record<string, string>;
-
-type HeatCompany = {
-  id: string;
-  ticker?: string;
-  company_name?: string;
-  sector?: string;
-  market_cap?: string;
-  daily_move?: string;
-};
-
-const HEAT_SECTOR_COLORS: Record<string, string> = {
-  Technology: "#1fa88f",
-  Financials: "#e0a526",
-  Healthcare: "#9a5ba6",
-  Consumer: "#7a9e5b",
-  Energy: "#c25b3f",
-  Industrials: "#4c6b8a",
-};
-
-// Spec §3 — validated 7-bucket diverging ramp for change %, bucketed (not interpolated).
-function heatBucket(pct: number | null): { bg: string; fg: string } {
-  if (pct === null || Number.isNaN(pct)) return { bg: "#C9BEA8", fg: "#161B2E" }; // flat / no data
-  if (pct <= -3) return { bg: "#8C2E22", fg: "#FFFFFF" };
-  if (pct <= -1) return { bg: "#B4432F", fg: "#FFFFFF" };
-  if (pct < 0) return { bg: "#D08A78", fg: "#161B2E" };
-  if (pct === 0) return { bg: "#C9BEA8", fg: "#161B2E" };
-  if (pct < 1) return { bg: "#7FBFA5", fg: "#161B2E" };
-  if (pct < 3) return { bg: "#26845F", fg: "#FFFFFF" };
-  return { bg: "#14654E", fg: "#FFFFFF" };
-}
-
-const HEAT_LEGEND = [
-  { bg: "#8C2E22", label: "≤ −3%" },
-  { bg: "#B4432F", label: "−3%" },
-  { bg: "#D08A78", label: "−1%" },
-  { bg: "#C9BEA8", label: "flat" },
-  { bg: "#7FBFA5", label: "+1%" },
-  { bg: "#26845F", label: "+3%" },
-  { bg: "#14654E", label: "≥ +3%" },
-];
 
 export function HomeNewsroom() {
   const ed = homeContent.editorial as Record<string, unknown>;
@@ -57,12 +17,6 @@ export function HomeNewsroom() {
   const question = blocks.find((b) => b.type === "question");
   const quads = blocks.filter((b) => b.type === "quick_take");
   const reports = blocks.filter((b) => b.type === "stock_report");
-
-  // Heat map sample (from marketMaps data): biggest caps first, coloured by today's move.
-  const heat = ([...(marketMapsContent.companies as unknown as HeatCompany[])]
-    .sort((a, b) => Number(b.market_cap || 0) - Number(a.market_cap || 0))
-    .slice(0, 20));
-  const heatMax = Math.max(...heat.map((c) => Number(c.market_cap || 0)), 1);
 
   const [dateLabel, setDateLabel] = useState("");
   const rootRef = useRef<HTMLElement | null>(null);
@@ -330,7 +284,7 @@ export function HomeNewsroom() {
                         ) : (
                           <span />
                         )}
-                        <span>Tap</span>
+                        {q.mark ? <span>{q.mark}</span> : q.period ? <span>{q.period}</span> : <span />}
                       </div>
                     </div>
                     <div className="ara-nr-flip__face ara-nr-flip__back">
@@ -383,63 +337,12 @@ export function HomeNewsroom() {
           <div className="ara-nr-col ara-nr-col--heat" style={{ ["--sec" as string]: "#2f7e8c" }}>
             <div className="ara-editorial-front-page__section-heading">
               <div>
-                <h3>{String(ed.heat_heading || "Market Heat Map")}</h3>
-                <span>{String(ed.heat_note || "U.S. COMPANIES · TODAY'S MOVE")}</span>
+                <h3>{String(ed.heat_heading || "Market Maps")}</h3>
+                <span>{String(ed.heat_note || "U.S. COMPANIES · SECTORS & HEADQUARTERS")}</span>
               </div>
               <i />
             </div>
-            <div className="ara-nr-heat">
-              {heat.map((c) => {
-                const mv = c.daily_move == null || c.daily_move === "" ? null : Number(c.daily_move);
-                const { bg, fg } = heatBucket(mv);
-                const big = Number(c.market_cap || 0) / heatMax;
-                // area emphasis by market cap → treemap feel (2×2, 2×1, 1×1)
-                const span =
-                  big > 0.82
-                    ? { gridColumn: "span 2", gridRow: "span 2" }
-                    : big > 0.5
-                      ? { gridColumn: "span 2" }
-                      : {};
-                const tier = big > 0.82 ? "xl" : big > 0.5 ? "lg" : "sm";
-                return (
-                  <a
-                    key={c.id}
-                    className={`ara-nr-heat__cell ara-nr-heat__cell--${tier}${mv === null ? " ara-nr-heat__cell--nodata" : ""}`}
-                    href={appHref(String((c as Record<string, string>).module_link || "")) || "/companies"}
-                    style={{
-                      background: bg,
-                      color: fg,
-                      ["--sector" as string]: HEAT_SECTOR_COLORS[c.sector || ""] || "#1fa88f",
-                      ...span,
-                    }}
-                    title={`${c.company_name || c.ticker} · ${c.sector || ""} · ${
-                      mv === null ? "no data" : (mv > 0 ? "+" : "") + c.daily_move + "%"
-                    }`}
-                    aria-label={`${c.company_name || c.ticker}, ${c.sector || ""}, ${
-                      mv === null ? "no data" : "today " + (mv > 0 ? "up " : mv < 0 ? "down " : "") + Math.abs(mv) + " percent"
-                    }`}
-                  >
-                    <span className="ara-nr-heat__sector" aria-hidden="true" />
-                    <b>{c.ticker}</b>
-                    <small>{mv === null ? "—" : `${mv > 0 ? "+" : ""}${c.daily_move}%`}</small>
-                  </a>
-                );
-              })}
-            </div>
-            <div className="ara-nr-heat__legend">
-              <div className="ara-nr-heat__ramp">
-                {HEAT_LEGEND.map((s) => (
-                  <span key={s.label} className="ara-nr-heat__ramp-step">
-                    <i style={{ background: s.bg }} />
-                    <small>{s.label}</small>
-                  </span>
-                ))}
-              </div>
-              <em>
-                cell size = market cap · tint = today&apos;s move
-                {dateLabel ? ` · as of ${dateLabel}` : ""}
-              </em>
-            </div>
+            <HomeMarketMaps />
           </div>
 
           {question ? (

@@ -1,0 +1,254 @@
+/* Mintmark Market Maps — US-framed sector heat treemap + HQ spider map */
+.mm-maps {
+  --mm-ink: #161b2e;
+  --mm-paper: #fffdf6;
+  --mm-rule: #c9bea8;
+  --mm-mint: #176d5c;
+  --mm-gold: #e0a526;
+  --mm-muted: #646575;
+  margin-top: 6px;
+  font-family: var(--font-space-grotesk), "Space Grotesk", sans-serif;
+}
+
+.mm-maps__bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+.mm-maps__title {
+  margin: 0;
+  font-family: var(--font-fraunces), "Fraunces", Georgia, serif;
+  font-size: clamp(20px, 2.4vw, 30px);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--mm-ink);
+}
+.mm-maps__toggle {
+  display: inline-flex;
+  padding: 3px;
+  border: 1.5px solid var(--mm-ink);
+  border-radius: 999px;
+  background: var(--mm-paper);
+  box-shadow: 0 1px 2px rgba(22, 27, 46, 0.08);
+}
+.mm-maps__tab {
+  appearance: none;
+  border: 0;
+  cursor: pointer;
+  padding: 7px 16px;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--mm-muted);
+  font: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+.mm-maps__tab.is-on {
+  background: var(--mm-ink);
+  color: var(--mm-paper);
+}
+.mm-maps__tab:focus-visible {
+  outline: 2px solid var(--mm-gold);
+  outline-offset: 2px;
+}
+
+.mm-maps__stage {
+  position: relative;
+  width: 100%;
+  border: 2px solid var(--mm-ink);
+  border-radius: 16px;
+  overflow: hidden;
+  background:
+    radial-gradient(120% 80% at 50% -10%, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0) 60%),
+    linear-gradient(160deg, #fbfdfb, #eef6ef);
+  box-shadow: 0 10px 26px rgba(22, 27, 46, 0.1);
+}
+.mm-maps__svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  animation: mm-fade 0.45s cubic-bezier(0.2, 0.7, 0.3, 1);
+}
+@keyframes mm-fade {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: none; }
+}
+/* clusters gently pulse to invite a click */
+.mm-maps__cluster { animation: mm-pulse 2.6s ease-in-out infinite; }
+@keyframes mm-pulse {
+  0%, 100% { opacity: 0.85; }
+  50% { opacity: 0.6; }
+}
+.mm-maps__dot, .mm-maps__cluster { filter: drop-shadow(0 1px 1.5px rgba(22, 27, 46, 0.28)); }
+@media (prefers-reduced-motion: reduce) {
+  .mm-maps__svg { animation: none; }
+  .mm-maps__cluster { animation: none; }
+}
+.mm-maps__loading {
+  width: 100%;
+  aspect-ratio: 980 / 600;
+}
+.mm-maps__svg--grab { cursor: grab; touch-action: none; }
+.mm-maps__svg--grab:active { cursor: grabbing; }
+.mm-globe { user-select: none; }
+
+/* heat cells */
+.mm-maps__cell { cursor: pointer; }
+.mm-maps__cell rect { transition: filter 0.15s ease; }
+.mm-maps__cell:hover rect { filter: brightness(1.06); }
+.mm-maps__cell-tk {
+  font-family: var(--font-space-grotesk), "Space Grotesk", sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
+.mm-maps__cell-ch {
+  font-family: var(--font-space-grotesk), "Space Grotesk", sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  opacity: 0.92;
+}
+.mm-maps__sector-lbl {
+  font-family: var(--font-space-grotesk), "Space Grotesk", sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  opacity: 0.7;
+  paint-order: stroke;
+  stroke: var(--mm-paper);
+  stroke-width: 3px;
+}
+
+/* hq dots + clusters */
+.mm-maps__dot { cursor: pointer; transition: fill-opacity 0.15s ease; }
+.mm-maps__dot:hover { fill-opacity: 1; }
+.mm-maps__cluster { cursor: pointer; transition: fill-opacity 0.15s ease; }
+.mm-maps__cluster:hover { fill-opacity: 0.95; }
+.mm-maps__cluster-n {
+  font-family: var(--font-space-grotesk), "Space Grotesk", sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  pointer-events: auto;
+}
+.mm-maps__dot-tk {
+  font-family: var(--font-space-grotesk), "Space Grotesk", sans-serif;
+  font-size: 8.5px;
+  font-weight: 700;
+  pointer-events: none;
+}
+
+/* tooltip */
+.mm-maps__tip {
+  position: absolute;
+  z-index: 6;
+  min-width: 168px;
+  max-width: 230px;
+  padding: 9px 11px;
+  border: 1.5px solid var(--mm-ink);
+  border-radius: 10px;
+  background: var(--mm-paper);
+  box-shadow: 0 12px 26px rgba(22, 27, 46, 0.2);
+  pointer-events: none;
+  color: var(--mm-ink);
+}
+.mm-maps__tip-head b {
+  font-family: var(--font-space-grotesk), "Space Grotesk", sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+.mm-maps__tip-head span {
+  font-family: var(--font-fraunces), "Fraunces", serif;
+  font-size: 13px;
+}
+.mm-maps__tip-sub {
+  margin: 2px 0 6px;
+  font-size: 10.5px;
+  font-weight: 600;
+  color: var(--mm-muted);
+  letter-spacing: 0.03em;
+}
+.mm-maps__tip-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  font-size: 11px;
+}
+.mm-maps__tip-row span { color: var(--mm-muted); }
+.mm-maps__tip-row em {
+  font-style: normal;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+/* color-coded sector selector bar */
+.mm-maps__secbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 14px;
+}
+.mm-maps__secchip {
+  appearance: none;
+  cursor: pointer;
+  padding: 7px 14px;
+  border-radius: 999px;
+  border: 1.5px solid var(--chip, #161b2e);
+  background: transparent;
+  color: var(--chip, #161b2e);
+  font-family: var(--font-space-grotesk), "Space Grotesk", sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  position: relative;
+  padding-left: 26px;
+  transition: background 0.18s ease, color 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease;
+}
+.mm-maps__secchip::before {
+  content: "";
+  position: absolute;
+  left: 11px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--chip, #161b2e);
+}
+.mm-maps__secchip:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(22, 27, 46, 0.12); }
+.mm-maps__secchip.is-on {
+  background: var(--chip, #161b2e);
+  color: #fffdf6;
+}
+.mm-maps__secchip.is-on::before { background: #fffdf6; }
+
+/* legend */
+.mm-maps__legend {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 20px;
+  margin-top: 12px;
+  color: var(--mm-muted);
+}
+.mm-maps__ramp { display: inline-flex; align-items: flex-start; gap: 2px; }
+.mm-maps__ramp span { display: inline-flex; flex-direction: column; align-items: center; gap: 3px; }
+.mm-maps__ramp i { width: 24px; height: 13px; border-radius: 3px; border: 1px solid rgba(22, 27, 46, 0.3); }
+.mm-maps__ramp small { font-size: 8.5px; font-weight: 600; }
+.mm-maps__sectors { display: inline-flex; flex-wrap: wrap; gap: 6px 14px; font-size: 10.5px; font-weight: 600; letter-spacing: 0.02em; }
+.mm-maps__sectors span { display: inline-flex; align-items: center; gap: 5px; }
+.mm-maps__sectors i { width: 10px; height: 10px; border-radius: 3px; }
+.mm-maps__hqhint { font-size: 11px; font-weight: 600; }
+.mm-maps__asof { margin-left: auto; font-style: italic; font-size: 11px; letter-spacing: 0.02em; }
+
+@media (max-width: 700px) {
+  .mm-maps__toggle { width: 100%; }
+  .mm-maps__tab { flex: 1; text-align: center; }
+}

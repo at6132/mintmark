@@ -247,7 +247,7 @@ function Footer() {
         </div>
 
         <div className="ara-mintmark-footer__links">
-          {cols.map((col) => (
+          {cols.filter((col) => String(col.heading).toUpperCase() !== "READ").map((col) => (
             <div key={col.heading} className="ara-mintmark-footer__column">
               <h2>{col.heading}</h2>
               <nav aria-label={col.heading}>
@@ -271,7 +271,6 @@ function Footer() {
               respective owners and are used for identification and educational purposes only.
             </small>
           </div>
-          {f.bottom_text ? <span>{String(f.bottom_text)}</span> : null}
         </div>
       </div>
     </footer>
