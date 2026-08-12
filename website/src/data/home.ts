@@ -6,7 +6,7 @@
     "overlay_strength": 60,
     "image_caption": "",
     "eyebrow": "WELCOME TO MINTMARK",
-    "folio_text": "EDITORIAL EDITION · 01",
+    "folio_text": "",
     "heading": "Tomorrow's capitalists\nread here",
     "description": "<p>News That Teaches. Information That Digests. Education That Impacts.</p>",
     "primary_button_label": "BROWSE THE BOOKSHELF",

@@ -259,3 +259,94 @@ input:focus-visible,
   .ara-nr-ticker__dot { animation: none; }
   .ara-mintmark-hero__mtile:hover .ara-mintmark-hero__mtile-inner { transform: none; }
 }
+
+/* ---- 13. HEADER: bigger + more legible ----------------------------------- */
+.ara-mintmark-header__nav-title { font-size: 15px !important; font-weight: 800; letter-spacing: 0.03em; }
+.ara-mintmark-header__nav-subtitle {
+  font-size: 11px !important;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  color: color-mix(in srgb, var(--ara-header-muted, #c76b73) 45%, #ffffff) !important;
+}
+.ara-mintmark-header__nav-index { font-size: 10px !important; font-weight: 700; }
+.ara-mintmark-header__action-link { font-size: 14px !important; font-weight: 800; letter-spacing: 0.08em; }
+.ara-mintmark-top-bar__left,
+.ara-mintmark-top-bar__center,
+.ara-mintmark-top-bar__right { font-size: 12px !important; font-weight: 800; }
+.ara-mintmark-top-bar__center { color: color-mix(in srgb, var(--ara-topbar-muted, #9aa3b8) 40%, #ffffff) !important; }
+/* nav links: crisper hover with a gold underline sweep */
+.ara-mintmark-header__nav-link::after { background: var(--mm-gold) !important; height: 2px !important; }
+
+/* ---- 14. FIN. NEWSROOM: breathing room + better shapes ------------------- */
+/* space between the masthead bar and the scrolling ticker */
+.ara-editorial-front-page .ara-nr-ticker { margin-top: 26px !important; margin-bottom: 10px !important; }
+.ara-editorial-front-page .ara-editorial-front-page__masthead { padding-bottom: 4px; }
+
+/* section headings: gold notch accent + Fraunces */
+.ara-editorial-front-page__section-heading h3 {
+  font-family: var(--font-fraunces), "Fraunces", Georgia, serif !important;
+  letter-spacing: -0.015em;
+}
+.ara-editorial-front-page__section-heading::after {
+  height: 3px !important; width: 42px !important; border-radius: 3px;
+  background: var(--sec, var(--mm-gold)) !important;
+}
+
+/* square tiles (pitches + short takes): softer shape, cut-corner accent, gloss */
+.ara-nr-sq .ara-nr-flip__face { border-radius: 13px !important; }
+.ara-nr-sq .ara-nr-flip__front {
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 14px 100%, 0 calc(100% - 14px));
+}
+.ara-nr-sq .ara-nr-flip__front::before {
+  content: ""; position: absolute; left: 0; bottom: 0;
+  width: 16px; height: 16px;
+  background: linear-gradient(135deg, transparent 50%, var(--sec, var(--mm-mint)) 50%);
+  opacity: 0.9; z-index: 2;
+}
+.ara-nr-sq__num b {
+  border-radius: 6px !important;
+  background: color-mix(in srgb, var(--sec, var(--mm-mint)) 12%, transparent);
+  border-color: color-mix(in srgb, var(--sec, var(--mm-mint)) 45%, transparent) !important;
+}
+
+/* company question card: rounded, gold corner ticks, deeper gloss */
+.ara-nr-col--question .ara-editorial-front-page__question { border-radius: 16px !important; overflow: hidden; }
+.ara-nr-col--question .ara-editorial-front-page__question::after {
+  content: ""; position: absolute; right: 12px; top: 12px; width: 16px; height: 16px;
+  border-top: 2px solid var(--mm-gold); border-right: 2px solid var(--mm-gold); opacity: 0.8;
+}
+
+/* heat board: framed like a print, subtle inner paper */
+.ara-nr-col--heat .ara-nr-heat {
+  padding: 12px;
+  border: 1.5px solid var(--mm-ink);
+  border-radius: 14px;
+  background:
+    var(--mm-gloss),
+    linear-gradient(160deg, #fffdf6, #f4efe2);
+  box-shadow: var(--mm-shadow-sm);
+}
+
+/* ---- 15. HERO: extra trim + accent garnishes ---------------------------- */
+/* welcome badge: pill with soft depth */
+.ara-mintmark-hero__eyebrow {
+  display: inline-block;
+}
+/* corner tick marks on the framed welcome card */
+.ara-mintmark-hero__content-frame::before {
+  content: ""; position: absolute; left: 14px; bottom: 14px; width: 18px; height: 18px;
+  border-left: 2px solid var(--mm-gold); border-bottom: 2px solid var(--mm-gold);
+  opacity: 0.65; z-index: 3; pointer-events: none;
+}
+/* market snapshot: gold hairline under the header row already; add a tiny live pulse dot */
+.ara-mintmark-hero__market-badge { position: relative; }
+.ara-mintmark-hero__market-badge::before {
+  content: ""; display: inline-block; width: 5px; height: 5px; margin-right: 5px;
+  border-radius: 50%; background: var(--mm-mint-bright);
+  box-shadow: 0 0 0 0 color-mix(in srgb, var(--mm-mint-bright) 60%, transparent);
+  animation: mm-pulse 2.4s ease-out infinite; vertical-align: middle;
+}
+
+/* selection colour refinement on dark blocks */
+.ara-editorial-front-page__question ::selection,
+.ara-inline-email ::selection { background: color-mix(in srgb, var(--mm-gold) 55%, transparent); color: #fff; }

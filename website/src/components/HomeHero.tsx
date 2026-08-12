@@ -87,25 +87,39 @@ export function HomeHero() {
   useEffect(() => {
     if (!headingParts.hasHighlight) return;
     const seq = ["learn", "invest", "grow", "create", headingParts.original];
-    let max = 0;
-    const measure = document.createElement("span");
-    measure.style.cssText =
-      "position:absolute;visibility:hidden;white-space:nowrap;pointer-events:none;font:inherit;";
     const host = document.querySelector(".ara-mintmark-hero .ara-mintmark-hero__heading");
     if (!host) return;
-    host.appendChild(measure);
-    for (const word of seq) {
-      measure.textContent = word;
-      max = Math.max(max, measure.offsetWidth);
-    }
-    host.removeChild(measure);
-    if (max > 0) setHighlightMinWidth(max);
 
+    // Lock the plate to the widest word so "here" never shifts or resizes.
+    // Measure with the real (loaded) heading font, not the fallback.
+    const measureWidest = () => {
+      const measure = document.createElement("span");
+      measure.style.cssText =
+        "position:absolute;visibility:hidden;white-space:nowrap;pointer-events:none;font:inherit;";
+      host.appendChild(measure);
+      let max = 0;
+      for (const word of seq) {
+        measure.textContent = word;
+        max = Math.max(max, measure.offsetWidth);
+      }
+      host.removeChild(measure);
+      if (max > 0) setHighlightMinWidth(Math.ceil(max) + 4);
+    };
+    measureWidest();
+    const fonts = (document as Document & { fonts?: FontFaceSet }).fonts;
+    if (fonts?.ready) fonts.ready.then(measureWidest).catch(() => {});
+
+    // Cycle through the words exactly once on landing, then stop on the real word.
     let ix = 0;
     let current = headingParts.original;
     const swapTimers: number[] = [];
     const iv = window.setInterval(() => {
-      const next = seq[ix % seq.length];
+      if (ix >= seq.length) {
+        window.clearInterval(iv);
+        setOutgoingWord(null);
+        return;
+      }
+      const next = seq[ix];
       ix += 1;
       setOutgoingWord(current);
       setHighlightWord(next);

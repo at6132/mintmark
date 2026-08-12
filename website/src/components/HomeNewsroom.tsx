@@ -3,20 +3,67 @@
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { homeContent } from "@/data/home";
+import { marketMapsContent } from "@/data/marketMaps";
 import { appHref, assets } from "@/lib/assets";
 import { stripHtml } from "@/lib/format";
 
 type Block = Record<string, string>;
+
+type HeatCompany = {
+  id: string;
+  ticker?: string;
+  company_name?: string;
+  sector?: string;
+  market_cap?: string;
+  daily_move?: string;
+};
+
+const HEAT_SECTOR_COLORS: Record<string, string> = {
+  Technology: "#1fa88f",
+  Financials: "#e0a526",
+  Healthcare: "#9a5ba6",
+  Consumer: "#7a9e5b",
+  Energy: "#c25b3f",
+  Industrials: "#4c6b8a",
+};
+
+// Spec §3 — validated 7-bucket diverging ramp for change %, bucketed (not interpolated).
+function heatBucket(pct: number | null): { bg: string; fg: string } {
+  if (pct === null || Number.isNaN(pct)) return { bg: "#C9BEA8", fg: "#161B2E" }; // flat / no data
+  if (pct <= -3) return { bg: "#8C2E22", fg: "#FFFFFF" };
+  if (pct <= -1) return { bg: "#B4432F", fg: "#FFFFFF" };
+  if (pct < 0) return { bg: "#D08A78", fg: "#161B2E" };
+  if (pct === 0) return { bg: "#C9BEA8", fg: "#161B2E" };
+  if (pct < 1) return { bg: "#7FBFA5", fg: "#161B2E" };
+  if (pct < 3) return { bg: "#26845F", fg: "#FFFFFF" };
+  return { bg: "#14654E", fg: "#FFFFFF" };
+}
+
+const HEAT_LEGEND = [
+  { bg: "#8C2E22", label: "≤ −3%" },
+  { bg: "#B4432F", label: "−3%" },
+  { bg: "#D08A78", label: "−1%" },
+  { bg: "#C9BEA8", label: "flat" },
+  { bg: "#7FBFA5", label: "+1%" },
+  { bg: "#26845F", label: "+3%" },
+  { bg: "#14654E", label: "≥ +3%" },
+];
 
 export function HomeNewsroom() {
   const ed = homeContent.editorial as Record<string, unknown>;
   const blocks = (homeContent.editorial.blocks || []) as unknown as Block[];
   const marketNews = blocks.filter((b) => b.type === "market_news");
   const lead = blocks.find((b) => b.type === "lead_story");
-  const featured = blocks.filter((b) => b.type === "featured_story");
   const question = blocks.find((b) => b.type === "question");
   const quads = blocks.filter((b) => b.type === "quick_take");
   const reports = blocks.filter((b) => b.type === "stock_report");
+
+  // Heat map sample (from marketMaps data): biggest caps first, coloured by today's move.
+  const heat = ([...(marketMapsContent.companies as unknown as HeatCompany[])]
+    .sort((a, b) => Number(b.market_cap || 0) - Number(a.market_cap || 0))
+    .slice(0, 20));
+  const heatMax = Math.max(...heat.map((c) => Number(c.market_cap || 0)), 1);
+
   const [dateLabel, setDateLabel] = useState("");
   const rootRef = useRef<HTMLElement | null>(null);
 
@@ -256,47 +303,6 @@ export function HomeNewsroom() {
           </div>
         </section>
 
-        {question ? (
-          <section className="ara-nr-band2">
-            <article
-              className="ara-editorial-front-page__question"
-              style={{
-                ["--ara-question-bg" as string]: question.background_color || "#161b2e",
-                ["--ara-question-text" as string]: question.text_color || "#f2f8f6",
-                ["--ara-question-ratio" as string]: question.image_ratio || "16 / 10",
-              }}
-            >
-              <div className="ara-editorial-front-page__question-copy">
-                <div className="ara-editorial-front-page__question-label">
-                  <span>{question.label}</span>
-                  <i />
-                </div>
-                <h3>{question.heading}</h3>
-                <p>{question.description}</p>
-                <Link
-                  className="ara-editorial-front-page__question-link"
-                  href={appHref(question.link) || "/bookshelf"}
-                >
-                  {question.link_label || "EXPLORE THE QUESTION"} <span aria-hidden="true">→</span>
-                </Link>
-              </div>
-              <a
-                className="ara-editorial-front-page__question-media"
-                href={appHref(question.link) || "/bookshelf"}
-                aria-label={question.link_label || "Explore the question"}
-              >
-                <img
-                  className="ara-editorial-front-page__question-image"
-                  src={assets.questionCostco}
-                  alt=""
-                  width={1400}
-                  height={1000}
-                />
-              </a>
-            </article>
-          </section>
-        ) : null}
-
         <section className="ara-nr-band3">
           <div className="ara-nr-col ara-nr-col--short" style={{ ["--sec" as string]: "#c15a3c" }}>
             <div className="ara-editorial-front-page__section-heading">
@@ -374,110 +380,108 @@ export function HomeNewsroom() {
             </div>
           </div>
 
-          <div className="ara-nr-col ara-nr-col--more" style={{ ["--sec" as string]: "#7a4e86" }}>
+          <div className="ara-nr-col ara-nr-col--heat" style={{ ["--sec" as string]: "#2f7e8c" }}>
             <div className="ara-editorial-front-page__section-heading">
               <div>
-                <h3>{String(ed.featured_heading || "More Stories")}</h3>
-                <span>{String(ed.featured_note || "")}</span>
+                <h3>{String(ed.heat_heading || "Market Heat Map")}</h3>
+                <span>{String(ed.heat_note || "U.S. COMPANIES · TODAY'S MOVE")}</span>
               </div>
               <i />
             </div>
-            <div className="ara-nr-featcol">
-              {featured.slice(0, 3).map((story) => (
-                <article
-                  key={story.id}
-                  className="ara-editorial-front-page__featured-story"
-                  style={{ ["--ara-story-accent" as string]: story.accent_color || "#176d5c" }}
-                >
-                  {story.show_image !== "false" ? (
-                    <a
-                      className="ara-editorial-front-page__featured-media"
-                      href={appHref(story.link) || appHref(story.company_module_link) || "#"}
-                    >
-                      <img
-                        className="ara-editorial-front-page__featured-image"
-                        src={
-                          /apple/i.test(`${story.company} ${story.ticker} ${story.heading}`)
-                            ? assets.appleFeature
-                            : /costco/i.test(`${story.company} ${story.ticker} ${story.heading}`)
-                              ? assets.costcoFeature
-                              : assets.nvdaLead
-                        }
-                        alt={story.heading || story.company || "Featured story"}
-                        width={900}
-                        height={600}
-                      />
-                    </a>
-                  ) : null}
-                  <div className="ara-editorial-front-page__featured-copy">
-                    <div className="ara-editorial-front-page__featured-number">
-                      <span>{story.number}</span>
-                      {story.ticker ? <strong>{story.ticker}</strong> : null}
-                    </div>
-                    <div className="ara-editorial-front-page__meta">
-                      {story.story_type ? <span>{story.story_type}</span> : null}
-                      {story.company ? <span>{story.company}</span> : null}
-                    </div>
-                    {story.heading ? (
-                      <h4>
-                        <Link
-                          href={
-                            appHref(story.link) ||
-                            appHref(story.company_module_link) ||
-                            "/companies"
-                          }
-                        >
-                          {story.heading}
-                        </Link>
-                      </h4>
-                    ) : null}
-                    {story.show_excerpt !== "false" && story.summary ? <p>{story.summary}</p> : null}
-                    <div className="ara-editorial-front-page__story-links">
-                      <Link href={appHref(story.link) || appHref(story.company_module_link) || "#"}>
-                        {story.link_label || "READ"} <span aria-hidden="true">→</span>
-                      </Link>
-                      {story.company_module_link ? (
-                        <Link href={appHref(story.company_module_link) || "/companies"}>
-                          {story.company_module_label || "COMPANY FILE"}
-                        </Link>
-                      ) : null}
-                    </div>
-                  </div>
-                </article>
-              ))}
+            <div className="ara-nr-heat">
+              {heat.map((c) => {
+                const mv = c.daily_move == null || c.daily_move === "" ? null : Number(c.daily_move);
+                const { bg, fg } = heatBucket(mv);
+                const big = Number(c.market_cap || 0) / heatMax;
+                // area emphasis by market cap → treemap feel (2×2, 2×1, 1×1)
+                const span =
+                  big > 0.82
+                    ? { gridColumn: "span 2", gridRow: "span 2" }
+                    : big > 0.5
+                      ? { gridColumn: "span 2" }
+                      : {};
+                const tier = big > 0.82 ? "xl" : big > 0.5 ? "lg" : "sm";
+                return (
+                  <a
+                    key={c.id}
+                    className={`ara-nr-heat__cell ara-nr-heat__cell--${tier}${mv === null ? " ara-nr-heat__cell--nodata" : ""}`}
+                    href={appHref(String((c as Record<string, string>).module_link || "")) || "/companies"}
+                    style={{
+                      background: bg,
+                      color: fg,
+                      ["--sector" as string]: HEAT_SECTOR_COLORS[c.sector || ""] || "#1fa88f",
+                      ...span,
+                    }}
+                    title={`${c.company_name || c.ticker} · ${c.sector || ""} · ${
+                      mv === null ? "no data" : (mv > 0 ? "+" : "") + c.daily_move + "%"
+                    }`}
+                    aria-label={`${c.company_name || c.ticker}, ${c.sector || ""}, ${
+                      mv === null ? "no data" : "today " + (mv > 0 ? "up " : mv < 0 ? "down " : "") + Math.abs(mv) + " percent"
+                    }`}
+                  >
+                    <span className="ara-nr-heat__sector" aria-hidden="true" />
+                    <b>{c.ticker}</b>
+                    <small>{mv === null ? "—" : `${mv > 0 ? "+" : ""}${c.daily_move}%`}</small>
+                  </a>
+                );
+              })}
+            </div>
+            <div className="ara-nr-heat__legend">
+              <div className="ara-nr-heat__ramp">
+                {HEAT_LEGEND.map((s) => (
+                  <span key={s.label} className="ara-nr-heat__ramp-step">
+                    <i style={{ background: s.bg }} />
+                    <small>{s.label}</small>
+                  </span>
+                ))}
+              </div>
+              <em>
+                cell size = market cap · tint = today&apos;s move
+                {dateLabel ? ` · as of ${dateLabel}` : ""}
+              </em>
             </div>
           </div>
 
-          <div className="ara-nr-col ara-nr-col--map" style={{ ["--sec" as string]: "#2f7e8c" }}>
-            <div className="ara-editorial-front-page__section-heading">
-              <div>
-                <h3>{String(ed.map_heading || "Market Map")}</h3>
-                <span>{String(ed.map_note || "")}</span>
-              </div>
-              <i />
+          {question ? (
+            <div className="ara-nr-col ara-nr-col--question">
+              <article
+                className="ara-editorial-front-page__question"
+                style={{
+                  ["--ara-question-bg" as string]: question.background_color || "#161b2e",
+                  ["--ara-question-text" as string]: question.text_color || "#f2f8f6",
+                  ["--ara-question-ratio" as string]: question.image_ratio || "16 / 10",
+                }}
+              >
+                <div className="ara-editorial-front-page__question-copy">
+                  <div className="ara-editorial-front-page__question-label">
+                    <span>{question.label}</span>
+                    <i />
+                  </div>
+                  <h3>{question.heading}</h3>
+                  <p>{question.description}</p>
+                  <Link
+                    className="ara-editorial-front-page__question-link"
+                    href={appHref(question.link) || "/bookshelf"}
+                  >
+                    {question.link_label || "EXPLORE THE QUESTION"} <span aria-hidden="true">→</span>
+                  </Link>
+                </div>
+                <a
+                  className="ara-editorial-front-page__question-media"
+                  href={appHref(question.link) || "/bookshelf"}
+                  aria-label={question.link_label || "Explore the question"}
+                >
+                  <img
+                    className="ara-editorial-front-page__question-image"
+                    src={assets.questionCostco}
+                    alt=""
+                    width={1400}
+                    height={1000}
+                  />
+                </a>
+              </article>
             </div>
-            <div className="ara-nr-map">
-              <div className="ara-nr-map__grid">
-                {[...quads, ...reports].slice(0, 9).map((m) =>
-                  m.ticker ? (
-                    <a
-                      key={m.id}
-                      className={`ara-nr-map__chip ara-nr-map__chip--${m.direction || "up"}`}
-                      href={appHref(m.link) || "/companies"}
-                    >
-                      <b>{m.ticker}</b>
-                      {m.change ? <small>{m.change}</small> : null}
-                    </a>
-                  ) : null,
-                )}
-              </div>
-              <div className="ara-nr-map__foot">
-                <span className="ara-editorial-front-page__eyebrow">
-                  {String(ed.map_caption || "U.S. companies")}
-                </span>
-              </div>
-            </div>
-          </div>
+          ) : null}
         </section>
       </div>
     </section>
