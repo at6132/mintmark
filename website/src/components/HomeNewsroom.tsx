@@ -313,7 +313,7 @@ export function HomeNewsroom() {
               <i />
             </div>
             <div className="ara-nr-sqgrid">
-              {quads.slice(0, 4).map((q) => (
+              {quads.slice(0, 8).map((q) => (
                 <div key={q.id} className="ara-nr-flip ara-nr-sq">
                   <div className="ara-nr-flip__inner">
                     <div className="ara-nr-flip__face ara-nr-flip__front">

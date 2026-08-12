@@ -332,12 +332,7 @@ input:focus-visible,
 .ara-mintmark-hero__eyebrow {
   display: inline-block;
 }
-/* corner tick marks on the framed welcome card */
-.ara-mintmark-hero__content-frame::before {
-  content: ""; position: absolute; left: 14px; bottom: 14px; width: 18px; height: 18px;
-  border-left: 2px solid var(--mm-gold); border-bottom: 2px solid var(--mm-gold);
-  opacity: 0.65; z-index: 3; pointer-events: none;
-}
+/* (welcome card gets a live gradient ring instead — see the trim suite below) */
 /* market snapshot: gold hairline under the header row already; add a tiny live pulse dot */
 .ara-mintmark-hero__market-badge { position: relative; }
 .ara-mintmark-hero__market-badge::before {
@@ -350,3 +345,95 @@ input:focus-visible,
 /* selection colour refinement on dark blocks */
 .ara-editorial-front-page__question ::selection,
 .ara-inline-email ::selection { background: color-mix(in srgb, var(--mm-gold) 55%, transparent); color: #fff; }
+
+/* ============================================================================
+   16. GRADIENT TRIM SUITE — the mixed-colour (mint↔gold↔mint) line, everywhere
+   Ten cool touches. A shared token drives a static ramp and a slow animated
+   shimmer; a mask trick paints gradient BORDERS that respect rounded corners.
+   ========================================================================== */
+:root {
+  --mm-trim: linear-gradient(90deg, var(--mm-mint), var(--mm-gold), var(--mm-mint), var(--mm-gold), var(--mm-mint));
+  --mm-trim-diag: linear-gradient(125deg, var(--mm-mint), var(--mm-gold) 48%, var(--mm-mint));
+}
+@keyframes mm-trim-slide { from { background-position: 0% 50%; } to { background-position: 200% 50%; } }
+
+/* shared gradient-BORDER (respects border-radius via mask xor) */
+.ara-mintmark-hero__content-frame::before,
+.ara-mintmark-hero__market-frame::before,
+.ara-nr-col--question .ara-editorial-front-page__question::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 2.5px;
+  background: var(--mm-trim-diag);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  pointer-events: none;
+  z-index: 5;
+}
+/* (1) hero welcome box + (2) market box get a live gradient ring */
+.ara-mintmark-hero__content-frame,
+.ara-mintmark-hero__market-frame { position: relative; }
+.ara-mintmark-hero__content-frame::before,
+.ara-mintmark-hero__market-frame::before {
+  background-size: 200% 100%;
+  animation: mm-trim-slide 7s linear infinite;
+}
+/* (3) company-question card gradient ring (static, calmer on the dark card) */
+.ara-nr-col--question .ara-editorial-front-page__question { position: relative; }
+
+/* (4) section headings: the mixed line as the underline accent */
+.ara-editorial-front-page__section-heading::after {
+  background: var(--mm-trim) !important;
+  background-size: 200% 100%;
+  width: 56px !important;
+  animation: mm-trim-slide 6s linear infinite;
+}
+/* (5) nav underline sweep in the gradient */
+.ara-mintmark-header__nav-link::after { background: var(--mm-trim) !important; background-size: 200% 100%; }
+
+/* reusable gradient hairline bar for tops of blocks */
+.ara-nr-ticker::before,
+.ara-nr-col--heat .ara-nr-heat::before,
+.ara-inline-email::before,
+.ara-editorial-front-page__masthead::after {
+  content: "";
+  position: absolute;
+  left: 0; right: 0; top: 0;
+  height: 3px;
+  background: var(--mm-trim);
+  background-size: 200% 100%;
+  animation: mm-trim-slide 6s linear infinite;
+  z-index: 3;
+  pointer-events: none;
+}
+/* (6) ticker top rule */
+.ara-nr-ticker { position: relative; }
+/* (7) heat board top rule */
+.ara-nr-col--heat .ara-nr-heat { position: relative; }
+/* (8) inline email top rule */
+.ara-inline-email { position: relative; }
+/* (9) masthead "Fin. by Mintmark" bar gets the mixed line under it */
+.ara-editorial-front-page__masthead { position: relative; }
+.ara-editorial-front-page__masthead::after { top: auto; bottom: -2px; }
+
+/* (10) buttons get a gradient underline that lights + slides on hover */
+.ara-mintmark-hero__button::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 3px;
+  background: var(--mm-trim); background-size: 200% 100%;
+  transform: scaleX(0); transform-origin: left; transition: transform 0.35s var(--mm-ease);
+}
+.ara-mintmark-hero__button:hover::after { transform: scaleX(1); animation: mm-trim-slide 4s linear infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  .ara-mintmark-hero__content-frame::before,
+  .ara-mintmark-hero__market-frame::before,
+  .ara-editorial-front-page__section-heading::after,
+  .ara-nr-ticker::before,
+  .ara-nr-col--heat .ara-nr-heat::before,
+  .ara-inline-email::before,
+  .ara-editorial-front-page__masthead::after { animation: none; }
+}
