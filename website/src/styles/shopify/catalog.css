@@ -1275,3 +1275,61 @@
 .ara-company-catalog .ara-company-catalog__tag--profile { border-left: 4px solid #3a5be0; }
 .ara-company-catalog .ara-company-catalog__tag--profile:hover { background: #161b2e; color: #fffdf6; }
 .ara-company-catalog .ara-company-catalog__tag--stories { border-left: 4px solid #176d5c; }
+
+/* ===== quickshop-style file popup ===== */
+.ara-company-catalog .ara-company-catalog__open {
+  margin-top: 12px; padding-top: 10px;
+  border-top: 1px solid color-mix(in srgb, #161b2e 16%, transparent);
+  display: flex; justify-content: space-between; align-items: center;
+  font-family: var(--font-space-grotesk), "Space Grotesk", sans-serif;
+  font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--ara-company-marker, #176d5c);
+}
+.ara-company-catalog__card { cursor: pointer; text-align: left; font: inherit; width: 100%; }
+.ara-company-catalog__modal {
+  position: fixed; inset: 0; z-index: 120;
+  display: grid; place-items: center; padding: 24px;
+  background: rgba(16, 19, 31, 0.55); backdrop-filter: blur(3px);
+  animation: mm-modal-in 0.2s ease;
+}
+@keyframes mm-modal-in { from { opacity: 0; } to { opacity: 1; } }
+.ara-company-catalog__pop {
+  position: relative; width: min(100%, 420px);
+  background: linear-gradient(160deg, #fffdf6, #f8f4e9 70%);
+  border: 2.5px solid #161b2e; border-radius: 16px;
+  padding: 22px 22px 20px;
+  box-shadow: 10px 12px 0 color-mix(in srgb, var(--ara-company-marker, #176d5c) 40%, transparent);
+  animation: mm-pop-in 0.24s cubic-bezier(0.34, 1.4, 0.5, 1);
+}
+@keyframes mm-pop-in { from { transform: translateY(12px) scale(0.96); opacity: 0; } to { transform: none; opacity: 1; } }
+.ara-company-catalog__pop::before {
+  content: ""; position: absolute; top: 0; left: 0; right: 0; height: 5px;
+  background: var(--ara-company-marker, #176d5c); border-radius: 16px 16px 0 0;
+}
+.ara-company-catalog__pop-close {
+  position: absolute; top: 12px; right: 12px; width: 30px; height: 30px;
+  border: 1.5px solid #161b2e; border-radius: 50%; background: #fffdf6;
+  font-size: 18px; line-height: 1; cursor: pointer; color: #161b2e;
+}
+.ara-company-catalog__pop-close:hover { background: #161b2e; color: #fffdf6; }
+.ara-company-catalog__pop-head { display: flex; align-items: center; gap: 12px; padding-right: 34px; }
+.ara-company-catalog__pop-head strong {
+  display: block; font-family: var(--font-fraunces), "Fraunces", serif; font-size: 22px; letter-spacing: -0.01em;
+}
+.ara-company-catalog__pop-head small { color: #646575; font-size: 12px; }
+.ara-company-catalog__pop-marker { width: 12px; height: 42px; border-radius: 4px; background: var(--ara-company-marker, #176d5c); }
+.ara-company-catalog__pop-meta {
+  margin: 12px 0 4px; font-family: var(--font-space-grotesk), "Space Grotesk", sans-serif;
+  font-size: 11px; letter-spacing: 0.04em; color: #646575; text-transform: uppercase;
+}
+.ara-company-catalog__pop-tags { display: grid; gap: 8px; margin-top: 14px; }
+
+/* ===== cleaner (less nerdy) masthead ===== */
+.ara-company-catalog .ara-company-catalog__brand-index small { display: none; }
+.ara-company-catalog .ara-company-catalog__brand-index span {
+  font-family: var(--font-space-grotesk), "Space Grotesk", sans-serif;
+  letter-spacing: 0.14em;
+}
+.ara-company-catalog .ara-company-catalog__brand-masthead {
+  border: 0 !important; background: transparent !important; padding-bottom: 6px !important;
+}

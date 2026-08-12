@@ -55,6 +55,7 @@ export default function CompaniesPage() {
   const companies = catalogContent.companies as unknown as Company[];
   const [query, setQuery] = useState("");
   const [sector, setSector] = useState("all");
+  const [active, setActive] = useState<Company | null>(null);
 
   const availableSectors = useMemo(() => {
     const counts = new Map<string, number>();
@@ -238,16 +239,9 @@ export default function CompaniesPage() {
                         ) : null}
                         <span className="ara-company-catalog__period">{c.period || "1Y"}</span>
                       </div>
-                      <div className="ara-company-catalog__tags">
-                        <Link className="ara-company-catalog__tag ara-company-catalog__tag--stories" href={href || "#"}>
-                          Company Stories
-                        </Link>
-                        <Link className="ara-company-catalog__tag ara-company-catalog__tag--digest" href={href || "#"}>
-                          Digest
-                        </Link>
-                        <Link className="ara-company-catalog__tag ara-company-catalog__tag--profile" href={href || "#"}>
-                          Company Profile
-                        </Link>
+                      <div className="ara-company-catalog__open">
+                        <span>{String(settings.open_label || "OPEN FILE")}</span>
+                        <span aria-hidden="true">↗</span>
                       </div>
                     </>
                   );
@@ -256,9 +250,16 @@ export default function CompaniesPage() {
                   const styleCard = { ["--ara-company-marker" as string]: c.accent_color || "#176D5C" };
 
                   return (
-                    <div key={c.id} className={className} style={styleCard}>
+                    <button
+                      key={c.id}
+                      type="button"
+                      className={className}
+                      style={styleCard}
+                      onClick={() => setActive(c)}
+                      aria-haspopup="dialog"
+                    >
                       {card}
-                    </div>
+                    </button>
                   );
                 })}
               </div>
@@ -266,6 +267,62 @@ export default function CompaniesPage() {
           ))}
         </div>
       </div>
+
+      {active ? (
+        <div
+          className="ara-company-catalog__modal"
+          role="dialog"
+          aria-modal="true"
+          aria-label={`${active.company_name} file`}
+          onClick={() => setActive(null)}
+        >
+          <div
+            className="ara-company-catalog__pop"
+            style={{ ["--ara-company-marker" as string]: active.accent_color || "#176D5C" }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              type="button"
+              className="ara-company-catalog__pop-close"
+              onClick={() => setActive(null)}
+              aria-label="Close"
+            >
+              ×
+            </button>
+            <div className="ara-company-catalog__pop-head">
+              <span className="ara-company-catalog__pop-marker" aria-hidden="true" />
+              <div>
+                <strong>{active.company_name}</strong>
+                {active.business_model ? <small>{active.business_model}</small> : null}
+              </div>
+              {active.ticker ? <span className="ara-company-catalog__ticker">{active.ticker}</span> : null}
+            </div>
+            {active.headquarters ? (
+              <p className="ara-company-catalog__pop-meta">{active.headquarters}</p>
+            ) : null}
+            <div className="ara-company-catalog__pop-tags">
+              {(() => {
+                const href =
+                  appHref(active.module_link) ||
+                  (active.company_name === "Apple" ? "/companies/apple" : "#");
+                return (
+                  <>
+                    <Link className="ara-company-catalog__tag ara-company-catalog__tag--stories" href={href}>
+                      Company Stories
+                    </Link>
+                    <Link className="ara-company-catalog__tag ara-company-catalog__tag--digest" href={href}>
+                      Digest
+                    </Link>
+                    <Link className="ara-company-catalog__tag ara-company-catalog__tag--profile" href={href}>
+                      Company Profile
+                    </Link>
+                  </>
+                );
+              })()}
+            </div>
+          </div>
+        </div>
+      ) : null}
     </section>
   );
 }
