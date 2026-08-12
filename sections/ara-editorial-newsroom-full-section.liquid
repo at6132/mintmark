@@ -320,9 +320,9 @@
 
     {% if mp == 'under_question' %}{{ ara_masthead }}{% endif %}
 
-    <!-- ============ BAND 3: short-take flip squares | pitch flip squares ============ -->
+    <!-- ============ BAND 3: more stories + short takes (row 1) · pitches (row 2) · market map (row 3) ============ -->
     <section class="ara-nr-band3">
-      <div class="ara-nr-col" style="--sec: #c15a3c;">
+      <div class="ara-nr-col ara-nr-col--short" style="--sec: #c15a3c;">
         <div class="ara-editorial-front-page__section-heading">
           <div>
             <h3>{{ section.settings.quick_heading | escape }}</h3>
@@ -373,7 +373,7 @@
         </div>
       </div>
 
-      <div class="ara-nr-col" style="--sec: #c0881e;">
+      <div class="ara-nr-col ara-nr-col--pitch" style="--sec: #c0881e;">
         <div class="ara-editorial-front-page__section-heading">
           <div>
             <h3>{{ section.settings.reports_heading | escape }}</h3>
@@ -420,11 +420,8 @@
           {% endfor %}
         </div>
       </div>
-    </section>
 
-    <!-- ============ BAND 4: featured module | market map ============ -->
-    <section class="ara-nr-band4">
-      <div class="ara-nr-col" style="--sec: #7a4e86;">
+      <div class="ara-nr-col ara-nr-col--more" style="--sec: #7a4e86;">
         <div class="ara-editorial-front-page__section-heading">
           <div>
             <h3>{{ section.settings.featured_heading | default: 'More Stories' | escape }}</h3>
@@ -504,7 +501,7 @@
         </div>
       </div>
 
-      <div class="ara-nr-col" style="--sec: #2f7e8c;">
+      <div class="ara-nr-col ara-nr-col--map" style="--sec: #2f7e8c;">
         <div class="ara-editorial-front-page__section-heading">
           <div>
             <h3>{{ section.settings.map_heading | default: 'Market Map' | escape }}</h3>
@@ -616,10 +613,17 @@
   /* ---- BAND 2: question wrapper ---- */
   #AraEditorialFrontPage-{{ section.id }} .ara-nr-band2 { padding: 26px 0; border-bottom: 2px solid var(--ara-news-text); }
 
-  /* ---- BAND 3 & 4 shared column ---- */
-  #AraEditorialFrontPage-{{ section.id }} .ara-nr-band3 { display: grid; grid-template-columns: 1fr 1fr; gap: 34px; padding: 30px 0; border-bottom: 2px solid var(--ara-news-text); }
-  #AraEditorialFrontPage-{{ section.id }} .ara-nr-band4 { display: grid; grid-template-columns: 1fr 1fr; gap: 34px; padding: 30px 0 0; }
+  /* ---- BAND 3 (merged): row1 = more stories | short takes · row2 = pitches (full) · row3 = market map (full) ---- */
+  #AraEditorialFrontPage-{{ section.id }} .ara-nr-band3 { display: grid; grid-template-columns: 1fr 1fr; gap: 34px; padding: 30px 0 0; }
   #AraEditorialFrontPage-{{ section.id }} .ara-nr-col { min-width: 0; }
+  #AraEditorialFrontPage-{{ section.id }} .ara-nr-col--more  { grid-column: 1; grid-row: 1; }
+  #AraEditorialFrontPage-{{ section.id }} .ara-nr-col--short { grid-column: 2; grid-row: 1; }
+  #AraEditorialFrontPage-{{ section.id }} .ara-nr-col--pitch { grid-column: 1 / -1; grid-row: 2; margin-top: 30px; padding-top: 30px; border-top: 2px solid var(--ara-news-text); }
+  #AraEditorialFrontPage-{{ section.id }} .ara-nr-col--map   { grid-column: 1 / -1; grid-row: 3; margin-top: 30px; padding-top: 30px; border-top: 2px solid var(--ara-news-text); }
+  /* pitches sit full-width at the bottom: a wide row of shorter tiles, not big squares */
+  #AraEditorialFrontPage-{{ section.id }} .ara-nr-col--pitch .ara-nr-sqgrid { grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); }
+  #AraEditorialFrontPage-{{ section.id }} .ara-nr-col--pitch .ara-nr-sq { aspect-ratio: auto; min-height: 150px; }
+  #AraEditorialFrontPage-{{ section.id }} .ara-nr-col--map .ara-nr-map__grid { grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); }
 
   /* ---- square flip tiles ---- */
   #AraEditorialFrontPage-{{ section.id }} .ara-nr-sqgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
@@ -656,8 +660,12 @@
   /* ---- responsive ---- */
   @media (max-width: 989px) {
     #AraEditorialFrontPage-{{ section.id }} .ara-nr-band1,
-    #AraEditorialFrontPage-{{ section.id }} .ara-nr-band3,
-    #AraEditorialFrontPage-{{ section.id }} .ara-nr-band4 { grid-template-columns: 1fr; gap: 26px; }
+    #AraEditorialFrontPage-{{ section.id }} .ara-nr-band3 { grid-template-columns: 1fr; gap: 26px; }
+    /* stack in reading order: more stories → short takes → pitches → map */
+    #AraEditorialFrontPage-{{ section.id }} .ara-nr-col--more  { grid-column: auto; grid-row: auto; order: 1; }
+    #AraEditorialFrontPage-{{ section.id }} .ara-nr-col--short { grid-column: auto; grid-row: auto; order: 2; }
+    #AraEditorialFrontPage-{{ section.id }} .ara-nr-col--pitch { grid-column: auto; grid-row: auto; order: 3; margin-top: 26px; }
+    #AraEditorialFrontPage-{{ section.id }} .ara-nr-col--map   { grid-column: auto; grid-row: auto; order: 4; margin-top: 26px; }
     #AraEditorialFrontPage-{{ section.id }} .ara-nr-hero { border-right: 0 !important; padding-right: 0 !important; }
     #AraEditorialFrontPage-{{ section.id }} .ara-nr-map__grid { grid-template-columns: repeat(2, 1fr); }
     /* touch: flip on tap only */

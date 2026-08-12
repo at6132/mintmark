@@ -172,55 +172,42 @@
         {% assign news_blocks = section.blocks | where: 'type', 'market_news' %}
         {% assign item_blocks = section.blocks | where: 'type', 'market_item' %}
 
-        {% if news_blocks.size > 0 %}
-          <div class="ara-mintmark-hero__market-news">
-            {% for block in news_blocks %}
-              <div class="ara-mintmark-hero__market-news-strip" {{ block.shopify_attributes }}>
-                <div class="ara-mintmark-hero__market-news-strip-inner">
-                  <div class="ara-mintmark-hero__market-news-front">
-                    <strong>{{ block.settings.market_name | escape }}</strong>
-                    <p>{{ block.settings.headline | escape }}</p>
-                  </div>
-                  <div class="ara-mintmark-hero__market-news-back">
-                    <strong>{{ block.settings.market_name | escape }}</strong>
-                    <span>{{ block.settings.market_value | escape }}</span>
-                    <em class="ara-mintmark-hero__market-change ara-mintmark-hero__market-change--{{ block.settings.direction }}">
-                      {% case block.settings.direction %}
-                        {% when 'up' %}▲
-                        {% when 'down' %}▼
-                        {% else %}—
-                      {% endcase %}
-                      {{ block.settings.change | escape }}
-                    </em>
-                  </div>
-                </div>
-              </div>
-            {% endfor %}
-          </div>
-        {% endif %}
-
-        {% if item_blocks.size > 0 %}
-          <div class="ara-mintmark-hero__market-list">
-            {% for block in item_blocks %}
-              <div class="ara-mintmark-hero__market-item" {{ block.shopify_attributes }}>
-                <div>
+        <div class="ara-mintmark-hero__market-tiles">
+          {% for block in news_blocks %}
+            <div class="ara-mintmark-hero__mtile" {{ block.shopify_attributes }} tabindex="0">
+              <div class="ara-mintmark-hero__mtile-inner">
+                <div class="ara-mintmark-hero__mtile-face ara-mintmark-hero__mtile-front">
                   <strong>{{ block.settings.market_name | escape }}</strong>
-                  {% if block.settings.market_value != blank %}
-                    <span>{{ block.settings.market_value | escape }}</span>
-                  {% endif %}
+                  <p>{{ block.settings.headline | escape }}</p>
                 </div>
-                <em class="ara-mintmark-hero__market-change ara-mintmark-hero__market-change--{{ block.settings.direction }}">
-                  {% case block.settings.direction %}
-                    {% when 'up' %}▲
-                    {% when 'down' %}▼
-                    {% else %}—
-                  {% endcase %}
-                  {{ block.settings.change | escape }}
-                </em>
+                <div class="ara-mintmark-hero__mtile-face ara-mintmark-hero__mtile-back">
+                  <span class="ara-mintmark-hero__mtile-name">{{ block.settings.market_name | escape }}</span>
+                  <span class="ara-mintmark-hero__mtile-val">{{ block.settings.market_value | escape }}</span>
+                  <em class="ara-mintmark-hero__market-change ara-mintmark-hero__market-change--{{ block.settings.direction }}">
+                    {% case block.settings.direction %}{% when 'up' %}▲{% when 'down' %}▼{% else %}—{% endcase %} {{ block.settings.change | escape }}
+                  </em>
+                </div>
               </div>
-            {% endfor %}
-          </div>
-        {% endif %}
+            </div>
+          {% endfor %}
+          {% for block in item_blocks %}
+            <div class="ara-mintmark-hero__mtile" {{ block.shopify_attributes }} tabindex="0">
+              <div class="ara-mintmark-hero__mtile-inner">
+                <div class="ara-mintmark-hero__mtile-face ara-mintmark-hero__mtile-front">
+                  <strong>{{ block.settings.market_name | escape }}</strong>
+                  <p>Tap for today&rsquo;s level</p>
+                </div>
+                <div class="ara-mintmark-hero__mtile-face ara-mintmark-hero__mtile-back">
+                  <span class="ara-mintmark-hero__mtile-name">{{ block.settings.market_name | escape }}</span>
+                  <span class="ara-mintmark-hero__mtile-val">{{ block.settings.market_value | escape }}</span>
+                  <em class="ara-mintmark-hero__market-change ara-mintmark-hero__market-change--{{ block.settings.direction }}">
+                    {% case block.settings.direction %}{% when 'up' %}▲{% when 'down' %}▼{% else %}—{% endcase %} {{ block.settings.change | escape }}
+                  </em>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
 
         {% if section.settings.market_note != blank %}
           <p class="ara-mintmark-hero__market-note">
@@ -276,26 +263,27 @@
 
   #AraMintmarkHero-{{ section.id }} .ara-mintmark-hero__overlay {
     z-index: -3;
+    /* soft mint scrim (paper colour) — keeps the books image visible on top of the
+       uniform paper, with just enough cover on the left for the heading. */
     background:
       linear-gradient(
         90deg,
-        rgba(242, 251, 247, 0.98) 0%,
-        rgba(242, 251, 247, 0.94) 25%,
-        rgba(230, 247, 239, calc(var(--ara-hero-overlay) + 0.2)) 47%,
-        rgba(230, 247, 239, var(--ara-hero-overlay)) 64%,
-        rgba(220, 243, 233, 0.12) 100%
+        rgba(211, 238, 221, 0.88) 0%,
+        rgba(211, 238, 221, 0.66) 26%,
+        rgba(211, 238, 221, 0.34) 50%,
+        rgba(211, 238, 221, 0.12) 72%,
+        rgba(211, 238, 221, 0.00) 100%
       );
   }
 
   #AraMintmarkHero-{{ section.id }} .ara-mintmark-hero__paper-lines {
     z-index: -2;
-    opacity: 0.78;
+    opacity: 0.9;
     background-image: repeating-linear-gradient(
       to bottom,
       transparent 0 34px,
-      color-mix(in srgb, var(--ara-hero-line) 10%, transparent) 34px 35px,
-      color-mix(in srgb, var(--ara-hero-line) 24%, transparent) 35px 38px,
-      transparent 38px 40px
+      rgba(111, 193, 161, 0.32) 34px 36px,
+      rgba(111, 193, 161, 0.62) 36px 40px
     );
     pointer-events: none;
   }
@@ -303,8 +291,9 @@
   #AraMintmarkHero-{{ section.id }} .ara-mintmark-hero__inner {
     position: relative;
     display: grid;
-    grid-template-columns: minmax(0, 1.08fr) minmax(220px, 0.4fr);
-    gap: clamp(32px, 5vw, 84px);
+    grid-template-columns: 1fr;
+    align-content: space-between;
+    gap: clamp(24px, 3vw, 40px);
     align-items: stretch;
     width: min(100%, var(--ara-hero-max));
     min-height: var(--ara-hero-min-height);
@@ -401,17 +390,129 @@
     color: var(--ara-hero-text);
   }
 
+  #AraMintmarkHero-{{ section.id }} .ara-mintmark-hero__market-frame {
+    position: relative;
+    z-index: 3;
+    width: 100%;
+    margin-top: auto;
+  }
+
   #AraMintmarkHero-{{ section.id }} .ara-mintmark-hero__market {
     position: relative;
     z-index: 3;
-    align-self: center;
-    justify-self: end;
-    width: min(100%, 280px);
-    padding: 22px 20px;
-    border: 1px solid var(--ara-hero-gold);
-    background: color-mix(in srgb, var(--ara-hero-panel) 92%, transparent);
-    box-shadow: 0 15px 30px rgba(22, 27, 46, 0.08);
+    width: 100%;
+    padding: 16px 18px 18px;
+    border: 1.5px solid var(--ara-hero-gold);
+    border-radius: 12px;
+    background: color-mix(in srgb, var(--ara-hero-panel) 90%, transparent);
+    box-shadow: 0 14px 30px rgba(22, 27, 46, 0.10);
     backdrop-filter: blur(2px);
+  }
+
+  /* full-width horizontal flip tiles: word on the front, numbers on the back */
+  #AraMintmarkHero-{{ section.id }} .ara-mintmark-hero__market-tiles {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(148px, 1fr));
+    gap: 10px;
+    margin-top: 14px;
+  }
+
+  #AraMintmarkHero-{{ section.id }} .ara-mintmark-hero__mtile {
+    position: relative;
+    height: 66px;
+    perspective: 900px;
+    cursor: default;
+    outline: none;
+  }
+
+  #AraMintmarkHero-{{ section.id }} .ara-mintmark-hero__mtile-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    transition: transform 0.55s cubic-bezier(0.35, 0.1, 0.25, 1);
+  }
+
+  #AraMintmarkHero-{{ section.id }} .ara-mintmark-hero__mtile:hover .ara-mintmark-hero__mtile-inner,
+  #AraMintmarkHero-{{ section.id }} .ara-mintmark-hero__mtile:focus-within .ara-mintmark-hero__mtile-inner {
+    transform: rotateX(180deg);
+  }
+
+  #AraMintmarkHero-{{ section.id }} .ara-mintmark-hero__mtile-face {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 3px;
+    padding: 9px 12px;
+    overflow: hidden;
+    border: 1.5px solid #161B2E;
+    border-left: 4px solid var(--ara-hero-gold);
+    border-radius: 9px;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+  }
+
+  #AraMintmarkHero-{{ section.id }} .ara-mintmark-hero__mtile-front {
+    background: linear-gradient(120deg, #FFFDF6, #EAF6EF);
+    box-shadow: 3px 3px 0 rgba(23, 109, 92, 0.16);
+  }
+
+  #AraMintmarkHero-{{ section.id }} .ara-mintmark-hero__mtile-back {
+    transform: rotateX(180deg);
+    background: linear-gradient(120deg, #1d2338, #0e1220);
+    box-shadow: 3px 3px 0 rgba(23, 109, 92, 0.28);
+  }
+
+  #AraMintmarkHero-{{ section.id }} .ara-mintmark-hero__mtile-front strong {
+    font-family: var(--font-body-family);
+    font-size: 11px;
+    font-weight: 900;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ara-hero-accent);
+  }
+
+  #AraMintmarkHero-{{ section.id }} .ara-mintmark-hero__mtile-front p {
+    margin: 0;
+    font-family: var(--font-body-family);
+    font-size: 11px;
+    line-height: 1.25;
+    color: #161B2E;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  #AraMintmarkHero-{{ section.id }} .ara-mintmark-hero__mtile-name {
+    font-family: var(--font-body-family);
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ara-hero-gold);
+  }
+
+  #AraMintmarkHero-{{ section.id }} .ara-mintmark-hero__mtile-val {
+    font-family: var(--font-body-family);
+    font-size: 15px;
+    font-weight: 800;
+    color: #FFFFFF;
+    font-variant-numeric: tabular-nums;
+  }
+
+  #AraMintmarkHero-{{ section.id }} .ara-mintmark-hero__mtile-back .ara-mintmark-hero__market-change {
+    font-size: 10px;
+    font-weight: 800;
+    font-variant-numeric: tabular-nums;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #AraMintmarkHero-{{ section.id }} .ara-mintmark-hero__mtile-inner { transition: none; }
+    #AraMintmarkHero-{{ section.id }} .ara-mintmark-hero__mtile:hover .ara-mintmark-hero__mtile-inner,
+    #AraMintmarkHero-{{ section.id }} .ara-mintmark-hero__mtile:focus-within .ara-mintmark-hero__mtile-inner { transform: none; }
   }
 
   #AraMintmarkHero-{{ section.id }} .ara-mintmark-hero__market-head {
@@ -596,7 +697,7 @@
   }
 @media screen and (max-width: 1199px) {
     #AraMintmarkHero-{{ section.id }} .ara-mintmark-hero__inner {
-      grid-template-columns: minmax(0, 1fr) minmax(210px, 0.35fr);
+      grid-template-columns: 1fr;
     }
 
   }
@@ -619,13 +720,12 @@
     }
 
     #AraMintmarkHero-{{ section.id }} .ara-mintmark-hero__market {
-      justify-self: start;
-      width: min(100%, 520px);
+      justify-self: stretch;
+      width: 100%;
     }
 
-    #AraMintmarkHero-{{ section.id }} .ara-mintmark-hero__market-list {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 0 18px;
+    #AraMintmarkHero-{{ section.id }} .ara-mintmark-hero__market-tiles {
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
     }
 }
 
@@ -1135,7 +1235,7 @@
 {% schema %}
 {
   "name": "Ara Mintmark Hero",
-  "max_blocks": 8,
+  "max_blocks": 14,
   "settings": [
     {
       "type": "image_picker",
