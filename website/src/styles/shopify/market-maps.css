@@ -95,6 +95,7 @@
 }
 .mm-maps__svg--grab { cursor: grab; touch-action: none; }
 .mm-maps__svg--grab:active { cursor: grabbing; }
+.mm-maps__stage--heat { cursor: ns-resize; transition: border-color 0.3s ease; }
 .mm-globe { user-select: none; }
 
 /* heat cells */

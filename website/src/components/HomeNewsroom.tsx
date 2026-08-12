@@ -284,7 +284,7 @@ export function HomeNewsroom() {
                         ) : (
                           <span />
                         )}
-                        {q.mark ? <span>{q.mark}</span> : q.period ? <span>{q.period}</span> : <span />}
+                        {q.period ? <span>{q.period}</span> : <span />}
                       </div>
                     </div>
                     <div className="ara-nr-flip__face ara-nr-flip__back">

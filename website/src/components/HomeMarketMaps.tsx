@@ -27,26 +27,26 @@ const SECTOR_COLORS: Record<string, string> = {
   Industrials: "#4c6b8a",
 };
 
-// Spec §3 — validated 7-bucket diverging ramp (change %).
+// 7-bucket diverging ramp (change %) — vibrant reds & greens.
 function bucket(pct: number | null): { bg: string; fg: string } {
-  if (pct === null || Number.isNaN(pct)) return { bg: "#C9BEA8", fg: "#161B2E" };
-  if (pct <= -3) return { bg: "#8C2E22", fg: "#FFFFFF" };
-  if (pct <= -1) return { bg: "#B4432F", fg: "#FFFFFF" };
-  if (pct < 0) return { bg: "#D08A78", fg: "#161B2E" };
-  if (pct === 0) return { bg: "#C9BEA8", fg: "#161B2E" };
-  if (pct < 1) return { bg: "#7FBFA5", fg: "#161B2E" };
-  if (pct < 3) return { bg: "#26845F", fg: "#FFFFFF" };
-  return { bg: "#14654E", fg: "#FFFFFF" };
+  if (pct === null || Number.isNaN(pct)) return { bg: "#D8D2C4", fg: "#161B2E" };
+  if (pct <= -3) return { bg: "#B01818", fg: "#FFFFFF" };
+  if (pct <= -1) return { bg: "#E23B3B", fg: "#FFFFFF" };
+  if (pct < 0) return { bg: "#F6A6A6", fg: "#161B2E" };
+  if (pct === 0) return { bg: "#D8D2C4", fg: "#161B2E" };
+  if (pct < 1) return { bg: "#8DE3AC", fg: "#0B3D24" };
+  if (pct < 3) return { bg: "#1FBE57", fg: "#FFFFFF" };
+  return { bg: "#0B9E45", fg: "#FFFFFF" };
 }
 
 const RAMP = [
-  { bg: "#8C2E22", label: "≤−3" },
-  { bg: "#B4432F", label: "−3" },
-  { bg: "#D08A78", label: "−1" },
-  { bg: "#C9BEA8", label: "0" },
-  { bg: "#7FBFA5", label: "+1" },
-  { bg: "#26845F", label: "+3" },
-  { bg: "#14654E", label: "≥+3" },
+  { bg: "#B01818", label: "≤−3" },
+  { bg: "#E23B3B", label: "−3" },
+  { bg: "#F6A6A6", label: "−1" },
+  { bg: "#D8D2C4", label: "0" },
+  { bg: "#8DE3AC", label: "+1" },
+  { bg: "#1FBE57", label: "+3" },
+  { bg: "#0B9E45", label: "≥+3" },
 ];
 
 type Co = {
@@ -83,16 +83,7 @@ export function HomeMarketMaps() {
   useEffect(() => setMounted(true), []);
 
   const svgRef = useRef<SVGSVGElement | null>(null);
-  useEffect(() => {
-    const el = svgRef.current;
-    if (!el || mode !== "globe") return;
-    const onWheel = (e: WheelEvent) => {
-      e.preventDefault();
-      setZoom((z) => Math.max(0.7, Math.min(4, z * (e.deltaY < 0 ? 1.12 : 0.89))));
-    };
-    el.addEventListener("wheel", onWheel, { passive: false });
-    return () => el.removeEventListener("wheel", onWheel);
-  }, [mode, mounted]);
+  const lastWheel = useRef(0);
 
   const onPointerDown = (e: ReactPointerEvent) => {
     if (mode !== "globe") return;
@@ -126,6 +117,36 @@ export function HomeMarketMaps() {
       .filter((c) => c.ticker)
       .sort((a, b) => b.cap - a.cap);
   }, []);
+
+  const sectors = useMemo(() => [...new Set(companies.map((c) => c.sector))], [companies]);
+  const sectorOrder = useMemo(() => ["all", ...sectors], [sectors]);
+  const activeColor = activeSector === "all" ? "#161B2E" : SECTOR_COLORS[activeSector] || "#646575";
+
+  // wheel: globe zooms, heat scrolls through sectors seamlessly.
+  useEffect(() => {
+    const el = svgRef.current;
+    if (!el) return;
+    const onWheel = (e: WheelEvent) => {
+      if (mode === "globe") {
+        e.preventDefault();
+        setZoom((z) => Math.max(0.7, Math.min(4, z * (e.deltaY < 0 ? 1.12 : 0.89))));
+        return;
+      }
+      if (mode === "heat") {
+        e.preventDefault();
+        const now = e.timeStamp || 0;
+        if (now - lastWheel.current < 260) return;
+        lastWheel.current = now;
+        const dir = e.deltaY > 0 ? 1 : -1;
+        setActiveSector((cur) => {
+          const i = sectorOrder.indexOf(cur);
+          return sectorOrder[(i + dir + sectorOrder.length) % sectorOrder.length];
+        });
+      }
+    };
+    el.addEventListener("wheel", onWheel, { passive: false });
+    return () => el.removeEventListener("wheel", onWheel);
+  }, [mode, mounted, sectorOrder]);
 
   // Shared Albers-USA projection + US outline (nation) + state borders.
   const geo = useMemo(() => {
@@ -254,7 +275,6 @@ export function HomeMarketMaps() {
   return (
     <div className="mm-maps" data-map-mode={mode}>
       <div className="mm-maps__bar">
-        <h3 className="mm-maps__title">U.S. Companies</h3>
         <div className="mm-maps__toggle" role="tablist" aria-label="Map mode">
           <button
             type="button"
@@ -280,7 +300,10 @@ export function HomeMarketMaps() {
         </div>
       </div>
 
-      <div className="mm-maps__stage">
+      <div
+        className={`mm-maps__stage${mode === "heat" ? " mm-maps__stage--heat" : ""}`}
+        style={mode === "heat" ? { borderColor: activeColor } : undefined}
+      >
         {mounted ? (
         <svg
           ref={svgRef}
@@ -311,8 +334,8 @@ export function HomeMarketMaps() {
 
           {mode === "heat" ? (
             <g>
-              {/* clean rounded frame */}
-              <rect x={8} y={8} width={W - 16} height={H - 16} rx={24} fill="url(#mm-heat-grad)" stroke="#161B2E" strokeWidth={2} />
+              {/* clean rounded frame — border tints to the active sector */}
+              <rect x={8} y={8} width={W - 16} height={H - 16} rx={24} fill="url(#mm-heat-grad)" stroke={activeColor} strokeWidth={2.5} style={{ transition: "stroke 0.3s ease" }} />
               <g clipPath="url(#mm-heat-clip)">
                 <g transform={`translate(${heat.ox},${heat.oy})`}>
                   {/* sector blocks — faint sector-tinted backing */}
@@ -675,7 +698,11 @@ export function HomeMarketMaps() {
             Real headquarters on a live globe. Drag to spin · scroll to zoom · click a cluster to fan out its companies.
           </div>
         )}
-        <em className="mm-maps__asof">{mode === "globe" ? "dot size = market cap" : "size = market cap · tint = today’s move"}</em>
+        <em className="mm-maps__asof">
+          {mode === "globe"
+            ? "dot size = market cap"
+            : "size = market cap · fill = today’s move · scroll or tap a chip to switch sector"}
+        </em>
       </div>
     </div>
   );
