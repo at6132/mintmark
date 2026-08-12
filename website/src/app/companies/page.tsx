@@ -238,9 +238,16 @@ export default function CompaniesPage() {
                         ) : null}
                         <span className="ara-company-catalog__period">{c.period || "1Y"}</span>
                       </div>
-                      <div className="ara-company-catalog__open">
-                        <span>{String(settings.open_label || "OPEN FILE")}</span>
-                        <span aria-hidden="true">↗</span>
+                      <div className="ara-company-catalog__tags">
+                        <Link className="ara-company-catalog__tag ara-company-catalog__tag--stories" href={href || "#"}>
+                          Company Stories
+                        </Link>
+                        <Link className="ara-company-catalog__tag ara-company-catalog__tag--digest" href={href || "#"}>
+                          Digest
+                        </Link>
+                        <Link className="ara-company-catalog__tag ara-company-catalog__tag--profile" href={href || "#"}>
+                          Company Profile
+                        </Link>
                       </div>
                     </>
                   );
@@ -248,12 +255,8 @@ export default function CompaniesPage() {
                   const className = `ara-company-catalog__card ara-company-catalog__card--${c.direction || "up"}`;
                   const styleCard = { ["--ara-company-marker" as string]: c.accent_color || "#176D5C" };
 
-                  return href ? (
-                    <Link key={c.id} href={href} className={className} style={styleCard}>
-                      {card}
-                    </Link>
-                  ) : (
-                    <div key={c.id} className={className} style={styleCard} role="link" aria-disabled="true">
+                  return (
+                    <div key={c.id} className={className} style={styleCard}>
                       {card}
                     </div>
                   );

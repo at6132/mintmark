@@ -295,7 +295,7 @@ export function HomeMarketMaps() {
               setOpenCluster(null);
             }}
           >
-            Globe
+            HQ Globe
           </button>
         </div>
       </div>
@@ -338,6 +338,8 @@ export function HomeMarketMaps() {
               <rect x={8} y={8} width={W - 16} height={H - 16} rx={24} fill="url(#mm-heat-grad)" stroke={activeColor} strokeWidth={2.5} style={{ transition: "stroke 0.3s ease" }} />
               <g clipPath="url(#mm-heat-clip)">
                 <g transform={`translate(${heat.ox},${heat.oy})`}>
+                  {/* dark grout so every cell reads with strong contrast */}
+                  <rect x={-HEAT_PAD} y={-HEAT_PAD} width={W} height={H} fill="#12131f" />
                   {/* sector blocks — faint sector-tinted backing */}
                   {sectorNodes.map((s: unknown) => {
                     const n = s as { x0: number; y0: number; x1: number; y1: number; data: { name: string } };
@@ -372,15 +374,15 @@ export function HomeMarketMaps() {
                         >
                           {/* fill = today's move; every cell is ringed in its sector colour */}
                           <rect
-                            x={n.x0 + 1.25}
-                            y={n.y0 + 1.25}
-                            width={Math.max(w - 2.5, 0)}
-                            height={Math.max(h - 2.5, 0)}
+                            x={n.x0 + 1.75}
+                            y={n.y0 + 1.75}
+                            width={Math.max(w - 3.5, 0)}
+                            height={Math.max(h - 3.5, 0)}
                             rx={3}
                             fill={b.bg}
                             stroke={sectorCol}
-                            strokeWidth={2}
-                            strokeOpacity={0.95}
+                            strokeWidth={3}
+                            strokeOpacity={1}
                             strokeDasharray={co.change === null ? "3 2" : undefined}
                           />
                           {showLabel ? (
@@ -423,7 +425,8 @@ export function HomeMarketMaps() {
                         rx={5}
                         fill="none"
                         stroke={col}
-                        strokeWidth={2.5}
+                        strokeWidth={4}
+                        strokeOpacity={1}
                       />
                     );
                   })}
@@ -698,11 +701,6 @@ export function HomeMarketMaps() {
             Real headquarters on a live globe. Drag to spin · scroll to zoom · click a cluster to fan out its companies.
           </div>
         )}
-        <em className="mm-maps__asof">
-          {mode === "globe"
-            ? "dot size = market cap"
-            : "size = market cap · fill = today’s move · scroll or tap a chip to switch sector"}
-        </em>
       </div>
     </div>
   );

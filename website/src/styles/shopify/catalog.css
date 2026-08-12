@@ -1185,3 +1185,93 @@
       justify-self: end;
     }
   }
+
+/* ===== Homepage-vibe revamp: mint paper, cream cards, Fraunces/Grotesk, 3-tag modules ===== */
+.ara-company-catalog {
+  background-color: transparent !important;
+  background-image: none !important;
+}
+.ara-company-catalog .ara-company-catalog__intro h1,
+.ara-company-catalog .ara-company-catalog__group-heading strong {
+  font-family: var(--font-fraunces), "Fraunces", Georgia, serif !important;
+  letter-spacing: -0.02em;
+}
+.ara-company-catalog .ara-company-catalog__eyebrow,
+.ara-company-catalog .ara-company-catalog__brand-index span,
+.ara-company-catalog .ara-company-catalog__filter,
+.ara-company-catalog .ara-company-catalog__ticker,
+.ara-company-catalog .ara-company-catalog__group-heading small {
+  font-family: var(--font-space-grotesk), "Space Grotesk", sans-serif !important;
+}
+/* group heading gets a gold underline like the homepage section mastheads */
+.ara-company-catalog .ara-company-catalog__group-heading {
+  border-bottom: 2px solid #161b2e;
+  box-shadow: 0 3px 0 -1px #e0a526;
+  padding-bottom: 8px;
+}
+/* sector filter chips → rounded pills */
+.ara-company-catalog .ara-company-catalog__filter {
+  border-radius: 999px !important;
+  border: 1.5px solid #161b2e !important;
+  transition: background 0.18s ease, color 0.18s ease, transform 0.18s ease;
+}
+.ara-company-catalog .ara-company-catalog__filter:hover { transform: translateY(-1px); }
+.ara-company-catalog .ara-company-catalog__filter.is-active {
+  background: #161b2e !important;
+  color: #fffdf6 !important;
+}
+/* cards → cream paper, rounded, mint top-stripe, soft shadow (matches home tiles) */
+.ara-company-catalog .ara-company-catalog__card {
+  position: relative;
+  background: linear-gradient(160deg, #fffdf6, #f8f4e9 68%) !important;
+  border: 2px solid #161b2e !important;
+  border-radius: 12px !important;
+  box-shadow: 4px 4px 0 color-mix(in srgb, var(--ara-company-marker, #176d5c) 26%, transparent) !important;
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.ara-company-catalog .ara-company-catalog__card::before {
+  content: "";
+  position: absolute; top: 0; left: 0; height: 4px; width: 64px;
+  background: var(--ara-company-marker, #176d5c); z-index: 2;
+  transition: width 0.35s cubic-bezier(0.3, 0.1, 0.2, 1);
+}
+.ara-company-catalog .ara-company-catalog__card:hover {
+  transform: translateY(-3px);
+  box-shadow: 7px 7px 0 color-mix(in srgb, var(--ara-company-marker, #176d5c) 40%, transparent) !important;
+}
+.ara-company-catalog .ara-company-catalog__card:hover::before { width: 100%; }
+/* 3 tagged modules */
+.ara-company-catalog .ara-company-catalog__tags {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 6px;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid color-mix(in srgb, #161b2e 18%, transparent);
+}
+.ara-company-catalog .ara-company-catalog__tag {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 7px 11px;
+  border-radius: 8px;
+  border: 1.5px solid #161b2e;
+  font-family: var(--font-space-grotesk), "Space Grotesk", sans-serif;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: #161b2e;
+  background: #fffdf6;
+  transition: background 0.16s ease, color 0.16s ease, transform 0.16s ease;
+}
+.ara-company-catalog .ara-company-catalog__tag::after { content: "→"; opacity: 0.55; }
+.ara-company-catalog .ara-company-catalog__tag:hover { transform: translateX(2px); }
+.ara-company-catalog .ara-company-catalog__tag--stories:hover { background: #176d5c; color: #fffdf6; }
+.ara-company-catalog .ara-company-catalog__tag--digest { border-left: 4px solid #e0a526; }
+.ara-company-catalog .ara-company-catalog__tag--digest:hover { background: #e0a526; color: #161b2e; }
+.ara-company-catalog .ara-company-catalog__tag--profile { border-left: 4px solid #3a5be0; }
+.ara-company-catalog .ara-company-catalog__tag--profile:hover { background: #161b2e; color: #fffdf6; }
+.ara-company-catalog .ara-company-catalog__tag--stories { border-left: 4px solid #176d5c; }

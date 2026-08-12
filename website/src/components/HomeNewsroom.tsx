@@ -338,7 +338,6 @@ export function HomeNewsroom() {
             <div className="ara-editorial-front-page__section-heading">
               <div>
                 <h3>{String(ed.heat_heading || "Market Maps")}</h3>
-                <span>{String(ed.heat_note || "U.S. COMPANIES · SECTORS & HEADQUARTERS")}</span>
               </div>
               <i />
             </div>

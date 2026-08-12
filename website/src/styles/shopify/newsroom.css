@@ -2301,18 +2301,9 @@
          above each kicker + breathing room below, and vertical column dividers --- */
   .ara-editorial-front-page .ara-editorial-front-page__section-heading { margin: 6px 0 22px; padding-bottom: 10px; }
   .ara-editorial-front-page .ara-editorial-front-page__section-heading i { display: none; }
-  .ara-editorial-front-page .ara-editorial-front-page__section-heading::before {
-    content: ""; position: absolute; top: -12px; left: 0; right: 0; height: 1px;
-    background: var(--ara-news-border);
-  }
-  /* vertical divider between the side-by-side pair (short takes | map) */
-  .ara-editorial-front-page .ara-nr-band3 { column-gap: 0; }
-  .ara-editorial-front-page .ara-nr-col--short { padding-right: 34px; }
-  .ara-editorial-front-page .ara-nr-col--heat { border-left: 1px solid var(--ara-news-border); padding-left: 34px; }
-  @media (max-width: 989px) {
-    .ara-editorial-front-page .ara-nr-col--short { padding-right: 0; }
-    .ara-editorial-front-page .ara-nr-col--heat { border-left: 0; padding-left: 0; }
-  }
+  .ara-editorial-front-page .ara-editorial-front-page__section-heading::before { content: none; }
+  /* clean gap between the side-by-side pair (short takes | map) — no hairline */
+  .ara-editorial-front-page .ara-nr-band3 { column-gap: 34px; }
   /* mint hairline accent joining the strip column head */
   .ara-editorial-front-page .ara-nr-strip .ara-nr-flip__front { border-top: 3px solid var(--sec, var(--ara-news-mint)); }
   .ara-editorial-front-page .ara-nr-sq .ara-nr-flip__front { border-top: 3px solid var(--sec, var(--ara-news-mint)); }
