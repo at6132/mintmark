@@ -298,7 +298,7 @@ export function HomeNewsroom() {
         ) : null}
 
         <section className="ara-nr-band3">
-          <div className="ara-nr-col" style={{ ["--sec" as string]: "#c15a3c" }}>
+          <div className="ara-nr-col ara-nr-col--short" style={{ ["--sec" as string]: "#c15a3c" }}>
             <div className="ara-editorial-front-page__section-heading">
               <div>
                 <h3>{String(ed.quick_heading || "Short Takes")}</h3>
@@ -339,7 +339,7 @@ export function HomeNewsroom() {
             </div>
           </div>
 
-          <div className="ara-nr-col" style={{ ["--sec" as string]: "#c0881e" }}>
+          <div className="ara-nr-col ara-nr-col--pitch" style={{ ["--sec" as string]: "#c0881e" }}>
             <div className="ara-editorial-front-page__section-heading">
               <div>
                 <h3>{String(ed.reports_heading || "Company Pitches")}</h3>
@@ -373,10 +373,8 @@ export function HomeNewsroom() {
               ))}
             </div>
           </div>
-        </section>
 
-        <section className="ara-nr-band4">
-          <div className="ara-nr-col" style={{ ["--sec" as string]: "#7a4e86" }}>
+          <div className="ara-nr-col ara-nr-col--more" style={{ ["--sec" as string]: "#7a4e86" }}>
             <div className="ara-editorial-front-page__section-heading">
               <div>
                 <h3>{String(ed.featured_heading || "More Stories")}</h3>
@@ -450,7 +448,7 @@ export function HomeNewsroom() {
             </div>
           </div>
 
-          <div className="ara-nr-col" style={{ ["--sec" as string]: "#2f7e8c" }}>
+          <div className="ara-nr-col ara-nr-col--map" style={{ ["--sec" as string]: "#2f7e8c" }}>
             <div className="ara-editorial-front-page__section-heading">
               <div>
                 <h3>{String(ed.map_heading || "Market Map")}</h3>

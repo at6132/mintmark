@@ -102,6 +102,38 @@
         "market_value": "4.24%",
         "change": "0.03%",
         "direction": "down"
+      },
+      {
+        "id": "market_item_rus2k",
+        "type": "market_item",
+        "market_name": "RUSSELL 2000",
+        "market_value": "2,284",
+        "change": "0.55%",
+        "direction": "up"
+      },
+      {
+        "id": "market_item_vix",
+        "type": "market_item",
+        "market_name": "VIX",
+        "market_value": "14.62",
+        "change": "1.20%",
+        "direction": "down"
+      },
+      {
+        "id": "market_item_gold",
+        "type": "market_item",
+        "market_name": "GOLD",
+        "market_value": "2,412",
+        "change": "0.30%",
+        "direction": "up"
+      },
+      {
+        "id": "market_item_btc",
+        "type": "market_item",
+        "market_name": "BITCOIN",
+        "market_value": "61,240",
+        "change": "1.85%",
+        "direction": "up"
       }
     ]
   },

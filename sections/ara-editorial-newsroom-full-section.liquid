@@ -2809,17 +2809,13 @@
     content: ""; position: absolute; top: -12px; left: 0; right: 0; height: 1px;
     background: var(--ara-news-border);
   }
-  #AraEditorialFrontPage-{{ S }} .ara-nr-band3,
-  #AraEditorialFrontPage-{{ S }} .ara-nr-band4 { gap: 0; }
-  #AraEditorialFrontPage-{{ S }} .ara-nr-band3 > .ara-nr-col + .ara-nr-col,
-  #AraEditorialFrontPage-{{ S }} .ara-nr-band4 > .ara-nr-col + .ara-nr-col { border-left: 1px solid var(--ara-news-border); padding-left: 34px; }
-  #AraEditorialFrontPage-{{ S }} .ara-nr-band3 > .ara-nr-col:first-child,
-  #AraEditorialFrontPage-{{ S }} .ara-nr-band4 > .ara-nr-col:first-child { padding-right: 34px; }
+  #AraEditorialFrontPage-{{ S }} .ara-nr-band3 { column-gap: 0; }
+  /* vertical divider only between the top-row pair (more stories | short takes) */
+  #AraEditorialFrontPage-{{ S }} .ara-nr-col--short { border-left: 1px solid var(--ara-news-border); padding-left: 34px; }
+  #AraEditorialFrontPage-{{ S }} .ara-nr-col--more { padding-right: 34px; }
   @media (max-width: 989px) {
-    #AraEditorialFrontPage-{{ S }} .ara-nr-band3 > .ara-nr-col + .ara-nr-col,
-    #AraEditorialFrontPage-{{ S }} .ara-nr-band4 > .ara-nr-col + .ara-nr-col { border-left: 0; padding-left: 0; }
-    #AraEditorialFrontPage-{{ S }} .ara-nr-band3 > .ara-nr-col:first-child,
-    #AraEditorialFrontPage-{{ S }} .ara-nr-band4 > .ara-nr-col:first-child { padding-right: 0; }
+    #AraEditorialFrontPage-{{ S }} .ara-nr-col--short { border-left: 0; padding-left: 0; }
+    #AraEditorialFrontPage-{{ S }} .ara-nr-col--more { padding-right: 0; }
   }
   /* mint hairline accent joining the strip column head */
   #AraEditorialFrontPage-{{ S }} .ara-nr-strip .ara-nr-flip__front { border-top: 3px solid var(--sec, var(--ara-news-mint)); }

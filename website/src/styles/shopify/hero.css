@@ -68,8 +68,8 @@
   .ara-mintmark-hero .ara-mintmark-hero__inner {
     position: relative;
     display: grid;
-    grid-template-columns: minmax(0, 1.08fr) minmax(220px, 0.4fr);
-    gap: clamp(32px, 5vw, 84px);
+    grid-template-columns: minmax(0, 1.12fr) minmax(300px, 0.46fr);
+    gap: clamp(28px, 3.5vw, 60px);
     align-items: stretch;
     width: min(100%, var(--ara-hero-max));
     min-height: var(--ara-hero-min-height);
@@ -166,17 +166,135 @@
     color: var(--ara-hero-text);
   }
 
+  .ara-mintmark-hero .ara-mintmark-hero__market-frame {
+    position: relative;
+    z-index: 3;
+    width: 100%;
+    margin-top: auto;
+  }
+
   .ara-mintmark-hero .ara-mintmark-hero__market {
     position: relative;
     z-index: 3;
-    align-self: center;
-    justify-self: end;
-    width: min(100%, 280px);
-    padding: 22px 20px;
-    border: 1px solid var(--ara-hero-gold);
-    background: color-mix(in srgb, var(--ara-hero-panel) 92%, transparent);
-    box-shadow: 0 15px 30px rgba(22, 27, 46, 0.08);
+    width: 100%;
+    padding: 16px 18px 18px;
+    border: 1.5px solid var(--ara-hero-gold);
+    border-radius: 12px;
+    background: color-mix(in srgb, var(--ara-hero-panel) 90%, transparent);
+    box-shadow: 0 14px 30px rgba(22, 27, 46, 0.10);
     backdrop-filter: blur(2px);
+  }
+
+  /* compact horizontal flip tiles: word on the front, numbers on the back */
+  .ara-mintmark-hero .ara-mintmark-hero__market-tiles {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 7px;
+    margin-top: 12px;
+  }
+
+  .ara-mintmark-hero .ara-mintmark-hero__mtile {
+    position: relative;
+    height: 48px;
+    perspective: 900px;
+    cursor: default;
+    outline: none;
+  }
+
+  .ara-mintmark-hero .ara-mintmark-hero__mtile-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    transition: transform 0.55s cubic-bezier(0.35, 0.1, 0.25, 1);
+  }
+
+  .ara-mintmark-hero .ara-mintmark-hero__mtile:hover .ara-mintmark-hero__mtile-inner,
+  .ara-mintmark-hero .ara-mintmark-hero__mtile:focus-within .ara-mintmark-hero__mtile-inner {
+    transform: rotateX(180deg);
+  }
+
+  .ara-mintmark-hero .ara-mintmark-hero__mtile-face {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1px;
+    padding: 5px 12px;
+    overflow: hidden;
+    border: 1.5px solid #161B2E;
+    border-left: 4px solid var(--ara-hero-gold);
+    border-radius: 8px;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+  }
+  /* back face is a row: ticker · level · change */
+  .ara-mintmark-hero .ara-mintmark-hero__mtile-back {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+  }
+
+  .ara-mintmark-hero .ara-mintmark-hero__mtile-front {
+    background: linear-gradient(120deg, #FFFDF6, #EAF6EF);
+    box-shadow: 3px 3px 0 rgba(23, 109, 92, 0.16);
+  }
+
+  .ara-mintmark-hero .ara-mintmark-hero__mtile-back {
+    transform: rotateX(180deg);
+    background: linear-gradient(120deg, #1d2338, #0e1220);
+    box-shadow: 3px 3px 0 rgba(23, 109, 92, 0.28);
+  }
+
+  .ara-mintmark-hero .ara-mintmark-hero__mtile-front strong {
+    font-family: var(--font-body-family);
+    font-size: 11px;
+    font-weight: 900;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ara-hero-accent);
+  }
+
+  .ara-mintmark-hero .ara-mintmark-hero__mtile-front p {
+    margin: 0;
+    font-family: var(--font-body-family);
+    font-size: 11px;
+    line-height: 1.2;
+    color: #3a4152;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .ara-mintmark-hero .ara-mintmark-hero__mtile-name {
+    font-family: var(--font-body-family);
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ara-hero-gold);
+  }
+
+  .ara-mintmark-hero .ara-mintmark-hero__mtile-val {
+    font-family: var(--font-body-family);
+    font-size: 15px;
+    font-weight: 800;
+    color: #FFFFFF;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .ara-mintmark-hero .ara-mintmark-hero__mtile-back .ara-mintmark-hero__market-change {
+    font-size: 10px;
+    font-weight: 800;
+    font-variant-numeric: tabular-nums;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ara-mintmark-hero .ara-mintmark-hero__mtile-inner { transition: none; }
+    .ara-mintmark-hero .ara-mintmark-hero__mtile:hover .ara-mintmark-hero__mtile-inner,
+    .ara-mintmark-hero .ara-mintmark-hero__mtile:focus-within .ara-mintmark-hero__mtile-inner { transform: none; }
   }
 
   .ara-mintmark-hero .ara-mintmark-hero__market-head {
@@ -361,7 +479,7 @@
   }
 @media screen and (max-width: 1199px) {
     .ara-mintmark-hero .ara-mintmark-hero__inner {
-      grid-template-columns: minmax(0, 1fr) minmax(210px, 0.35fr);
+      grid-template-columns: minmax(0, 1fr) minmax(264px, 0.42fr);
     }
 
   }
@@ -371,26 +489,25 @@
       background:
         linear-gradient(
           90deg,
-          rgba(242, 251, 247, 0.98) 0%,
-          rgba(242, 251, 247, 0.94) 38%,
-          rgba(230, 247, 239, 0.72) 68%,
-          rgba(220, 243, 233, 0.34) 100%
+          rgba(211, 238, 221, 0.9) 0%,
+          rgba(211, 238, 221, 0.62) 45%,
+          rgba(211, 238, 221, 0.28) 72%,
+          rgba(211, 238, 221, 0) 100%
         );
     }
 
     .ara-mintmark-hero .ara-mintmark-hero__inner {
       grid-template-columns: 1fr;
-      align-content: center;
+      align-content: space-between;
     }
 
     .ara-mintmark-hero .ara-mintmark-hero__market {
-      justify-self: start;
-      width: min(100%, 520px);
+      justify-self: stretch;
+      width: 100%;
     }
 
-    .ara-mintmark-hero .ara-mintmark-hero__market-list {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 0 18px;
+    .ara-mintmark-hero .ara-mintmark-hero__market-tiles {
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
     }
 }
 
@@ -618,34 +735,33 @@
   }
 
   .ara-mintmark-hero .ara-mintmark-hero__market-frame {
-    justify-self: end;
-    width: min(100%, 320px);
-    border-radius: 20px;
+    justify-self: stretch;
+    width: 100%;
+    max-width: none;
+    border-radius: 18px;
     box-shadow:
-      8px 8px 0 var(--ara-hero-blue-deep),
-      14px 14px 0 color-mix(in srgb, var(--ara-hero-gold) 68%, transparent);
+      6px 6px 0 color-mix(in srgb, var(--ara-hero-accent) 55%, transparent),
+      12px 12px 0 color-mix(in srgb, var(--ara-hero-gold) 50%, transparent);
   }
 
+  /* sleek on-theme snapshot: warm paper panel, ink border, mint + gold trim (no more blue) */
   .ara-mintmark-hero .ara-mintmark-hero__market {
     flex: 1;
     width: 100%;
+    position: relative;
     overflow: hidden;
-    padding: 25px 22px;
-    border: 3px solid var(--ara-hero-text);
+    padding: 18px 20px 20px;
+    border: 2.5px solid var(--ara-hero-text);
     border-radius: 13px;
     background:
       radial-gradient(
-        circle at 115% 115%,
-        color-mix(in srgb, var(--ara-hero-gold) 16%, transparent) 0 30%,
-        transparent 31%
+        circle at 114% 116%,
+        color-mix(in srgb, var(--ara-hero-gold) 16%, transparent) 0 26%,
+        transparent 27%
       ),
-      linear-gradient(
-        145deg,
-        var(--ara-hero-blue),
-        var(--ara-hero-blue-deep)
-      );
-    color: #FFFFFF;
-    box-shadow: none;
+      linear-gradient(160deg, #FFFEFA 0%, #F1F9F3 58%, #E7F4EC 100%);
+    color: var(--ara-hero-text);
+    box-shadow: inset 0 3px 0 color-mix(in srgb, var(--ara-hero-accent) 70%, transparent);
     backdrop-filter: none;
   }
 
@@ -656,31 +772,32 @@
     right: 15px;
     width: 52px;
     height: 9px;
-    border-top: 2px solid rgba(255, 255, 255, 0.6);
-    border-bottom: 2px solid rgba(255, 255, 255, 0.6);
+    border-top: 2px solid color-mix(in srgb, var(--ara-hero-accent) 55%, transparent);
+    border-bottom: 2px solid color-mix(in srgb, var(--ara-hero-accent) 55%, transparent);
   }
 
   .ara-mintmark-hero .ara-mintmark-hero__market-head {
     position: relative;
     z-index: 1;
-    border-bottom: 2px solid rgba(255, 255, 255, 0.78);
+    border-bottom: 2px solid color-mix(in srgb, var(--ara-hero-text) 22%, transparent);
   }
 
   .ara-mintmark-hero .ara-mintmark-hero__market-head span {
-    color: #FFFFFF;
+    color: var(--ara-hero-accent);
     font-size: var(--ara-hero-market-heading-size);
   }
 
   .ara-mintmark-hero .ara-mintmark-hero__market-head small {
-    color: rgba(255, 255, 255, 0.66);
+    color: var(--ara-hero-muted);
     font-size: var(--ara-hero-folio-size);
   }
 
   .ara-mintmark-hero .ara-mintmark-hero__market-badge {
-    padding: 4px 8px;
+    padding: 4px 9px;
     border: 1px solid var(--ara-hero-gold);
     border-radius: 999px;
-    color: var(--ara-hero-gold);
+    color: #7a5311;
+    background: color-mix(in srgb, var(--ara-hero-gold) 22%, transparent);
     font-size: var(--ara-hero-folio-size);
   }
 
@@ -734,8 +851,8 @@
 
   @media screen and (max-width: 899px) {
     .ara-mintmark-hero .ara-mintmark-hero__market-frame {
-      justify-self: start;
-      width: min(100%, 520px);
+      justify-self: stretch;
+      width: 100%;
     }
   }
 
@@ -765,8 +882,8 @@
     .ara-mintmark-hero .ara-mintmark-hero__market-frame {
       width: 100%;
       box-shadow:
-        5px 5px 0 var(--ara-hero-blue-deep),
-        10px 10px 0 color-mix(in srgb, var(--ara-hero-gold) 62%, transparent);
+        5px 5px 0 color-mix(in srgb, var(--ara-hero-accent) 55%, transparent),
+        10px 10px 0 color-mix(in srgb, var(--ara-hero-gold) 55%, transparent);
     }
 
     .ara-mintmark-hero .ara-mintmark-hero__market-head span {
@@ -913,6 +1030,9 @@
     /* highlighter plate stays put — only the word animates */
     transition: none;
     opacity: 1 !important;
+    /* clip's overflow:hidden makes this inline-block align by its bottom edge,
+       which floats the word high — drop it back onto the text baseline. */
+    vertical-align: -0.2em;
   }
 
   .ara-mintmark-hero .ara-mintmark-hero__heading .mm-hl.is-swap {
@@ -943,24 +1063,25 @@
     animation: mm-hl-swipe-in 0.46s cubic-bezier(0.2, 0.7, 0.2, 1) both;
   }
 
+  /* clean vertical roll + fade — outgoing lifts up, incoming rises into place */
   @keyframes mm-hl-swipe-out {
     from {
-      transform: translateX(0);
+      transform: translateY(0);
       opacity: 1;
     }
     to {
-      transform: translateX(110%);
+      transform: translateY(-64%);
       opacity: 0;
     }
   }
 
   @keyframes mm-hl-swipe-in {
     from {
-      transform: translateX(-110%);
+      transform: translateY(64%);
       opacity: 0;
     }
     to {
-      transform: translateX(0);
+      transform: translateY(0);
       opacity: 1;
     }
   }

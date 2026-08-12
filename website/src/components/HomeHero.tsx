@@ -233,43 +233,42 @@ export function HomeHero() {
                 ) : null}
               </div>
 
-              {news.length > 0 ? (
-                <div className="ara-mintmark-hero__market-news">
-                  {news.map((block) => (
-                    <div key={block.id} className="ara-mintmark-hero__market-news-strip">
-                      <div className="ara-mintmark-hero__market-news-strip-inner">
-                        <div className="ara-mintmark-hero__market-news-front">
-                          <strong>{block.market_name}</strong>
-                          <p>{block.headline}</p>
-                        </div>
-                        <div className="ara-mintmark-hero__market-news-back">
-                          <strong>{block.market_name}</strong>
-                          <span>{block.market_value}</span>
-                          <em className={`ara-mintmark-hero__market-change ara-mintmark-hero__market-change--${block.direction}`}>
-                            {block.direction === "up" ? "▲" : block.direction === "down" ? "▼" : "—"} {block.change}
-                          </em>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              ) : null}
-
-              {items.length > 0 ? (
-                <div className="ara-mintmark-hero__market-list">
-                  {items.map((block) => (
-                    <div key={block.id} className="ara-mintmark-hero__market-item">
-                      <div>
+              <div className="ara-mintmark-hero__market-tiles">
+                {news.map((block) => (
+                  <div key={block.id} className="ara-mintmark-hero__mtile" tabIndex={0}>
+                    <div className="ara-mintmark-hero__mtile-inner">
+                      <div className="ara-mintmark-hero__mtile-face ara-mintmark-hero__mtile-front">
                         <strong>{block.market_name}</strong>
-                        {block.market_value ? <span>{block.market_value}</span> : null}
+                        <p>{block.headline}</p>
                       </div>
-                      <em className={`ara-mintmark-hero__market-change ara-mintmark-hero__market-change--${block.direction}`}>
-                        {block.direction === "up" ? "▲" : block.direction === "down" ? "▼" : "—"} {block.change}
-                      </em>
+                      <div className="ara-mintmark-hero__mtile-face ara-mintmark-hero__mtile-back">
+                        <span className="ara-mintmark-hero__mtile-name">{block.market_name}</span>
+                        <span className="ara-mintmark-hero__mtile-val">{block.market_value}</span>
+                        <em className={`ara-mintmark-hero__market-change ara-mintmark-hero__market-change--${block.direction}`}>
+                          {block.direction === "up" ? "▲" : block.direction === "down" ? "▼" : "—"} {block.change}
+                        </em>
+                      </div>
                     </div>
-                  ))}
-                </div>
-              ) : null}
+                  </div>
+                ))}
+                {items.map((block) => (
+                  <div key={block.id} className="ara-mintmark-hero__mtile" tabIndex={0}>
+                    <div className="ara-mintmark-hero__mtile-inner">
+                      <div className="ara-mintmark-hero__mtile-face ara-mintmark-hero__mtile-front">
+                        <strong>{block.market_name}</strong>
+                        <p>Tap for today&rsquo;s level</p>
+                      </div>
+                      <div className="ara-mintmark-hero__mtile-face ara-mintmark-hero__mtile-back">
+                        <span className="ara-mintmark-hero__mtile-name">{block.market_name}</span>
+                        <span className="ara-mintmark-hero__mtile-val">{block.market_value}</span>
+                        <em className={`ara-mintmark-hero__market-change ara-mintmark-hero__market-change--${block.direction}`}>
+                          {block.direction === "up" ? "▲" : block.direction === "down" ? "▼" : "—"} {block.change}
+                        </em>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
 
               {hero.market_note ? (
                 <p className="ara-mintmark-hero__market-note">{String(hero.market_note)}</p>

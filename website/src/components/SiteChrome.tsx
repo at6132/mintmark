@@ -242,15 +242,6 @@ function Footer() {
                 height={220}
               />
             </Link>
-            <span className="ara-mintmark-footer__emblem" aria-hidden="true">
-              <img
-                src={assets.mintEmblem}
-                className="ara-mintmark-footer__emblem-image"
-                alt=""
-                width={600}
-                height={400}
-              />
-            </span>
           </div>
           {f.statement ? <p>{String(f.statement)}</p> : null}
         </div>

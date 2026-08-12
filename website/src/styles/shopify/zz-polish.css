@@ -1,0 +1,261 @@
+/* ============================================================================
+   zz-polish.css — sleek, glossy finishing layer (loaded LAST, wins the cascade)
+   Goal: a modern, glossy, editorial feel + hundreds of small graphic details:
+   refined type, soft depth, gold/mint trims, smooth motion, tidy focus states.
+   Everything here is additive polish — safe to tweak or remove as one file.
+   ========================================================================== */
+
+/* ---- design tokens for the polish layer ---- */
+:root {
+  --mm-ink: #161b2e;
+  --mm-mint: #176d5c;
+  --mm-mint-bright: #1fa88f;
+  --mm-gold: #e0a526;
+  --mm-cream: #fffdf6;
+  --mm-paper: #f1f9f3;
+  --mm-rise: #12a150;
+  --mm-fall: #c93a32;
+
+  --mm-shadow-sm: 0 1px 2px rgba(22, 27, 46, 0.06), 0 2px 8px rgba(22, 27, 46, 0.06);
+  --mm-shadow-md: 0 6px 18px rgba(22, 27, 46, 0.10), 0 2px 6px rgba(22, 27, 46, 0.06);
+  --mm-shadow-lg: 0 20px 46px rgba(22, 27, 46, 0.14);
+  --mm-gloss: linear-gradient(180deg, rgba(255, 255, 255, 0.55) 0%, rgba(255, 255, 255, 0.12) 26%, rgba(255, 255, 255, 0) 55%);
+  --mm-ease: cubic-bezier(0.34, 1.2, 0.4, 1);
+}
+
+/* ---- 1. TYPOGRAPHY: perfect the type system ------------------------------- */
+/* body reading copy — Alegreya, with ligatures + kerning on */
+html, body {
+  font-feature-settings: "kern" 1, "liga" 1, "calt" 1;
+  text-rendering: optimizeLegibility;
+}
+
+/* display headings — Fraunces optical serif everywhere a heading lives */
+h1, h2, h3,
+.ara-mintmark-hero__heading,
+.ara-editorial-front-page__title-row h2,
+.ara-editorial-front-page__lead h2,
+.ara-editorial-front-page__lead h1,
+.ara-nr-sq h4,
+.mm-simple-page h1,
+.ara-company-hero__title,
+.ara-company-catalog__intro h1,
+.ara-bookshelf .ara-bookshelf-wall__intro h2 {
+  font-family: var(--font-fraunces), "Fraunces", Georgia, serif !important;
+  font-optical-sizing: auto;
+  letter-spacing: -0.02em;
+}
+h1, .ara-mintmark-hero__heading { font-variation-settings: "opsz" 144, "SOFT" 0, "WONK" 0; }
+
+/* labels, eyebrows, tickers, kickers, buttons, figures — Space Grotesk */
+.ara-mintmark-hero__eyebrow,
+.ara-mintmark-hero__folio,
+.ara-mintmark-hero__bottom-note,
+.ara-mintmark-hero__button,
+.ara-mintmark-hero__market-head span,
+.ara-mintmark-hero__market-badge,
+.ara-mintmark-hero__mtile-name,
+.ara-editorial-front-page__eyebrow,
+.ara-editorial-front-page__edition,
+.ara-nr-ticker__label,
+.ara-nr-ticker__item b,
+.ara-editorial-front-page__section-heading span,
+.ara-nr-sq__num b,
+.ara-nr-sq__foot,
+.ara-nr-sq__go,
+.ara-nr-map__chip b,
+.ara-nr-map__chip small,
+.ara-nr-map__foot a,
+.ara-nr-strip__go,
+.ara-mintmark-footer__column h2,
+.mm-chip, .mm-b-lab, .mm-b-go, .mm-cont, .mm-folio {
+  font-family: var(--font-space-grotesk), "Space Grotesk", var(--font-inter), sans-serif !important;
+}
+
+/* tabular figures wherever numbers appear */
+.ara-mintmark-hero__mtile-val,
+.ara-mintmark-hero__market-change,
+.ara-nr-sq__foot,
+.ara-nr-map__chip small,
+.ara-nr-ticker__item b,
+.ara-editorial-front-page__change,
+.mm-b-chg {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1;
+}
+
+/* crisper eyebrows / kickers */
+.ara-mintmark-hero__eyebrow,
+.ara-editorial-front-page__eyebrow { letter-spacing: 0.2em; }
+
+/* selection + caret in brand colour */
+::selection { background: color-mix(in srgb, var(--mm-gold) 40%, transparent); color: var(--mm-ink); }
+:root { accent-color: var(--mm-mint); caret-color: var(--mm-mint); }
+
+/* ---- 2. GLOBAL GLOSS + SMOOTHING ----------------------------------------- */
+/* every interactive card/tile eases the same way */
+.ara-editorial-front-page__lead,
+.ara-editorial-front-page__featured-story,
+.ara-editorial-front-page__question,
+.ara-nr-sq,
+.ara-nr-map__chip,
+.ara-mintmark-hero__button,
+.ara-mintmark-hero__mtile-inner,
+.ara-mintmark-hero__market {
+  transition: transform 0.32s var(--mm-ease), box-shadow 0.32s var(--mm-ease),
+    border-color 0.32s var(--mm-ease), background 0.32s ease;
+}
+
+/* a soft top-sheen on the big framed hero card + market panel (the "glossy" read) */
+.ara-mintmark-hero__content-frame,
+.ara-mintmark-hero__market {
+  position: relative;
+}
+.ara-mintmark-hero__content-frame::after,
+.ara-mintmark-hero__market::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: var(--mm-gloss);
+  mix-blend-mode: screen;
+  opacity: 0.7;
+  pointer-events: none;
+  z-index: 0;
+}
+.ara-mintmark-hero__market > * { position: relative; z-index: 1; }
+
+/* ---- 3. HERO MARKET SNAPSHOT: finishing touches -------------------------- */
+.ara-mintmark-hero__market-head { margin-bottom: 12px; }
+.ara-mintmark-hero__mtile-inner { border-radius: 10px; }
+.ara-mintmark-hero__mtile-front {
+  background-image: var(--mm-gloss), linear-gradient(120deg, #fffdf6, #eaf6ef) !important;
+}
+.ara-mintmark-hero__mtile:hover { z-index: 2; }
+.ara-mintmark-hero__mtile-front strong { letter-spacing: 0.08em; }
+/* tiny up/down arrows get their semantic colour on the dark back */
+.ara-mintmark-hero__market-change--up { color: #7ef0a0 !important; }
+.ara-mintmark-hero__market-change--down { color: #ffb27a !important; }
+
+/* ---- 4. BUTTONS: glossy pills with lift ---------------------------------- */
+.ara-mintmark-hero__button {
+  border-radius: 12px;
+  box-shadow: var(--mm-shadow-sm);
+  overflow: hidden;
+}
+.ara-mintmark-hero__button::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--mm-gloss);
+  opacity: 0.6;
+  pointer-events: none;
+}
+.ara-mintmark-hero__button { position: relative; }
+.ara-mintmark-hero__button--primary:hover {
+  box-shadow: 0 10px 22px color-mix(in srgb, var(--mm-mint) 34%, transparent);
+}
+.ara-mintmark-hero__button--secondary:hover {
+  border-color: var(--mm-gold);
+  box-shadow: 0 10px 22px rgba(22, 27, 46, 0.12);
+}
+
+/* ---- 5. TICKER: soft edges + refined chip -------------------------------- */
+.ara-nr-ticker { border-radius: 12px; box-shadow: var(--mm-shadow-sm); overflow: hidden; }
+.ara-nr-ticker__win {
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent);
+}
+.ara-nr-ticker__dot {
+  box-shadow: 0 0 0 0 color-mix(in srgb, var(--mm-mint-bright) 70%, transparent);
+  animation: mm-pulse 2.4s ease-out infinite;
+}
+@keyframes mm-pulse {
+  0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--mm-mint-bright) 60%, transparent); }
+  70% { box-shadow: 0 0 0 7px transparent; }
+  100% { box-shadow: 0 0 0 0 transparent; }
+}
+.ara-nr-ticker__item { transition: color 0.2s ease; }
+.ara-nr-ticker__item:hover b { color: var(--mm-gold); }
+
+/* ---- 6. FIN. NEWSROOM: section headings, tiles, map ---------------------- */
+/* double-rule masthead accent under every section heading */
+.ara-editorial-front-page__section-heading { letter-spacing: 0.01em; }
+.ara-editorial-front-page__title-row h2 { letter-spacing: -0.02em; }
+
+/* square tiles: gloss + gentle lift, cleaner radius */
+.ara-nr-sq .ara-nr-flip__face { border-radius: 12px; }
+.ara-nr-sq:hover { transform: translateY(-3px); }
+.ara-nr-sq .ara-nr-flip__front { box-shadow: var(--mm-shadow-sm); }
+.ara-nr-sq .ara-nr-flip__front::after {
+  content: ""; position: absolute; inset: 0; border-radius: inherit;
+  background: var(--mm-gloss); opacity: 0.6; pointer-events: none;
+}
+.ara-nr-sq .ara-nr-flip__front { position: relative; overflow: hidden; }
+
+/* market-map chips: rounded, glossy, hover pop with the section colour */
+.ara-nr-map { border-radius: 14px; box-shadow: var(--mm-shadow-md); }
+.ara-nr-map__chip { border-radius: 10px; transition: transform 0.2s var(--mm-ease), box-shadow 0.2s ease, border-color 0.2s ease; }
+.ara-nr-map__chip:hover { transform: translateY(-2px); box-shadow: var(--mm-shadow-sm); }
+
+/* the flip strips (market news): rounded, soft */
+.ara-nr-strip .ara-nr-flip__face { border-radius: 9px; }
+
+/* ---- 7. LINKS: refined underline sweep ----------------------------------- */
+.ara-mintmark-footer__column nav a,
+.ara-editorial-front-page__intro a {
+  background-image: linear-gradient(var(--mm-gold), var(--mm-gold));
+  background-size: 0% 1.5px;
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  transition: background-size 0.3s var(--mm-ease), color 0.2s ease;
+}
+.ara-mintmark-footer__column nav a:hover,
+.ara-editorial-front-page__intro a:hover { background-size: 100% 1.5px; }
+
+/* ---- 8. FOOTER: sleek finish --------------------------------------------- */
+.ara-mintmark-footer { position: relative; }
+.ara-mintmark-footer::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--mm-mint), var(--mm-gold), var(--mm-mint));
+  opacity: 0.9;
+}
+.ara-mintmark-footer__logo-image { filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.25)); }
+
+/* ---- 9. FOCUS-VISIBLE: tidy accessible ring everywhere ------------------- */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid var(--mm-mint-bright);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* ---- 10. CUSTOM SCROLLBAR (sleek, subtle) -------------------------------- */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--mm-mint) 55%, transparent) transparent;
+}
+*::-webkit-scrollbar { width: 11px; height: 11px; }
+*::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--mm-mint) 55%, transparent);
+  border: 3px solid transparent;
+  border-radius: 999px;
+  background-clip: content-box;
+}
+*::-webkit-scrollbar-thumb:hover { background: color-mix(in srgb, var(--mm-mint) 80%, transparent); background-clip: content-box; }
+
+/* ---- 11. IMAGES: warm print mount + hover ------------------------------- */
+.ara-editorial-front-page__lead-media img,
+.ara-editorial-front-page__featured-media img { transition: transform 0.5s var(--mm-ease); }
+.ara-editorial-front-page__lead-media:hover img { transform: scale(1.02); }
+
+/* ---- 12. MOTION SAFETY ---------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .ara-nr-ticker__dot { animation: none; }
+  .ara-mintmark-hero__mtile:hover .ara-mintmark-hero__mtile-inner { transform: none; }
+}
