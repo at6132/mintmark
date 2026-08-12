@@ -265,8 +265,19 @@ input:focus-visible,
 .ara-mintmark-header__nav-subtitle {
   font-size: 11px !important;
   font-weight: 600;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.04em;
   color: color-mix(in srgb, var(--ara-header-muted, #c76b73) 45%, #ffffff) !important;
+  /* show the FULL label — wrap instead of clipping with an ellipsis */
+  overflow: visible !important;
+  white-space: normal !important;
+  text-overflow: clip !important;
+  line-height: 1.18;
+}
+/* give each nav item room for the full two-line label, top-align the copy */
+.ara-mintmark-header__nav-link { align-items: flex-start !important; }
+.ara-mintmark-header__nav-copy { min-width: 0; }
+@media screen and (min-width: 990px) {
+  .ara-mintmark-header__nav-link { min-width: 150px !important; }
 }
 .ara-mintmark-header__nav-index { font-size: 10px !important; font-weight: 700; }
 .ara-mintmark-header__action-link { font-size: 14px !important; font-weight: 800; letter-spacing: 0.08em; }
