@@ -44,8 +44,8 @@
     "border_color": "#c9bea8",
     "nav": [
       {
-        "title": "fin",
-        "subtitle": "a journal",
+        "title": "fin.",
+        "subtitle": "A Financial Journal",
         "href": "/#newsroom"
       },
       {

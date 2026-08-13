@@ -1,0 +1,115 @@
+/* mintmark house ad — Trump Accounts */
+.mm-ad {
+  padding: 40px 0;
+  background: transparent;
+}
+.mm-ad__inner {
+  position: relative;
+  width: min(100% - 48px, 1400px);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+  gap: clamp(24px, 4vw, 60px);
+  align-items: center;
+  padding: clamp(28px, 4vw, 52px);
+  border: 2.5px solid #161b2e;
+  border-radius: 22px;
+  overflow: hidden;
+  color: #fffdf6;
+  background:
+    radial-gradient(120% 140% at 100% 0%, rgba(224, 165, 38, 0.18), transparent 55%),
+    linear-gradient(155deg, #1b2236 0%, #10152a 60%, #0c1020 100%);
+  box-shadow: 0 24px 60px rgba(22, 27, 46, 0.28);
+}
+/* signature mixed-colour trim across the top */
+.mm-ad__inner::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 6px;
+  background: linear-gradient(90deg, #176d5c, #1fbe57 22%, #e0a526 55%, #b88332 78%, #176d5c);
+}
+.mm-ad__eyebrow {
+  display: inline-block;
+  font-family: var(--font-space-grotesk), "Space Grotesk", sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #e0a526;
+  padding: 5px 12px;
+  border: 1.5px solid rgba(224, 165, 38, 0.5);
+  border-radius: 999px;
+  margin-bottom: 16px;
+}
+.mm-ad__headline {
+  margin: 0 0 14px;
+  font-family: var(--font-fraunces), "Fraunces", Georgia, serif;
+  font-size: clamp(30px, 4.2vw, 52px);
+  font-weight: 600;
+  line-height: 1.02;
+  letter-spacing: -0.02em;
+}
+.mm-ad__headline em {
+  font-style: italic;
+  color: #7fd9c4;
+}
+.mm-ad__body {
+  margin: 0 0 24px;
+  max-width: 52ch;
+  font-family: var(--font-body-family), serif;
+  font-size: clamp(15px, 1.4vw, 18px);
+  line-height: 1.55;
+  color: #d7d3ca;
+}
+.mm-ad__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.mm-ad__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 13px 22px;
+  border-radius: 999px;
+  font-family: var(--font-space-grotesk), "Space Grotesk", sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: #161b2e;
+  background: linear-gradient(120deg, #7fd9c4, #e0a526);
+  border: 2px solid #161b2e;
+  transition: transform 0.16s ease, box-shadow 0.16s ease;
+}
+.mm-ad__cta:hover { transform: translateY(-2px); box-shadow: 0 8px 18px rgba(0, 0, 0, 0.3); }
+.mm-ad__cta--ghost {
+  background: transparent;
+  color: #fffdf6;
+  border-color: rgba(255, 253, 246, 0.4);
+}
+.mm-ad__brand {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  text-align: center;
+}
+.mm-ad__mark { width: clamp(90px, 12vw, 150px); height: auto; }
+.mm-ad__wordmark { width: min(100%, 320px); height: auto; filter: brightness(0) invert(1); }
+.mm-ad__tag {
+  font-family: var(--font-space-grotesk), "Space Grotesk", sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #e0a526;
+}
+@media (max-width: 860px) {
+  .mm-ad__inner { grid-template-columns: 1fr; }
+  .mm-ad__brand { flex-direction: row; justify-content: center; flex-wrap: wrap; }
+}

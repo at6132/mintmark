@@ -305,17 +305,10 @@ input:focus-visible,
   background: var(--sec, var(--mm-gold)) !important;
 }
 
-/* square tiles (pitches + short takes): softer shape, cut-corner accent, gloss */
+/* square tiles (pitches + short takes): clean rounded shape (no cut-corner fold) */
 .ara-nr-sq .ara-nr-flip__face { border-radius: 13px !important; }
-.ara-nr-sq .ara-nr-flip__front {
-  clip-path: polygon(0 0, 100% 0, 100% 100%, 14px 100%, 0 calc(100% - 14px));
-}
-.ara-nr-sq .ara-nr-flip__front::before {
-  content: ""; position: absolute; left: 0; bottom: 0;
-  width: 16px; height: 16px;
-  background: linear-gradient(135deg, transparent 50%, var(--sec, var(--mm-mint)) 50%);
-  opacity: 0.9; z-index: 2;
-}
+.ara-nr-sq .ara-nr-flip__front { clip-path: none; }
+.ara-nr-sq .ara-nr-flip__front::before { content: none; }
 .ara-nr-sq__num b {
   border-radius: 6px !important;
   background: color-mix(in srgb, var(--sec, var(--mm-mint)) 12%, transparent);

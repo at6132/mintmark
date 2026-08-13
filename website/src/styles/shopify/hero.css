@@ -1142,3 +1142,9 @@
   @media (prefers-reduced-motion: reduce) {
     .ara-mintmark-hero .ara-mintmark-hero__market-tiles { animation: none; }
   }
+
+  /* market snapshot fills the full height of the content box beside it */
+  .ara-mintmark-hero .ara-mintmark-hero__market-frame { align-self: stretch; height: 100%; margin-top: 0; }
+  .ara-mintmark-hero .ara-mintmark-hero__market { height: 100%; display: flex; flex-direction: column; }
+  .ara-mintmark-hero .ara-mintmark-hero__market-tiles { flex: 1 1 auto; grid-auto-rows: 1fr; align-content: stretch; }
+  .ara-mintmark-hero .ara-mintmark-hero__mtile { height: auto; min-height: 44px; }

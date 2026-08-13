@@ -18,6 +18,7 @@
 @import "../styles/shopify/site-consistency.css";
 @import "../styles/shopify/theme-overrides.css";
 @import "../styles/shopify/market-maps.css";
+@import "../styles/shopify/ad.css";
 /* sleek glossy finishing layer — must load last so it wins the cascade */
 @import "../styles/shopify/zz-polish.css";
 

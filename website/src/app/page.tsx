@@ -1,5 +1,6 @@
 import { HomeHero } from "@/components/HomeHero";
 import { HomeNewsroom } from "@/components/HomeNewsroom";
+import { AdBanner } from "@/components/AdBanner";
 import { InlineEmail } from "@/components/InlineEmail";
 
 export default function HomePage() {
@@ -7,6 +8,7 @@ export default function HomePage() {
     <>
       <HomeHero />
       <HomeNewsroom />
+      <AdBanner />
       <InlineEmail />
     </>
   );
