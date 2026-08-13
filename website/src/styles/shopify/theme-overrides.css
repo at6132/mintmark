@@ -194,9 +194,9 @@
       .mm-tile .mm-b-chg,.mm-folio{ font-variant-numeric:tabular-nums; font-feature-settings:"tnum" 1; }
       /* Fraunces display cut for big headlines */
       .ara-editorial-front-page__lead h2,.ara-editorial-front-page__lead h1,.ara-short-takes__card h3,.ara-editorial-front-page__featured-copy h3{ font-variation-settings:"opsz" 120,"SOFT" 0,"WONK" 1; }
-      /* double-rule section mastheads */
+      /* single clean masthead rule (gold accent comes from the ::after tab) */
       .ara-editorial-front-page__section-heading,.ara-short-takes__head h2{ padding-bottom:8px !important;border-bottom:2px solid #161B2E !important;
-        box-shadow:0 3px 0 -1px #e0a526; }
+        box-shadow:none !important; }
       /* paper warmth shift by zone */
       .ara-editorial-front-page__lead,.ara-editorial-front-page__featured-story{ --paper:#FFFDF6; }
       .ara-editorial-front-page__market-item,.ara-editorial-front-page__quick-item,.ara-editorial-front-page__report{ --paper:#F8F4E9; }
