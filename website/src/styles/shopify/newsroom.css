@@ -2291,12 +2291,9 @@
   .ara-editorial-front-page .ara-nr-sq .ara-nr-flip__face { box-shadow: 0 10px 24px rgba(22,27,46,.06); }
   .ara-editorial-front-page .ara-nr-map { box-shadow: 0 10px 26px rgba(22,27,46,.06); }
 
-  /* --- accent nuance: gold tab under every section heading --- */
+  /* single clean underline — no stacked accent tab (was a double line on the left) */
   .ara-editorial-front-page .ara-editorial-front-page__section-heading { position: relative; }
-  .ara-editorial-front-page .ara-editorial-front-page__section-heading::after {
-    content: ""; position: absolute; left: 0; bottom: -2px; width: 46px; height: 3px;
-    background: var(--sec, var(--ara-news-gold)); border-radius: 3px;
-  }
+  .ara-editorial-front-page .ara-editorial-front-page__section-heading::after { content: none; }
   /* --- WSJ-style rules: kill the misaligned floating hairline, add a clean thin rule
          above each kicker + breathing room below, and vertical column dividers --- */
   .ara-editorial-front-page .ara-editorial-front-page__section-heading { margin: 6px 0 22px; padding-bottom: 10px; }
@@ -2356,3 +2353,21 @@
   .ara-editorial-front-page .ara-nr-ticker { order: 1; }
   .ara-editorial-front-page .ara-nr-band1 { order: 2; }
   .ara-editorial-front-page .ara-nr-band3 { order: 3; }
+
+  /* --- featured carousel (lead slot) --- */
+  .ara-editorial-front-page .ara-nr-feat__img,
+  .ara-editorial-front-page .ara-nr-feat__heading,
+  .ara-editorial-front-page .ara-nr-feat__body { animation: mm-feat-fade 0.5s ease; }
+  @keyframes mm-feat-fade { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+  .ara-editorial-front-page .ara-nr-feat__dots { display: flex; gap: 8px; margin-top: 16px; }
+  .ara-editorial-front-page .ara-nr-feat__dot {
+    width: 22px; height: 5px; border-radius: 999px; border: 0; cursor: pointer; padding: 0;
+    background: color-mix(in srgb, var(--ara-story-accent, #176d5c) 28%, #c9bea8);
+    transition: background 0.2s ease, width 0.2s ease;
+  }
+  .ara-editorial-front-page .ara-nr-feat__dot.is-on { width: 34px; background: var(--ara-story-accent, #176d5c); }
+  @media (prefers-reduced-motion: reduce) {
+    .ara-editorial-front-page .ara-nr-feat__img,
+    .ara-editorial-front-page .ara-nr-feat__heading,
+    .ara-editorial-front-page .ara-nr-feat__body { animation: none; }
+  }

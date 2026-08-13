@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { homeContent } from "@/data/home";
 import { appHref, assets } from "@/lib/assets";
 import { stripHtml } from "@/lib/format";
@@ -14,12 +14,61 @@ export function HomeNewsroom() {
   const blocks = (homeContent.editorial.blocks || []) as unknown as Block[];
   const marketNews = blocks.filter((b) => b.type === "market_news");
   const lead = blocks.find((b) => b.type === "lead_story");
+  const featured = blocks.filter((b) => b.type === "featured_story");
   const question = blocks.find((b) => b.type === "question");
   const quads = blocks.filter((b) => b.type === "quick_take");
   const reports = blocks.filter((b) => b.type === "stock_report");
 
   const [dateLabel, setDateLabel] = useState("");
   const rootRef = useRef<HTMLElement | null>(null);
+
+  // Featured carousel: the lead pitch + the featured stories, shuffled through.
+  const featImg = (s: Block) => {
+    const t = `${s.company || ""} ${s.ticker || ""} ${s.heading || ""}`;
+    return /apple/i.test(t) ? assets.appleFeature : /costco/i.test(t) ? assets.costcoFeature : assets.nvdaLead;
+  };
+  const featSlides = useMemo(() => {
+    const slides: Array<Record<string, string>> = [];
+    if (lead)
+      slides.push({
+        key: "lead",
+        story_type: lead.story_type || "",
+        company: lead.company || "",
+        ticker: lead.ticker || "",
+        heading: lead.heading || "",
+        body: lead.description || "",
+        link: lead.link || "",
+        link_label: lead.link_label || "READ THE PITCH",
+        module_link: lead.company_module_link || "",
+        module_label: lead.company_module_label || "OPEN COMPANY FILE",
+        accent: lead.accent_color || "#176d5c",
+        image: featImg(lead),
+      });
+    featured.forEach((f, i) =>
+      slides.push({
+        key: `f${i}`,
+        story_type: f.story_type || "",
+        company: f.company || "",
+        ticker: f.ticker || "",
+        heading: f.heading || "",
+        body: f.summary || "",
+        link: f.link || "",
+        link_label: f.link_label || "READ",
+        module_link: f.company_module_link || "",
+        module_label: f.company_module_label || "COMPANY FILE",
+        accent: f.accent_color || "#176d5c",
+        image: featImg(f),
+      }),
+    );
+    return slides;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [lead, featured]);
+  const [featIdx, setFeatIdx] = useState(0);
+  useEffect(() => {
+    if (featSlides.length < 2) return;
+    const iv = window.setInterval(() => setFeatIdx((i) => (i + 1) % featSlides.length), 5200);
+    return () => window.clearInterval(iv);
+  }, [featSlides.length]);
 
   useEffect(() => {
     setDateLabel(
@@ -171,55 +220,66 @@ export function HomeNewsroom() {
         ) : null}
 
         <section className="ara-nr-band1">
-          {lead ? (
-            <article
-              className="ara-editorial-front-page__lead ara-nr-hero"
-              style={{ ["--ara-story-accent" as string]: lead.accent_color || "#176d5c" }}
-            >
-              <a
-                className="ara-editorial-front-page__lead-media"
-                href={appHref(lead.link) || "/digests/nvidia"}
+          {featSlides.length ? (() => {
+            const s = featSlides[Math.min(featIdx, featSlides.length - 1)];
+            const href = appHref(s.link) || "/digests/nvidia";
+            return (
+              <article
+                className="ara-editorial-front-page__lead ara-nr-hero ara-nr-feat"
+                style={{ ["--ara-story-accent" as string]: s.accent || "#176d5c" }}
               >
-                <picture>
-                  <img
-                    className="ara-editorial-front-page__lead-image"
-                    src={assets.nvdaLead}
-                    alt={lead.heading || lead.company || "Featured pitch"}
-                    width={1200}
-                    height={900}
-                  />
-                </picture>
-                <span className="ara-editorial-front-page__lead-label">
-                  {lead.article_number || "FEATURED PITCH"}
-                </span>
-              </a>
+                <a className="ara-editorial-front-page__lead-media" href={href}>
+                  <picture>
+                    <img
+                      key={s.key}
+                      className="ara-editorial-front-page__lead-image ara-nr-feat__img"
+                      src={s.image}
+                      alt={s.heading || s.company || "Featured"}
+                      width={1200}
+                      height={900}
+                    />
+                  </picture>
+                  <span className="ara-editorial-front-page__lead-label">FEATURED</span>
+                </a>
 
-              <div className="ara-editorial-front-page__lead-copy">
-                <div className="ara-editorial-front-page__meta">
-                  {lead.story_type ? <span>{lead.story_type}</span> : null}
-                  {lead.company ? <span>{lead.company}</span> : null}
-                  {lead.ticker ? <span>{lead.ticker}</span> : null}
-                  {lead.domain ? <span>{lead.domain}</span> : null}
-                </div>
-                {lead.heading ? (
-                  <h3>
-                    <Link href={appHref(lead.link) || "/digests/nvidia"}>{lead.heading}</Link>
-                  </h3>
-                ) : null}
-                {lead.description ? <p>{stripHtml(lead.description)}</p> : null}
-                <div className="ara-editorial-front-page__lead-links">
-                  <Link href={appHref(lead.link) || "/digests/nvidia"}>
-                    {lead.link_label || "READ THE PITCH"} <span aria-hidden="true">→</span>
-                  </Link>
-                  {lead.company_module_link ? (
-                    <Link href={appHref(lead.company_module_link) || "/companies"}>
-                      {lead.company_module_label || "OPEN COMPANY FILE"}
+                <div className="ara-editorial-front-page__lead-copy">
+                  <div className="ara-editorial-front-page__meta">
+                    {s.story_type ? <span>{s.story_type}</span> : null}
+                    {s.company ? <span>{s.company}</span> : null}
+                    {s.ticker ? <span>{s.ticker}</span> : null}
+                  </div>
+                  {s.heading ? (
+                    <h3 key={s.key} className="ara-nr-feat__heading">
+                      <Link href={href}>{s.heading}</Link>
+                    </h3>
+                  ) : null}
+                  {s.body ? <p className="ara-nr-feat__body">{stripHtml(s.body)}</p> : null}
+                  <div className="ara-editorial-front-page__lead-links">
+                    <Link href={href}>
+                      {s.link_label || "READ"} <span aria-hidden="true">→</span>
                     </Link>
+                    {s.module_link ? (
+                      <Link href={appHref(s.module_link) || "/companies"}>{s.module_label}</Link>
+                    ) : null}
+                  </div>
+                  {featSlides.length > 1 ? (
+                    <div className="ara-nr-feat__dots" role="tablist" aria-label="Featured stories">
+                      {featSlides.map((sl, i) => (
+                        <button
+                          key={sl.key}
+                          type="button"
+                          className={`ara-nr-feat__dot${i === featIdx ? " is-on" : ""}`}
+                          aria-label={`Featured ${i + 1}`}
+                          aria-selected={i === featIdx}
+                          onClick={() => setFeatIdx(i)}
+                        />
+                      ))}
+                    </div>
                   ) : null}
                 </div>
-              </div>
-            </article>
-          ) : null}
+              </article>
+            );
+          })() : null}
 
           <div className="ara-nr-strips" style={{ ["--sec" as string]: "#176d5c" }}>
             <div className="ara-editorial-front-page__section-heading">
