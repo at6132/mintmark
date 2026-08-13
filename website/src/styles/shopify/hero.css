@@ -1258,11 +1258,11 @@
   .ara-mintmark-hero .ara-mintmark-hero__lines-row {
     margin: 0;
     font-family: var(--font-caveat), "Caveat", "Comic Sans MS", cursive;
-    font-size: 15px; font-weight: 500; line-height: 22px;
+    font-size: 14px; font-weight: 500; line-height: 22px;
     color: #3b3a37; /* graphite pencil */
     letter-spacing: 0.2px;
     text-shadow: 0 0 0.4px rgba(59, 58, 55, 0.5);
-    white-space: nowrap; overflow: hidden;
+    overflow-wrap: break-word;
   }
   .ara-mintmark-hero .ara-mintmark-hero__lines-row:nth-child(odd) { transform: rotate(-0.25deg); }
   .ara-mintmark-hero .ara-mintmark-hero__lines-row:nth-child(3n) { transform: rotate(0.3deg); }
