@@ -154,6 +154,41 @@ export default function CompaniesPage() {
           </div>
         ) : null}
 
+        {/* 3D bookshelf vitrine — the bookshelf, merged in at the top of the catalog */}
+        <div className="mm-vitrine">
+          <div className="mm-vitrine__head">
+            <span className="mm-vitrine__eyebrow">The Bookshelf</span>
+            <h2 className="mm-vitrine__title">Pull a company off the shelf.</h2>
+            <span className="mm-vitrine__hint">Scroll the case · hover a spine · click to open the file</span>
+          </div>
+          <div className="mm-vitrine__frame">
+            <div className="mm-vitrine__cabinet">
+              {grouped.map((group) => (
+                <div key={group.sector} className="mm-vitrine__shelf">
+                  <span className="mm-vitrine__shelf-label">{group.label}</span>
+                  <div className="mm-vitrine__books">
+                    {group.companies.map((c) => (
+                      <button
+                        key={c.id}
+                        type="button"
+                        className="mm-vitrine__book"
+                        style={{ ["--co" as string]: c.accent_color || "#176d5c" }}
+                        onClick={() => setActive(c)}
+                        aria-haspopup="dialog"
+                        title={c.company_name}
+                      >
+                        <span className="mm-vitrine__book-tk">{c.ticker || c.company_name.slice(0, 3).toUpperCase()}</span>
+                        <span className="mm-vitrine__book-name">{c.company_name}</span>
+                      </button>
+                    ))}
+                  </div>
+                  <div className="mm-vitrine__ledge" aria-hidden="true" />
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
         <div className="ara-company-catalog__tools">
           <label className="ara-company-catalog__search">
             <span>{String(settings.search_label || "SEARCH")}</span>
