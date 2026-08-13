@@ -62,6 +62,16 @@ type Co = {
 
 const GLOBE_R = 250;
 
+// continent focus presets (rotation = [-lon, -lat] of the centre, plus a zoom).
+const CONTINENTS: Array<{ name: string; rot: [number, number]; zoom: number }> = [
+  { name: "N. America", rot: [100, -40], zoom: 1.7 },
+  { name: "S. America", rot: [60, 15], zoom: 1.7 },
+  { name: "Europe", rot: [-12, -50], zoom: 2.2 },
+  { name: "Africa", rot: [-20, -3], zoom: 1.7 },
+  { name: "Asia", rot: [-95, -38], zoom: 1.6 },
+  { name: "Oceania", rot: [-134, 25], zoom: 1.9 },
+];
+
 function fmtCap(b: number): string {
   return b >= 1000 ? `$${(b / 1000).toFixed(2)}T` : `$${Math.round(b)}B`;
 }
@@ -121,6 +131,27 @@ export function HomeMarketMaps() {
   const sectors = useMemo(() => [...new Set(companies.map((c) => c.sector))], [companies]);
   const sectorOrder = useMemo(() => ["all", ...sectors], [sectors]);
   const activeColor = activeSector === "all" ? "#161B2E" : SECTOR_COLORS[activeSector] || "#646575";
+
+  // smoothly tween the globe to a continent
+  const animRef = useRef<number | null>(null);
+  const focusContinent = (targetRot: [number, number], targetZoom: number) => {
+    if (animRef.current) cancelAnimationFrame(animRef.current);
+    const startRot = rot;
+    const startZoom = zoom;
+    const t0 = performance.now();
+    const dur = 650;
+    let dLon = targetRot[0] - startRot[0];
+    while (dLon > 180) dLon -= 360;
+    while (dLon < -180) dLon += 360;
+    const step = (now: number) => {
+      const p = Math.min((now - t0) / dur, 1);
+      const e = p < 0.5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2;
+      setRot([startRot[0] + dLon * e, startRot[1] + (targetRot[1] - startRot[1]) * e]);
+      setZoom(startZoom + (targetZoom - startZoom) * e);
+      if (p < 1) animRef.current = requestAnimationFrame(step);
+    };
+    animRef.current = requestAnimationFrame(step);
+  };
 
   // wheel: globe zooms, heat scrolls through sectors seamlessly.
   useEffect(() => {
@@ -555,10 +586,10 @@ export function HomeMarketMaps() {
                         cx={m.x}
                         cy={m.y}
                         r={Math.max(dotR(m.co.cap) * 0.72, 5)}
-                        fill="#176D5C"
-                        fillOpacity={0.86}
+                        fill={SECTOR_COLORS[m.co.sector] || "#176D5C"}
+                        fillOpacity={0.95}
                         stroke="#FFFDF6"
-                        strokeWidth={1.5}
+                        strokeWidth={2}
                         className="mm-maps__dot"
                         onMouseMove={(e) => showTip(e, m.co)}
                         onMouseEnter={(e) => showTip(e, m.co)}
@@ -581,10 +612,10 @@ export function HomeMarketMaps() {
                                   cx={dx}
                                   cy={dy}
                                   r={Math.max(dotR(m.co.cap) * 0.6, 8)}
-                                  fill="#176D5C"
-                                  fillOpacity={0.92}
+                                  fill={SECTOR_COLORS[m.co.sector] || "#176D5C"}
+                                  fillOpacity={0.95}
                                   stroke="#FFFDF6"
-                                  strokeWidth={1.5}
+                                  strokeWidth={2}
                                   className="mm-maps__dot"
                                   onMouseMove={(e) => showTip(e, m.co)}
                                   onMouseEnter={(e) => showTip(e, m.co)}
@@ -667,6 +698,30 @@ export function HomeMarketMaps() {
               style={{ ["--chip" as string]: SECTOR_COLORS[s] || "#646575" }}
             >
               {s}
+            </button>
+          ))}
+        </div>
+      ) : null}
+
+      {mode === "globe" ? (
+        <div className="mm-maps__secbar" aria-label="Focus a continent">
+          <button
+            type="button"
+            className="mm-maps__secchip"
+            onClick={() => focusContinent([95, -38], 1)}
+            style={{ ["--chip" as string]: "#161b2e" }}
+          >
+            World
+          </button>
+          {CONTINENTS.map((c) => (
+            <button
+              key={c.name}
+              type="button"
+              className="mm-maps__secchip"
+              onClick={() => focusContinent(c.rot, c.zoom)}
+              style={{ ["--chip" as string]: "#176d5c" }}
+            >
+              {c.name}
             </button>
           ))}
         </div>
