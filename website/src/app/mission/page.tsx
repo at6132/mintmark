@@ -12,17 +12,17 @@ const MISSION = {
 const PILLARS = [
   {
     n: "02",
-    accent: "#3a5be0",
-    kicker: "The feed",
-    title: "Financial news, published daily",
-    body: "Mintmark doesn't tell you what happened. It teaches you what, how, and why — in a way anyone can understand.",
-  },
-  {
-    n: "03",
     accent: "#e0a526",
     kicker: "The digest",
     title: "Quarterly digests",
     body: "One company, one quarter, one digest. Your child can finally enjoy — and actually understand — what they own and how it works.",
+  },
+  {
+    n: "03",
+    accent: "#3a5be0",
+    kicker: "The feed",
+    title: "Financial news, published daily",
+    body: "Mintmark doesn't tell you what happened. It teaches you what, how, and why — in a way anyone can understand.",
   },
   {
     n: "04",
