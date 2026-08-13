@@ -1,401 +1,123 @@
-
-  .ara-mission-story {
-    position: relative;
-    overflow: hidden;
-    padding: var(--ara-mission-top) 0 var(--ara-mission-bottom);
-    background: var(--ara-mission-bg);
-    color: var(--ara-mission-ink);
-  }
-  .ara-mission-story * { box-sizing: border-box; }
-  .ara-mission-story .ara-mission__rules {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    opacity: .58;
-    background: repeating-linear-gradient(to bottom, transparent 0 35px, color-mix(in srgb, var(--ara-mission-line) 24%, transparent) 35px 36px);
-  }
-  .ara-mission-story .ara-mission__inner {
-    position: relative;
-    width: min(100%, var(--ara-mission-max));
-    margin: 0 auto;
-    padding: 0 38px;
-  }
-
-  .ara-mission-story .ara-mission__masthead {
-    display: grid;
-    grid-template-columns: minmax(200px, 280px) 1fr minmax(100px, 170px);
-    gap: 28px;
-    align-items: center;
-    min-height: 92px;
-    padding: 15px 22px;
-    overflow: hidden;
-    border: 2px solid var(--ara-mission-ink);
-    border-radius: 20px 20px 0 0;
-    background: var(--ara-mission-navy);
-    box-shadow: 7px 7px 0 var(--ara-mission-gold), 12px 12px 0 color-mix(in srgb, var(--ara-mission-line) 72%, transparent);
-  }
-  .ara-mission-story .ara-mission__masthead > img:first-child { display:block; width:min(100%,250px); height:auto; }
-  .ara-mission-story .ara-mission__masthead > img:last-child { justify-self:end; display:block; width:min(100%,145px); height:auto; }
-  .ara-mission-story .ara-mission__masthead > div { display:grid; gap:4px; justify-items:center; color:var(--ara-mission-paper); text-align:center; }
-  .ara-mission-story .ara-mission__masthead span,
-  .ara-mission-story .ara-mission__masthead small,
-  .ara-mission-story .ara-mission__folio span,
-  .ara-mission-story .ara-mission__eyebrow,
-  .ara-mission-story .ara-mission__chapter-meta,
-  .ara-mission-story .ara-mission__art-label,
-  .ara-mission-story .ara-mission__cta-copy > span {
-    font-family: var(--font-body-family);
-    font-size: var(--ara-mission-label-desktop);
-    font-weight: 900;
-    letter-spacing: .15em;
-    line-height: 1.3;
-    text-transform: uppercase;
-  }
-  .ara-mission-story .ara-mission__masthead small { color: color-mix(in srgb, var(--ara-mission-paper) 68%, transparent); }
-
-  .ara-mission-story .ara-mission__hero {
-    display:grid;
-    grid-template-columns:minmax(0,1.05fr) minmax(380px,.95fr);
-    gap:0;
-    margin-top:38px;
-    overflow:hidden;
-    border:2px solid var(--ara-mission-ink);
-    border-radius:26px;
-    background:var(--ara-mission-paper);
-    box-shadow:10px 10px 0 color-mix(in srgb, var(--ara-mission-line) 60%, transparent);
-  }
-  .ara-mission-story .ara-mission__hero-copy { position:relative; padding:48px 46px; border-right:1px solid var(--ara-mission-border); }
-  .ara-mission-story .ara-mission__folio { display:flex; justify-content:space-between; gap:18px; padding-bottom:14px; border-bottom:1px solid var(--ara-mission-border); color:var(--ara-mission-muted); }
-  .ara-mission-story .ara-mission__eyebrow { display:inline-flex; margin:28px 0 0; padding:10px 14px; border:2px solid var(--ara-mission-ink); border-radius:13px; background:var(--ara-mission-gold); box-shadow:4px 4px 0 var(--ara-mission-ink); }
-  .ara-mission-story .ara-mission__hero h1 { max-width:780px; margin:23px 0 0; font-family:var(--font-heading-family); font-size:var(--ara-mission-heading-desktop); font-weight:var(--font-heading-weight); letter-spacing:-.055em; line-height:.94; }
-  .ara-mission-story .ara-mission__hero h1 span,
-  .ara-mission-story .ara-mission__hero h1 em { display:block; }
-  .ara-mission-story .ara-mission__hero h1 em { margin-top:7px; color:color-mix(in srgb, var(--ara-mission-line) 48%, var(--ara-mission-ink)); font-style:italic; }
-  .ara-mission-story .ara-mission__intro { max-width:700px; margin-top:23px; color:var(--ara-mission-muted); font-family:var(--font-body-family); font-size:var(--ara-mission-body-desktop); line-height:1.62; }
-  .ara-mission-story .ara-mission__intro p { margin:0; }
-  .ara-mission-story .ara-mission__hero-rule { display:flex; gap:9px; align-items:center; margin-top:34px; }
-  .ara-mission-story .ara-mission__hero-rule i { width:52px; height:4px; background:var(--ara-mission-gold); }
-  .ara-mission-story .ara-mission__hero-rule span { width:min(100%,220px); height:1px; background:var(--ara-mission-border); }
-
-  .ara-mission-story .ara-mission__hero-graphic { display:grid; place-items:center; padding:32px; background:var(--ara-mission-navy); }
-  .ara-mission-story .ara-mission__graphic-frame { position:relative; display:grid; width:min(100%,520px); min-height:500px; place-items:center; align-content:center; padding:32px; overflow:hidden; border:1px solid color-mix(in srgb, var(--ara-mission-line) 72%, transparent); border-radius:22px; background:repeating-linear-gradient(to bottom, transparent 0 34px, color-mix(in srgb, var(--ara-mission-line) 16%, transparent) 34px 35px); }
-  .ara-mission-story .ara-mission__graphic-frame::before { content:""; position:absolute; inset:16px; border:1px solid color-mix(in srgb, var(--ara-mission-gold) 65%, transparent); border-radius:16px; }
-  .ara-mission-story .ara-mission__graphic-head { position:absolute; top:27px; right:30px; left:30px; display:flex; justify-content:space-between; gap:14px; color:var(--ara-mission-paper); }
-  .ara-mission-story .ara-mission__graphic-head span,
-  .ara-mission-story .ara-mission__graphic-head small,
-  .ara-mission-story .ara-mission__graphic-caption { font-family:var(--font-body-family); font-size:var(--ara-mission-label-desktop); font-weight:900; letter-spacing:.13em; line-height:1.3; text-transform:uppercase; }
-  .ara-mission-story .ara-mission__graphic-head small { color:color-mix(in srgb, var(--ara-mission-paper) 62%, transparent); }
-  .ara-mission-story .ara-mission__hero-mark { position:relative; z-index:2; width:min(42%,180px); height:auto; }
-  .ara-mission-story .ara-mission__hero-building { position:absolute; right:45px; bottom:92px; width:200px; max-width:46%; height:auto; opacity:.28; }
-  .ara-mission-story .ara-mission__graphic-caption { position:absolute; right:30px; bottom:27px; left:30px; padding-top:13px; border-top:1px solid color-mix(in srgb,var(--ara-mission-line) 55%,transparent); color:var(--ara-mission-paper); text-align:center; }
-
-
-  .ara-mission-story .ara-mission__chapters { display:grid; gap:22px; margin-top:42px; }
-  .ara-mission-story .ara-mission__chapter { display:grid; grid-template-columns:minmax(0,1.1fr) minmax(340px,.9fr); min-height:390px; overflow:hidden; border:2px solid var(--ara-mission-ink); border-radius:22px; background:var(--ara-mission-paper); box-shadow:7px 7px 0 color-mix(in srgb,var(--ara-mission-line) 52%,transparent); }
-  .ara-mission-story .ara-mission__chapter:nth-child(even) .ara-mission__chapter-copy { order:2; border-right:0; border-left:1px solid var(--ara-mission-border); }
-  .ara-mission-story .ara-mission__chapter:nth-child(even) .ara-mission__chapter-art { order:1; }
-  .ara-mission-story .ara-mission__chapter-copy { padding:36px 38px; border-right:1px solid var(--ara-mission-border); }
-  .ara-mission-story .ara-mission__chapter-meta { display:flex; justify-content:space-between; gap:15px; padding-bottom:13px; border-bottom:1px solid var(--ara-mission-border); color:var(--ara-mission-muted); }
-  .ara-mission-story .ara-mission__chapter-meta span { color:color-mix(in srgb,var(--ara-mission-line) 42%,var(--ara-mission-ink)); }
-  .ara-mission-story .ara-mission__chapter h2 { margin:30px 0 0; font-family:var(--font-heading-family); font-size:var(--ara-mission-chapter-desktop); font-weight:var(--font-heading-weight); letter-spacing:-.035em; line-height:1; }
-  .ara-mission-story .ara-mission__chapter-text { max-width:var(--ara-mission-reading); margin-top:18px; color:var(--ara-mission-muted); font-family:var(--font-body-family); font-size:var(--ara-mission-body-desktop); line-height:1.66; }
-  .ara-mission-story .ara-mission__chapter-text p { margin:0; }
-  .ara-mission-story .ara-mission__chapter-highlight { margin:22px 0 0; padding:13px 0 0; border-top:1px solid var(--ara-mission-border); color:var(--ara-mission-ink); font-family:var(--font-heading-family); font-size:19px; font-style:italic; }
-
-  .ara-mission-story .ara-mission__chapter-art {
-    position:relative;
-    display:grid;
-    min-height:390px;
-    place-items:stretch;
-    overflow:hidden;
-    padding:28px;
-    background:
-      repeating-linear-gradient(to bottom, transparent 0 34px, color-mix(in srgb,var(--ara-mission-line) 10%,transparent) 34px 35px),
-      var(--ara-mission-navy);
-    color:var(--ara-mission-paper);
-  }
-  .ara-mission-story .ara-mission__chapter-art::before {
-    content:"";
-    position:absolute;
-    inset:18px;
-    border:1px solid color-mix(in srgb,var(--ara-mission-line) 34%,transparent);
-    border-radius:14px;
-    pointer-events:none;
-  }
-  .ara-mission-story .ara-mission__chapter-art::after {
-    content:"";
-    position:absolute;
-    top:18px;
-    right:18px;
-    width:58px;
-    height:58px;
-    border-top:2px solid var(--ara-mission-gold);
-    border-right:2px solid var(--ara-mission-gold);
-    opacity:.78;
-    pointer-events:none;
-  }
-  .ara-mission-story .ara-mission__art-composition {
-    position:relative;
-    z-index:2;
-    display:grid;
-    width:100%;
-    min-height:334px;
-    align-content:center;
-    gap:22px;
-    padding:22px 24px;
-  }
-  .ara-mission-story .ara-mission__art-kicker,
-  .ara-mission-story .ara-mission__art-footer,
-  .ara-mission-story .ara-mission__coin-levels,
-  .ara-mission-story .ara-mission__audience-age span {
-    font-family:var(--font-body-family);
-    font-size:var(--ara-mission-label-desktop);
-    font-weight:900;
-    letter-spacing:.14em;
-    line-height:1.3;
-    text-transform:uppercase;
-  }
-  .ara-mission-story .ara-mission__art-kicker { color:var(--ara-mission-gold); }
-  .ara-mission-story .ara-mission__art-footer {
-    display:flex;
-    gap:12px;
-    align-items:center;
-    color:color-mix(in srgb,var(--ara-mission-paper) 76%,transparent);
-  }
-  .ara-mission-story .ara-mission__art-footer i {
-    flex:1;
-    min-width:22px;
-    height:1px;
-    background:color-mix(in srgb,var(--ara-mission-line) 55%,transparent);
-  }
-  .ara-mission-story .ara-mission__bookplate-object {
-    position:relative;
-    display:grid;
-    width:min(100%,430px);
-    justify-self:center;
-    padding:18px 18px 18px 27px;
-    border:1px solid color-mix(in srgb,var(--ara-mission-paper) 34%,transparent);
-    border-radius:8px 18px 18px 8px;
-    background:var(--ara-mission-paper);
-    box-shadow:12px 14px 0 color-mix(in srgb,var(--ara-mission-mint) 22%,transparent);
-    transform:rotate(-1deg);
-  }
-  .ara-mission-story .ara-mission__bookplate-spine {
-    position:absolute;
-    top:-1px;
-    bottom:-1px;
-    left:-1px;
-    width:15px;
-    border-radius:8px 0 0 8px;
-    background:var(--ara-mission-gold);
-  }
-  .ara-mission-story .ara-mission__bookplate-object img {
-    display:block;
-    width:100%;
-    height:auto;
-    border-radius:12px;
-  }
-  .ara-mission-story .ara-mission__audience-main {
-    display:grid;
-    grid-template-columns:minmax(110px,150px) minmax(0,1fr);
-    gap:30px;
-    align-items:center;
-    width:min(100%,430px);
-    justify-self:center;
-  }
-  .ara-mission-story .ara-mission__audience-mark {
-    display:grid;
-    min-height:110px;
-    place-items:center;
-  }
-  .ara-mission-story .ara-mission__audience-mark img {
-    display:block;
-    width:min(100%,145px);
-    height:auto;
-  }
-  .ara-mission-story .ara-mission__audience-age {
-    display:grid;
-    gap:4px;
-    align-content:center;
-  }
-  .ara-mission-story .ara-mission__audience-age strong {
-    color:var(--ara-mission-mint);
-    font-family:var(--font-heading-family);
-    font-size:clamp(74px,8vw,118px);
-    font-style:italic;
-    font-weight:var(--font-heading-weight);
-    letter-spacing:-.075em;
-    line-height:.78;
-  }
-  .ara-mission-story .ara-mission__audience-age span { color:var(--ara-mission-paper); }
-  .ara-mission-story .ara-mission__audience-wordmark {
-    display:grid;
-    grid-template-columns:minmax(22px,1fr) auto minmax(22px,1fr);
-    gap:14px;
-    align-items:center;
-  }
-  .ara-mission-story .ara-mission__audience-wordmark span {
-    height:1px;
-    background:color-mix(in srgb,var(--ara-mission-line) 48%,transparent);
-  }
-  .ara-mission-story .ara-mission__audience-wordmark img {
-    display:block;
-    width:min(100%,230px);
-    height:auto;
-  }
-  .ara-mission-story .ara-mission__coin-layout {
-    display:grid;
-    grid-template-columns:90px minmax(180px,260px) 90px;
-    gap:18px;
-    align-items:center;
-    justify-content:center;
-  }
-  .ara-mission-story .ara-mission__coin-object {
-    position:relative;
-    display:grid;
-    place-items:center;
-  }
-  .ara-mission-story .ara-mission__coin-object::before {
-    content:"";
-    position:absolute;
-    inset:9%;
-    border:1px solid color-mix(in srgb,var(--ara-mission-gold) 55%,transparent);
-    border-radius:50%;
-    box-shadow:0 0 0 12px color-mix(in srgb,var(--ara-mission-mint) 7%,transparent);
-  }
-  .ara-mission-story .ara-mission__coin-object img {
-    position:relative;
-    z-index:2;
-    display:block;
-    width:100%;
-    height:auto;
-    filter:drop-shadow(0 14px 18px rgba(0,0,0,.22));
-  }
-  .ara-mission-story .ara-mission__coin-levels {
-    display:grid;
-    gap:17px;
-    color:color-mix(in srgb,var(--ara-mission-paper) 72%,transparent);
-  }
-  .ara-mission-story .ara-mission__coin-levels--left { text-align:right; }
-  .ara-mission-story .ara-mission__coin-levels--right { text-align:left; }
-  .ara-mission-story .ara-mission__mint-object {
-    position:relative;
-    display:grid;
-    width:min(100%,430px);
-    min-height:215px;
-    place-items:center;
-    justify-self:center;
-    overflow:hidden;
-    border-top:1px solid color-mix(in srgb,var(--ara-mission-line) 38%,transparent);
-    border-bottom:1px solid color-mix(in srgb,var(--ara-mission-line) 38%,transparent);
-  }
-  .ara-mission-story .ara-mission__mint-object img {
-    position:relative;
-    z-index:2;
-    display:block;
-    width:min(78%,310px);
-    height:auto;
-    opacity:.92;
-  }
-  .ara-mission-story .ara-mission__mint-rule {
-    position:absolute;
-    height:2px;
-    background:var(--ara-mission-mint);
-    transform-origin:left center;
-  }
-  .ara-mission-story .ara-mission__mint-rule--one {
-    right:8%;
-    bottom:31%;
-    left:6%;
-    transform:rotate(-8deg);
-  }
-  .ara-mission-story .ara-mission__mint-rule--two {
-    right:13%;
-    bottom:22%;
-    left:31%;
-    background:color-mix(in srgb,#ED5C5C 76%,var(--ara-mission-gold));
-    transform:rotate(6deg);
-    opacity:.8;
-  }
-
-
-  .ara-mission-story .ara-mission__cta { display:grid; grid-template-columns:minmax(0,1fr) minmax(300px,.55fr); gap:36px; align-items:center; margin-top:52px; padding:34px 38px; overflow:hidden; border:2px solid var(--ara-mission-ink); border-radius:22px; background:var(--ara-mission-navy); color:var(--ara-mission-paper); box-shadow:8px 8px 0 var(--ara-mission-gold); }
-  .ara-mission-story .ara-mission__cta-copy > span { color:var(--ara-mission-gold); }
-  .ara-mission-story .ara-mission__cta h2 { margin:8px 0 0; font-family:var(--font-heading-family); font-size:clamp(34px,4vw,54px); letter-spacing:-.04em; line-height:1; }
-  .ara-mission-story .ara-mission__cta p { max-width:720px; margin:12px 0 0; color:color-mix(in srgb,var(--ara-mission-paper) 72%,transparent); font-family:var(--font-body-family); font-size:var(--ara-mission-body-desktop); line-height:1.55; }
-  .ara-mission-story .ara-mission__cta-side { display:grid; justify-items:end; gap:18px; }
-  .ara-mission-story .ara-mission__cta-side img { width:min(100%,230px); height:auto; }
-  .ara-mission-story .ara-mission__cta-side a { display:inline-flex; gap:11px; align-items:center; min-height:48px; padding:12px 17px; border:2px solid var(--ara-mission-paper); border-radius:12px; background:var(--ara-mission-gold); color:var(--ara-mission-ink); font-family:var(--font-body-family); font-size:var(--ara-mission-label-desktop); font-weight:900; letter-spacing:.11em; text-decoration:none; text-transform:uppercase; box-shadow:4px 4px 0 var(--ara-mission-paper); }
-
-  @media screen and (max-width: 989px) {
-    .ara-mission-story .ara-mission__hero { grid-template-columns:1fr; }
-    .ara-mission-story .ara-mission__hero-copy { border-right:0; border-bottom:1px solid var(--ara-mission-border); }
-    .ara-mission-story .ara-mission__chapter { grid-template-columns:1fr; }
-    .ara-mission-story .ara-mission__chapter:nth-child(even) .ara-mission__chapter-copy { order:1; border-left:0; border-bottom:1px solid var(--ara-mission-border); }
-    .ara-mission-story .ara-mission__chapter:nth-child(even) .ara-mission__chapter-art { order:2; }
-    .ara-mission-story .ara-mission__chapter-copy { border-right:0; border-bottom:1px solid var(--ara-mission-border); }
-  }
-
-  @media screen and (max-width: 749px) {
-    .ara-mission-story { padding-top:34px; padding-bottom:64px; }
-    .ara-mission-story .ara-mission__inner { padding:0 16px; }
-
-    .ara-mission-story .ara-mission__masthead { grid-template-columns:1fr auto; gap:13px; min-height:72px; padding:12px 13px; border-radius:16px 16px 0 0; box-shadow:5px 5px 0 var(--ara-mission-gold), 9px 9px 0 color-mix(in srgb,var(--ara-mission-line) 72%,transparent); }
-    .ara-mission-story .ara-mission__masthead > img:first-child { width:175px; max-width:54vw; }
-    .ara-mission-story .ara-mission__masthead > div { display:none; }
-    .ara-mission-story .ara-mission__masthead > img:last-child { width:80px; }
-
-    .ara-mission-story .ara-mission__hero { margin-top:28px; border-radius:20px; box-shadow:6px 6px 0 color-mix(in srgb,var(--ara-mission-line) 60%,transparent); }
-    .ara-mission-story .ara-mission__hero-copy { padding:27px 22px 31px; }
-    .ara-mission-story .ara-mission__folio { align-items:flex-start; flex-direction:column; gap:7px; }
-    .ara-mission-story .ara-mission__eyebrow { margin-top:22px; padding:9px 12px; }
-    .ara-mission-story .ara-mission__hero h1 { font-size:var(--ara-mission-heading-mobile); }
-    .ara-mission-story .ara-mission__intro { font-size:var(--ara-mission-body-mobile); }
-    .ara-mission-story .ara-mission__hero-graphic { padding:18px; }
-    .ara-mission-story .ara-mission__graphic-frame { min-height:370px; padding:26px 20px; border-radius:17px; }
-    .ara-mission-story .ara-mission__graphic-head { top:23px; right:23px; left:23px; align-items:flex-start; flex-direction:column; }
-    .ara-mission-story .ara-mission__hero-mark { width:125px; }
-    .ara-mission-story .ara-mission__hero-building { right:28px; bottom:78px; width:140px; }
-    .ara-mission-story .ara-mission__graphic-caption { right:23px; bottom:22px; left:23px; }
-
-
-    .ara-mission-story .ara-mission__chapters { margin-top:30px; }
-    .ara-mission-story .ara-mission__chapter { min-height:0; border-radius:18px; box-shadow:5px 5px 0 color-mix(in srgb,var(--ara-mission-line) 52%,transparent); }
-    .ara-mission-story .ara-mission__chapter-art { min-height:330px; padding:18px; }
-    .ara-mission-story .ara-mission__art-composition { min-height:290px; gap:17px; padding:18px 16px; }
-    .ara-mission-story .ara-mission__bookplate-object { width:min(100%,340px); padding:14px 14px 14px 22px; box-shadow:8px 9px 0 color-mix(in srgb,var(--ara-mission-mint) 20%,transparent); }
-    .ara-mission-story .ara-mission__audience-main { grid-template-columns:88px minmax(0,1fr); gap:20px; width:min(100%,330px); }
-    .ara-mission-story .ara-mission__audience-mark { min-height:88px; }
-    .ara-mission-story .ara-mission__audience-age strong { font-size:72px; }
-    .ara-mission-story .ara-mission__coin-layout { grid-template-columns:52px minmax(150px,215px) 52px; gap:10px; }
-    .ara-mission-story .ara-mission__coin-levels { gap:12px; font-size:calc(var(--ara-mission-label-mobile) * .82); letter-spacing:.08em; }
-    .ara-mission-story .ara-mission__mint-object { min-height:180px; }
-    .ara-mission-story .ara-mission__art-footer { gap:8px; flex-wrap:wrap; }
-
-    .ara-mission-story .ara-mission__chapter-copy { padding:25px 22px; }
-    .ara-mission-story .ara-mission__chapter h2 { margin-top:24px; font-size:var(--ara-mission-chapter-mobile); }
-    .ara-mission-story .ara-mission__chapter-text { font-size:var(--ara-mission-body-mobile); }
-    .ara-mission-story .ara-mission__chapter-art { min-height:300px; padding:28px 24px; }
-    .ara-mission-story .ara-mission__chapter-art > img { max-height:200px; }
-    .ara-mission-story .ara-mission__chapter-art--progression > img { max-height:220px; width:230px; }
-
-
-    .ara-mission-story .ara-mission__cta { grid-template-columns:1fr; gap:25px; margin-top:40px; padding:27px 22px; border-radius:18px; box-shadow:6px 6px 0 var(--ara-mission-gold); }
-    .ara-mission-story .ara-mission__cta p { font-size:var(--ara-mission-body-mobile); }
-    .ara-mission-story .ara-mission__cta-side { justify-items:start; }
-    .ara-mission-story .ara-mission__cta-side img { width:180px; }
-    .ara-mission-story .ara-mission__cta-side a { width:100%; justify-content:space-between; }
-
-    .ara-mission-story .ara-mission__masthead span,
-    .ara-mission-story .ara-mission__masthead small,
-    .ara-mission-story .ara-mission__folio span,
-    .ara-mission-story .ara-mission__eyebrow,
-    .ara-mission-story .ara-mission__chapter-meta,
-    .ara-mission-story .ara-mission__art-label,
-    .ara-mission-story .ara-mission__cta-copy > span,
-    .ara-mission-story .ara-mission__graphic-head span,
-    .ara-mission-story .ara-mission__graphic-head small,
-    .ara-mission-story .ara-mission__graphic-caption,
-    .ara-mission-story .ara-mission__chapter-art p,
-    .ara-mission-story .ara-mission__cta-side a { font-size:var(--ara-mission-label-mobile); }
-  }
+/* Mission — clean fill-in template, homepage vibe */
+.mm-mission {
+  background: transparent;
+  padding: clamp(48px, 7vw, 96px) 0 clamp(64px, 9vw, 120px);
+}
+.mm-mission__inner {
+  width: min(100% - 48px, 940px);
+  margin: 0 auto;
+}
+.mm-mission__masthead {
+  padding-bottom: 34px;
+  border-bottom: 2px solid #161b2e;
+  margin-bottom: 44px;
+}
+.mm-mission__eyebrow {
+  font-family: var(--font-space-grotesk), "Space Grotesk", sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #176d5c;
+}
+.mm-mission__title {
+  margin: 14px 0 0;
+  font-family: var(--font-fraunces), "Fraunces", Georgia, serif;
+  font-size: clamp(44px, 7vw, 84px);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 0.98;
+  color: #161b2e;
+}
+.mm-mission__standfirst {
+  margin: 20px 0 0;
+  max-width: 620px;
+  font-family: var(--font-alegreya), "Alegreya", serif;
+  font-size: clamp(17px, 2.2vw, 21px);
+  line-height: 1.55;
+  color: #3a3f4f;
+}
+.mm-mission__body {
+  display: grid;
+  gap: 30px;
+}
+.mm-mission__block {
+  position: relative;
+  padding: 26px 26px 26px 30px;
+  background: linear-gradient(160deg, #fffdf6, #f7f2e7 70%);
+  border: 2px solid #161b2e;
+  border-radius: 14px;
+  box-shadow: 5px 5px 0 rgba(23, 109, 92, 0.16);
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+.mm-mission__block::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 72px;
+  height: 4px;
+  background: linear-gradient(90deg, #176d5c, #e0a526, #176d5c);
+  border-radius: 0 0 4px 0;
+}
+.mm-mission__block:hover {
+  transform: translateY(-2px);
+  box-shadow: 8px 8px 0 rgba(23, 109, 92, 0.24);
+}
+.mm-mission__kicker {
+  font-family: var(--font-space-grotesk), "Space Grotesk", sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #a08321;
+}
+.mm-mission__heading {
+  margin: 8px 0 0;
+  font-family: var(--font-fraunces), "Fraunces", serif;
+  font-size: clamp(24px, 3.4vw, 34px);
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  color: #161b2e;
+}
+.mm-mission__lead {
+  margin: 10px 0 0;
+  font-family: var(--font-alegreya), "Alegreya", serif;
+  font-size: 17px;
+  line-height: 1.5;
+  color: #4a4f5e;
+}
+.mm-mission__fill {
+  margin: 16px 0 0;
+  padding: 14px 16px;
+  border: 1.5px dashed rgba(22, 27, 46, 0.28);
+  border-radius: 10px;
+  font-family: var(--font-alegreya), "Alegreya", serif;
+  font-size: 15px;
+  line-height: 1.55;
+  color: #7a7f8c;
+  background: rgba(255, 253, 246, 0.5);
+}
+.mm-mission__signoff {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 48px;
+  padding-top: 24px;
+  border-top: 2px solid #161b2e;
+  font-family: var(--font-space-grotesk), "Space Grotesk", sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #646575;
+}
+.mm-mission__signoff em {
+  font-family: var(--font-fraunces), "Fraunces", serif;
+  font-style: italic;
+  font-size: 22px;
+  text-transform: none;
+  letter-spacing: -0.01em;
+  color: #176d5c;
+}
