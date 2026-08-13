@@ -1,5 +1,3 @@
-import { assets } from "@/lib/assets";
-
 export const metadata = { title: "Mission" };
 
 // Box 1 is THE mission. 2 -> 3 -> 4 are how we deliver it, in sequence.
@@ -44,10 +42,10 @@ export default function MissionPage() {
 
       <div className="mm-mission__inner">
         <header className="mm-mission__masthead">
-          <img className="mm-mission__logo" src={assets.wordmarkInk} alt="Mintmark" width={560} height={104} />
+          <span className="mm-mission__wordmark">mintmark</span>
           <span className="mm-mission__eyebrow">Big ideas for small readers</span>
           <h1 className="mm-mission__title">
-            The <em>mission,</em> and how we mint it.
+            We <em>mint</em> the next generation of capitalists &amp; stakeholders.
           </h1>
         </header>
 
