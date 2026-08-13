@@ -1,74 +1,55 @@
+import { assets } from "@/lib/assets";
+
 export const metadata = { title: "The Mint" };
 
-const FORCES = [
-  { key: "raise", label: "Raise", color: "#3a5be0", sym: "Ra" },
-  { key: "build", label: "Build", color: "#176d5c", sym: "Bu" },
-  { key: "sell", label: "Sell", color: "#e0a526", sym: "Se" },
-  { key: "grow", label: "Grow", color: "#5a9e3b", sym: "Gr" },
-  { key: "allocate", label: "Allocate", color: "#9a5ba6", sym: "Al" },
-  { key: "defend", label: "Defend", color: "#c25b3f", sym: "De" },
-];
-
-const LEVELS = [
-  { roman: "I", metal: "Copper" },
-  { roman: "II", metal: "Nickel" },
-  { roman: "III", metal: "Brass" },
-  { roman: "IV", metal: "Bronze" },
-  { roman: "V", metal: "Silver" },
-  { roman: "VI", metal: "Platinum" },
+// six metals — one per level. Empty squares for now.
+const METALS = [
+  { roman: "I", name: "Copper", from: "#e0954c", to: "#a85f28" },
+  { roman: "II", name: "Nickel", from: "#d3d6dc", to: "#9aa0a8" },
+  { roman: "III", name: "Brass", from: "#e6c877", to: "#b18f3e" },
+  { roman: "IV", name: "Bronze", from: "#d18f49", to: "#875629" },
+  { roman: "V", name: "Silver", from: "#eceef3", to: "#b3b7c0" },
+  { roman: "VI", name: "Platinum", from: "#f2f4f7", to: "#c6cad1" },
 ];
 
 export default function MintPage() {
   return (
     <section className="mm-mint">
+      <span className="mm-mint__sheen" aria-hidden="true" />
+      <span className="mm-mint__orb mm-mint__orb--a" aria-hidden="true" />
+      <span className="mm-mint__orb mm-mint__orb--b" aria-hidden="true" />
+
       <div className="mm-mint__inner">
-        <header className="mm-mint__masthead">
-          <span className="mm-mint__eyebrow">The Mint · The Curriculum</span>
-          <h1 className="mm-mint__title">Six marks. Thirty-six concepts.</h1>
-          <p className="mm-mint__standfirst">
-            Every Mintmark company file is built on one curriculum: six forces that move any business,
-            each learned across six levels — from Copper on Day One to Platinum in the corner office.
-            Read down a column to go deeper in one force; read across a row to see how one level plays out
-            everywhere. Strike all six and the mark mints.
-          </p>
+        <header className="mm-mint__head">
+          <h1 className="mm-mint__title">The Mint</h1>
+          <span className="mm-mint__subhead">The Curriculum</span>
+          <img className="mm-mint__mark" src={assets.markApp} alt="Mintmark" width={200} height={200} />
         </header>
 
-        <div className="mm-mint__table" role="table" aria-label="Curriculum periodic table">
-          <div className="mm-mint__row mm-mint__row--head" role="row">
-            <span className="mm-mint__corner" role="columnheader" />
-            {FORCES.map((f) => (
-              <span key={f.key} className="mm-mint__force" role="columnheader" style={{ ["--f" as string]: f.color }}>
-                {f.label}
-              </span>
-            ))}
-          </div>
-
-          {LEVELS.map((lv, r) => (
-            <div key={lv.roman} className="mm-mint__row" role="row">
-              <span className="mm-mint__level" role="rowheader">
-                <b>{lv.roman}</b>
-                <small>{lv.metal}</small>
-              </span>
-              {FORCES.map((f, c) => {
-                const n = r * FORCES.length + c + 1;
-                return (
-                  <span key={f.key} className="mm-mint__el" role="cell" style={{ ["--f" as string]: f.color }}>
-                    <em className="mm-mint__el-n">{n}</em>
-                    <b className="mm-mint__el-sym">{f.sym}</b>
-                    <small className="mm-mint__el-lv">{lv.roman}</small>
-                  </span>
-                );
-              })}
-            </div>
-          ))}
+        <div className="mm-mint__navybox">
+          <p>
+            Six metals. Six levels. Thirty-six concepts — the curriculum behind every Mintmark company
+            file, struck one mark at a time.
+          </p>
         </div>
 
-        <div className="mm-mint__legend">
-          {FORCES.map((f) => (
-            <span key={f.key}>
-              <i style={{ background: f.color }} />
-              {f.label}
-            </span>
+        <div className="mm-mint__table">
+          {METALS.map((m) => (
+            <div
+              key={m.name}
+              className="mm-mint__row"
+              style={{ ["--from" as string]: m.from, ["--to" as string]: m.to }}
+            >
+              <span className="mm-mint__metal">
+                <b>{m.roman}</b>
+                <small>{m.name}</small>
+              </span>
+              <div className="mm-mint__cells">
+                {Array.from({ length: 6 }).map((_, i) => (
+                  <span key={i} className="mm-mint__cell" />
+                ))}
+              </div>
+            </div>
           ))}
         </div>
       </div>

@@ -123,30 +123,42 @@ export default function CompaniesPage() {
         {/* 3D bookshelf vitrine — the bookshelf, at the top of the catalog */}
         <div className="mm-vitrine">
           <div className="mm-vitrine__frame">
+            <span className="mm-vitrine__lamp" aria-hidden="true" />
             <div className="mm-vitrine__cabinet">
-              {grouped.map((group) => (
+              {grouped.map((group, gi) => (
                 <div key={group.sector} className="mm-vitrine__shelf">
-                  <span className="mm-vitrine__shelf-label">{group.label}</span>
+                  <span className="mm-vitrine__plate">
+                    {group.label}
+                    <small>{String(group.companies.length).padStart(2, "0")}</small>
+                  </span>
                   <div className="mm-vitrine__books">
-                    {group.companies.map((c) => (
+                    <span className="mm-vitrine__bookend" aria-hidden="true" />
+                    {group.companies.map((c, bi) => (
                       <button
                         key={c.id}
                         type="button"
-                        className="mm-vitrine__book"
+                        className={`mm-vitrine__book mm-vitrine__book--${((gi + bi) % 4) + 1}`}
                         style={{ ["--co" as string]: c.accent_color || "#176d5c" }}
                         onClick={() => setActive(c)}
                         aria-haspopup="dialog"
                         title={c.company_name}
                       >
+                        <span className="mm-vitrine__book-cap" aria-hidden="true" />
+                        <span className="mm-vitrine__book-band" aria-hidden="true" />
                         <span className="mm-vitrine__book-tk">{c.ticker || c.company_name.slice(0, 3).toUpperCase()}</span>
                         <span className="mm-vitrine__book-name">{c.company_name}</span>
+                        <span className="mm-vitrine__book-band mm-vitrine__book-band--lo" aria-hidden="true" />
+                        <span className="mm-vitrine__book-foot" aria-hidden="true" />
                       </button>
                     ))}
+                    <span className="mm-vitrine__bookend mm-vitrine__bookend--r" aria-hidden="true" />
                   </div>
                   <div className="mm-vitrine__ledge" aria-hidden="true" />
                 </div>
               ))}
+              <div className="mm-vitrine__base" aria-hidden="true" />
             </div>
+            <span className="mm-vitrine__glass" aria-hidden="true" />
           </div>
         </div>
 

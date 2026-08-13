@@ -1437,3 +1437,173 @@
 @media (prefers-reduced-motion: reduce) {
   .mm-vitrine__book { transition: none; }
 }
+
+/* ===== Bookshelf vitrine — 26 detail upgrades ===== */
+/* 1 · deeper cabinet with warm inner vignette */
+.mm-vitrine__cabinet {
+  position: relative;
+  background:
+    radial-gradient(120% 45% at 50% -6%, rgba(255, 236, 190, 0.10), transparent 60%),
+    radial-gradient(140% 120% at 50% 120%, rgba(0, 0, 0, 0.45), transparent 60%),
+    linear-gradient(180deg, #1b2440, #10162a 60%, #0a0f1e);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.04), inset 0 22px 40px -24px rgba(0, 0, 0, 0.9);
+}
+/* 2 · reading lamp glow along the top */
+.mm-vitrine__lamp {
+  position: absolute; z-index: 4; left: 8%; right: 8%; top: 4px; height: 26px; pointer-events: none;
+  background: radial-gradient(60% 120% at 50% 0%, rgba(255, 231, 173, 0.55), rgba(255, 231, 173, 0) 70%);
+  filter: blur(3px);
+}
+/* 3 · glass reflection sheen across the case + slow drift */
+.mm-vitrine__frame { position: relative; }
+.mm-vitrine__glass {
+  position: absolute; inset: 6px; border-radius: 14px; pointer-events: none; z-index: 5; overflow: hidden;
+  background: linear-gradient(118deg, rgba(255,255,255,0) 34%, rgba(255,255,255,0.10) 44%, rgba(255,255,255,0) 52%);
+  mix-blend-mode: screen; animation: mm-glass 8s ease-in-out infinite;
+}
+@keyframes mm-glass { 0%,100% { transform: translateX(-14%); } 50% { transform: translateX(14%); } }
+/* 4 · engraved brass sector plate */
+.mm-vitrine__plate {
+  display: inline-flex; align-items: center; gap: 8px; margin-bottom: 10px; padding: 4px 12px;
+  font-family: var(--font-space-grotesk), "Space Grotesk", sans-serif;
+  font-size: 10px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: #2a2313;
+  background: linear-gradient(180deg, #e7cf87, #b9974a 55%, #d8ba6b);
+  border: 1px solid #7c5f24; border-radius: 4px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.6), inset 0 -1px 0 rgba(0,0,0,0.35), 0 2px 3px rgba(0,0,0,0.4);
+  text-shadow: 0 1px 0 rgba(255,255,255,0.35);
+}
+.mm-vitrine__plate small { font-size: 9px; opacity: 0.75; letter-spacing: 0.1em; }
+/* 5 · metallic bookends */
+.mm-vitrine__bookend {
+  flex: 0 0 6px; align-self: stretch; height: 132px; border-radius: 2px;
+  background: linear-gradient(90deg, #46527a, #2a3350 60%, #171e33);
+  box-shadow: 2px 0 4px rgba(0,0,0,0.5);
+}
+.mm-vitrine__bookend--r { background: linear-gradient(90deg, #171e33, #2a3350 40%, #46527a); box-shadow: -2px 0 4px rgba(0,0,0,0.5); }
+/* 6-15 · richer book spines */
+.mm-vitrine__book {
+  position: relative; justify-content: center; gap: 8px;
+  border-radius: 2px 4px 4px 2px;
+  background:
+    linear-gradient(90deg, rgba(255,255,255,0.22) 0 2px, rgba(255,255,255,0) 3px 9px, rgba(0,0,0,0.28) 100%),
+    repeating-linear-gradient(0deg, rgba(0,0,0,0.05) 0 3px, rgba(255,255,255,0.03) 3px 6px),
+    linear-gradient(180deg, color-mix(in srgb, var(--co) 90%, #fff), var(--co) 42%, color-mix(in srgb, var(--co) 70%, #000));
+}
+/* 6 · cream page-edge cap on top */
+.mm-vitrine__book-cap {
+  position: absolute; top: -3px; left: 2px; right: 2px; height: 4px; border-radius: 2px 2px 0 0;
+  background: repeating-linear-gradient(90deg, #efe7d2 0 1px, #d9cfb4 1px 2px);
+  box-shadow: 0 1px 1px rgba(0,0,0,0.35);
+}
+/* 7 · gold spine bands (top + bottom) */
+.mm-vitrine__book-band { width: 78%; height: 2px; border-radius: 2px; background: linear-gradient(90deg, transparent, #f3d58f 30%, #e0a526 70%, transparent); opacity: 0.9; }
+.mm-vitrine__book-band--lo { margin-top: auto; }
+/* 8-9 · foil ticker + vertical name */
+.mm-vitrine__book-tk { color: #fdf3d6; text-shadow: 0 1px 1px rgba(0,0,0,0.5); font-family: var(--font-space-grotesk), "Space Grotesk", sans-serif; font-size: 10.5px; font-weight: 700; letter-spacing: 0.06em; }
+.mm-vitrine__book-name { color: #fbf5e4; }
+/* 15 · dark foot */
+.mm-vitrine__book-foot { position: absolute; bottom: -1px; left: 1px; right: 1px; height: 5px; background: linear-gradient(180deg, rgba(0,0,0,0.28), rgba(0,0,0,0.55)); border-radius: 0 0 3px 2px; }
+/* 10-12 · width / height / finish variants */
+.mm-vitrine__book--1 { width: 42px; height: 128px; }
+.mm-vitrine__book--2 { width: 48px; height: 138px; filter: saturate(1.05); }
+.mm-vitrine__book--3 { width: 38px; height: 120px; }
+.mm-vitrine__book--4 { width: 46px; height: 132px; filter: brightness(1.04); }
+/* 23 · gentle random lean */
+.mm-vitrine__book:nth-child(5n) { transform: rotate(-1.2deg); }
+.mm-vitrine__book:nth-child(7n) { transform: rotate(1deg); }
+/* 16-17 · pull-out hover + gold focus ring */
+.mm-vitrine__book:hover, .mm-vitrine__book:focus-visible {
+  transform: translateY(-12px) rotateX(16deg) translateZ(30px) !important;
+  box-shadow: 0 24px 34px rgba(0,0,0,0.55), inset -2px 0 3px rgba(0,0,0,0.3);
+  filter: brightness(1.12);
+}
+.mm-vitrine__book:focus-visible { outline: 2px solid #e0a526; outline-offset: 3px; }
+/* 18 · molded shelf board with highlight */
+.mm-vitrine__ledge {
+  height: 13px; margin: 2px -6px 0;
+  background: linear-gradient(180deg, #33406a, #1c2440 34%, #0a0f1e);
+  border-radius: 2px;
+  box-shadow: inset 0 2px 0 rgba(140,160,210,0.22), inset 0 -2px 3px rgba(0,0,0,0.6), 0 8px 14px rgba(0,0,0,0.5);
+}
+/* 19 · cabinet base + feet */
+.mm-vitrine__base { height: 16px; margin: 8px -14px -10px; border-radius: 0 0 12px 12px; background: linear-gradient(180deg, #202a48, #0a0f1e); box-shadow: inset 0 2px 0 rgba(255,255,255,0.05), 0 10px 18px rgba(0,0,0,0.5); }
+/* 20 · brass scrollbar */
+.mm-vitrine__cabinet::-webkit-scrollbar-thumb { background: linear-gradient(#c9a24a, #9c7a33); border-radius: 8px; }
+/* 24 · reduced motion */
+@media (prefers-reduced-motion: reduce) { .mm-vitrine__glass { animation: none; } }
+
+/* ===== Bookshelf v2 — no shine, blue-wood, more definition ===== */
+/* kill the moving glass sheen */
+.mm-vitrine__glass { display: none !important; }
+.mm-vitrine__lamp { opacity: 0.5; }
+
+/* blue-wood grain helper */
+.mm-vitrine__cabinet {
+  background:
+    radial-gradient(140% 120% at 50% 120%, rgba(0,0,0,0.42), transparent 62%),
+    repeating-linear-gradient(90deg, rgba(0,0,0,0.16) 0 1px, transparent 1px 3px),          /* fine grain */
+    repeating-linear-gradient(90deg, rgba(255,255,255,0.025) 0 2px, transparent 2px 46px),  /* plank seams */
+    repeating-linear-gradient(2deg, rgba(255,255,255,0.02) 0 6px, rgba(0,0,0,0.03) 6px 13px),/* long grain */
+    linear-gradient(180deg, #22345f, #182849 55%, #0f1c37);
+  box-shadow: inset 0 0 0 1px rgba(120,150,210,0.10), inset 0 24px 44px -26px rgba(0,0,0,0.9), inset 0 -30px 40px -30px rgba(0,0,0,0.8);
+}
+/* solid blue-wood shelf boards with a machined edge */
+.mm-vitrine__ledge {
+  height: 15px; margin: 3px -6px 0;
+  background:
+    repeating-linear-gradient(90deg, rgba(0,0,0,0.18) 0 1px, transparent 1px 4px),
+    linear-gradient(180deg, #35508f 0 2px, #24386a 2px, #16233f 60%, #0b1730 100%);
+  border-radius: 2px;
+  box-shadow: inset 0 2px 0 rgba(150,175,225,0.28), inset 0 -3px 4px rgba(0,0,0,0.6), 0 9px 16px rgba(0,0,0,0.55);
+}
+/* thicker blue-wood base */
+.mm-vitrine__base {
+  height: 20px; margin: 10px -14px -10px; border-radius: 0 0 12px 12px;
+  background:
+    repeating-linear-gradient(90deg, rgba(0,0,0,0.16) 0 1px, transparent 1px 4px),
+    linear-gradient(180deg, #2a406f, #16233f 55%, #0a142b);
+  box-shadow: inset 0 2px 0 rgba(150,175,225,0.18), 0 12px 20px rgba(0,0,0,0.55);
+}
+/* the whole case gets a blue-wood outer body */
+.mm-vitrine__frame {
+  background:
+    repeating-linear-gradient(90deg, rgba(0,0,0,0.14) 0 1px, transparent 1px 5px) border-box,
+    linear-gradient(135deg, #2c477e, #16233f 55%, #24386a) border-box,
+    linear-gradient(#0e1730, #0e1730) padding-box;
+  border: 5px solid transparent;
+  box-shadow: 0 30px 64px rgba(10, 18, 34, 0.4), inset 0 1px 0 rgba(150,175,225,0.18);
+}
+/* deeper book definition + separation */
+.mm-vitrine__book { box-shadow: inset -2px 0 3px rgba(0,0,0,0.4), inset 2px 0 2px rgba(255,255,255,0.10), 1px 0 0 rgba(0,0,0,0.35), 0 10px 14px rgba(0,0,0,0.45); }
+.mm-vitrine__books { padding-bottom: 6px; }
+
+/* ===== Bookshelf v3 — obvious wood grain + real depth & angles ===== */
+/* stronger, unmistakable blue-wood planks + grain */
+.mm-vitrine__cabinet {
+  background:
+    radial-gradient(150% 120% at 50% 120%, rgba(0,0,0,0.5), transparent 60%),
+    linear-gradient(90deg, rgba(0,0,0,0.45) 0, rgba(0,0,0,0) 7%, rgba(0,0,0,0) 93%, rgba(0,0,0,0.45) 100%),  /* side walls */
+    repeating-linear-gradient(90deg, rgba(0,0,0,0.28) 0 1px, rgba(255,255,255,0.05) 1px 2px, transparent 2px 5px),  /* grain */
+    repeating-linear-gradient(90deg, rgba(0,0,0,0.35) 0 2px, transparent 2px 52px),  /* plank seams */
+    linear-gradient(180deg, #2a447c, #1a2c52 55%, #101d38) !important;
+  box-shadow: inset 0 0 0 1px rgba(120,150,210,0.14), inset 14px 0 26px -18px rgba(0,0,0,0.9), inset -14px 0 26px -18px rgba(0,0,0,0.9), inset 0 26px 44px -26px rgba(0,0,0,0.95), inset 0 -34px 44px -30px rgba(0,0,0,0.85) !important;
+}
+/* books tilt forward a touch by default so you see the top edge (depth) */
+.mm-vitrine__books { perspective: 1100px; padding-top: 14px; }
+.mm-vitrine__book { transform: rotateX(9deg); transform-origin: bottom center; }
+.mm-vitrine__book:nth-child(5n) { transform: rotate(-1.4deg) rotateX(9deg); }
+.mm-vitrine__book:nth-child(7n) { transform: rotate(1.1deg) rotateX(9deg); }
+/* a real page-edge top you can see without hovering */
+.mm-vitrine__book-cap { top: -6px; height: 7px; transform: rotateX(52deg); transform-origin: bottom; box-shadow: 0 -1px 2px rgba(0,0,0,0.4); }
+/* contact shadow where the books meet the shelf */
+.mm-vitrine__books::after {
+  content: ""; position: absolute; left: 8px; right: 8px; bottom: 8px; height: 10px; z-index: -1;
+  background: radial-gradient(60% 100% at 50% 0%, rgba(0,0,0,0.55), transparent 75%);
+  filter: blur(3px);
+}
+.mm-vitrine__books { position: relative; }
+/* thicker shelf board with a lit top edge and a dark under-shadow => visible angle */
+.mm-vitrine__ledge {
+  height: 17px !important;
+  box-shadow: inset 0 3px 0 rgba(160,185,235,0.4), inset 0 -4px 5px rgba(0,0,0,0.7), 0 12px 18px rgba(0,0,0,0.6) !important;
+}
