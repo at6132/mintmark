@@ -263,17 +263,35 @@ export function HomeNewsroom() {
                     ) : null}
                   </div>
                   {featSlides.length > 1 ? (
-                    <div className="ara-nr-feat__dots" role="tablist" aria-label="Featured stories">
-                      {featSlides.map((sl, i) => (
-                        <button
-                          key={sl.key}
-                          type="button"
-                          className={`ara-nr-feat__dot${i === featIdx ? " is-on" : ""}`}
-                          aria-label={`Featured ${i + 1}`}
-                          aria-selected={i === featIdx}
-                          onClick={() => setFeatIdx(i)}
-                        />
-                      ))}
+                    <div className="ara-nr-feat__nav">
+                      <button
+                        type="button"
+                        className="ara-nr-feat__arrow"
+                        aria-label="Previous featured story"
+                        onClick={() => setFeatIdx((i) => (i - 1 + featSlides.length) % featSlides.length)}
+                      >
+                        ‹
+                      </button>
+                      <div className="ara-nr-feat__dots" role="tablist" aria-label="Featured stories">
+                        {featSlides.map((sl, i) => (
+                          <button
+                            key={sl.key}
+                            type="button"
+                            className={`ara-nr-feat__dot${i === featIdx ? " is-on" : ""}`}
+                            aria-label={`Featured ${i + 1}`}
+                            aria-selected={i === featIdx}
+                            onClick={() => setFeatIdx(i)}
+                          />
+                        ))}
+                      </div>
+                      <button
+                        type="button"
+                        className="ara-nr-feat__arrow"
+                        aria-label="Next featured story"
+                        onClick={() => setFeatIdx((i) => (i + 1) % featSlides.length)}
+                      >
+                        ›
+                      </button>
                     </div>
                   ) : null}
                 </div>

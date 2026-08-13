@@ -2371,3 +2371,21 @@
     .ara-editorial-front-page .ara-nr-feat__heading,
     .ara-editorial-front-page .ara-nr-feat__body { animation: none; }
   }
+
+  /* --- featured carousel controls: clear, in one place, signature colour mix --- */
+  .ara-editorial-front-page .ara-nr-feat__nav { display: flex; align-items: center; gap: 12px; margin-top: 18px; }
+  .ara-editorial-front-page .ara-nr-feat__arrow {
+    width: 36px; height: 36px; flex: 0 0 36px; border-radius: 50%; cursor: pointer;
+    display: grid; place-items: center; font-size: 22px; line-height: 1; color: #fffdf6; padding: 0;
+    border: 2px solid #161b2e;
+    background: linear-gradient(135deg, #176d5c, #e0a526 55%, #161b2e);
+    box-shadow: 2px 2px 0 rgba(22, 27, 46, 0.22);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .ara-editorial-front-page .ara-nr-feat__arrow:hover { transform: translateY(-2px); box-shadow: 3px 4px 0 rgba(22, 27, 46, 0.3); }
+  .ara-editorial-front-page .ara-nr-feat__arrow:active { transform: translateY(0); }
+  .ara-editorial-front-page .ara-nr-feat__dots { display: flex; gap: 8px; margin: 0; }
+  .ara-editorial-front-page .ara-nr-feat__dot.is-on {
+    width: 36px;
+    background: linear-gradient(90deg, #176d5c, #e0a526 60%, #b88332);
+  }

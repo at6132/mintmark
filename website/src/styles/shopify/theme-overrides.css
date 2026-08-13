@@ -116,10 +116,7 @@
         border-bottom:1px solid rgba(224,165,38,.45);
       }
       .ara-short-takes__card .ara-short-takes__number{ color:var(--slot-acc) !important; }
-      .ara-short-takes__card::after{
-        content:"";position:absolute;right:9px;bottom:9px;width:8px;height:8px;
-        border-right:1.5px solid #646575;border-bottom:1.5px solid #646575;opacity:.4;pointer-events:none;
-      }
+      .ara-short-takes__card::after{ content:none; }
       .ara-short-takes__card:hover{
         transform:translateY(-3px);
         box-shadow:0 14px 28px rgba(22,27,46,.16), inset 0 4px 0 var(--slot-acc), inset 0 -3px 0 rgba(224,165,38,.55) !important;
@@ -200,10 +197,8 @@
       /* paper warmth shift by zone */
       .ara-editorial-front-page__lead,.ara-editorial-front-page__featured-story{ --paper:#FFFDF6; }
       .ara-editorial-front-page__market-item,.ara-editorial-front-page__quick-item,.ara-editorial-front-page__report{ --paper:#F8F4E9; }
-      /* gold corner brackets on the two hero blocks */
-      .ara-editorial-front-page__lead::after,.ara-editorial-front-page__question::after{
-        content:"";position:absolute;right:7px;top:7px;width:11px;height:11px;
-        border-right:2px solid #e0a526;border-top:2px solid #e0a526;opacity:.75;z-index:4;}
+      /* (removed gold corner brackets — read as stray triangles) */
+      .ara-editorial-front-page__lead::after,.ara-editorial-front-page__question::after{ content:none; }
 
       /* ===== flippable company tiles: short takes + market news ===== */
       .mm-tile{ position:relative;display:block;perspective:1100px;min-height:210px;text-decoration:none;
