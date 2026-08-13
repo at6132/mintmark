@@ -300,17 +300,37 @@ export function HomeHero() {
               ) : (
                 <div className="ara-mintmark-hero__market-ad">
                   <img className="ara-mintmark-hero__market-ad-mark" src={assets.markApp} alt="" aria-hidden="true" width={200} height={200} />
-                  <span className="ara-mintmark-hero__market-ad-eyebrow">Trump Accounts, explained</span>
+                  <div className="ara-mintmark-hero__market-ad-top">
+                    <img
+                      className="ara-mintmark-hero__market-ad-logo"
+                      src={assets.logo}
+                      alt="Mintmark"
+                      width={620}
+                      height={140}
+                    />
+                    <span className="ara-mintmark-hero__market-ad-stamp">Est. 2025</span>
+                  </div>
+                  <span className="ara-mintmark-hero__market-ad-eyebrow">The Trump Account Primer</span>
                   <h3 className="ara-mintmark-hero__market-ad-headline">
-                    Does your child know what&rsquo;s in their <em>Trump Account?</em>
+                    Your newborn just got a <em>$1,000 Trump&nbsp;Account.</em>
                   </h3>
+                  <div className="ara-mintmark-hero__market-ad-statement" aria-hidden="true">
+                    <div>
+                      <span>Account holder</span>
+                      <b>Your kid</b>
+                    </div>
+                    <div>
+                      <span>Balance</span>
+                      <b className="ara-mintmark-hero__market-ad-up">Curiosity ↑</b>
+                    </div>
+                  </div>
                   <p className="ara-mintmark-hero__market-ad-body">
-                    Every American newborn now gets one. mintmark makes it — and money — make sense.
+                    We teach them what ownership, compounding and markets actually mean — in plain language.
                   </p>
                   <Link className="ara-mintmark-hero__market-ad-cta" href="/catalog">
-                    Start on the shelf <span aria-hidden="true">→</span>
+                    Open their file <span aria-hidden="true">→</span>
                   </Link>
-                  <span className="ara-mintmark-hero__market-ad-tag">Big Ideas for Small Readers · mintmark</span>
+                  <span className="ara-mintmark-hero__market-ad-tag">Big Ideas for Small Readers</span>
                 </div>
               )}
 

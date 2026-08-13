@@ -2389,3 +2389,18 @@
     width: 36px;
     background: linear-gradient(90deg, #176d5c, #e0a526 60%, #b88332);
   }
+
+  /* featured carousel: every slide is EXACTLY the same size so the controls never move */
+  .ara-editorial-front-page .ara-nr-feat__heading {
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+    min-height: 2.1em;
+  }
+  .ara-editorial-front-page .ara-nr-feat__body {
+    display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+    min-height: 4.35em; margin-bottom: 0;
+  }
+  .ara-editorial-front-page .ara-nr-feat .ara-editorial-front-page__lead-copy {
+    display: flex; flex-direction: column;
+  }
+  .ara-editorial-front-page .ara-nr-feat .ara-editorial-front-page__lead-links { margin-top: 14px; }
+  .ara-editorial-front-page .ara-nr-feat__nav { margin-top: auto; }

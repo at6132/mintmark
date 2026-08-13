@@ -1197,3 +1197,23 @@
     background: color-mix(in srgb, var(--ara-hero-accent) 30%, #c9bea8); transition: width 0.2s ease, background 0.2s ease;
   }
   .ara-mintmark-hero .ara-mintmark-hero__market-tdot.is-on { width: 28px; background: linear-gradient(90deg, #176d5c, #e0a526); }
+
+  /* upgraded ad: logo lockup + mock Trump Account statement */
+  .ara-mintmark-hero .ara-mintmark-hero__market-ad-top {
+    position: relative; z-index: 1; display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 2px;
+  }
+  .ara-mintmark-hero .ara-mintmark-hero__market-ad-logo { width: 116px; height: auto; filter: brightness(0) invert(1); }
+  .ara-mintmark-hero .ara-mintmark-hero__market-ad-stamp {
+    font-family: var(--font-space-grotesk), "Space Grotesk", sans-serif; font-size: 8px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase;
+    color: rgba(255, 253, 246, 0.65); border: 1px solid rgba(255, 253, 246, 0.32); border-radius: 999px; padding: 3px 8px;
+  }
+  .ara-mintmark-hero .ara-mintmark-hero__market-ad-statement {
+    position: relative; z-index: 1; display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
+    padding: 10px 12px; border: 1px solid rgba(255, 253, 246, 0.16); border-radius: 9px; background: rgba(255, 255, 255, 0.03);
+  }
+  .ara-mintmark-hero .ara-mintmark-hero__market-ad-statement > div { display: flex; flex-direction: column; gap: 2px; }
+  .ara-mintmark-hero .ara-mintmark-hero__market-ad-statement span {
+    font-family: var(--font-space-grotesk), "Space Grotesk", sans-serif; font-size: 7.5px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255, 253, 246, 0.5);
+  }
+  .ara-mintmark-hero .ara-mintmark-hero__market-ad-statement b { font-family: var(--font-fraunces), "Fraunces", serif; font-size: 13px; font-weight: 600; color: #fffdf6; }
+  .ara-mintmark-hero .ara-mintmark-hero__market-ad-up { color: #7ef0a0 !important; }
