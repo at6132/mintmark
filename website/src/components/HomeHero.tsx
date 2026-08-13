@@ -39,12 +39,8 @@ export function HomeHero() {
   const [outgoingWord, setOutgoingWord] = useState<string | null>(null);
   const [highlightMinWidth, setHighlightMinWidth] = useState<number | undefined>(undefined);
 
-  // market snapshot box alternates between the snapshot and the mintmark ad
+  // market snapshot box toggles between snapshot and ad — click-only, no auto-cycle
   const [mktView, setMktView] = useState(0);
-  useEffect(() => {
-    const iv = window.setInterval(() => setMktView((v) => (v + 1) % 2), 6500);
-    return () => window.clearInterval(iv);
-  }, []);
 
   useEffect(() => {
     setDateLabel(
@@ -298,8 +294,12 @@ export function HomeHero() {
                   </div>
                 </>
               ) : (
-                <div className="ara-mintmark-hero__market-ad">
+                <div className="ara-mintmark-hero__market-ad ara-mintmark-hero__market-ad--usa">
                   <img className="ara-mintmark-hero__market-ad-mark" src={assets.markApp} alt="" aria-hidden="true" width={200} height={200} />
+                  <span className="ara-mintmark-hero__market-ad-eyebrow">Trump Accounts</span>
+                  <h3 className="ara-mintmark-hero__market-ad-headline">
+                    Does your child know what&rsquo;s in his <em>Trump Account?</em>
+                  </h3>
                   <div className="ara-mintmark-hero__market-ad-top">
                     <img
                       className="ara-mintmark-hero__market-ad-logo"
@@ -308,29 +308,12 @@ export function HomeHero() {
                       width={620}
                       height={140}
                     />
-                    <span className="ara-mintmark-hero__market-ad-stamp">Est. 2025</span>
                   </div>
-                  <span className="ara-mintmark-hero__market-ad-eyebrow">The Trump Account Primer</span>
-                  <h3 className="ara-mintmark-hero__market-ad-headline">
-                    Your newborn just got a <em>$1,000 Trump&nbsp;Account.</em>
-                  </h3>
-                  <div className="ara-mintmark-hero__market-ad-statement" aria-hidden="true">
-                    <div>
-                      <span>Account holder</span>
-                      <b>Your kid</b>
-                    </div>
-                    <div>
-                      <span>Balance</span>
-                      <b className="ara-mintmark-hero__market-ad-up">Curiosity ↑</b>
-                    </div>
-                  </div>
-                  <p className="ara-mintmark-hero__market-ad-body">
-                    We teach them what ownership, compounding and markets actually mean — in plain language.
-                  </p>
-                  <Link className="ara-mintmark-hero__market-ad-cta" href="/catalog">
-                    Open their file <span aria-hidden="true">→</span>
+                  <p className="ara-mintmark-hero__market-ad-tagline">Mint your child&rsquo;s future.</p>
+                  <p className="ara-mintmark-hero__market-ad-body">A platform for young readers with big ideas.</p>
+                  <Link className="ara-mintmark-hero__market-ad-cta" href="/mission">
+                    Learn more <span aria-hidden="true">→</span>
                   </Link>
-                  <span className="ara-mintmark-hero__market-ad-tag">Big Ideas for Small Readers</span>
                 </div>
               )}
 

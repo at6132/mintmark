@@ -7,12 +7,14 @@ import { feature, mesh } from "topojson-client";
 import type { Feature, MultiLineString } from "geojson";
 import statesTopoRaw from "us-atlas/states-10m.json";
 import landTopoRaw from "world-atlas/land-50m.json";
+import countriesTopoRaw from "world-atlas/countries-110m.json";
 import { marketMapsContent } from "@/data/marketMaps";
 import { appHref } from "@/lib/assets";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 const statesTopo = statesTopoRaw as any;
 const landTopo = landTopoRaw as any;
+const countriesTopo = countriesTopoRaw as any;
 
 const W = 980;
 const H = 600;
@@ -272,6 +274,10 @@ export function HomeMarketMaps() {
     const spherePath = path({ type: "Sphere" } as never) || "";
     const gratPath = path(geoGraticule10() as never) || "";
     const landPath = path(feature(landTopo, landTopo.objects.land) as never) || "";
+    const countryPath =
+      path(mesh(countriesTopo, countriesTopo.objects.countries, (a: unknown, b: unknown) => a !== b) as never) || "";
+    const statePath =
+      path(mesh(statesTopo, statesTopo.objects.states, (a: unknown, b: unknown) => a !== b) as never) || "";
     const center: [number, number] = [-rot[0], -rot[1]];
     // project real HQs, keep only those on the visible (front) hemisphere
     const pts = companies
@@ -294,7 +300,7 @@ export function HomeMarketMaps() {
         clusters.push({ x: pt.x, y: pt.y, members: [pt] });
       }
     }
-    return { spherePath, gratPath, landPath, clusters };
+    return { spherePath, gratPath, landPath, countryPath, statePath, clusters };
   }, [rot, zoom, companies]);
 
   const showTip = (e: ReactMouseEvent, co: Co) => {
@@ -574,6 +580,10 @@ export function HomeMarketMaps() {
               <path d={globe.gratPath} fill="none" stroke="#8fb9ac" strokeOpacity={0.3} strokeWidth={0.6} />
               {/* real continents in their true positions */}
               <path d={globe.landPath} fill="#E7DCC6" stroke="#b7ab90" strokeWidth={0.5} vectorEffect="non-scaling-stroke" />
+              {/* country borders */}
+              <path d={globe.countryPath} fill="none" stroke="#b7ab90" strokeWidth={0.6} strokeOpacity={0.85} vectorEffect="non-scaling-stroke" />
+              {/* US state borders */}
+              <path d={globe.statePath} fill="none" stroke="#c9bea8" strokeWidth={0.5} strokeOpacity={0.7} vectorEffect="non-scaling-stroke" />
               {/* HQ dots + clusters at true locations */}
               {globe.clusters.map((cl, i) => {
                 const summed = cl.members.reduce((s, m) => s + m.co.cap, 0);

@@ -29,7 +29,7 @@ export function HomeNewsroom() {
   };
   const featSlides = useMemo(() => {
     const slides: Array<Record<string, string>> = [];
-    if (lead)
+    if (lead) {
       slides.push({
         key: "lead",
         story_type: lead.story_type || "",
@@ -44,6 +44,22 @@ export function HomeNewsroom() {
         accent: lead.accent_color || "#176d5c",
         image: featImg(lead),
       });
+      // demo duplicate so the click-slideshow is obvious
+      slides.push({
+        key: "lead-demo",
+        story_type: lead.story_type || "PITCH",
+        company: lead.company || "NVIDIA",
+        ticker: lead.ticker || "NVDA",
+        heading: "NVIDIA: why the whole market watches one chipmaker.",
+        body: "A second look at the company powering the AI build-out — and what its results mean for everyone else.",
+        link: lead.link || "",
+        link_label: "READ THE PITCH",
+        module_link: lead.company_module_link || "",
+        module_label: "OPEN COMPANY FILE",
+        accent: lead.accent_color || "#176d5c",
+        image: featImg(lead),
+      });
+    }
     featured.forEach((f, i) =>
       slides.push({
         key: `f${i}`,

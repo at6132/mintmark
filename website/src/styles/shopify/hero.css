@@ -1217,3 +1217,17 @@
   }
   .ara-mintmark-hero .ara-mintmark-hero__market-ad-statement b { font-family: var(--font-fraunces), "Fraunces", serif; font-size: 13px; font-weight: 600; color: #fffdf6; }
   .ara-mintmark-hero .ara-mintmark-hero__market-ad-up { color: #7ef0a0 !important; }
+
+  /* red-white-blue trim + tagline for the Trump Accounts ad */
+  .ara-mintmark-hero .ara-mintmark-hero__market-ad--usa::before {
+    height: 6px;
+    background: linear-gradient(90deg, #b22234 0 33%, #ffffff 33% 66%, #3c3b6e 66% 100%);
+  }
+  .ara-mintmark-hero .ara-mintmark-hero__market-ad--usa { border: 1px solid rgba(255, 253, 246, 0.14); }
+  .ara-mintmark-hero .ara-mintmark-hero__market-ad-tagline {
+    position: relative; z-index: 1; margin: 2px 0 0;
+    font-family: var(--font-fraunces), "Fraunces", serif; font-style: italic;
+    font-size: 15px; font-weight: 600; color: #7fd9c4;
+  }
+  .ara-mintmark-hero .ara-mintmark-hero__market-ad--usa .ara-mintmark-hero__market-ad-top { margin: 2px 0 0; }
+  .ara-mintmark-hero .ara-mintmark-hero__market-ad--usa .ara-mintmark-hero__market-ad-logo { width: 132px; }
