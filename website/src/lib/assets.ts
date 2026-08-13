@@ -48,7 +48,7 @@ export function appHref(url?: string | null) {
     .replace("shopify://pages/", "/")
     .replace("/pages/", "/")
     .replace("shopify://", "/");
-  if (u === "/catalog" || u === "/cataloge") u = "/companies";
+  if (u === "/cataloge" || u === "/companies") u = "/catalog";
   if (u === "/the-mint") u = "/mint";
   if (u === "/apple") u = "/companies/apple";
   if (u === "/nvidia-digest" || u === "/nvidia") u = "/digests/nvidia";

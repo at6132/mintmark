@@ -448,3 +448,10 @@ input:focus-visible,
   .ara-inline-email::before,
   .ara-editorial-front-page__masthead::after { animation: none; }
 }
+
+/* lowercase, un-letterspaced nav labels (fin · mission · catalog) */
+.ara-mintmark-header__nav-title,
+.ara-mintmark-header__mobile-copy > span {
+  text-transform: none !important;
+  letter-spacing: 0 !important;
+}

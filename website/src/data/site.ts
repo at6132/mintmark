@@ -44,24 +44,19 @@
     "border_color": "#c9bea8",
     "nav": [
       {
-        "title": "MISSION",
+        "title": "fin",
+        "subtitle": "a journal",
+        "href": "/#newsroom"
+      },
+      {
+        "title": "mission",
         "subtitle": "Financial Literacy & Empowerment",
         "href": "/mission"
       },
       {
-        "title": "MINT",
-        "subtitle": "The Curriculum",
-        "href": "/mint"
-      },
-      {
-        "title": "BOOKSHELF",
-        "subtitle": "Manufacture Understanding",
-        "href": "/bookshelf"
-      },
-      {
-        "title": "COMPANIES",
-        "subtitle": "Catalog",
-        "href": "/companies"
+        "title": "catalog",
+        "subtitle": "Companies & Bookshelf",
+        "href": "/catalog"
       }
     ]
   },

@@ -121,7 +121,7 @@ export function HomeNewsroom() {
   const tickerLoop = [...tickerItems, ...tickerItems];
 
   return (
-    <section ref={rootRef} className="ara-editorial-front-page" style={style}>
+    <section ref={rootRef} id="newsroom" className="ara-editorial-front-page" style={style}>
       <div className="ara-editorial-front-page__inner">
         <header className="ara-editorial-front-page__masthead">
           <div className="ara-editorial-front-page__edition">
