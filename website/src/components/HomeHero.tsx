@@ -11,10 +11,43 @@ export function HomeHero() {
   const blocks = (homeContent.hero.blocks || []) as unknown as Array<Record<string, string>>;
   const news = blocks.filter((b) => b.type === "market_news");
   const items = blocks.filter((b) => b.type === "market_item");
+
+  // Market snapshot as a slideshow carousel (pages of tiles that auto-advance).
+  const marketTiles = useMemo(
+    () => [
+      ...news.map((b) => ({
+        id: b.id,
+        name: b.market_name,
+        front: b.headline,
+        value: b.market_value,
+        change: b.change,
+        direction: b.direction,
+      })),
+      ...items.map((b) => ({
+        id: b.id,
+        name: b.market_name,
+        front: "Tap for today’s level",
+        value: b.market_value,
+        change: b.change,
+        direction: b.direction,
+      })),
+    ],
+    [news, items],
+  );
+  const MKT_PER_PAGE = 4;
+  const mktPages = Math.max(1, Math.ceil(marketTiles.length / MKT_PER_PAGE));
+  const [mktPage, setMktPage] = useState(0);
+
   const [dateLabel, setDateLabel] = useState("");
   const [highlightWord, setHighlightWord] = useState("read");
   const [outgoingWord, setOutgoingWord] = useState<string | null>(null);
   const [highlightMinWidth, setHighlightMinWidth] = useState<number | undefined>(undefined);
+
+  useEffect(() => {
+    if (mktPages < 2) return;
+    const iv = window.setInterval(() => setMktPage((p) => (p + 1) % mktPages), 4200);
+    return () => window.clearInterval(iv);
+  }, [mktPages]);
 
   useEffect(() => {
     setDateLabel(
@@ -247,42 +280,60 @@ export function HomeHero() {
                 ) : null}
               </div>
 
-              <div className="ara-mintmark-hero__market-tiles">
-                {news.map((block) => (
-                  <div key={block.id} className="ara-mintmark-hero__mtile" tabIndex={0}>
-                    <div className="ara-mintmark-hero__mtile-inner">
-                      <div className="ara-mintmark-hero__mtile-face ara-mintmark-hero__mtile-front">
-                        <strong>{block.market_name}</strong>
-                        <p>{block.headline}</p>
-                      </div>
-                      <div className="ara-mintmark-hero__mtile-face ara-mintmark-hero__mtile-back">
-                        <span className="ara-mintmark-hero__mtile-name">{block.market_name}</span>
-                        <span className="ara-mintmark-hero__mtile-val">{block.market_value}</span>
-                        <em className={`ara-mintmark-hero__market-change ara-mintmark-hero__market-change--${block.direction}`}>
-                          {block.direction === "up" ? "▲" : block.direction === "down" ? "▼" : "—"} {block.change}
-                        </em>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-                {items.map((block) => (
-                  <div key={block.id} className="ara-mintmark-hero__mtile" tabIndex={0}>
-                    <div className="ara-mintmark-hero__mtile-inner">
-                      <div className="ara-mintmark-hero__mtile-face ara-mintmark-hero__mtile-front">
-                        <strong>{block.market_name}</strong>
-                        <p>Tap for today&rsquo;s level</p>
-                      </div>
-                      <div className="ara-mintmark-hero__mtile-face ara-mintmark-hero__mtile-back">
-                        <span className="ara-mintmark-hero__mtile-name">{block.market_name}</span>
-                        <span className="ara-mintmark-hero__mtile-val">{block.market_value}</span>
-                        <em className={`ara-mintmark-hero__market-change ara-mintmark-hero__market-change--${block.direction}`}>
-                          {block.direction === "up" ? "▲" : block.direction === "down" ? "▼" : "—"} {block.change}
-                        </em>
+              <div className="ara-mintmark-hero__market-tiles" key={mktPage}>
+                {marketTiles
+                  .slice(mktPage * MKT_PER_PAGE, mktPage * MKT_PER_PAGE + MKT_PER_PAGE)
+                  .map((block) => (
+                    <div key={block.id} className="ara-mintmark-hero__mtile" tabIndex={0}>
+                      <div className="ara-mintmark-hero__mtile-inner">
+                        <div className="ara-mintmark-hero__mtile-face ara-mintmark-hero__mtile-front">
+                          <strong>{block.name}</strong>
+                          <p>{block.front}</p>
+                        </div>
+                        <div className="ara-mintmark-hero__mtile-face ara-mintmark-hero__mtile-back">
+                          <span className="ara-mintmark-hero__mtile-name">{block.name}</span>
+                          <span className="ara-mintmark-hero__mtile-val">{block.value}</span>
+                          <em className={`ara-mintmark-hero__market-change ara-mintmark-hero__market-change--${block.direction}`}>
+                            {block.direction === "up" ? "+" : block.direction === "down" ? "−" : ""}
+                            {block.change}
+                          </em>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                ))}
+                  ))}
               </div>
+
+              {mktPages > 1 ? (
+                <div className="ara-mintmark-hero__market-nav">
+                  <button
+                    type="button"
+                    className="ara-mintmark-hero__market-arrow"
+                    aria-label="Previous"
+                    onClick={() => setMktPage((p) => (p - 1 + mktPages) % mktPages)}
+                  >
+                    ‹
+                  </button>
+                  <div className="ara-mintmark-hero__market-dots">
+                    {Array.from({ length: mktPages }).map((_, i) => (
+                      <button
+                        key={i}
+                        type="button"
+                        className={`ara-mintmark-hero__market-dot${i === mktPage ? " is-on" : ""}`}
+                        aria-label={`Page ${i + 1}`}
+                        onClick={() => setMktPage(i)}
+                      />
+                    ))}
+                  </div>
+                  <button
+                    type="button"
+                    className="ara-mintmark-hero__market-arrow"
+                    aria-label="Next"
+                    onClick={() => setMktPage((p) => (p + 1) % mktPages)}
+                  >
+                    ›
+                  </button>
+                </div>
+              ) : null}
 
               {hero.market_note ? (
                 <p className="ara-mintmark-hero__market-note">{String(hero.market_note)}</p>

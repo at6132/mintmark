@@ -239,13 +239,13 @@
 
   .ara-mintmark-hero .ara-mintmark-hero__mtile-front {
     background: linear-gradient(120deg, #FFFDF6, #EAF6EF);
-    box-shadow: 3px 3px 0 rgba(23, 109, 92, 0.16);
+    box-shadow: 0 4px 10px rgba(23, 109, 92, 0.14);
   }
 
   .ara-mintmark-hero .ara-mintmark-hero__mtile-back {
     transform: rotateX(180deg);
     background: linear-gradient(120deg, #1d2338, #0e1220);
-    box-shadow: 3px 3px 0 rgba(23, 109, 92, 0.28);
+    box-shadow: 0 4px 10px rgba(22, 27, 46, 0.22);
   }
 
   .ara-mintmark-hero .ara-mintmark-hero__mtile-front strong {
@@ -627,28 +627,8 @@
     backdrop-filter: blur(3px);
   }
 
-  .ara-mintmark-hero .ara-mintmark-hero__content::before {
-    content: "";
-    position: absolute;
-    top: 17px;
-    right: 17px;
-    width: 62px;
-    height: 10px;
-    border-top: 2px solid var(--ara-hero-text);
-    border-bottom: 2px solid var(--ara-hero-text);
-    opacity: 0.5;
-  }
-
-  .ara-mintmark-hero .ara-mintmark-hero__content::after {
-    content: "";
-    position: absolute;
-    right: 22px;
-    bottom: 22px;
-    width: 42px;
-    height: 42px;
-    border-right: 3px solid var(--ara-hero-accent);
-    border-bottom: 3px solid var(--ara-hero-accent);
-  }
+  .ara-mintmark-hero .ara-mintmark-hero__content::before { content: none; }
+  .ara-mintmark-hero .ara-mintmark-hero__content::after { content: none; }
 
   .ara-mintmark-hero .ara-mintmark-hero__meta {
     position: relative;
@@ -1133,4 +1113,32 @@
     .ara-mintmark-hero .ara-mintmark-hero__heading .mm-hl__word--in {
       animation: none;
     }
+  }
+
+  /* market snapshot slideshow controls (matches the featured carousel) */
+  .ara-mintmark-hero .ara-mintmark-hero__market-tiles { animation: mm-mkt-fade 0.4s ease; }
+  @keyframes mm-mkt-fade { from { opacity: 0; transform: translateX(10px); } to { opacity: 1; transform: none; } }
+  .ara-mintmark-hero .ara-mintmark-hero__market-nav {
+    display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 14px;
+  }
+  .ara-mintmark-hero .ara-mintmark-hero__market-arrow {
+    width: 28px; height: 28px; flex: 0 0 28px; border-radius: 50%; cursor: pointer; padding: 0;
+    display: grid; place-items: center; font-size: 17px; line-height: 1; color: #fffdf6;
+    border: 1.5px solid #161b2e;
+    background: linear-gradient(135deg, #176d5c, #e0a526 55%, #161b2e);
+    box-shadow: 1.5px 1.5px 0 rgba(22, 27, 46, 0.22);
+    transition: transform 0.14s ease;
+  }
+  .ara-mintmark-hero .ara-mintmark-hero__market-arrow:hover { transform: translateY(-1px); }
+  .ara-mintmark-hero .ara-mintmark-hero__market-dots { display: flex; gap: 6px; }
+  .ara-mintmark-hero .ara-mintmark-hero__market-dot {
+    width: 16px; height: 5px; border-radius: 999px; border: 0; padding: 0; cursor: pointer;
+    background: color-mix(in srgb, var(--ara-hero-accent, #176d5c) 30%, #c9bea8);
+    transition: width 0.2s ease, background 0.2s ease;
+  }
+  .ara-mintmark-hero .ara-mintmark-hero__market-dot.is-on {
+    width: 28px; background: linear-gradient(90deg, #176d5c, #e0a526 60%, #b88332);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .ara-mintmark-hero .ara-mintmark-hero__market-tiles { animation: none; }
   }

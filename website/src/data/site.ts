@@ -55,7 +55,7 @@
       },
       {
         "title": "catalog",
-        "subtitle": "Companies & Bookshelf",
+        "subtitle": "Companies",
         "href": "/catalog"
       }
     ]

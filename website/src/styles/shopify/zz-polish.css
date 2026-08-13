@@ -261,11 +261,13 @@ input:focus-visible,
 }
 
 /* ---- 13. HEADER: bigger + more legible ----------------------------------- */
-.ara-mintmark-header__nav-title { font-size: 15px !important; font-weight: 800; letter-spacing: 0.03em; }
+.ara-mintmark-header__nav-title { font-size: 15px !important; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; }
+.ara-mintmark-header__mobile-copy > span { text-transform: uppercase; }
 .ara-mintmark-header__nav-subtitle {
-  font-size: 11px !important;
-  font-weight: 600;
-  letter-spacing: 0.04em;
+  font-size: 10px !important;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
   color: color-mix(in srgb, var(--ara-header-muted, #c76b73) 45%, #ffffff) !important;
   /* show the FULL label — wrap instead of clipping with an ellipsis */
   overflow: visible !important;
@@ -449,9 +451,3 @@ input:focus-visible,
   .ara-editorial-front-page__masthead::after { animation: none; }
 }
 
-/* lowercase, un-letterspaced nav labels (fin · mission · catalog) */
-.ara-mintmark-header__nav-title,
-.ara-mintmark-header__mobile-copy > span {
-  text-transform: none !important;
-  letter-spacing: 0 !important;
-}
