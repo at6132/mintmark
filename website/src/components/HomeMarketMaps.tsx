@@ -84,8 +84,8 @@ export function HomeMarketMaps() {
   const [tip, setTip] = useState<Tip>(null);
   const [openCluster, setOpenCluster] = useState<number | null>(null);
   // globe rotation [yaw, pitch]; dragged with the pointer. zoom via wheel.
-  const [rot, setRot] = useState<[number, number]>([95, -38]);
-  const [zoom, setZoom] = useState(1);
+  const [rot, setRot] = useState<[number, number]>([100, -40]);
+  const [zoom, setZoom] = useState(1.7);
   const drag = useRef<{ x: number; y: number; r: [number, number] } | null>(null);
   // render the d3 SVG only after mount — the treemap/projection produce tiny
   // float differences between server and client that trip React hydration.
