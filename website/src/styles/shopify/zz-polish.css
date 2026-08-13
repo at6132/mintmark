@@ -444,3 +444,33 @@ input:focus-visible,
   .ara-editorial-front-page__masthead::after { animation: none; }
 }
 
+
+/* ---- mixed-colour trim, a distinct mix per content form ------------------- */
+.ara-editorial-front-page .ara-nr-flip__face { overflow: hidden; }
+.ara-editorial-front-page .ara-nr-flip__front { position: relative; }
+/* the trim bar uses ::before (::after is the gloss overlay). clipped to the rounded top. */
+.ara-editorial-front-page .ara-nr-strip .ara-nr-flip__front::before,
+.ara-editorial-front-page .ara-nr-sq .ara-nr-flip__front::before {
+  content: ""; position: absolute; top: 0; left: 0; right: 0; height: 4px; z-index: 6;
+}
+/* market news strips */
+.ara-editorial-front-page .ara-nr-strip .ara-nr-flip__front { border-top: 0 !important; }
+.ara-editorial-front-page .ara-nr-strip .ara-nr-flip__front::before {
+  background: linear-gradient(90deg, #176d5c, #1fbe57 50%, #7fd9c4);
+}
+/* short takes */
+.ara-editorial-front-page .ara-nr-sq:not(.ara-nr-sq--pitch) .ara-nr-flip__front { border-top: 0 !important; }
+.ara-editorial-front-page .ara-nr-sq:not(.ara-nr-sq--pitch) .ara-nr-flip__front::before {
+  background: linear-gradient(90deg, #c15a3c, #e0a526 55%, #c15a3c);
+}
+/* company pitches */
+.ara-editorial-front-page .ara-nr-sq--pitch .ara-nr-flip__front { border-top: 0 !important; }
+.ara-editorial-front-page .ara-nr-sq--pitch .ara-nr-flip__front::before {
+  background: linear-gradient(90deg, #e0a526, #3a5be0 55%, #e0a526);
+}
+/* featured lead */
+.ara-editorial-front-page .ara-editorial-front-page__lead { position: relative; overflow: hidden; }
+.ara-editorial-front-page .ara-editorial-front-page__lead::before {
+  content: ""; position: absolute; top: 0; left: 0; right: 0; height: 6px; z-index: 5;
+  background: linear-gradient(90deg, #176d5c, #e0a526 45%, #b88332 70%, #176d5c);
+}

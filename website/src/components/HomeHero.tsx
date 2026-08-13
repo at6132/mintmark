@@ -39,6 +39,13 @@ export function HomeHero() {
   const [outgoingWord, setOutgoingWord] = useState<string | null>(null);
   const [highlightMinWidth, setHighlightMinWidth] = useState<number | undefined>(undefined);
 
+  // market snapshot box alternates between the snapshot and the mintmark ad
+  const [mktView, setMktView] = useState(0);
+  useEffect(() => {
+    const iv = window.setInterval(() => setMktView((v) => (v + 1) % 2), 6500);
+    return () => window.clearInterval(iv);
+  }, []);
+
   useEffect(() => {
     setDateLabel(
       new Date().toLocaleDateString("en-US", {
@@ -260,42 +267,69 @@ export function HomeHero() {
         {hero.show_market_snapshot ? (
           <div className="ara-mintmark-hero__market-frame">
             <aside className="ara-mintmark-hero__market">
-              <div className="ara-mintmark-hero__market-head">
-                <div>
-                  <span>{String(hero.market_heading || "MARKET SNAPSHOT")}</span>
-                  <small>{dateLabel}</small>
-                </div>
-                {hero.market_badge ? (
-                  <span className="ara-mintmark-hero__market-badge">{String(hero.market_badge)}</span>
-                ) : null}
-              </div>
+              {mktView === 0 ? (
+                <>
+                  <div className="ara-mintmark-hero__market-head">
+                    <div>
+                      <span>{String(hero.market_heading || "MARKET SNAPSHOT")}</span>
+                      <small>{dateLabel}</small>
+                    </div>
+                  </div>
 
-              <div className="ara-mintmark-hero__market-tiles">
-                {marketTiles
-                  .map((block) => (
-                    <div key={block.id} className="ara-mintmark-hero__mtile" tabIndex={0}>
-                      <div className="ara-mintmark-hero__mtile-inner">
-                        <div className="ara-mintmark-hero__mtile-face ara-mintmark-hero__mtile-front">
-                          <strong>{block.name}</strong>
-                          <p>{block.front}</p>
-                        </div>
-                        <div className="ara-mintmark-hero__mtile-face ara-mintmark-hero__mtile-back">
-                          <span className="ara-mintmark-hero__mtile-name">{block.name}</span>
-                          <span className="ara-mintmark-hero__mtile-val">{block.value}</span>
-                          <em className={`ara-mintmark-hero__market-change ara-mintmark-hero__market-change--${block.direction}`}>
-                            {block.direction === "up" ? "+" : block.direction === "down" ? "−" : ""}
-                            {block.change}
-                          </em>
+                  <div className="ara-mintmark-hero__market-tiles">
+                    {marketTiles.map((block) => (
+                      <div key={block.id} className="ara-mintmark-hero__mtile" tabIndex={0}>
+                        <div className="ara-mintmark-hero__mtile-inner">
+                          <div className="ara-mintmark-hero__mtile-face ara-mintmark-hero__mtile-front">
+                            <strong>{block.name}</strong>
+                            <p>{block.front}</p>
+                          </div>
+                          <div className="ara-mintmark-hero__mtile-face ara-mintmark-hero__mtile-back">
+                            <span className="ara-mintmark-hero__mtile-name">{block.name}</span>
+                            <span className="ara-mintmark-hero__mtile-val">{block.value}</span>
+                            <em className={`ara-mintmark-hero__market-change ara-mintmark-hero__market-change--${block.direction}`}>
+                              {block.direction === "up" ? "+" : block.direction === "down" ? "−" : ""}
+                              {block.change}
+                            </em>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
+                </>
+              ) : (
+                <div className="ara-mintmark-hero__market-ad">
+                  <img className="ara-mintmark-hero__market-ad-mark" src={assets.markApp} alt="" aria-hidden="true" width={200} height={200} />
+                  <span className="ara-mintmark-hero__market-ad-eyebrow">Trump Accounts, explained</span>
+                  <h3 className="ara-mintmark-hero__market-ad-headline">
+                    Does your child know what&rsquo;s in their <em>Trump Account?</em>
+                  </h3>
+                  <p className="ara-mintmark-hero__market-ad-body">
+                    Every American newborn now gets one. mintmark makes it — and money — make sense.
+                  </p>
+                  <Link className="ara-mintmark-hero__market-ad-cta" href="/catalog">
+                    Start on the shelf <span aria-hidden="true">→</span>
+                  </Link>
+                  <span className="ara-mintmark-hero__market-ad-tag">Big Ideas for Small Readers · mintmark</span>
+                </div>
+              )}
+
+              <div className="ara-mintmark-hero__market-toggle" role="tablist" aria-label="Snapshot / ad">
+                <button
+                  type="button"
+                  className={`ara-mintmark-hero__market-tdot${mktView === 0 ? " is-on" : ""}`}
+                  aria-label="Market snapshot"
+                  aria-selected={mktView === 0}
+                  onClick={() => setMktView(0)}
+                />
+                <button
+                  type="button"
+                  className={`ara-mintmark-hero__market-tdot${mktView === 1 ? " is-on" : ""}`}
+                  aria-label="Mintmark"
+                  aria-selected={mktView === 1}
+                  onClick={() => setMktView(1)}
+                />
               </div>
-
-
-              {hero.market_note ? (
-                <p className="ara-mintmark-hero__market-note">{String(hero.market_note)}</p>
-              ) : null}
             </aside>
           </div>
         ) : null}
