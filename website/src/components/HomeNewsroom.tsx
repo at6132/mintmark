@@ -14,7 +14,6 @@ export function HomeNewsroom() {
   const blocks = (homeContent.editorial.blocks || []) as unknown as Block[];
   const marketNews = blocks.filter((b) => b.type === "market_news");
   const lead = blocks.find((b) => b.type === "lead_story");
-  const featured = blocks.filter((b) => b.type === "featured_story");
   const question = blocks.find((b) => b.type === "question");
   const quads = blocks.filter((b) => b.type === "quick_take");
   const reports = blocks.filter((b) => b.type === "stock_report");
@@ -22,63 +21,54 @@ export function HomeNewsroom() {
   const [dateLabel, setDateLabel] = useState("");
   const rootRef = useRef<HTMLElement | null>(null);
 
-  // Featured carousel: the lead pitch + the featured stories, shuffled through.
-  const featImg = (s: Block) => {
-    const t = `${s.company || ""} ${s.ticker || ""} ${s.heading || ""}`;
-    return /apple/i.test(t) ? assets.appleFeature : /costco/i.test(t) ? assets.costcoFeature : assets.nvdaLead;
-  };
-  const featSlides = useMemo(() => {
-    const slides: Array<Record<string, string>> = [];
-    if (lead) {
-      slides.push({
-        key: "lead",
-        story_type: lead.story_type || "",
-        company: lead.company || "",
-        ticker: lead.ticker || "",
-        heading: lead.heading || "",
-        body: lead.description || "",
-        link: lead.link || "",
-        link_label: lead.link_label || "READ THE PITCH",
-        module_link: lead.company_module_link || "",
-        module_label: lead.company_module_label || "OPEN COMPANY FILE",
-        accent: lead.accent_color || "#176d5c",
-        image: featImg(lead),
-      });
-      // demo duplicate so the click-slideshow is obvious
-      slides.push({
-        key: "lead-demo",
-        story_type: lead.story_type || "PITCH",
-        company: lead.company || "NVIDIA",
-        ticker: lead.ticker || "NVDA",
-        heading: "NVIDIA: why the whole market watches one chipmaker.",
-        body: "A second look at the company powering the AI build-out — and what its results mean for everyone else.",
-        link: lead.link || "",
+  // Featured slideshow: three distinct featured pieces, click-through only.
+  const featSlides = useMemo(
+    () => [
+      {
+        key: "nvda",
+        story_type: "PITCH",
+        company: "NVIDIA",
+        ticker: "NVDA",
+        heading: "NVIDIA: The Factory of Intelligence",
+        body: "How a graphics-card company became the engine of the AI revolution — and why it's building the computing factory floor for the future.",
+        link: "/pages/nvidia-digest",
         link_label: "READ THE PITCH",
-        module_link: lead.company_module_link || "",
+        module_link: "",
         module_label: "OPEN COMPANY FILE",
-        accent: lead.accent_color || "#176d5c",
-        image: featImg(lead),
-      });
-    }
-    featured.forEach((f, i) =>
-      slides.push({
-        key: `f${i}`,
-        story_type: f.story_type || "",
-        company: f.company || "",
-        ticker: f.ticker || "",
-        heading: f.heading || "",
-        body: f.summary || "",
-        link: f.link || "",
-        link_label: f.link_label || "READ",
-        module_link: f.company_module_link || "",
-        module_label: f.company_module_label || "COMPANY FILE",
-        accent: f.accent_color || "#176d5c",
-        image: featImg(f),
-      }),
-    );
-    return slides;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [lead, featured]);
+        accent: "#176d5c",
+        image: assets.nvdaLead,
+      },
+      {
+        key: "aapl",
+        story_type: "PITCH",
+        company: "APPLE",
+        ticker: "AAPL",
+        heading: "Apple Intelligence: The New Privacy Moat",
+        body: "How Apple turns on-device processing into a wall competitors can't climb — winning the AI privacy war one iPhone at a time.",
+        link: "/pages/apple",
+        link_label: "READ THE PITCH",
+        module_link: "/pages/apple",
+        module_label: "OPEN COMPANY FILE",
+        accent: "#3a5be0",
+        image: assets.appleFeature,
+      },
+      {
+        key: "cost",
+        story_type: "PITCH",
+        company: "COSTCO",
+        ticker: "COST",
+        heading: "Costco: The Economics of the $1.50 Hot Dog",
+        body: "Why the membership model — not the products on the shelves — is the real business, and how a loss-leader hot dog guards the moat.",
+        link: "/pages/costco",
+        link_label: "READ THE PITCH",
+        module_link: "",
+        module_label: "COMPANY FILE",
+        accent: "#e0a526",
+        image: assets.costcoFeature,
+      },
+    ],
+    [],
+  );
   const [featIdx, setFeatIdx] = useState(0);
   // click-only carousel (no auto-advance) so the controls never jump.
 
