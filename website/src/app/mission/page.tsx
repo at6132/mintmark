@@ -32,8 +32,8 @@ export default function MissionPage() {
       <div className="mm-mission__inner">
         {/* one mission piece: wordmark + statement, merged */}
         <header className="mm-mission__masthead">
-          <span className="mm-mission__wordmark">mintmark</span>
-          <span className="mm-mission__eyebrow">Our mission</span>
+          <span className="mm-mission__wordmark">Mintmark</span>
+          <span className="mm-mission__eyebrow">Our Mission</span>
           <h1 className="mm-mission__statement">
             Empower the next generation of capitalists &amp; stakeholders.
           </h1>
