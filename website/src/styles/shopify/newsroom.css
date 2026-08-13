@@ -2404,3 +2404,13 @@
   }
   .ara-editorial-front-page .ara-nr-feat .ara-editorial-front-page__lead-links { margin-top: 14px; }
   .ara-editorial-front-page .ara-nr-feat__nav { margin-top: auto; }
+
+  /* featured: fixed slide height + copy fills it, so the dot/arrow bar is pinned */
+  .ara-editorial-front-page .ara-nr-feat { min-height: 500px; }
+  .ara-editorial-front-page .ara-nr-feat .ara-editorial-front-page__lead-copy {
+    flex: 1 1 auto; display: flex; flex-direction: column; height: 100%;
+  }
+  .ara-editorial-front-page .ara-nr-feat .ara-editorial-front-page__meta {
+    min-height: 1.4em; overflow: hidden;
+  }
+  .ara-editorial-front-page .ara-nr-feat__nav { margin-top: auto; padding-top: 12px; }

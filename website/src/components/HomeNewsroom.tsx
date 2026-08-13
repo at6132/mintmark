@@ -64,11 +64,7 @@ export function HomeNewsroom() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lead, featured]);
   const [featIdx, setFeatIdx] = useState(0);
-  useEffect(() => {
-    if (featSlides.length < 2) return;
-    const iv = window.setInterval(() => setFeatIdx((i) => (i + 1) % featSlides.length), 5200);
-    return () => window.clearInterval(iv);
-  }, [featSlides.length]);
+  // click-only carousel (no auto-advance) so the controls never jump.
 
   useEffect(() => {
     setDateLabel(
