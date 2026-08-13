@@ -1218,12 +1218,15 @@
   .ara-mintmark-hero .ara-mintmark-hero__market-ad-statement b { font-family: var(--font-fraunces), "Fraunces", serif; font-size: 13px; font-weight: 600; color: #fffdf6; }
   .ara-mintmark-hero .ara-mintmark-hero__market-ad-up { color: #7ef0a0 !important; }
 
-  /* red-white-blue trim + tagline for the Trump Accounts ad */
-  .ara-mintmark-hero .ara-mintmark-hero__market-ad--usa::before {
-    height: 6px;
-    background: linear-gradient(90deg, #b22234 0 33%, #ffffff 33% 66%, #3c3b6e 66% 100%);
+  /* red · white · navy · gold fusion trim wrapped around the whole ad slide */
+  .ara-mintmark-hero .ara-mintmark-hero__market-ad--usa::before { content: none; }
+  .ara-mintmark-hero .ara-mintmark-hero__market-ad--usa {
+    border: 3px solid transparent;
+    background:
+      radial-gradient(120% 120% at 100% 0%, rgba(224, 165, 38, 0.18), transparent 55%) padding-box,
+      linear-gradient(155deg, #1b2236, #10152a 62%, #0c1020) padding-box,
+      linear-gradient(125deg, #b22234, #f4efe2 26%, #3c3b6e 52%, #e0a526 80%, #b22234) border-box;
   }
-  .ara-mintmark-hero .ara-mintmark-hero__market-ad--usa { border: 1px solid rgba(255, 253, 246, 0.14); }
   .ara-mintmark-hero .ara-mintmark-hero__market-ad-tagline {
     position: relative; z-index: 1; margin: 2px 0 0;
     font-family: var(--font-fraunces), "Fraunces", serif; font-style: italic;
