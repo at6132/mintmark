@@ -1607,3 +1607,76 @@
   height: 17px !important;
   box-shadow: inset 0 3px 0 rgba(160,185,235,0.4), inset 0 -4px 5px rgba(0,0,0,0.7), 0 12px 18px rgba(0,0,0,0.6) !important;
 }
+
+/* ===== Bookshelf v4 — natural wood, real 3D books, defined angles (20 fixes) ===== */
+/* 1-4 · clean navy-wood cabinet: soft wide planks, no corduroy grain, deep vignette */
+.mm-vitrine__cabinet {
+  background:
+    radial-gradient(130% 80% at 50% -10%, rgba(150,180,235,0.10), transparent 55%),
+    linear-gradient(90deg, rgba(0,0,0,0.55), transparent 7%, transparent 93%, rgba(0,0,0,0.55)),
+    repeating-linear-gradient(90deg, rgba(255,255,255,0.018) 0 44px, rgba(0,0,0,0.10) 44px 46px, rgba(255,255,255,0.018) 46px 90px),
+    linear-gradient(180deg, #2a457d 0%, #1c2f57 48%, #111f3c 100%) !important;
+  box-shadow:
+    inset 0 0 0 1px rgba(140,170,225,0.12),
+    inset 0 34px 54px -32px rgba(0,0,0,0.95),
+    inset 0 -30px 40px -28px rgba(0,0,0,0.8) !important;
+}
+.mm-vitrine__cabinet::before { content: none; }
+/* 5 · shelf spacing + book row baseline */
+.mm-vitrine__shelf { padding: 22px 6px 0; }
+.mm-vitrine__books { align-items: flex-end; padding: 20px 4px 8px; perspective: 1200px; position: relative; }
+/* 6-11 · real 3D book: cream top pages, right side face, spine light, forward tilt */
+.mm-vitrine__book {
+  transform: rotateX(11deg) !important; transform-origin: bottom center;
+  border-radius: 3px 3px 4px 4px;
+  background:
+    linear-gradient(90deg, rgba(255,255,255,0.26) 0 2px, rgba(255,255,255,0.05) 3px 8px, rgba(0,0,0,0.10) 60%, rgba(0,0,0,0.42) 100%),
+    linear-gradient(180deg, color-mix(in srgb, var(--co) 92%, #fff), var(--co) 44%, color-mix(in srgb, var(--co) 66%, #000)) !important;
+  box-shadow:
+    inset -3px 0 4px rgba(0,0,0,0.45),
+    inset 2px 0 2px rgba(255,255,255,0.14),
+    2px 0 0 rgba(0,0,0,0.4),
+    0 14px 16px -6px rgba(0,0,0,0.55) !important;
+}
+.mm-vitrine__book:nth-child(5n) { transform: rotate(-1.6deg) rotateX(11deg) !important; }
+.mm-vitrine__book:nth-child(7n) { transform: rotate(1.3deg) rotateX(11deg) !important; }
+/* the top of the book (pages) — clearly angled */
+.mm-vitrine__book-cap {
+  top: -9px !important; left: 1px; right: 1px; height: 11px !important;
+  transform: rotateX(60deg); transform-origin: bottom;
+  background: repeating-linear-gradient(90deg, #f2ead4 0 1.5px, #ddd2b6 1.5px 3px) !important;
+  border-radius: 3px 3px 0 0;
+  box-shadow: 0 -2px 3px rgba(0,0,0,0.45);
+}
+/* 12 · contact shadow where books meet the board */
+.mm-vitrine__books::after {
+  content: ""; position: absolute; left: 10px; right: 10px; bottom: 6px; height: 12px; z-index: 0;
+  background: radial-gradient(70% 100% at 50% 0%, rgba(0,0,0,0.6), transparent 78%); filter: blur(3px);
+}
+/* 13-15 · thick shelf board: lit top, dark front edge, deep under-shadow, receding back */
+.mm-vitrine__ledge {
+  height: 20px !important; margin: 4px -6px 0 !important; border-radius: 2px !important;
+  background: linear-gradient(180deg, #4a6bab 0 3px, #2c4680 3px, #1a2c54 46%, #0d1730 100%) !important;
+  box-shadow:
+    inset 0 3px 0 rgba(170,195,245,0.5),
+    inset 0 -5px 6px rgba(0,0,0,0.75),
+    0 14px 20px -4px rgba(0,0,0,0.6) !important;
+}
+/* 16 · cleaner brass plate */
+.mm-vitrine__plate { box-shadow: inset 0 1px 0 rgba(255,255,255,0.65), inset 0 -2px 3px rgba(0,0,0,0.4), 0 3px 5px rgba(0,0,0,0.5); }
+/* 17 · slimmer angled bookends */
+.mm-vitrine__bookend { flex-basis: 5px; height: 128px; opacity: 0.85; }
+/* 18 · pull the book off the shelf on hover/focus */
+.mm-vitrine__book:hover, .mm-vitrine__book:focus-visible {
+  transform: translateY(-16px) rotateX(20deg) translateZ(34px) !important;
+  box-shadow: 0 30px 40px rgba(0,0,0,0.6), inset -3px 0 4px rgba(0,0,0,0.4) !important;
+  filter: brightness(1.14) saturate(1.06);
+}
+/* 19-20 · calmer base + case */
+.mm-vitrine__base { height: 18px !important; background: linear-gradient(180deg, #26406f, #0d1730) !important; }
+.mm-vitrine__frame {
+  background:
+    linear-gradient(135deg, #33528c, #182a4e 55%, #2a457d) border-box,
+    linear-gradient(#0d1730, #0d1730) padding-box !important;
+  border: 5px solid transparent !important;
+}
