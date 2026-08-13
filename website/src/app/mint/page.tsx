@@ -32,14 +32,26 @@ export default function MintPage() {
         <header className="mm-mint__head">
           <h1 className="mm-mint__title">The Mint</h1>
           <span className="mm-mint__subhead">The Curriculum</span>
-          <img className="mm-mint__mark" src={assets.markTransparent} alt="Mintmark" width={200} height={200} />
+          <img className="mm-mint__mark" src={assets.markApp} alt="Mintmark" width={200} height={200} />
         </header>
 
-        <div className="mm-mint__navybox">
-          <p>
-            Six metals. Six levels. Thirty-six concepts — the curriculum behind every Mintmark company
-            file, struck one mark at a time.
-          </p>
+        {/* one sample element, opened into a lesson */}
+        <div className="mm-mint__sample">
+          <div className="mm-mint__sample-el" style={{ ["--co" as string]: "#c47a34" }}>
+            <span className="mm-mint__sample-n">01</span>
+            <b className="mm-mint__sample-sym">Ra</b>
+            <small className="mm-mint__sample-lv">Copper · I</small>
+          </div>
+          <div className="mm-mint__sample-body">
+            <span className="mm-mint__sample-kicker">Sample lesson</span>
+            <h2 className="mm-mint__sample-title">Raise — the first dollar</h2>
+            <p className="mm-mint__sample-text">
+              Before a company can build anything, it needs money to start. That money comes from
+              owners and investors who trade cash today for a share of what the business becomes.
+              Learn how a company raises its first dollar — and why every share you own began right
+              here, at Copper, Level&nbsp;I.
+            </p>
+          </div>
         </div>
 
         <div className="mm-mint__ptable" role="img" aria-label="Periodic table of the curriculum">
