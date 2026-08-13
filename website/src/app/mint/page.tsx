@@ -2,15 +2,24 @@ import { assets } from "@/lib/assets";
 
 export const metadata = { title: "The Mint" };
 
-// six metals — one per level. Empty squares for now.
-const METALS = [
-  { roman: "I", name: "Copper", from: "#e0954c", to: "#a85f28" },
-  { roman: "II", name: "Nickel", from: "#d3d6dc", to: "#9aa0a8" },
-  { roman: "III", name: "Brass", from: "#e6c877", to: "#b18f3e" },
-  { roman: "IV", name: "Bronze", from: "#d18f49", to: "#875629" },
-  { roman: "V", name: "Silver", from: "#eceef3", to: "#b3b7c0" },
-  { roman: "VI", name: "Platinum", from: "#f2f4f7", to: "#c6cad1" },
-];
+const METALS = ["#c47a34", "#c9a24a", "#a06a34", "#4fa98f", "#c3c7d0", "#d8b23f"];
+
+// classic periodic-table silhouette — empty squares, no labels
+function buildCells() {
+  const cells: Array<{ r: number; c: number; m: number }> = [];
+  const add = (r: number, c: number) => cells.push({ r, c, m: (r + c) % METALS.length });
+  add(1, 1);
+  add(1, 18);
+  for (const p of [2, 3]) {
+    add(p, 1);
+    add(p, 2);
+    for (let g = 13; g <= 18; g++) add(p, g);
+  }
+  for (const p of [4, 5, 6, 7]) for (let g = 1; g <= 18; g++) add(p, g);
+  for (const r of [9, 10]) for (let g = 3; g <= 17; g++) add(r, g);
+  return cells;
+}
+const CELLS = buildCells();
 
 export default function MintPage() {
   return (
@@ -23,7 +32,7 @@ export default function MintPage() {
         <header className="mm-mint__head">
           <h1 className="mm-mint__title">The Mint</h1>
           <span className="mm-mint__subhead">The Curriculum</span>
-          <img className="mm-mint__mark" src={assets.markApp} alt="Mintmark" width={200} height={200} />
+          <img className="mm-mint__mark" src={assets.markTransparent} alt="Mintmark" width={200} height={200} />
         </header>
 
         <div className="mm-mint__navybox">
@@ -33,23 +42,17 @@ export default function MintPage() {
           </p>
         </div>
 
-        <div className="mm-mint__table">
-          {METALS.map((m) => (
-            <div
-              key={m.name}
-              className="mm-mint__row"
-              style={{ ["--from" as string]: m.from, ["--to" as string]: m.to }}
-            >
-              <span className="mm-mint__metal">
-                <b>{m.roman}</b>
-                <small>{m.name}</small>
-              </span>
-              <div className="mm-mint__cells">
-                {Array.from({ length: 6 }).map((_, i) => (
-                  <span key={i} className="mm-mint__cell" />
-                ))}
-              </div>
-            </div>
+        <div className="mm-mint__ptable" role="img" aria-label="Periodic table of the curriculum">
+          {CELLS.map((cell, i) => (
+            <span
+              key={i}
+              className="mm-mint__cell"
+              style={{
+                ["--r" as string]: cell.r,
+                ["--c" as string]: cell.c,
+                ["--co" as string]: METALS[cell.m],
+              }}
+            />
           ))}
         </div>
       </div>

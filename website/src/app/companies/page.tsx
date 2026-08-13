@@ -37,6 +37,20 @@ const FILTERS: Array<{ id: string; labelKey: string; fallback: string }> = [
   { id: "other", labelKey: "other_label", fallback: "OTHER" },
 ];
 
+const SECTOR_TONE: Record<string, string> = {
+  all: "#161b2e",
+  classics: "#8a6d3b",
+  technology: "#1fa88f",
+  consumer: "#7a9e5b",
+  industrials: "#4c6b8a",
+  "food-beverage": "#c25b3f",
+  financials: "#e0a526",
+  healthcare: "#9a5ba6",
+  energy: "#b4482f",
+  retail: "#3a5be0",
+  other: "#646575",
+};
+
 const SPARK: Record<string, string> = {
   "steady-up": "M2 46 C24 43 43 39 61 35 C82 30 101 31 121 25 C143 19 164 21 184 15 C205 10 222 11 238 7",
   "wave-up": "M2 42 C21 28 37 30 53 38 C69 46 82 25 99 28 C116 31 130 39 147 30 C165 21 181 25 198 19 C214 13 228 18 238 9",
@@ -53,7 +67,7 @@ export default function CompaniesPage() {
   const settings = catalogContent.settings as unknown as Record<string, unknown>;
   const companies = catalogContent.companies as unknown as Company[];
   const [query, setQuery] = useState("");
-  const [sector, setSector] = useState("all");
+  const [sector, setSector] = useState("classics");
   const [active, setActive] = useState<Company | null>(null);
 
   const availableSectors = useMemo(() => {
@@ -169,6 +183,7 @@ export default function CompaniesPage() {
                 key={f.id}
                 type="button"
                 className={`ara-company-catalog__filter${sector === f.id ? " is-active" : ""}`}
+                style={{ ["--chip" as string]: SECTOR_TONE[f.id] || "#161b2e" }}
                 aria-pressed={sector === f.id}
                 onClick={() => setSector(f.id)}
               >

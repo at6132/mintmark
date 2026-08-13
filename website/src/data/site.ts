@@ -54,6 +54,11 @@
         "href": "/mission"
       },
       {
+        "title": "mint",
+        "subtitle": "The Curriculum",
+        "href": "/mint"
+      },
+      {
         "title": "catalog",
         "subtitle": "Companies",
         "href": "/catalog"

@@ -1765,3 +1765,49 @@
 @media (prefers-reduced-motion: reduce) {
   .mm-conveyor__track, .mm-conveyor__belt { animation: none; }
 }
+
+/* ===== Conveyor v2 — coloured controls, sleek belt, richer covers ===== */
+/* colour-coded sector chips (drive both the conveyor and the grid) */
+.ara-company-catalog .ara-company-catalog__filter {
+  position: relative; padding-left: 26px;
+  border: 1.5px solid var(--chip, #161b2e) !important;
+  color: var(--chip, #161b2e) !important; background: transparent !important;
+  transition: background 0.18s ease, color 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease;
+}
+.ara-company-catalog .ara-company-catalog__filter::before {
+  content: ""; position: absolute; left: 10px; top: 50%; transform: translateY(-50%);
+  width: 9px; height: 9px; border-radius: 50%; background: var(--chip, #161b2e);
+}
+.ara-company-catalog .ara-company-catalog__filter:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(22,27,46,0.12); }
+.ara-company-catalog .ara-company-catalog__filter.is-active { background: var(--chip, #161b2e) !important; color: #fffdf6 !important; }
+.ara-company-catalog .ara-company-catalog__filter.is-active::before { background: #fffdf6; }
+
+/* spruced control bar (reads as the bookshelf's controls) */
+.ara-company-catalog .ara-company-catalog__tools {
+  border-radius: 14px !important; border: 2px solid #161b2e !important;
+  background: linear-gradient(160deg, #fffdf6, #f4faf6 72%) !important;
+  box-shadow: 0 12px 30px rgba(22,27,46,0.08) !important;
+}
+.ara-company-catalog .ara-company-catalog__search input {
+  border-radius: 999px !important; border: 1.5px solid #161b2e !important; min-height: 46px !important;
+  padding-left: 40px !important;
+  background: #ffffff url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='18' height='18' fill='none' stroke='%23176d5c' stroke-width='2'><circle cx='8' cy='8' r='6'/><path d='M12.5 12.5l4.5 4.5'/></svg>") no-repeat 13px center !important;
+}
+.ara-company-catalog .ara-company-catalog__search input:focus { outline: none; border-color: #176d5c !important; box-shadow: 0 0 0 3px rgba(23,109,92,0.18) !important; }
+
+/* sleek belt — no cheesy treads, just a lit rail with a gliding highlight */
+.mm-conveyor__belt {
+  height: 20px !important; border: 0 !important; border-top: 2px solid #3a558a !important;
+  background: linear-gradient(180deg, #22345f 0 3px, #16233f 3px, #0c1526) !important;
+  box-shadow: inset 0 3px 6px rgba(0,0,0,0.5), inset 0 -1px 0 rgba(0,0,0,0.6) !important;
+  animation: none !important; position: relative; overflow: hidden;
+}
+.mm-conveyor__belt::after {
+  content: ""; position: absolute; top: 3px; left: -30%; width: 30%; height: 3px;
+  background: linear-gradient(90deg, transparent, rgba(150,180,235,0.55), transparent);
+  animation: mm-belt-glide 3.4s linear infinite;
+}
+@keyframes mm-belt-glide { to { left: 130%; } }
+
+/* (reverted the "richer covers" experiment — back to the clean uniform covers) */
+@media (prefers-reduced-motion: reduce) { .mm-conveyor__belt::after { animation: none; } }

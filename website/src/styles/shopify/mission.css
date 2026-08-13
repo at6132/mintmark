@@ -217,3 +217,19 @@
   line-height: 1.55; color: #3f4552;
 }
 .mm-mission__grid { margin-top: clamp(32px, 4vw, 48px); }
+
+/* navy pillar boxes, light type, full 360 gradient trim */
+.mm-mission__card {
+  border: 2.5px solid transparent !important;
+  background:
+    linear-gradient(162deg, #1f2a4e, #10162a 74%) padding-box,
+    linear-gradient(135deg, var(--acc), #e0a526 48%, var(--acc)) border-box !important;
+  box-shadow: 0 20px 44px rgba(10, 16, 30, 0.32), inset 0 1px 0 rgba(255, 255, 255, 0.06) !important;
+}
+.mm-mission__card::before { content: none !important; }
+.mm-mission__card-title { color: #fbfaf4 !important; }
+.mm-mission__card-body { color: #c6ccdb !important; }
+.mm-mission__n { color: color-mix(in srgb, var(--acc) 52%, #ffffff) !important; }
+.mm-mission__card-glow {
+  background: radial-gradient(60% 60% at 22% 0%, color-mix(in srgb, var(--acc) 42%, transparent), transparent 70%) !important;
+}
