@@ -6,6 +6,20 @@ import { homeContent } from "@/data/home";
 import { appHref, assets } from "@/lib/assets";
 import { stripHtml } from "@/lib/format";
 
+// "write it 100 times" assignment — the second half of each line changes.
+const STAKE_LINES = [
+  "what they own",
+  "how it works",
+  "what that's worth",
+  "what to do with it",
+  "what it's made of",
+  "why it grows",
+  "how to read it",
+  "what stands behind it",
+  "what they're holding",
+  "what a stake is",
+];
+
 export function HomeHero() {
   const hero = homeContent.hero as Record<string, unknown>;
   const blocks = (homeContent.hero.blocks || []) as unknown as Array<Record<string, string>>;
@@ -293,7 +307,7 @@ export function HomeHero() {
                     ))}
                   </div>
                 </>
-              ) : (
+              ) : mktView === 1 ? (
                 <div className="ara-mintmark-hero__market-ad ara-mintmark-hero__market-ad--usa">
                   <img className="ara-mintmark-hero__market-ad-mark" src={assets.markApp} alt="" aria-hidden="true" width={200} height={200} />
                   <span className="ara-mintmark-hero__market-ad-eyebrow">Trump Accounts</span>
@@ -315,6 +329,30 @@ export function HomeHero() {
                     Learn more <span aria-hidden="true">→</span>
                   </Link>
                 </div>
+              ) : (
+                <div className="ara-mintmark-hero__market-ad ara-mintmark-hero__market-ad--usa ara-mintmark-hero__market-ad--lines">
+                  <div className="ara-mintmark-hero__lines-sheet">
+                    {STAKE_LINES.map((end, i) => (
+                      <p key={i} className="ara-mintmark-hero__lines-row">
+                        Every child should have a stake in America. Every child should know{" "}
+                        <mark className="ara-mintmark-hero__lines-hl">{end}</mark>.
+                      </p>
+                    ))}
+                  </div>
+                  <div className="ara-mintmark-hero__market-ad-top">
+                    <img
+                      className="ara-mintmark-hero__market-ad-logo"
+                      src={assets.logo}
+                      alt="Mintmark"
+                      width={620}
+                      height={140}
+                    />
+                  </div>
+                  <p className="ara-mintmark-hero__market-ad-tagline">Every child should know what they own.</p>
+                  <Link className="ara-mintmark-hero__market-ad-cta" href="/mission">
+                    Learn more <span aria-hidden="true">→</span>
+                  </Link>
+                </div>
               )}
 
               <div className="ara-mintmark-hero__market-toggle" role="tablist" aria-label="Snapshot / ad">
@@ -328,9 +366,16 @@ export function HomeHero() {
                 <button
                   type="button"
                   className={`ara-mintmark-hero__market-tdot${mktView === 1 ? " is-on" : ""}`}
-                  aria-label="Mintmark"
+                  aria-label="Trump Accounts ad"
                   aria-selected={mktView === 1}
                   onClick={() => setMktView(1)}
+                />
+                <button
+                  type="button"
+                  className={`ara-mintmark-hero__market-tdot${mktView === 2 ? " is-on" : ""}`}
+                  aria-label="The assignment ad"
+                  aria-selected={mktView === 2}
+                  onClick={() => setMktView(2)}
                 />
               </div>
             </aside>

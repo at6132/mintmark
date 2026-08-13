@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Alegreya, Inter, Fraunces, Space_Grotesk } from "next/font/google";
+import { Alegreya, Inter, Fraunces, Space_Grotesk, Caveat } from "next/font/google";
 import "./globals.css";
 import { SiteChrome } from "@/components/SiteChrome";
 
@@ -41,6 +41,13 @@ const spaceGrotesk = Space_Grotesk({
   display: "swap",
 });
 
+const caveat = Caveat({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-caveat",
+  display: "swap",
+});
+
 export const metadata: Metadata = {
   title: {
     default: "Mintmark — Big Ideas for Small Readers",
@@ -57,7 +64,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html
       lang="en"
-      className={`${alegreya.variable} ${inter.variable} ${fraunces.variable} ${spaceGrotesk.variable}`}
+      className={`${alegreya.variable} ${inter.variable} ${fraunces.variable} ${spaceGrotesk.variable} ${caveat.variable}`}
     >
       <body className={`${alegreya.className} template-index`}>
         <SiteChrome>{children}</SiteChrome>

@@ -192,3 +192,28 @@
   .mm-mission__grid { grid-template-columns: 1fr; }
   .mm-mission__arrow { right: 50%; top: auto; bottom: -22px; transform: translateX(50%) rotate(90deg); }
 }
+
+/* --- restrained numbering: mission stands alone, pillars are 1 . 2 . 3 --- */
+.mm-mission__n { display: block; margin: 0 0 8px; font-size: 34px; }
+.mm-mission__lead-in {
+  margin: 32px 2px 16px;
+  font-family: var(--font-space-grotesk), "Space Grotesk", sans-serif;
+  font-size: 12px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: #7a8494;
+}
+/* calmer, more truthful feel — soften the sheen + accent flourish */
+.mm-mission__title em { color: #176d5c; }
+.mm-mission__sheen { opacity: 0.6; }
+.mm-mission__orb { opacity: 0.55 !important; }
+
+/* merged mission header (one piece) */
+.mm-mission__statement {
+  margin: 16px auto 0; max-width: 20ch;
+  font-family: var(--font-fraunces), "Fraunces", Georgia, serif;
+  font-size: clamp(34px, 5.4vw, 62px); font-weight: 600; letter-spacing: -0.03em; line-height: 1.02; color: #161b2e;
+}
+.mm-mission__sub {
+  margin: 18px auto 0; max-width: 560px;
+  font-family: var(--font-alegreya), "Alegreya", serif; font-size: clamp(16px, 2vw, 19px);
+  line-height: 1.55; color: #3f4552;
+}
+.mm-mission__grid { margin-top: clamp(32px, 4vw, 48px); }

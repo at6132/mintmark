@@ -3,8 +3,7 @@
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import { catalogContent } from "@/data/catalog";
-import { appHref, assets } from "@/lib/assets";
-import { stripHtml } from "@/lib/format";
+import { appHref } from "@/lib/assets";
 
 type Company = {
   id: string;
@@ -121,46 +120,8 @@ export default function CompaniesPage() {
   return (
     <section className="ara-company-catalog" style={style}>
       <div className="ara-company-catalog__inner">
-        <div className="ara-company-catalog__brand-masthead">
-          <div className="ara-company-catalog__brand-lockup">
-            <img src={assets.wordmarkInk} alt="Mintmark" width={488} height={88} />
-          </div>
-          <div className="ara-company-catalog__brand-index">
-            <span>COMPANY CATALOG</span>
-            <small>REAL COMPANIES · COMPANY FILES · PHYSICAL DIGESTS</small>
-          </div>
-          <img
-            className="ara-company-catalog__brand-mark"
-            src={assets.markApp}
-            alt=""
-            width={285}
-            height={285}
-          />
-        </div>
-
-        {settings.show_intro !== false ? (
-          <div className="ara-company-catalog__intro">
-            <div>
-              {settings.eyebrow ? (
-                <span className="ara-company-catalog__eyebrow">{String(settings.eyebrow)}</span>
-              ) : null}
-              {settings.heading ? <h1>{String(settings.heading)}</h1> : null}
-            </div>
-            {settings.description ? (
-              <div className="ara-company-catalog__description">
-                <p>{stripHtml(String(settings.description))}</p>
-              </div>
-            ) : null}
-          </div>
-        ) : null}
-
-        {/* 3D bookshelf vitrine — the bookshelf, merged in at the top of the catalog */}
+        {/* 3D bookshelf vitrine — the bookshelf, at the top of the catalog */}
         <div className="mm-vitrine">
-          <div className="mm-vitrine__head">
-            <span className="mm-vitrine__eyebrow">The Bookshelf</span>
-            <h2 className="mm-vitrine__title">Pull a company off the shelf.</h2>
-            <span className="mm-vitrine__hint">Scroll the case · hover a spine · click to open the file</span>
-          </div>
           <div className="mm-vitrine__frame">
             <div className="mm-vitrine__cabinet">
               {grouped.map((group) => (
