@@ -1,0 +1,568 @@
+
+  .ara-account {
+    position: relative;
+    overflow: hidden;
+    padding: 56px 0 100px;
+    background-color: var(--ara-account-bg);
+    background-image: repeating-linear-gradient(
+      to bottom,
+      transparent 0 35px,
+      color-mix(in srgb, var(--ara-account-mint) 9%, transparent) 35px 36px
+    );
+    color: var(--ara-account-ink);
+  }
+
+  .ara-account * {
+    box-sizing: border-box;
+  }
+
+  .ara-account .ara-account__inner {
+    width: min(100%, var(--ara-account-max));
+    margin: 0 auto;
+    padding: 0 40px;
+  }
+
+  .ara-account .ara-account__folio {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 18px;
+    align-items: center;
+    padding: 0 0 14px;
+    border-bottom: 4px solid var(--ara-account-ink);
+    color: var(--ara-account-mint-deep);
+    font-family: var(--font-accent-family);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+
+  .ara-account .ara-account__folio span:last-child {
+    text-align: right;
+  }
+
+  .ara-account .ara-account__folio strong {
+    color: var(--ara-account-ink);
+    font-family: var(--font-heading-family);
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+  }
+
+  .ara-account .ara-account__intro {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(280px, 0.85fr);
+    gap: 48px;
+    align-items: flex-end;
+    padding: 28px 0 30px;
+    border-bottom: 1px solid var(--ara-account-ink);
+  }
+
+  .ara-account .ara-account__eyebrow,
+  .ara-account .ara-account__desk-head span,
+  .ara-account .ara-account__form-head > span,
+  .ara-account label > span:first-child,
+  .ara-account .ara-account__pass-kicker,
+  .ara-account .ara-account__pass-top,
+  .ara-account .ara-account__tabs button {
+    margin: 0;
+    color: var(--ara-account-mint);
+    font-family: var(--font-accent-family);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    line-height: 1.25;
+    text-transform: uppercase;
+  }
+
+  .ara-account .ara-account__intro h1 {
+    margin: 10px 0 0;
+    font-family: var(--font-heading-family);
+    font-size: clamp(42px, 6vw, 72px);
+    font-style: var(--font-heading-style);
+    font-weight: var(--font-heading-weight);
+    letter-spacing: -0.055em;
+    line-height: 0.93;
+  }
+
+  .ara-account .ara-account__intro h1 mark {
+    background: none;
+    color: inherit;
+  }
+
+  .ara-account .ara-account__intro p {
+    margin: 0;
+    color: var(--ara-account-muted);
+    font-family: var(--font-body-family);
+    font-size: 16px;
+    line-height: 1.65;
+  }
+
+  .ara-account .ara-account__layout {
+    display: grid;
+    grid-template-columns: minmax(280px, 0.78fr) minmax(0, 1.22fr);
+    gap: 24px;
+    margin-top: 35px;
+  }
+
+  .ara-account .ara-account__desk,
+  .ara-account .ara-account__form-panel {
+    border: 1px solid var(--ara-account-ink);
+    border-radius: 14px;
+    background: var(--ara-account-paper);
+  }
+
+  .ara-account .ara-account__desk {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    padding: 25px;
+    box-shadow: 7px 7px 0 color-mix(in srgb, var(--ara-account-mint) 22%, transparent);
+  }
+
+  .ara-account .ara-account__desk-art {
+    position: relative;
+    display: grid;
+    place-items: center;
+    min-height: 168px;
+    margin: -8px -8px 18px;
+    border-bottom: 1px solid color-mix(in srgb, var(--ara-account-ink) 18%, transparent);
+    color: color-mix(in srgb, var(--ara-account-mint-deep) 35%, transparent);
+  }
+
+  .ara-account .ara-account__colonnade {
+    position: absolute;
+    inset: 8px 4px auto;
+    width: 100%;
+    height: 150px;
+    opacity: 0.55;
+  }
+
+  .ara-account .ara-account__desk-coin {
+    position: relative;
+    z-index: 1;
+    width: 108px;
+    height: 108px;
+    filter: drop-shadow(0 10px 16px rgba(154, 109, 18, 0.28));
+    animation: ara-account-coin 8s ease-in-out infinite;
+  }
+
+  .ara-account .ara-account__emblem {
+    position: absolute;
+    right: 8px;
+    bottom: 10px;
+    width: 72px;
+    height: auto;
+    mix-blend-mode: multiply;
+    opacity: 0.88;
+    filter: invert(1) sepia(0.2) hue-rotate(110deg) saturate(2.2) brightness(0.55);
+  }
+
+  @keyframes ara-account-coin {
+    0%, 100% { transform: translateY(0) rotate(-4deg); }
+    50% { transform: translateY(-6px) rotate(4deg); }
+  }
+
+  .ara-account .ara-account__desk-head {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    padding-bottom: 17px;
+    border-bottom: 1px solid var(--ara-account-ink);
+  }
+
+  .ara-account .ara-account__desk-head strong {
+    font-family: var(--font-accent-family);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-align: right;
+    text-transform: uppercase;
+  }
+
+  .ara-account .ara-account__channel {
+    display: grid;
+    grid-template-columns: 38px minmax(0, 1fr);
+    gap: 15px;
+    padding: 22px 0;
+    border-bottom: 1px solid color-mix(in srgb, var(--ara-account-ink) 22%, transparent);
+  }
+
+  .ara-account .ara-account__channel > span {
+    color: var(--ara-account-gold);
+    font-family: var(--font-heading-family);
+    font-size: 21px;
+    line-height: 1;
+  }
+
+  .ara-account .ara-account__channel h2 {
+    margin: 0;
+    font-family: var(--font-heading-family);
+    font-size: 24px;
+    letter-spacing: -0.03em;
+    line-height: 1.05;
+  }
+
+  .ara-account .ara-account__channel p,
+  .ara-account .ara-account__note,
+  .ara-account .ara-account__fine {
+    margin: 8px 0 0;
+    color: var(--ara-account-muted);
+    font-family: var(--font-body-family);
+    font-size: 15px;
+    line-height: 1.55;
+  }
+
+  .ara-account .ara-account__note {
+    margin-top: auto;
+    padding-top: 22px;
+  }
+
+  .ara-account .ara-account__form-panel {
+    overflow: hidden;
+    box-shadow: 7px 7px 0 color-mix(in srgb, var(--ara-account-gold) 26%, transparent);
+  }
+
+  .ara-account .ara-account__form-head {
+    padding: 22px 27px 24px;
+    border-bottom: 1px solid var(--ara-account-ink);
+    background: var(--ara-account-ink);
+    color: #ffffff;
+  }
+
+  .ara-account .ara-account__form-head > span {
+    color: var(--ara-account-gold);
+  }
+
+  .ara-account .ara-account__form-head h2 {
+    margin: 8px 0 0;
+    font-family: var(--font-heading-family);
+    font-size: 34px;
+    letter-spacing: -0.035em;
+    line-height: 1;
+  }
+
+  .ara-account .ara-account__form-head p {
+    margin: 10px 0 0;
+    color: color-mix(in srgb, #ffffff 72%, var(--ara-account-mint));
+    font-size: 15px;
+    line-height: 1.45;
+  }
+
+  .ara-account .ara-account__tabs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    margin: 0 0 18px;
+    border: 1px solid color-mix(in srgb, #ffffff 22%, transparent);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .ara-account .ara-account__tabs button {
+    min-height: 38px;
+    padding: 8px 12px;
+    border: 0;
+    background: transparent;
+    color: color-mix(in srgb, #ffffff 70%, transparent);
+    cursor: pointer;
+  }
+
+  .ara-account .ara-account__tabs button.is-active {
+    background: var(--ara-account-gold);
+    color: var(--ara-account-ink);
+  }
+
+  .ara-account .ara-account__form {
+    display: grid;
+    gap: 18px;
+    padding: 28px;
+  }
+
+  .ara-account label {
+    display: grid;
+    gap: 8px;
+  }
+
+  .ara-account input {
+    width: 100%;
+    min-width: 0;
+    min-height: 49px;
+    padding: 11px 13px;
+    border: 1px solid var(--ara-account-rule);
+    border-radius: 8px;
+    background: #ffffff;
+    color: var(--ara-account-ink);
+    font: inherit;
+    font-family: var(--font-body-family);
+    font-size: 16px;
+  }
+
+  .ara-account input:focus-visible {
+    outline: 2px solid var(--ara-account-mint);
+    outline-offset: 2px;
+  }
+
+  .ara-account .ara-account__secret {
+    position: relative;
+    display: block;
+  }
+
+  .ara-account .ara-account__secret input {
+    padding-right: 72px;
+  }
+
+  .ara-account .ara-account__reveal {
+    position: absolute;
+    top: 50%;
+    right: 8px;
+    transform: translateY(-50%);
+    min-height: 0;
+    padding: 6px 8px;
+    border: 0;
+    background: transparent;
+    color: var(--ara-account-mint-deep);
+    font-family: var(--font-accent-family);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    cursor: pointer;
+  }
+
+  .ara-account .ara-account__form > button[type="submit"] {
+    display: inline-flex;
+    width: fit-content;
+    min-height: 47px;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 18px;
+    border: 1px solid var(--ara-account-ink);
+    border-radius: 7px;
+    background: var(--ara-account-ink);
+    color: #ffffff;
+    font-family: var(--font-accent-family);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    cursor: pointer;
+    text-transform: uppercase;
+  }
+
+  .ara-account .ara-account__form > button[type="submit"]:hover:not(:disabled) {
+    background: var(--ara-account-mint-deep);
+    border-color: var(--ara-account-mint-deep);
+  }
+
+  .ara-account .ara-account__form > button[type="submit"]:disabled {
+    opacity: 0.55;
+    cursor: wait;
+  }
+
+  .ara-account .ara-account__errors {
+    padding: 13px 15px;
+    border: 1px solid var(--ara-account-ink);
+    border-radius: 8px;
+    background: color-mix(in srgb, #c93a32 10%, #ffffff);
+    font-family: var(--font-body-family);
+    font-size: 15px;
+  }
+
+  .ara-account .ara-account__text-btn {
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--ara-account-mint-deep);
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  .ara-account .ara-account__pass-wrap {
+    display: grid;
+    gap: 22px;
+    padding: 28px;
+  }
+
+  .ara-account .ara-account__pass {
+    position: relative;
+    overflow: hidden;
+    padding: 22px 24px 18px;
+    border-radius: 16px;
+    background:
+      radial-gradient(80% 60% at 88% -10%, rgba(224, 165, 38, 0.28), transparent 46%),
+      linear-gradient(165deg, #1c243c 0%, #161b2e 55%, #0f1424 100%);
+    color: #f2f8f6;
+    box-shadow: 0 18px 40px rgba(22, 27, 46, 0.22);
+  }
+
+  .ara-account .ara-account__pass-shine {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(118deg, rgba(255,255,255,0) 30%, rgba(255,255,255,0.14) 46%, rgba(255,255,255,0) 62%);
+    pointer-events: none;
+  }
+
+  .ara-account .ara-account__pass-top {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    color: var(--ara-account-gold);
+  }
+
+  .ara-account .ara-account__pass-body {
+    display: grid;
+    grid-template-columns: 92px minmax(0, 1fr);
+    gap: 18px;
+    align-items: center;
+    margin: 18px 0 16px;
+  }
+
+  .ara-account .ara-account__pass-coin {
+    width: 92px;
+    height: 92px;
+  }
+
+  .ara-account .ara-account__pass-kicker {
+    margin: 0 0 6px;
+    color: var(--ara-account-mint);
+  }
+
+  .ara-account .ara-account__pass h2 {
+    margin: 0;
+    font-family: var(--font-heading-family);
+    font-size: clamp(28px, 4vw, 40px);
+    letter-spacing: -0.04em;
+    line-height: 0.95;
+  }
+
+  .ara-account .ara-account__pass-email {
+    margin: 8px 0 0;
+    color: #a7afbe;
+    font-size: 14px;
+  }
+
+  .ara-account .ara-account__pass-script {
+    margin: 10px 0 0;
+    color: #cfe8df;
+    font-family: var(--font-caveat), "Caveat", cursive;
+    font-size: 22px;
+    line-height: 1.2;
+  }
+
+  .ara-account .ara-account__pass-foot {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 16px;
+    padding-top: 14px;
+    border-top: 1px solid color-mix(in srgb, #e0a526 35%, transparent);
+    color: #a7afbe;
+    font-family: var(--font-accent-family);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .ara-account .ara-account__pass-foot img {
+    width: 132px;
+    height: auto;
+    filter: brightness(0) invert(1);
+    opacity: 0.92;
+  }
+
+  .ara-account .ara-account__pass-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .ara-account .ara-account__pass-actions a,
+  .ara-account .ara-account__pass-actions button {
+    display: inline-flex;
+    min-height: 44px;
+    align-items: center;
+    padding: 10px 14px;
+    border: 1px solid var(--ara-account-ink);
+    border-radius: 7px;
+    background: var(--ara-account-ink);
+    color: #fff;
+    font-family: var(--font-accent-family);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-decoration: none;
+    text-transform: uppercase;
+    cursor: pointer;
+  }
+
+  .ara-account .ara-account__pass-actions a:last-of-type {
+    background: transparent;
+    color: var(--ara-account-ink);
+  }
+
+  .ara-account .ara-account__pass-actions button {
+    background: transparent;
+    color: var(--ara-account-muted);
+    border-color: var(--ara-account-rule);
+    margin-left: auto;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ara-account .ara-account__desk-coin {
+      animation: none;
+    }
+  }
+
+  @media screen and (max-width: 989px) {
+    .ara-account .ara-account__intro,
+    .ara-account .ara-account__layout {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    .ara-account {
+      padding: 36px 0 72px;
+    }
+
+    .ara-account .ara-account__inner {
+      padding: 0 18px;
+    }
+
+    .ara-account .ara-account__folio {
+      grid-template-columns: 1fr;
+      gap: 6px;
+      text-align: center;
+    }
+
+    .ara-account .ara-account__folio span:last-child {
+      text-align: center;
+    }
+
+    .ara-account .ara-account__desk,
+    .ara-account .ara-account__form-panel {
+      border-radius: 10px;
+      box-shadow: 4px 4px 0 color-mix(in srgb, var(--ara-account-mint) 18%, transparent);
+    }
+
+    .ara-account .ara-account__form,
+    .ara-account .ara-account__pass-wrap {
+      padding: 20px;
+    }
+
+    .ara-account .ara-account__form > button[type="submit"],
+    .ara-account .ara-account__pass-actions a,
+    .ara-account .ara-account__pass-actions button {
+      width: 100%;
+      margin-left: 0;
+      justify-content: center;
+    }
+
+    .ara-account .ara-account__pass-body {
+      grid-template-columns: 1fr;
+      justify-items: start;
+    }
+  }
