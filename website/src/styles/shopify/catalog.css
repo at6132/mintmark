@@ -1786,14 +1786,15 @@
 .ara-company-catalog .ara-company-catalog__tools {
   border-radius: 14px !important; border: 2px solid #161b2e !important;
   background: linear-gradient(160deg, #fffdf6, #f4faf6 72%) !important;
-  box-shadow: 0 12px 30px rgba(22,27,46,0.08) !important;
+  box-shadow: 0 12px 30px rgba(22, 27, 46, 0.08) !important;
 }
+/* cream/ink search bar */
 .ara-company-catalog .ara-company-catalog__search input {
   border-radius: 999px !important; border: 1.5px solid #161b2e !important; min-height: 46px !important;
-  padding-left: 40px !important;
+  padding-left: 40px !important; color: #161b2e !important;
   background: #ffffff url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='18' height='18' fill='none' stroke='%23176d5c' stroke-width='2'><circle cx='8' cy='8' r='6'/><path d='M12.5 12.5l4.5 4.5'/></svg>") no-repeat 13px center !important;
 }
-.ara-company-catalog .ara-company-catalog__search input:focus { outline: none; border-color: #176d5c !important; box-shadow: 0 0 0 3px rgba(23,109,92,0.18) !important; }
+.ara-company-catalog .ara-company-catalog__search input:focus { outline: none; border-color: #176d5c !important; box-shadow: 0 0 0 3px rgba(23, 109, 92, 0.18) !important; }
 
 /* sleek belt — no cheesy treads, just a lit rail with a gliding highlight */
 .mm-conveyor__belt {
@@ -1811,3 +1812,55 @@
 
 /* (reverted the "richer covers" experiment — back to the clean uniform covers) */
 @media (prefers-reduced-motion: reduce) { .mm-conveyor__belt::after { animation: none; } }
+
+/* ===== Conveyor v3 — layered, brand-tuned 360° trim (mint → gold) ===== */
+@property --mm-angle { syntax: "<angle>"; inherits: true; initial-value: 0deg; }
+
+/* light-mint trim, layered dimension + finish (no corner studs) */
+.mm-vitrine--belt .mm-vitrine__frame {
+  position: relative !important;
+  padding: 4px !important;
+  border: 0 !important;
+  border-radius: 18px !important;
+  overflow: visible !important;
+  /* soft light-mint gradient trim (border-box) over a dark seat (padding-box) */
+  background:
+    conic-gradient(from var(--mm-angle),
+      #e6efff, #c2d6ff, #93b0f7, #5f86ee, #3a5be0, #7ba0f5, #e6efff) border-box !important;
+  /* dimension + finish: raised bevel, top gloss, bottom shade, seated drop */
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.7),
+    inset 0 -2px 3px rgba(40, 60, 130, 0.3),
+    0 16px 34px rgba(12, 20, 40, 0.32) !important;
+  animation: mm-trim-rot 11s linear infinite;
+  isolation: isolate;
+}
+/* soft mint halo behind — same gradient, blurred */
+.mm-vitrine--belt .mm-vitrine__frame::after {
+  content: ""; position: absolute; inset: -5px; z-index: -1; border-radius: 26px;
+  background:
+    conic-gradient(from var(--mm-angle),
+      #e6efff, #c2d6ff, #93b0f7, #5f86ee, #3a5be0, #7ba0f5, #e6efff);
+  filter: blur(17px) saturate(1.15); opacity: 0.5;
+}
+/* inner ring: mint/white hairline + inset shade so the trim reads crisp on the belt */
+.mm-vitrine--belt .mm-conveyor {
+  position: relative;
+  border-radius: 13px !important;
+  box-shadow:
+    inset 0 0 0 1px rgba(147, 176, 247, 0.7),
+    inset 0 0 0 2px rgba(58, 91, 224, 0.32),
+    inset 0 6px 16px rgba(0, 0, 0, 0.4) !important;
+}
+/* gliding gloss sweep across the case — the "finish" */
+.mm-vitrine--belt .mm-conveyor::after {
+  content: ""; position: absolute; inset: 0; z-index: 5; pointer-events: none;
+  background: linear-gradient(115deg, transparent 42%, rgba(255, 255, 255, 0.14) 49%, transparent 57%);
+  transform: translateX(-120%); animation: mm-case-gloss 6s ease-in-out 1.5s infinite;
+}
+@keyframes mm-case-gloss { 0% { transform: translateX(-120%); } 60%, 100% { transform: translateX(120%); } }
+@keyframes mm-trim-rot { to { --mm-angle: 360deg; } }
+@media (prefers-reduced-motion: reduce) {
+  .mm-vitrine--belt .mm-vitrine__frame { animation: none !important; }
+  .mm-vitrine--belt .mm-conveyor::after { animation: none; }
+}

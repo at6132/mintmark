@@ -990,8 +990,8 @@
     padding: 0 0.14em;
     color: var(--ara-hero-text);
     background-color: transparent;
-    /* Layer A — soft uneven gold wash under the whole word */
-    background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 240 72' preserveAspectRatio='none'><path d='M5 28 C52 18 88 32 130 24 C172 16 208 29 235 21 C238 36 233 52 229 61 C182 68 128 56 84 62 C48 67 24 57 7 61 C1 49 4 38 5 28 Z' fill='%23f2c53d' fill-opacity='0.62'/><path d='M18 34 C90 26 160 38 224 30 C228 42 220 52 216 58 C150 64 90 52 40 58 C22 60 10 50 8 42 C10 36 14 34 18 34 Z' fill='%23f7d66a' fill-opacity='0.38'/><path d='M12 46 C70 40 150 50 228 42' stroke='%23e0a526' stroke-opacity='0.42' stroke-width='4' fill='none' stroke-linecap='round'/></svg>");
+    /* soft uneven gold marker wash — same as before, minus the stroke line */
+    background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 240 72' preserveAspectRatio='none'><path d='M5 28 C52 18 88 32 130 24 C172 16 208 29 235 21 C238 36 233 52 229 61 C182 68 128 56 84 62 C48 67 24 57 7 61 C1 49 4 38 5 28 Z' fill='%23f2c53d' fill-opacity='0.62'/><path d='M18 34 C90 26 160 38 224 30 C228 42 220 52 216 58 C150 64 90 52 40 58 C22 60 10 50 8 42 C10 36 14 34 18 34 Z' fill='%23f7d66a' fill-opacity='0.38'/></svg>");
     background-repeat: no-repeat;
     background-position: 0 0.14em;
     background-size: 100% 0.88em;

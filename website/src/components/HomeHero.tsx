@@ -53,9 +53,6 @@ export function HomeHero() {
   const [outgoingWord, setOutgoingWord] = useState<string | null>(null);
   const [highlightMinWidth, setHighlightMinWidth] = useState<number | undefined>(undefined);
 
-  // market snapshot box toggles between snapshot and ad — click-only, no auto-cycle
-  const [mktView, setMktView] = useState(0);
-
   useEffect(() => {
     setDateLabel(
       new Date().toLocaleDateString("en-US", {
@@ -277,106 +274,32 @@ export function HomeHero() {
         {hero.show_market_snapshot ? (
           <div className="ara-mintmark-hero__market-frame">
             <aside className="ara-mintmark-hero__market">
-              {mktView === 0 ? (
-                <>
-                  <div className="ara-mintmark-hero__market-head">
-                    <div>
-                      <span>{String(hero.market_heading || "MARKET SNAPSHOT")}</span>
-                      <small>{dateLabel}</small>
-                    </div>
-                  </div>
-
-                  <div className="ara-mintmark-hero__market-tiles">
-                    {marketTiles.map((block) => (
-                      <div key={block.id} className="ara-mintmark-hero__mtile" tabIndex={0}>
-                        <div className="ara-mintmark-hero__mtile-inner">
-                          <div className="ara-mintmark-hero__mtile-face ara-mintmark-hero__mtile-front">
-                            <strong>{block.name}</strong>
-                            <p>{block.front}</p>
-                          </div>
-                          <div className="ara-mintmark-hero__mtile-face ara-mintmark-hero__mtile-back">
-                            <span className="ara-mintmark-hero__mtile-name">{block.name}</span>
-                            <span className="ara-mintmark-hero__mtile-val">{block.value}</span>
-                            <em className={`ara-mintmark-hero__market-change ara-mintmark-hero__market-change--${block.direction}`}>
-                              {block.direction === "up" ? "+" : block.direction === "down" ? "−" : ""}
-                              {block.change}
-                            </em>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </>
-              ) : mktView === 1 ? (
-                <div className="ara-mintmark-hero__market-ad ara-mintmark-hero__market-ad--usa">
-                  <img className="ara-mintmark-hero__market-ad-mark" src={assets.markApp} alt="" aria-hidden="true" width={200} height={200} />
-                  <span className="ara-mintmark-hero__market-ad-eyebrow">Trump Accounts</span>
-                  <h3 className="ara-mintmark-hero__market-ad-headline">
-                    Does your child know what&rsquo;s in his <em>Trump Account?</em>
-                  </h3>
-                  <div className="ara-mintmark-hero__market-ad-top">
-                    <img
-                      className="ara-mintmark-hero__market-ad-logo"
-                      src={assets.logo}
-                      alt="Mintmark"
-                      width={620}
-                      height={140}
-                    />
-                  </div>
-                  <p className="ara-mintmark-hero__market-ad-tagline">Mint your child&rsquo;s future.</p>
-                  <p className="ara-mintmark-hero__market-ad-body">A platform for young readers with big ideas.</p>
-                  <Link className="ara-mintmark-hero__market-ad-cta" href="/mission">
-                    Learn more <span aria-hidden="true">→</span>
-                  </Link>
+              <div className="ara-mintmark-hero__market-ad ara-mintmark-hero__market-ad--usa ara-mintmark-hero__market-ad--lines">
+                <span className="ara-mintmark-hero__market-ad-eyebrow">Trump Accounts</span>
+                <h3 className="ara-mintmark-hero__market-ad-headline">
+                  Does your child know what&rsquo;s in his <em>Trump Account?</em>
+                </h3>
+                <div className="ara-mintmark-hero__lines-sheet">
+                  {STAKE_LINES.slice(0, 5).map((end, i) => (
+                    <p key={i} className="ara-mintmark-hero__lines-row">
+                      Every child should have a stake in America. Every child should know{" "}
+                      <mark className="ara-mintmark-hero__lines-hl">{end}</mark>.
+                    </p>
+                  ))}
                 </div>
-              ) : (
-                <div className="ara-mintmark-hero__market-ad ara-mintmark-hero__market-ad--usa ara-mintmark-hero__market-ad--lines">
-                  <div className="ara-mintmark-hero__lines-sheet">
-                    {STAKE_LINES.map((end, i) => (
-                      <p key={i} className="ara-mintmark-hero__lines-row">
-                        Every child should have a stake in America. Every child should know{" "}
-                        <mark className="ara-mintmark-hero__lines-hl">{end}</mark>.
-                      </p>
-                    ))}
-                  </div>
-                  <div className="ara-mintmark-hero__market-ad-top">
-                    <img
-                      className="ara-mintmark-hero__market-ad-logo"
-                      src={assets.logo}
-                      alt="Mintmark"
-                      width={620}
-                      height={140}
-                    />
-                  </div>
-                  <p className="ara-mintmark-hero__market-ad-tagline">Every child should know what they own.</p>
-                  <Link className="ara-mintmark-hero__market-ad-cta" href="/mission">
-                    Learn more <span aria-hidden="true">→</span>
-                  </Link>
+                <div className="ara-mintmark-hero__market-ad-top">
+                  <img
+                    className="ara-mintmark-hero__market-ad-logo"
+                    src={assets.logo}
+                    alt="Mintmark"
+                    width={620}
+                    height={140}
+                  />
                 </div>
-              )}
-
-              <div className="ara-mintmark-hero__market-toggle" role="tablist" aria-label="Snapshot / ad">
-                <button
-                  type="button"
-                  className={`ara-mintmark-hero__market-tdot${mktView === 0 ? " is-on" : ""}`}
-                  aria-label="Market snapshot"
-                  aria-selected={mktView === 0}
-                  onClick={() => setMktView(0)}
-                />
-                <button
-                  type="button"
-                  className={`ara-mintmark-hero__market-tdot${mktView === 1 ? " is-on" : ""}`}
-                  aria-label="Trump Accounts ad"
-                  aria-selected={mktView === 1}
-                  onClick={() => setMktView(1)}
-                />
-                <button
-                  type="button"
-                  className={`ara-mintmark-hero__market-tdot${mktView === 2 ? " is-on" : ""}`}
-                  aria-label="The assignment ad"
-                  aria-selected={mktView === 2}
-                  onClick={() => setMktView(2)}
-                />
+                <p className="ara-mintmark-hero__market-ad-tagline">Every child should know what they own.</p>
+                <Link className="ara-mintmark-hero__market-ad-cta" href="/mission">
+                  Learn more <span aria-hidden="true">→</span>
+                </Link>
               </div>
             </aside>
           </div>

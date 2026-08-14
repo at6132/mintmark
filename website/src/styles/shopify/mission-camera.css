@@ -1,0 +1,136 @@
+/* ============================================================================
+   Mission — the traveling camera. Pinned stage; scrolling pans the camera
+   down the body: mouth -> esophagus -> stomach (quarters) -> the child grows.
+   Sketch x graphic x handwriting.
+   ========================================================================== */
+.mm-cam-sec { position: relative; height: 460vh; }
+.mm-cam-defs { position: absolute; width: 0; height: 0; overflow: hidden; }
+
+.mm-cam {
+  position: sticky; top: 0; height: 100vh; overflow: hidden; --p: 0;
+  background: #fbf1e6;
+}
+.mm-cam__world { position: absolute; inset: 0; transform: translateY(calc(var(--p) * -300vh)); will-change: transform; }
+
+.mm-cam__zone { position: relative; height: 100vh; display: grid; place-items: center; }
+.mm-cam__zone--mouth { background: radial-gradient(120% 70% at 70% 20%, #fff, rgba(255,255,255,0) 60%), linear-gradient(180deg, #fdf5ee, #f7e7d7); }
+.mm-cam__zone--eso { background: linear-gradient(180deg, #f7e7d7, #f0ccb6); }
+.mm-cam__zone--stomach { background: linear-gradient(180deg, #f0ccb6, #edc2a6); }
+.mm-cam__zone--grow { background: linear-gradient(180deg, #edc2a6, #f7ead0 60%, #fbf2dd); }
+
+.mm-cam__scene { position: relative; width: clamp(280px, 40vw, 420px); }
+.mm-cam__svg { display: block; width: 100%; height: auto; overflow: visible; }
+
+/* ---- shared sketch ink ---- */
+.mm-cam-bread, .mm-cam-belly, .mm-cam-tube, .mm-cam-kid, .mm-cam-ruler,
+.mm-cam-knife, .mm-cam-fill, .mm-cam-lettuce, .mm-cam-ring, .mm-cam-belly-fold,
+.mm-cam-cut, .mm-cam-chomp, .mm-cam-tick, .mm-cam-tube-in {
+  filter: url(#mm-cam-sketch);
+}
+.mm-cam-bread { fill: #eec98a; stroke: #6b5138; stroke-width: 2.6; stroke-linejoin: round; }
+.mm-cam-fill { fill: #d98a6a; stroke: #6b5138; stroke-width: 2.2; }
+.mm-cam-lettuce { fill: none; stroke: #6ea36a; stroke-width: 3; stroke-linecap: round; }
+.mm-cam-cut { stroke: #6b5138; stroke-width: 2; stroke-dasharray: 118; stroke-dashoffset: 118; animation: cam-cut 4s ease-in-out infinite; }
+@keyframes cam-cut { 0%, 34% { stroke-dashoffset: 118; } 46%, 78% { stroke-dashoffset: 0; } 92%, 100% { stroke-dashoffset: 118; } }
+.mm-cam-knife { fill: #c9ccd4; stroke: #4a4f5c; stroke-width: 2.2; stroke-linejoin: round; transform-box: fill-box; transform-origin: top center; animation: cam-knife 4s ease-in-out infinite; }
+.mm-cam-knife path:first-child { fill: none; }
+@keyframes cam-knife { 0% { transform: translateY(-40px) rotate(-3deg); opacity: 0; } 20% { opacity: 1; } 40%, 62% { transform: translateY(0) rotate(0deg); opacity: 1; } 82%, 100% { transform: translateY(-40px) rotate(-3deg); opacity: 0; } }
+.mm-cam-chomp { fill: none; stroke: #6b5138; stroke-width: 2.4; opacity: 0; animation: cam-chomp 4s ease-in-out infinite; }
+@keyframes cam-chomp { 0%, 64% { opacity: 0; } 72% { opacity: 0.9; } 100% { opacity: 0; } }
+.mm-cam-tag--info {
+  position: absolute; top: 40%; left: 50%; transform: translate(-50%, -50%);
+  font-family: var(--font-caveat), "Caveat", cursive; font-size: 26px; color: #176d5c;
+  pointer-events: none;
+}
+
+/* ---- esophagus ---- */
+.mm-cam__zone--eso .mm-cam__scene { width: clamp(220px, 26vw, 300px); }
+.mm-cam-tube { fill: none; stroke: #f0b79c; stroke-width: 46; stroke-linecap: round; }
+.mm-cam-tube-in { fill: none; stroke: rgba(255,252,248,0.6); stroke-width: 16; stroke-linecap: round; }
+.mm-cam-ring { fill: none; stroke: rgba(160,90,66,0.4); stroke-width: 3; stroke-linecap: round; }
+.mm-cam-rings { animation: cam-peristalsis 2.6s linear infinite; }
+@keyframes cam-peristalsis { to { transform: translateY(90px); } }
+.mm-cam-bolus {
+  position: absolute; left: 42%; top: 2%; width: 26px; height: 26px; border-radius: 6px;
+  background: linear-gradient(150deg, #3c3c46, #1b1b22); border: 1.4px solid #101014; box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+  animation: cam-bolus 3.2s ease-in infinite;
+}
+@keyframes cam-bolus {
+  0% { top: 0%; left: 40%; opacity: 0; transform: scale(0.8); }
+  10% { opacity: 1; transform: scale(1); }
+  50% { left: 60%; }
+  90% { opacity: 1; }
+  100% { top: 96%; left: 44%; opacity: 0; transform: scale(0.9); }
+}
+
+/* ---- stomach ---- */
+.mm-cam-belly { fill: #f3c1a9; stroke: #a86a4e; stroke-width: 2.8; }
+.mm-cam-belly-fold { fill: none; stroke: #c98a70; stroke-width: 2; stroke-linecap: round; opacity: 0.7; }
+.mm-cam-quarters { position: absolute; inset: 0; display: grid; place-items: center; }
+.mm-cam-quarter {
+  position: absolute; left: 50%; top: 50%; width: 30px; height: 24px; margin: -12px 0 0 -15px;
+  display: grid; place-items: center; border-radius: 5px;
+  background: #ffe6a3; border: 1.5px solid #6b5138; color: #6b4e18;
+  font-family: var(--font-space-grotesk), "Space Grotesk", sans-serif; font-size: 10px; font-weight: 800;
+  transform: rotate(var(--a)) translateX(46px) rotate(calc(-1 * var(--a)));
+  animation: cam-churn 5s linear infinite;
+}
+@keyframes cam-churn {
+  from { transform: rotate(var(--a)) translateX(46px) rotate(calc(-1 * var(--a))); }
+  to { transform: rotate(calc(var(--a) + 360deg)) translateX(46px) rotate(calc(-1 * (var(--a) + 360deg))); }
+}
+.mm-cam-nutrients { position: absolute; inset: 0; }
+.mm-cam-nutri {
+  position: absolute; left: 50%; top: 58%; width: 9px; height: 9px; border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #ffe9a8, #e0a526 65%, #b9821c);
+  transform: translate(-50%, -50%);
+  animation: cam-nutri 3s ease-in infinite; animation-delay: var(--delay, 0s); opacity: 0;
+}
+@keyframes cam-nutri {
+  0% { opacity: 0; transform: translate(-50%, -50%) translate(0, 0) scale(0.5); }
+  20% { opacity: 1; scale: 1; }
+  100% { opacity: 0; transform: translate(-50%, -50%) translate(calc((var(--i) - 4) * 12px), 70px) scale(1); }
+}
+
+/* ---- the child grows ---- */
+.mm-cam__zone--grow .mm-cam__scene { width: clamp(240px, 30vw, 340px); }
+.mm-cam-kid { fill: none; stroke: #6b5138; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round;
+  transform-box: fill-box; transform-origin: bottom center;
+  transform: scale(calc(0.62 + clamp(0, calc((var(--p) - 0.76) * 4.4), 1) * 0.46)); }
+.mm-cam-ruler { fill: none; stroke: #a86a4e; stroke-width: 2; stroke-dasharray: 3 5; }
+.mm-cam-tick path { fill: none; stroke: #a86a4e; stroke-width: 2; stroke-linecap: round; }
+.mm-cam-tick { opacity: clamp(0, calc((var(--p) - 0.8 - var(--k) * 0.035) * 26), 1); }
+.mm-cam-nutrients--rise .mm-cam-nutri { top: 82%; animation: cam-rise 2.8s ease-in infinite; }
+@keyframes cam-rise {
+  0% { opacity: 0; transform: translate(-50%, -50%) translate(var(--rx), 40px) scale(0.5); }
+  20% { opacity: 1; }
+  100% { opacity: 0; transform: translate(-50%, -50%) translate(calc(var(--rx) * 0.3), -180px) scale(1); }
+}
+
+/* ---- HUD: you are here + depth ---- */
+.mm-cam__hud { position: absolute; left: clamp(18px, 4vw, 56px); top: 50%; transform: translateY(-50%); z-index: 5; }
+.mm-cam__here-label { display: block; font-family: var(--font-space-grotesk), "Space Grotesk", sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: #a0876f; }
+.mm-cam__here { position: relative; height: 56px; margin-top: 4px; }
+.mm-cam__here b { position: absolute; left: 0; top: 0; font-family: var(--font-caveat), "Caveat", cursive; font-weight: 700; font-size: clamp(34px, 5vw, 54px); color: #176d5c; opacity: 0; transform: translateY(8px); transition: opacity 0.4s ease, transform 0.4s ease; }
+.mm-cam[data-stage="mouth"] .mm-cam__here-mouth,
+.mm-cam[data-stage="eso"] .mm-cam__here-eso,
+.mm-cam[data-stage="stomach"] .mm-cam__here-stomach,
+.mm-cam[data-stage="grow"] .mm-cam__here-grow { opacity: 1; transform: none; }
+.mm-cam__depth { position: absolute; left: -18px; top: 0; bottom: 0; width: 4px; border-radius: 4px; background: rgba(107,81,56,0.18); overflow: hidden; }
+.mm-cam__depth i { position: absolute; top: 0; left: 0; right: 0; height: calc(var(--p) * 100%); background: linear-gradient(#e0a526, #176d5c); border-radius: 4px; }
+
+/* ---- caption ---- */
+.mm-cam__caption { position: absolute; right: clamp(18px, 5vw, 70px); bottom: clamp(30px, 8vh, 90px); z-index: 5; max-width: 300px; text-align: right; }
+.mm-cam__caption span { position: absolute; right: 0; bottom: 0; font-family: var(--font-fraunces), "Fraunces", serif; font-style: italic; font-size: clamp(17px, 2.2vw, 24px); color: #5a4230; opacity: 0; transform: translateY(8px); transition: opacity 0.4s ease, transform 0.4s ease; white-space: nowrap; }
+.mm-cam[data-stage="mouth"] .mm-cam__cap-mouth,
+.mm-cam[data-stage="eso"] .mm-cam__cap-eso,
+.mm-cam[data-stage="stomach"] .mm-cam__cap-stomach,
+.mm-cam[data-stage="grow"] .mm-cam__cap-grow { opacity: 1; transform: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .mm-cam-knife, .mm-cam-cut, .mm-cam-chomp, .mm-cam-rings, .mm-cam-bolus, .mm-cam-quarter, .mm-cam-nutri { animation: none; }
+}
+@media (max-width: 700px) {
+  .mm-cam__caption { display: none; }
+  .mm-cam__hud { left: 14px; }
+}

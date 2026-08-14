@@ -468,9 +468,73 @@ input:focus-visible,
 .ara-editorial-front-page .ara-nr-sq--pitch .ara-nr-flip__front::before {
   background: linear-gradient(90deg, #e0a526, #3a5be0 55%, #e0a526);
 }
+/* header nav subtitles — brighter rose red, crisp (no blur) */
+.ara-mintmark-header .ara-mintmark-header__nav-subtitle {
+  color: #f5919a !important; -webkit-text-fill-color: #f5919a;
+  text-shadow: none;
+}
+
 /* featured lead */
 .ara-editorial-front-page .ara-editorial-front-page__lead { position: relative; overflow: hidden; }
 .ara-editorial-front-page .ara-editorial-front-page__lead::before {
   content: ""; position: absolute; top: 0; left: 0; right: 0; height: 6px; z-index: 5;
   background: linear-gradient(90deg, #176d5c, #e0a526 45%, #b88332 70%, #176d5c);
+}
+
+/* ===== Hero landing box (LEFT welcome card) — glossy periodic-table backing ===== */
+.ara-mintmark-hero .ara-mintmark-hero__content { position: relative; isolation: isolate; }
+.ara-mintmark-hero__mkt-mat {
+  position: absolute; inset: 0; z-index: -1; pointer-events: none; overflow: hidden; border-radius: inherit;
+  background: linear-gradient(158deg, rgba(245, 251, 248, 0) 0%, rgba(230, 245, 237, 0.55) 60%, rgba(214, 235, 223, 0.7) 100%);
+}
+.ara-mintmark-hero__mkt-ptable {
+  --cell: 23px;
+  position: absolute; inset: 0; display: grid;
+  grid-template-columns: repeat(18, var(--cell)); grid-auto-rows: var(--cell);
+  gap: 4px; justify-content: center; align-content: center;
+  opacity: 0.5;
+  -webkit-mask-image: radial-gradient(120% 110% at 50% 50%, #000 42%, transparent 86%);
+  mask-image: radial-gradient(120% 110% at 50% 50%, #000 42%, transparent 86%);
+}
+.ara-mintmark-hero__mkt-cell {
+  grid-column: var(--c); grid-row: var(--r); width: var(--cell); height: var(--cell);
+  border-radius: 3px; border: 1px solid rgba(22, 27, 46, 0.22);
+  background:
+    linear-gradient(140deg, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0) 44%),
+    linear-gradient(150deg, color-mix(in srgb, var(--co) 85%, #fff), var(--co) 55%, color-mix(in srgb, var(--co) 70%, #000));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5);
+}
+.ara-mintmark-hero__mkt-gloss {
+  position: absolute; inset: 0; pointer-events: none;
+  background:
+    linear-gradient(118deg, rgba(255, 255, 255, 0.55) 0%, rgba(255, 255, 255, 0) 32%),
+    linear-gradient(300deg, rgba(255, 255, 255, 0.35) 0%, rgba(255, 255, 255, 0) 34%);
+  animation: mkt-gloss 7s ease-in-out infinite;
+}
+@keyframes mkt-gloss { 0%, 100% { opacity: 0.75; } 50% { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .ara-mintmark-hero__mkt-gloss { animation: none; } }
+
+/* landing box — trims + finish on the headline letters (letterpress + gold under-glow) */
+.ara-mintmark-hero .ara-mintmark-hero__heading {
+  text-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.82),
+    0 2px 4px rgba(18, 24, 42, 0.14),
+    0 0 1px rgba(224, 165, 38, 0.3);
+  -webkit-text-stroke: 0.5px rgba(18, 24, 42, 0.16);
+}
+/* keep the highlighted word crisp — trim only, no shadow bleed over the marker */
+.ara-mintmark-hero .ara-mintmark-hero__heading .mm-hl__word {
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.55);
+}
+
+/* landing box — double inner trim (mint line + gold hairline inside the ink border) */
+.ara-mintmark-hero .ara-mintmark-hero__content::after {
+  content: "" !important;
+  position: absolute; inset: 7px; z-index: 1; pointer-events: none;
+  border: 2px solid color-mix(in srgb, var(--ara-hero-accent, #176d5c) 62%, transparent);
+  border-radius: 11px;
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.4),
+    0 0 0 2px rgba(255, 255, 255, 0.4),
+    0 0 0 3px rgba(224, 165, 38, 0.5);
 }

@@ -54,8 +54,8 @@
         "href": "/mission"
       },
       {
-        "title": "mint",
-        "subtitle": "The Curriculum",
+        "title": "the mint",
+        "subtitle": "Curriculum",
         "href": "/mint"
       },
       {

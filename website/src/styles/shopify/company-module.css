@@ -1,0 +1,92 @@
+/* ============================================================================
+   MINTMARK — Company Module card (short-form). Ported from the reference
+   template (spine -> cover -> chart -> chapter -> hall) and elevated:
+   per-company brand var, foil seal, animated melt chart, hover lift.
+   ========================================================================== */
+.mmc-row {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: clamp(18px, 2vw, 28px); align-items: start;
+}
+
+.mmc {
+  --ink: #161b2e; --gold: #e0a526; --gold-hi: #f3c761; --gold-lo: #b67f14;
+  --mint: #1fa88f; --brand: #ffd100; --brand-on: #161b2e;
+  position: relative; display: grid; gap: 14px;
+  padding: 18px 22px 16px; border-radius: 4px;
+  background: #fbf7ec;
+  border: 1px solid color-mix(in srgb, var(--gold) 60%, transparent);
+  outline: 1px solid color-mix(in srgb, var(--gold) 22%, transparent); outline-offset: 4px;
+  box-shadow: 0 18px 44px rgba(22, 27, 46, 0.14);
+  transition: transform 0.28s cubic-bezier(0.2, 0.7, 0.3, 1), box-shadow 0.28s ease;
+}
+.mmc:hover { transform: translateY(-5px); box-shadow: 0 30px 60px rgba(22, 27, 46, 0.2); }
+
+/* 1 — SPINE */
+.mmc__spine {
+  position: relative; height: 34px; border-radius: 5px;
+  display: flex; align-items: center; justify-content: center; gap: 12px;
+  background: linear-gradient(#242a44, var(--ink) 45%, #0d1020);
+  box-shadow: 0 3px 6px rgba(22, 27, 46, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.14);
+}
+.mmc__spine::after {
+  content: ""; position: absolute; left: 6px; right: 6px; bottom: -4px; height: 4px;
+  background: repeating-linear-gradient(90deg, #ede6d2 0 2px, #dcd3ba 2px 3px); border-radius: 0 0 3px 3px;
+}
+.mmc__spine-band { width: 26px; height: 5px; border-radius: 2.5px; background: var(--brand); }
+.mmc__spine-name {
+  font-family: var(--font-space-grotesk), "Space Grotesk", sans-serif; font-weight: 700; font-style: italic;
+  font-size: 15px; letter-spacing: 0.34em; color: var(--brand); transform: translateX(0.17em);
+}
+
+/* 2 — COVER */
+.mmc__cover { justify-self: center; width: min(300px, 88%); border-radius: 3px 7px 7px 3px;
+  box-shadow: 10px 16px 32px rgba(22, 27, 46, 0.24), 2px 2px 0 rgba(22, 27, 46, 0.9); }
+.mmc__cover svg { display: block; width: 100%; height: auto; border-radius: 3px 7px 7px 3px; }
+
+/* 3 — CHART */
+.mmc__chart svg { display: block; width: 100%; height: auto; overflow: visible; }
+.mmc__grid-line { stroke: color-mix(in srgb, var(--mint) 26%, transparent); stroke-width: 1; }
+.mmc__price {
+  fill: none; stroke: var(--gold-lo); stroke-width: 3; stroke-linecap: round; stroke-linejoin: round;
+  stroke-dasharray: 1400; stroke-dashoffset: 1400; animation: mmc-draw 2.2s cubic-bezier(0.4, 0, 0.2, 1) 0.3s forwards;
+}
+@keyframes mmc-draw { to { stroke-dashoffset: 0; } }
+.mmc__dot { fill: var(--gold); stroke: var(--ink); stroke-width: 1.4; opacity: 0; animation: mmc-pop 0.35s ease forwards; }
+@keyframes mmc-pop { to { opacity: 1; } }
+
+/* 4 — CHAPTER */
+.mmc__chapter { display: flex; align-items: baseline; gap: 10px; border-left: 3px solid var(--brand); padding: 2px 0 2px 12px; }
+.mmc__chapter-num { font-family: var(--font-space-grotesk), "Space Grotesk", sans-serif; font-size: 10px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; opacity: 0.55; white-space: nowrap; color: var(--ink); }
+.mmc__chapter-title { font-family: var(--font-fraunces), "Fraunces", serif; font-style: italic; font-size: 17px; color: var(--ink); }
+
+/* 5 — HALL */
+.mmc__hall { display: flex; align-items: center; gap: 7px; padding-top: 12px; border-top: 1px solid color-mix(in srgb, var(--gold) 35%, transparent); }
+.mmc__hall-label { font-family: var(--font-space-grotesk), "Space Grotesk", sans-serif; font-size: 9px; font-weight: 600; letter-spacing: 0.22em; text-transform: uppercase; opacity: 0.5; margin-right: 6px; color: var(--ink); }
+.mmc__mark {
+  width: 22px; height: 22px; border-radius: 50%; display: grid; place-items: center;
+  font-family: var(--font-fraunces), "Fraunces", serif; font-size: 11px; color: var(--ink);
+  border: 1px solid var(--gold); opacity: 0.4;
+}
+.mmc__mark.is-struck { background: linear-gradient(160deg, var(--gold-hi), var(--gold) 60%, var(--gold-lo)); opacity: 1; box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5); }
+.mmc__mark.is-here { outline: 2px solid var(--ink); outline-offset: 2px; opacity: 1; }
+.mmc__hall-spacer { flex: 1; }
+.mmc__price-tag { font-family: var(--font-fraunces), "Fraunces", serif; font-size: 16px; white-space: nowrap; color: var(--ink); }
+
+@media (prefers-reduced-motion: reduce) {
+  .mmc__price { stroke-dashoffset: 0; animation: none; }
+  .mmc__dot { opacity: 1; animation: none; }
+}
+
+/* newsroom band head for the company files */
+.ara-editorial-front-page .ara-nr-modules { margin-top: clamp(28px, 4vw, 48px); }
+.ara-editorial-front-page .ara-nr-modules__head {
+  display: flex; align-items: baseline; justify-content: space-between; gap: 14px; margin-bottom: 16px;
+  border-bottom: 2px solid var(--ara-news-text, #161b2e); padding-bottom: 8px;
+}
+.ara-editorial-front-page .ara-nr-modules__title {
+  font-family: var(--font-fraunces), "Fraunces", serif; font-weight: 900; font-size: clamp(20px, 2.4vw, 28px); color: var(--ara-news-text, #161b2e);
+}
+.ara-editorial-front-page .ara-nr-modules__note {
+  font-family: var(--font-space-grotesk), "Space Grotesk", sans-serif; font-size: 11px; font-weight: 700;
+  letter-spacing: 0.1em; text-transform: uppercase; color: var(--ara-news-muted, #646575);
+}

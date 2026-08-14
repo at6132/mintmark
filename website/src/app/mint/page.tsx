@@ -29,29 +29,41 @@ export default function MintPage() {
       <span className="mm-mint__orb mm-mint__orb--b" aria-hidden="true" />
 
       <div className="mm-mint__inner">
+        <div className="mm-sheet mm-sheet--mint">
+          <span className="mm-sheet__gloss" aria-hidden="true" />
+          <span className="mm-sheet__pencil" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="30" height="30">
+              <path d="M3 21l3.6-.8L20 6.8a2 2 0 0 0 0-2.8l-.9-.9a2 2 0 0 0-2.8 0L2.9 16.6 3 21z" fill="#f3c761" stroke="#8a6a1c" strokeWidth="1" strokeLinejoin="round" />
+              <path d="M3 21l3.6-.8-2.8-2.8L3 21z" fill="#2a2a2a" />
+            </svg>
+          </span>
         <header className="mm-mint__head">
-          <h1 className="mm-mint__title">The Mint</h1>
-          <span className="mm-mint__subhead">The Curriculum</span>
-          <img className="mm-mint__mark" src={assets.markApp} alt="Mintmark" width={200} height={200} />
+          <span className="mm-mint__subhead mm-write mm-write--sm">
+            <span className="mm-write__w" style={{ ["--i" as string]: 0 }}>
+              <span className="mm-write__in">Curriculum</span>
+            </span>
+          </span>
+          <h1 className="mm-mint__title mm-write">
+            <span className="mm-write__w" style={{ ["--i" as string]: 1 }}>
+              <span className="mm-write__in">The</span>
+            </span>
+            <span className="mm-write__w is-em" style={{ ["--i" as string]: 2 }}>
+              <span className="mm-write__in">Mint</span>
+            </span>
+            <span className="mm-write__cursor" aria-hidden="true" />
+          </h1>
+          <img className="mm-mint__mark" src={assets.mintEmblem} alt="Mintmark" width={270} height={183} />
         </header>
 
-        {/* one sample element, opened into a lesson */}
-        <div className="mm-mint__sample">
-          <div className="mm-mint__sample-el" style={{ ["--co" as string]: "#c47a34" }}>
-            <span className="mm-mint__sample-n">01</span>
-            <b className="mm-mint__sample-sym">Ra</b>
-            <small className="mm-mint__sample-lv">Copper · I</small>
-          </div>
-          <div className="mm-mint__sample-body">
-            <span className="mm-mint__sample-kicker">Sample lesson</span>
-            <h2 className="mm-mint__sample-title">Raise — the first dollar</h2>
-            <p className="mm-mint__sample-text">
-              Before a company can build anything, it needs money to start. That money comes from
-              owners and investors who trade cash today for a share of what the business becomes.
-              Learn how a company raises its first dollar — and why every share you own began right
-              here, at Copper, Level&nbsp;I.
-            </p>
-          </div>
+        {/* lessons — coming soon */}
+        <div className="mm-mint__soon">
+          <span className="mm-mint__soon-badge mm-write mm-write--sm">
+            <span className="mm-mint__soon-dot" aria-hidden="true" />
+            <span className="mm-write__w" style={{ ["--i" as string]: 4 }}>
+              <span className="mm-write__in">coming soon</span>
+            </span>
+          </span>
+        </div>
         </div>
 
         <div className="mm-mint__ptable" role="img" aria-label="Periodic table of the curriculum">
