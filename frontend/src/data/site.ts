@@ -135,6 +135,10 @@
       "heading": "Support",
       "links": [
         {
+          "title": "Member Desk",
+          "href": "/account"
+        },
+        {
           "title": "Contact",
           "href": "/contact"
         },
