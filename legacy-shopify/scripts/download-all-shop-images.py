@@ -7,7 +7,7 @@ import urllib.request
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-OUT = ROOT / "website" / "public" / "images"
+OUT = Path(__file__).resolve().parents[2] / "frontend" / "public" / "images"
 OUT.mkdir(parents=True, exist_ok=True)
 UA = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36"

@@ -2,9 +2,12 @@ import json
 import re
 from pathlib import Path
 
+THEME = Path(__file__).resolve().parents[1]
+FRONTEND = Path(__file__).resolve().parents[2] / "frontend"
+
 
 def load(p: str):
-    t = Path(p).read_text(encoding="utf-8")
+    t = (THEME / p).read_text(encoding="utf-8")
     t = re.sub(r"/\*.*?\*/", "", t, flags=re.S)
     return json.loads(t)
 
@@ -56,10 +59,10 @@ def write_ts(root: Path, name: str, var: str, data):
 
 
 def main():
-    root = Path("website/src/data")
+    root = FRONTEND / "src" / "data"
     root.mkdir(parents=True, exist_ok=True)
-    Path("website/data").mkdir(parents=True, exist_ok=True)
-    Path("website/public/graphics").mkdir(parents=True, exist_ok=True)
+    (FRONTEND / "data").mkdir(parents=True, exist_ok=True)
+    (FRONTEND / "public" / "graphics").mkdir(parents=True, exist_ok=True)
 
     idx = load("templates/index.json")
     hero = idx["sections"]["ara_mintmark_hero_PJWetF"]
@@ -228,9 +231,9 @@ def main():
     write_ts(root, "site", "siteContent", site)
     write_ts(root, "products", "products", products)
 
-    Path("website/data/products.json").write_text(json.dumps(products, indent=2), encoding="utf-8")
-    Path("website/data/subscribers.json").write_text("[]", encoding="utf-8")
-    Path("website/data/messages.json").write_text("[]", encoding="utf-8")
+    (FRONTEND / "data" / "products.json").write_text(json.dumps(products, indent=2), encoding="utf-8")
+    (FRONTEND / "data" / "subscribers.json").write_text("[]", encoding="utf-8")
+    (FRONTEND / "data" / "messages.json").write_text("[]", encoding="utf-8")
     print("done")
 
 

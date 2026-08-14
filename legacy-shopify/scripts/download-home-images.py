@@ -7,7 +7,7 @@ import time
 import urllib.request
 from pathlib import Path
 
-OUT = Path(__file__).resolve().parents[1] / "website" / "public" / "images"
+OUT = Path(__file__).resolve().parents[2] / "frontend" / "public" / "images"
 OUT.mkdir(parents=True, exist_ok=True)
 
 UA = {

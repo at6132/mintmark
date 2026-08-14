@@ -27,9 +27,9 @@ def fix_text(text: str) -> str:
 
 def main() -> None:
     roots = [
-        Path("website/src/data"),
-        Path("website/src/components"),
-        Path("website/src/app"),
+        Path(__file__).resolve().parents[2] / "frontend" / "src" / "data",
+        Path(__file__).resolve().parents[2] / "frontend" / "src" / "components",
+        Path(__file__).resolve().parents[2] / "frontend" / "src" / "app",
     ]
     for root in roots:
         if not root.exists():

@@ -4,7 +4,7 @@ from __future__ import annotations
 import re
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[1] / "website" / "src" / "styles" / "shopify"
+ROOT = Path(__file__).resolve().parents[2] / "frontend" / "src" / "styles" / "shopify"
 
 FIXES = {
     "mint-heatmap.css": ".ara-mint-heatmap",

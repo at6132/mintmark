@@ -2,7 +2,9 @@ import json
 import re
 from pathlib import Path
 
-raw = Path("templates/page.mint.json").read_text(encoding="utf-8")
+THEME = Path(__file__).resolve().parents[1]
+FRONTEND = Path(__file__).resolve().parents[2] / "frontend"
+raw = (THEME / "templates" / "page.mint.json").read_text(encoding="utf-8")
 # strip leading block comment
 raw = re.sub(r"/\*.*?\*/", "", raw, count=1, flags=re.S).strip()
 data = json.loads(raw)
@@ -12,7 +14,7 @@ for bid in mm["block_order"]:
     s = mm["blocks"][bid]["settings"]
     companies.append({"id": bid, **s})
 out = {"settings": mm["settings"], "companies": companies}
-path = Path("website/src/data/marketMaps.ts")
+path = FRONTEND / "src" / "data" / "marketMaps.ts"
 path.write_text(
     "export const marketMapsContent = "
     + json.dumps(out, indent=2, ensure_ascii=False)
