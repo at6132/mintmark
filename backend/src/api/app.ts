@@ -11,6 +11,7 @@ import { contactRoutes } from "./routes/contact.js";
 import { newsletterRoutes } from "./routes/newsletter.js";
 import { stripeWebhookRoutes } from "./routes/webhooks-stripe.js";
 import { luluWebhookRoutes } from "./routes/webhooks-lulu.js";
+import { adminRoutes } from "./routes/admin.js";
 
 export function createApp() {
   const app = new Hono();
@@ -21,7 +22,7 @@ export function createApp() {
     "*",
     cors({
       origin: [origin, "http://localhost:3000"],
-      allowMethods: ["GET", "POST", "OPTIONS"],
+      allowMethods: ["GET", "POST", "PATCH", "OPTIONS"],
       allowHeaders: ["Content-Type", "Authorization"],
       maxAge: 600,
     }),
@@ -36,6 +37,7 @@ export function createApp() {
   app.route("/", orderRoutes);
   app.route("/", contactRoutes);
   app.route("/", newsletterRoutes);
+  app.route("/", adminRoutes);
 
   app.notFound((c) => c.json({ error: "Not found" }, 404));
   app.onError((err, c) => {
