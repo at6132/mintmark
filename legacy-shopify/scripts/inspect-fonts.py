@@ -5,7 +5,9 @@ html = urllib.request.urlopen("https://mintmark-5.myshopify.com/", timeout=40).r
     "utf-8", "replace"
 )
 Path = __import__("pathlib").Path
-Path("scripts/_shop-fonts-snippet.html").write_text(html[:50000], encoding="utf-8")
+Path(__file__).resolve().parent.joinpath("_shop-fonts-snippet.html").write_text(
+    html[:50000], encoding="utf-8"
+)
 print("len", len(html))
 for pat, label in [
     (r"--font-[a-z0-9\-]+", "vars"),

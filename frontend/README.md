@@ -27,7 +27,7 @@ Standalone recreation of the Mintmark Shopify editorial store — Next.js fronte
 ## Local development
 
 ```bash
-cd website
+cd frontend
 npm install
 npm run dev
 ```
@@ -36,7 +36,7 @@ Open [http://localhost:3000](http://localhost:3000).
 
 ## Deploy on Railway
 
-From the `website` directory:
+From the `frontend` directory:
 
 ```bash
 railway up

@@ -14,7 +14,7 @@ pages = [
     "/pages/apple",
     "/pages/nvidia-digest",
 ]
-out_dir = Path("website/public/images")
+out_dir = Path(__file__).resolve().parents[2] / "frontend" / "public" / "images"
 out_dir.mkdir(parents=True, exist_ok=True)
 all_imgs = {}
 

@@ -2,15 +2,16 @@
 
 | Folder | What it is |
 |--------|------------|
-| Theme root (`assets/`, `sections/`, `templates/`, …) | Original Shopify theme (source of content + design) |
-| [`website/`](./website/) | **Standalone site** — Next.js frontend + API, ready for Railway |
+| [`frontend/`](./frontend/) | **Standalone site** — Next.js frontend + API, ready for Railway |
+| [`backend/`](./backend/) | Backend (empty for now) |
+| [`legacy-shopify/`](./legacy-shopify/) | Original Shopify theme (source of content + design) |
 
 ## Deploy / run the real site
 
 ```bash
-cd website
+cd frontend
 npm install
 npm run dev
 ```
 
-See [`website/README.md`](./website/README.md) for Railway Dockerfile deploy steps.
+See [`frontend/README.md`](./frontend/README.md) for Railway Dockerfile deploy steps.

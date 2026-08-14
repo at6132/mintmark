@@ -11,8 +11,8 @@ styles = re.findall(r"<style[^>]*>(.*?)</style>", html, flags=re.S | re.I)
 print("style blocks", len(styles))
 for i, s in enumerate(styles):
     if "font" in s.lower() or "alegreya" in s.lower() or "acme" in s.lower() or "font-face" in s.lower():
-        Path(f"scripts/_style_{i}.css").write_text(s, encoding="utf-8")
-        print("wrote scripts/_style_%d.css len" % i, len(s))
+        Path(__file__).resolve().parent.joinpath(f"_style_{i}.css").write_text(s, encoding="utf-8")
+        print("wrote _style_%d.css len" % i, len(s))
         # print first font-related lines
         for line in s.splitlines():
             if re.search(r"font|Acme|Alegreya|Inter", line, re.I):
