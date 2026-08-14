@@ -40,7 +40,16 @@ h1, h2, h3,
 .mm-simple-page h1,
 .ara-company-hero__title,
 .ara-company-catalog__intro h1,
-.ara-bookshelf .ara-bookshelf-wall__intro h2 {
+.ara-bookshelf .ara-bookshelf-wall__intro h2,
+.ara-account__intro h1,
+.ara-account__pass h2,
+.ara-account__channel h2,
+.ara-cart__intro h1,
+.ara-shop__intro h1,
+.ara-cart__meta h2,
+.ara-cart__summary-head h2,
+.ara-cart__empty-copy h2,
+.ara-shop__body h3 {
   font-family: var(--font-fraunces), "Fraunces", Georgia, serif !important;
   font-optical-sizing: auto;
   letter-spacing: -0.02em;
@@ -68,7 +77,30 @@ h1, .ara-mintmark-hero__heading { font-variation-settings: "opsz" 144, "SOFT" 0,
 .ara-nr-map__foot a,
 .ara-nr-strip__go,
 .ara-mintmark-footer__column h2,
-.mm-chip, .mm-b-lab, .mm-b-go, .mm-cont, .mm-folio {
+.mm-chip, .mm-b-lab, .mm-b-go, .mm-cont, .mm-folio,
+.ara-account__eyebrow,
+.ara-account__folio,
+.ara-account__desk-head span,
+.ara-account__desk-head strong,
+.ara-account__form-head > span,
+.ara-account__tabs button,
+.ara-account label > span:first-child,
+.ara-account__form > button[type="submit"],
+.ara-account__pass-kicker,
+.ara-account__pass-top,
+.ara-account__pass-foot,
+.ara-account__pass-actions a,
+.ara-account__pass-actions button,
+.ara-cart__eyebrow,
+.ara-shop__eyebrow,
+.ara-cart__kicker,
+.ara-cart__btn,
+.ara-cart__items-head span,
+.ara-cart__items-head strong,
+.ara-cart__summary-head span,
+.ara-cart__remove,
+.ara-cart__clear,
+.ara-shop__card-kicker {
   font-family: var(--font-space-grotesk), "Space Grotesk", var(--font-inter), sans-serif !important;
 }
 

@@ -16,6 +16,8 @@
 @import "../styles/shopify/catalog.css";
 @import "../styles/shopify/company-hero.css";
 @import "../styles/shopify/contact.css";
+@import "../styles/shopify/account.css";
+@import "../styles/shopify/cart.css";
 @import "../styles/shopify/article.css";
 /* Live Shopify global overrides (layout/theme.liquid + ara-site-consistency) — load last */
 @import "../styles/shopify/site-consistency.css";
@@ -78,6 +80,7 @@
   --font-display: var(--font-heading--family);
   --font-ui: var(--font-body--family);
   --font-sans: var(--font-accent--family);
+  --font-caveat-alias: var(--font-caveat), "Caveat", cursive;
 }
 
 *,
