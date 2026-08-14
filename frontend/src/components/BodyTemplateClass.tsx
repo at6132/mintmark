@@ -60,6 +60,10 @@ export function BodyTemplateClass() {
       pageType = "page";
       suffix = "account";
       handle = "account";
+    } else if (pathname === "/admin" || pathname.startsWith("/admin/")) {
+      pageType = "page";
+      suffix = "admin";
+      handle = "admin";
     } else if (pathname === "/cart") {
       pageType = "cart";
       handle = "cart";

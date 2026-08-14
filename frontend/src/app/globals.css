@@ -18,6 +18,7 @@
 @import "../styles/shopify/contact.css";
 @import "../styles/shopify/account.css";
 @import "../styles/shopify/cart.css";
+@import "../styles/shopify/admin.css";
 @import "../styles/shopify/article.css";
 /* Live Shopify global overrides (layout/theme.liquid + ara-site-consistency) — load last */
 @import "../styles/shopify/site-consistency.css";
