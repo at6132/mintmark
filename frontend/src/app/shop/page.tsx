@@ -1,74 +1,83 @@
 "use client";
 
 import Link from "next/link";
-import { products } from "@/data/products";
+import { digestCover, products } from "@/data/products";
+import { assets, appHref } from "@/lib/assets";
 import { useCart } from "@/lib/cart";
 import { money } from "@/lib/format";
-
-const covers: Record<string, string> = {
-  green: "linear-gradient(145deg,#1fa88f,#0f5f50)",
-  navy: "linear-gradient(145deg,#243a75,#121f42)",
-  cream: "linear-gradient(145deg,#e8d9b4,#b8a57a)",
-  teal: "linear-gradient(145deg,#2a8f9e,#124e57)",
-  gold: "linear-gradient(145deg,#d4a423,#8a6912)",
-  red: "linear-gradient(145deg,#b53036,#5f1418)",
-};
 
 export default function ShopPage() {
   const { addItem } = useCart();
 
   return (
-    <section className="page-section cream">
-      <div className="shell">
-        <p className="eyebrow">PHYSICAL DIGESTS</p>
-        <h1>Books built to keep.</h1>
-        <p className="lede">
-          Each digest is a printed company guide designed for reading, annotation and return. Every volume is $24.
-        </p>
-        <div className="product-grid" style={{ marginTop: 28 }}>
-          {products.map((p) => (
-            <article key={p.id} className="product-card">
-              <div
-                className="product-card__cover"
-                style={{
-                  background: covers[p.color] || covers.green,
-                  color: p.color === "cream" || p.color === "gold" ? "#161b2e" : "#fff",
-                }}
-              >
-                {p.company}
-              </div>
-              <div className="product-card__body">
-                <div style={{ fontFamily: "var(--font-body-family)", fontSize: 10, fontWeight: 800, letterSpacing: "0.1em" }}>
-                  {p.volume} · {p.status}
+    <section className="ara-shop">
+      <div className="ara-shop__inner">
+        <header className="ara-shop__intro">
+          <div>
+            <p className="ara-shop__eyebrow">PHYSICAL DIGESTS</p>
+            <h1>Books built to keep.</h1>
+          </div>
+          <p className="ara-shop__lede">
+            Each digest is a printed company guide designed for reading, annotation and return. Every volume is $24.
+          </p>
+        </header>
+
+        <div className="ara-shop__grid">
+          {products.map((p) => {
+            const paint = digestCover(p.color);
+            const photo = p.id === "apple" ? assets.appleDigestCover : undefined;
+            const available = p.status === "AVAILABLE";
+            return (
+              <article key={p.id} className="ara-shop__card">
+                <div
+                  className={`ara-shop__cover${photo ? " ara-shop__cover--photo" : ""}`}
+                  style={
+                    photo
+                      ? { backgroundImage: `url(${photo})`, color: "#fffdf6" }
+                      : { background: paint.background, color: paint.color }
+                  }
+                >
+                  <span>
+                    {p.volume} · {p.ticker}
+                  </span>
+                  <strong>{p.company}</strong>
                 </div>
-                <h3>{p.title}</h3>
-                <p>{p.summary}</p>
-                <strong style={{ fontFamily: "var(--font-body-family)" }}>{money(p.price)}</strong>
-                <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-                  <button
-                    type="button"
-                    className="btn btn-mint"
-                    disabled={p.status !== "AVAILABLE"}
-                    onClick={() =>
-                      addItem({
-                        id: p.id,
-                        title: p.title,
-                        price: p.price,
-                        company: p.company,
-                      })
-                    }
-                  >
-                    {p.status === "AVAILABLE" ? "ADD TO CART" : "COMING SOON"}
-                  </button>
-                  {p.moduleLink ? (
-                    <Link className="btn btn-secondary" href={p.moduleLink}>
-                      COMPANY FILE
-                    </Link>
-                  ) : null}
+                <div className="ara-shop__body">
+                  <div className="ara-shop__card-kicker">
+                    {p.sector} · {p.headquarters}
+                  </div>
+                  <h3>{p.title}</h3>
+                  <p>{p.summary}</p>
+                  <strong className="ara-shop__price">{money(p.price)}</strong>
+                  <div className="ara-shop__actions">
+                    <button
+                      type="button"
+                      className={`ara-cart__btn ${available ? "ara-cart__btn--primary" : "ara-cart__btn--ghost"}`}
+                      disabled={!available}
+                      onClick={() =>
+                        addItem({
+                          id: p.id,
+                          title: p.title,
+                          price: p.price,
+                          company: p.company,
+                          color: p.color,
+                          volume: p.volume,
+                          ticker: p.ticker,
+                        })
+                      }
+                    >
+                      {available ? "ADD TO CART" : "COMING SOON"}
+                    </button>
+                    {p.moduleLink ? (
+                      <Link className="ara-cart__btn ara-cart__btn--ghost" href={appHref(p.moduleLink) || "/catalog"}>
+                        COMPANY FILE
+                      </Link>
+                    ) : null}
+                  </div>
                 </div>
-              </div>
-            </article>
-          ))}
+              </article>
+            );
+          })}
         </div>
       </div>
     </section>
