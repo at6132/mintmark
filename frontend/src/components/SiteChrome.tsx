@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { siteContent } from "@/data/site";
 import { assets, appHref } from "@/lib/assets";
 import { CartProvider, useCart } from "@/lib/cart";
+import { AuthProvider, useAuth } from "@/lib/auth";
 import { BodyTemplateClass } from "@/components/BodyTemplateClass";
 
 function TopBar() {
@@ -48,23 +49,29 @@ function TopBar() {
           </div>
         ) : null}
         <div className="ara-mintmark-top-bar__right">
-          {tb.show_account !== false ? (
-            <Link href="/contact">
-              <span>{String(tb.account_label || "MEMBER LOGIN")}</span>
-              <svg aria-hidden="true" viewBox="0 0 24 24" width="16" height="16" fill="none">
-                <circle cx="12" cy="8" r="3.2" stroke="currentColor" strokeWidth="1.6" />
-                <path
-                  d="M5.5 19c.8-3.7 3.1-5.6 6.5-5.6s5.7 1.9 6.5 5.6"
-                  stroke="currentColor"
-                  strokeWidth="1.6"
-                  strokeLinecap="round"
-                />
-              </svg>
-            </Link>
-          ) : null}
+          {tb.show_account !== false ? <AccountLink fallback={String(tb.account_label || "MEMBER LOGIN")} /> : null}
         </div>
       </div>
     </section>
+  );
+}
+
+function AccountLink({ fallback }: { fallback: string }) {
+  const { member, ready } = useAuth();
+  const label = ready && member ? member.name.split(" ")[0].toUpperCase() : fallback;
+  return (
+    <Link href="/account">
+      <span>{label}</span>
+      <svg aria-hidden="true" viewBox="0 0 24 24" width="16" height="16" fill="none">
+        <circle cx="12" cy="8" r="3.2" stroke="currentColor" strokeWidth="1.6" />
+        <path
+          d="M5.5 19c.8-3.7 3.1-5.6 6.5-5.6s5.7 1.9 6.5 5.6"
+          stroke="currentColor"
+          strokeWidth="1.6"
+          strokeLinecap="round"
+        />
+      </svg>
+    </Link>
   );
 }
 
@@ -279,14 +286,16 @@ function Footer() {
 
 export function SiteChrome({ children }: { children: React.ReactNode }) {
   return (
-    <CartProvider>
-      <BodyTemplateClass />
-      <TopBar />
-      <Header />
-      <main id="MainContent" className="content-for-layout">
-        {children}
-      </main>
-      <Footer />
-    </CartProvider>
+    <AuthProvider>
+      <CartProvider>
+        <BodyTemplateClass />
+        <TopBar />
+        <Header />
+        <main id="MainContent" className="content-for-layout">
+          {children}
+        </main>
+        <Footer />
+      </CartProvider>
+    </AuthProvider>
   );
 }
