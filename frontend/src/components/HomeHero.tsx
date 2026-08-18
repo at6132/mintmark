@@ -20,6 +20,45 @@ const STAKE_LINES = [
   "what a stake is",
 ];
 
+// compact periodic-table icon for the building-blocks ad
+const AD_METALS = ["#7fd9c4", "#e0a526", "#3a5be0", "#4fa98f", "#c9a24a", "#82ddc7"];
+const AD_PT_SYM: Record<string, string> = { "0-0": "H", "8-0": "He", "0-3": "Au", "3-4": "Ag", "6-4": "Cu" };
+function AdPeriodicTable() {
+  const rows = [
+    [0, 8],
+    [0, 1, 4, 5, 6, 7, 8],
+    [0, 1, 4, 5, 6, 7, 8],
+    [0, 1, 2, 3, 4, 5, 6, 7, 8],
+    [0, 1, 2, 3, 4, 5, 6, 7, 8],
+  ];
+  const CW = 15;
+  const GAP = 2.6;
+  const cells: Array<{ c: number; r: number }> = [];
+  rows.forEach((cols, r) => cols.forEach((c) => cells.push({ c, r })));
+  const w = 9 * (CW + GAP);
+  const h = 5 * (CW + GAP);
+  return (
+    <svg viewBox={`0 0 ${w} ${h}`} width="100%" height="100%">
+      {cells.map((cell, i) => {
+        const x = cell.c * (CW + GAP);
+        const y = cell.r * (CW + GAP);
+        const co = AD_METALS[(cell.c + cell.r) % AD_METALS.length];
+        const key = `${cell.c}-${cell.r}`;
+        return (
+          <g key={i}>
+            <rect x={x} y={y} width={CW} height={CW} rx="2" fill={co} fillOpacity="0.85" stroke="rgba(255,255,255,0.3)" strokeWidth="0.6" />
+            {AD_PT_SYM[key] ? (
+              <text x={x + CW / 2} y={y + CW / 2 + 3} textAnchor="middle" fontFamily="var(--font-space-grotesk), sans-serif" fontWeight="800" fontSize="8" fill="#0c1020">
+                {AD_PT_SYM[key]}
+              </text>
+            ) : null}
+          </g>
+        );
+      })}
+    </svg>
+  );
+}
+
 export function HomeHero() {
   const hero = homeContent.hero as Record<string, unknown>;
   const blocks = (homeContent.hero.blocks || []) as unknown as Array<Record<string, string>>;
@@ -52,6 +91,13 @@ export function HomeHero() {
   const [highlightWord, setHighlightWord] = useState("read");
   const [outgoingWord, setOutgoingWord] = useState<string | null>(null);
   const [highlightMinWidth, setHighlightMinWidth] = useState<number | undefined>(undefined);
+
+  // the right landing box cycles between the Trump Accounts ad and the building-blocks ad
+  const [adIdx, setAdIdx] = useState(0);
+  useEffect(() => {
+    const t = setInterval(() => setAdIdx((i) => (i + 1) % 2), 6500);
+    return () => clearInterval(t);
+  }, []);
 
   useEffect(() => {
     setDateLabel(
@@ -274,32 +320,81 @@ export function HomeHero() {
         {hero.show_market_snapshot ? (
           <div className="ara-mintmark-hero__market-frame">
             <aside className="ara-mintmark-hero__market">
-              <div className="ara-mintmark-hero__market-ad ara-mintmark-hero__market-ad--usa ara-mintmark-hero__market-ad--lines">
-                <span className="ara-mintmark-hero__market-ad-eyebrow">Trump Accounts</span>
-                <h3 className="ara-mintmark-hero__market-ad-headline">
-                  Does your child know what&rsquo;s in his <em>Trump Account?</em>
-                </h3>
-                <div className="ara-mintmark-hero__lines-sheet">
-                  {STAKE_LINES.slice(0, 5).map((end, i) => (
-                    <p key={i} className="ara-mintmark-hero__lines-row">
-                      Every child should have a stake in America. Every child should know{" "}
-                      <mark className="ara-mintmark-hero__lines-hl">{end}</mark>.
+              <div className="ara-mintmark-hero__ad-carousel">
+                <div className="ara-mintmark-hero__ad-track" style={{ transform: `translateX(-${adIdx * 100}%)` }}>
+                {/* slide 1 — Trump Accounts */}
+                <div className="ara-mintmark-hero__ad-slide">
+                  <div className="ara-mintmark-hero__market-ad ara-mintmark-hero__market-ad--usa ara-mintmark-hero__market-ad--lines">
+                    <span className="ara-mintmark-hero__market-ad-eyebrow">Trump Accounts</span>
+                    <h3 className="ara-mintmark-hero__market-ad-headline">
+                      Does your child know what&rsquo;s in his <em>Trump Account?</em>
+                    </h3>
+                    <div className="ara-mintmark-hero__lines-sheet">
+                      {STAKE_LINES.slice(0, 5).map((end, i) => (
+                        <p key={i} className="ara-mintmark-hero__lines-row">
+                          Every child should have a stake in America. Every child should know{" "}
+                          <mark className="ara-mintmark-hero__lines-hl">{end}</mark>.
+                        </p>
+                      ))}
+                    </div>
+                    <div className="ara-mintmark-hero__market-ad-top">
+                      <img
+                        className="ara-mintmark-hero__market-ad-logo"
+                        src={assets.logo}
+                        alt="Mintmark"
+                        width={620}
+                        height={140}
+                      />
+                    </div>
+                    <p className="ara-mintmark-hero__market-ad-tagline">Every child should know what they own.</p>
+                    <Link className="ara-mintmark-hero__market-ad-cta" href="/mission">
+                      Learn more <span aria-hidden="true">→</span>
+                    </Link>
+                  </div>
+                </div>
+
+                {/* slide 2 — the building blocks of financial literacy */}
+                <div className="ara-mintmark-hero__ad-slide">
+                  <div className="ara-mintmark-hero__market-ad ara-mintmark-hero__market-ad--blocks">
+                    <span className="ara-mintmark-hero__market-ad-eyebrow">The mintmark method</span>
+                    <h3 className="ara-mintmark-hero__market-ad-headline">
+                      The <em>building blocks</em> of financial literacy.
+                    </h3>
+                    <div className="ara-mintmark-hero__blocks-table" aria-hidden="true">
+                      <AdPeriodicTable />
+                    </div>
+                    <p className="ara-mintmark-hero__market-ad-body">
+                      Mintmark content contains the building blocks of financial literacy — to power your
+                      child&rsquo;s future.
                     </p>
-                  ))}
+                    <div className="ara-mintmark-hero__market-ad-top">
+                      <img
+                        className="ara-mintmark-hero__market-ad-logo"
+                        src={assets.logo}
+                        alt="Mintmark"
+                        width={620}
+                        height={140}
+                      />
+                    </div>
+                    <Link className="ara-mintmark-hero__market-ad-cta" href="/mission">
+                      Learn more <span aria-hidden="true">→</span>
+                    </Link>
+                  </div>
                 </div>
-                <div className="ara-mintmark-hero__market-ad-top">
-                  <img
-                    className="ara-mintmark-hero__market-ad-logo"
-                    src={assets.logo}
-                    alt="Mintmark"
-                    width={620}
-                    height={140}
+                </div>
+              </div>
+
+              <div className="ara-mintmark-hero__ad-dots" role="tablist" aria-label="Advertisements">
+                {[0, 1].map((i) => (
+                  <button
+                    key={i}
+                    type="button"
+                    className={`ara-mintmark-hero__ad-dot${adIdx === i ? " is-on" : ""}`}
+                    aria-label={`Advertisement ${i + 1}`}
+                    aria-selected={adIdx === i}
+                    onClick={() => setAdIdx(i)}
                   />
-                </div>
-                <p className="ara-mintmark-hero__market-ad-tagline">Every child should know what they own.</p>
-                <Link className="ara-mintmark-hero__market-ad-cta" href="/mission">
-                  Learn more <span aria-hidden="true">→</span>
-                </Link>
+                ))}
               </div>
             </aside>
           </div>

@@ -1,0 +1,191 @@
+/* ============================================================================
+   Company page — cream editorial, reusing the catalog's own branding tokens.
+   ========================================================================== */
+.cm {
+  --bg: #f5efe1;
+  --card: #f3ecdc;
+  --ink: #161b2e;
+  --muted: #646575;
+  --neutral: #176d5c;
+  --gold: #e0a526;
+  --border: #c9bea8;
+  --mint: #a6decb;
+  --blue: #274b44;
+  --positive: #12a67c;
+  display: block;
+  background: var(--bg);
+  color: var(--ink);
+}
+
+.cm-kicker {
+  display: inline-block;
+  font-family: var(--font-space-grotesk), "Space Grotesk", sans-serif;
+  font-size: 11px; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--neutral);
+}
+.cm-kicker--dark { color: var(--neutral); }
+
+/* buttons — the catalog's ink pill (active = solid ink, ghost = outline) */
+.cm-btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  padding: 12px 22px; border-radius: 999px; text-decoration: none; cursor: pointer;
+  font-family: var(--font-space-grotesk), "Space Grotesk", sans-serif;
+  font-size: 12px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase;
+  border: 1.5px solid var(--ink); color: var(--ink); background: transparent;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease, color 0.18s ease;
+}
+.cm-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(22, 27, 46, 0.12); }
+.cm-btn--gold { background: var(--ink); color: #fffdf6; }
+.cm-btn--ghost, .cm-btn--ghost-dark { background: transparent; color: var(--ink); border-color: var(--ink); }
+
+/* ===== hero (cream) ===== */
+.cm-hero {
+  position: relative; overflow: hidden;
+  padding: clamp(56px, 8vw, 96px) clamp(24px, 6vw, 90px) clamp(40px, 5vw, 64px);
+  background: var(--bg);
+}
+.cm-hero__trim { display: none; }
+.cm-hero__inner { position: relative; z-index: 2; width: min(100%, 980px); margin: 0 auto; }
+.cm-hero__title-row { display: flex; align-items: baseline; flex-wrap: wrap; gap: 16px; margin-top: 12px; }
+.cm-hero__name {
+  margin: 0; font-family: var(--font-heading-family), "Fraunces", Georgia, serif;
+  font-size: clamp(52px, 9vw, 104px); font-weight: var(--font-heading-weight, 600); font-style: var(--font-heading-style, normal);
+  line-height: 0.96; letter-spacing: -0.05em; color: var(--ink);
+}
+.cm-hero__tk {
+  font-family: var(--font-space-grotesk), sans-serif; font-size: 12px; font-weight: 800; letter-spacing: 0.06em;
+  padding: 5px 11px; border-radius: 7px; background: #fff; border: 1px solid var(--border); color: var(--neutral);
+}
+.cm-hero__subtitle {
+  margin: clamp(14px, 2.2vw, 22px) 0 0; max-width: 26ch;
+  font-family: var(--font-heading-family), "Fraunces", Georgia, serif;
+  font-size: clamp(22px, 3.2vw, 38px); font-weight: 500; line-height: 1.14; color: var(--neutral); letter-spacing: -0.02em;
+}
+.cm-hero__meta { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 16px; }
+.cm-hero__meta span {
+  font-family: var(--font-space-grotesk), sans-serif; font-size: 10px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase;
+  padding: 4px 11px; border-radius: 999px; background: #fff; border: 1px solid var(--border); color: var(--muted);
+}
+.cm-hero__summary {
+  margin: clamp(16px, 2.4vw, 24px) 0 0; max-width: 60ch;
+  font-family: var(--font-body-family), Georgia, serif; font-size: 15px; line-height: 1.6; color: var(--muted);
+}
+.cm-hero__cta { display: flex; flex-wrap: wrap; gap: 10px; margin-top: clamp(20px, 2.8vw, 30px); }
+
+/* stat row — cream cards with accent labels */
+.cm-stats {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: clamp(28px, 3.6vw, 44px);
+}
+.cm-stat {
+  position: relative; display: flex; flex-direction: column; gap: 4px; padding: 16px 15px 14px; overflow: hidden;
+  background: color-mix(in srgb, var(--card) 97%, transparent); border: 1px solid var(--border); border-radius: 9px;
+  box-shadow: 0 6px 17px rgba(22, 27, 46, 0.06);
+}
+.cm-stat::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--gold); }
+.cm-stat__label { font-family: var(--font-space-grotesk), sans-serif; font-size: 9.5px; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; color: var(--neutral); }
+.cm-stat__value { font-family: var(--font-heading-family), "Fraunces", serif; font-size: clamp(19px, 2.2vw, 26px); font-weight: 600; color: var(--ink); }
+.cm-stat__note { font-family: var(--font-space-grotesk), sans-serif; font-size: 9px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+
+/* ===== sections (all cream) ===== */
+.cm-sec { position: relative; overflow: hidden; padding: clamp(48px, 6vw, 84px) clamp(24px, 6vw, 90px); }
+.cm-sec--light, .cm-sec--navy { background: var(--bg); color: var(--ink); }
+.cm-sec--navy { border-top: 1px solid var(--border); }
+.cm-sec__inner { position: relative; z-index: 2; width: min(100%, 980px); margin: 0 auto; }
+.cm-h2, .cm-h2--mint {
+  margin: 8px 0 0; font-family: var(--font-heading-family), "Fraunces", Georgia, serif;
+  font-size: clamp(30px, 4.4vw, 54px); font-weight: 600; line-height: 0.98; letter-spacing: -0.05em; color: var(--ink);
+}
+.cm-lede {
+  margin: clamp(12px, 1.8vw, 18px) 0 0; max-width: 62ch;
+  font-family: var(--font-body-family), Georgia, serif; font-size: 15px; line-height: 1.6; color: var(--muted);
+}
+
+/* facts grid — catalog cards */
+.cm-facts { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: clamp(24px, 3vw, 36px); }
+.cm-fact {
+  position: relative; display: flex; flex-direction: column; gap: 6px; padding: 20px; overflow: hidden;
+  background: color-mix(in srgb, var(--card) 97%, transparent); border: 1px solid var(--border); border-radius: 9px;
+  box-shadow: 0 6px 17px rgba(22, 27, 46, 0.06);
+}
+.cm-fact::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--mint); }
+.cm-fact__label { font-family: var(--font-space-grotesk), sans-serif; font-size: 10px; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; color: var(--neutral); }
+.cm-fact__value { font-family: var(--font-heading-family), "Fraunces", serif; font-size: clamp(19px, 2.1vw, 24px); font-weight: 600; color: var(--ink); }
+.cm-fact__note { font-family: var(--font-body-family), serif; font-size: 14px; line-height: 1.45; color: var(--muted); }
+
+/* value-loop flow — cream cards, numbered */
+.cm-flow { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: clamp(24px, 3vw, 40px); }
+.cm-step {
+  position: relative; display: flex; flex-direction: column; gap: 7px; padding: 20px 16px; overflow: hidden;
+  background: color-mix(in srgb, var(--card) 97%, transparent); border: 1px solid var(--border); border-radius: 9px;
+  box-shadow: 0 6px 17px rgba(22, 27, 46, 0.06);
+}
+.cm-step::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--gold); }
+.cm-step__n { font-family: var(--font-space-grotesk), sans-serif; font-size: 12px; font-weight: 800; color: var(--gold); }
+.cm-step__kicker { font-family: var(--font-space-grotesk), sans-serif; font-size: 10px; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; color: var(--neutral); }
+.cm-step__title { font-family: var(--font-heading-family), "Fraunces", serif; font-size: 18px; font-weight: 600; line-height: 1.12; color: var(--ink); }
+.cm-step__text { margin: 0; font-family: var(--font-body-family), serif; font-size: 13px; line-height: 1.5; color: var(--muted); }
+.cm-step__metric { margin-top: auto; font-family: var(--font-space-grotesk), sans-serif; font-size: 11px; font-weight: 800; letter-spacing: 0.04em; color: var(--neutral); }
+.cm-step__metric i { display: block; font-style: normal; font-size: 8.5px; letter-spacing: 0.12em; color: var(--muted); margin-bottom: 2px; }
+.cm-flow__summary {
+  margin: clamp(22px, 2.8vw, 32px) auto 0; max-width: 44ch; text-align: center;
+  font-family: var(--font-heading-family), "Fraunces", serif; font-size: clamp(18px, 2.2vw, 26px); line-height: 1.3; color: var(--ink); letter-spacing: -0.02em;
+}
+
+/* ===== digest — add to cart ===== */
+.cm-digest { display: grid; grid-template-columns: auto 1fr; gap: clamp(26px, 4.5vw, 52px); align-items: center; }
+.cm-digest__cover {
+  flex: 0 0 auto; width: clamp(146px, 19vw, 200px); aspect-ratio: 3 / 4; border-radius: 4px 10px 10px 4px;
+  display: flex; flex-direction: column; justify-content: space-between; gap: 8px; padding: 20px 18px; color: #fffdf6;
+  background: var(--ink); box-shadow: inset 5px 0 0 rgba(0, 0, 0, 0.28), 0 18px 34px rgba(22, 27, 46, 0.2);
+  border: 1px solid var(--ink);
+}
+.cm-digest__cover-tag { font-family: var(--font-space-grotesk), sans-serif; font-size: 9px; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); }
+.cm-digest__cover-name { font-family: var(--font-heading-family), "Fraunces", serif; font-size: clamp(24px, 2.8vw, 34px); font-weight: 600; line-height: 1; }
+.cm-digest__cover-foot { font-family: var(--font-space-grotesk), sans-serif; font-size: 10px; font-weight: 800; letter-spacing: 0.16em; text-transform: uppercase; color: var(--mint); }
+.cm-digest__body { min-width: 0; }
+.cm-digest__buy { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-top: clamp(16px, 2.2vw, 24px); }
+.cm-digest__price { font-family: var(--font-heading-family), "Fraunces", serif; font-size: 30px; font-weight: 600; color: var(--ink); }
+
+/* ===== stories — organized by content, newsroom-style ===== */
+.cm-storygroup { margin-top: clamp(24px, 3.2vw, 38px); }
+.cm-storygroup__head {
+  display: flex; align-items: baseline; gap: 12px; padding-bottom: 9px; margin-bottom: 14px;
+  border-bottom: 2px solid var(--ink);
+}
+.cm-storygroup__head strong { font-family: var(--font-heading-family), "Fraunces", serif; font-size: clamp(17px, 1.9vw, 22px); font-weight: 600; letter-spacing: -0.02em; color: var(--ink); }
+.cm-storygroup__head small { font-family: var(--font-space-grotesk), sans-serif; font-size: 10px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+.cm-stories__actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: clamp(24px, 3vw, 36px); }
+.cm-stories { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; margin-top: 0; }
+.cm-story {
+  position: relative; display: flex; flex-direction: column; gap: 7px; padding: 20px; overflow: hidden;
+  background: color-mix(in srgb, var(--card) 97%, transparent); border: 1px solid var(--border); border-radius: 9px;
+  box-shadow: 0 6px 17px rgba(22, 27, 46, 0.06); transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+}
+.cm-story::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--neutral); }
+.cm-story:hover { transform: translateY(-4px); border-color: color-mix(in srgb, var(--neutral) 55%, var(--border)); box-shadow: 0 13px 28px rgba(22, 27, 46, 0.12); }
+.cm-story__cat { font-family: var(--font-space-grotesk), sans-serif; font-size: 10px; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; color: var(--neutral); }
+.cm-story__title { font-family: var(--font-heading-family), "Fraunces", serif; font-size: clamp(18px, 2vw, 23px); font-weight: 600; line-height: 1.14; color: var(--ink); }
+.cm-story__excerpt { margin: 0; font-family: var(--font-body-family), serif; font-size: 14px; line-height: 1.5; color: var(--muted); }
+.cm-story__date { margin-top: auto; font-family: var(--font-space-grotesk), sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+.cm-stories__all { margin-top: clamp(20px, 2.6vw, 30px); }
+
+/* ===== headquarters & leadership ===== */
+.cm-hq { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(26px, 4.5vw, 52px); align-items: center; }
+.cm-hq__map {
+  position: relative; border-radius: 9px; overflow: hidden;
+  border: 1px solid var(--border); box-shadow: 0 6px 17px rgba(22, 27, 46, 0.06);
+}
+.cm-hq__svg { display: block; width: 100%; height: auto; }
+.cm-hq__pin-halo { animation: cm-pin-pulse 2.4s ease-in-out infinite; transform-origin: center; }
+@keyframes cm-pin-pulse { 0%, 100% { opacity: 0.5; transform: scale(1); } 50% { opacity: 0.14; transform: scale(1.5); } }
+.cm-hq__pin-label { font-family: var(--font-space-grotesk), sans-serif; font-size: 12px; font-weight: 800; letter-spacing: 0.04em; }
+.cm-hq__rows { display: flex; flex-direction: column; gap: 2px; margin-top: clamp(16px, 2.2vw, 24px); }
+.cm-hq__row { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; padding: 13px 0; border-bottom: 1px solid var(--border); }
+.cm-hq__row:last-child { border-bottom: 0; }
+.cm-hq__row span { font-family: var(--font-space-grotesk), sans-serif; font-size: 10px; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; color: var(--neutral); }
+.cm-hq__row strong { font-family: var(--font-heading-family), "Fraunces", serif; font-size: clamp(16px, 1.8vw, 20px); font-weight: 600; color: var(--ink); text-align: right; }
+
+@media (max-width: 720px) {
+  .cm-stats, .cm-facts, .cm-flow, .cm-stories { grid-template-columns: 1fr 1fr; }
+  .cm-digest, .cm-hq { grid-template-columns: 1fr; }
+}

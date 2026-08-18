@@ -8,84 +8,68 @@ export default function CartPage() {
   const { items, subtotal, setQuantity, removeItem, clear } = useCart();
 
   return (
-    <section className="page-section cream">
-      <div className="shell">
-        <p className="eyebrow">YOUR CART</p>
-        <h1>Checkout, simplified.</h1>
-        <p className="lede">Review digests before you place an educational order enquiry.</p>
+    <main className="ck">
+      <span className="ck__trim" aria-hidden="true" />
+      <div className="ck__inner">
+        <span className="ck__kicker">Your cart</span>
+        <h1 className="ck__title">Checkout</h1>
 
         {items.length === 0 ? (
-          <div className="empty-state" style={{ textAlign: "left", padding: "40px 0" }}>
+          <div className="ck__empty">
             <p>Your cart is empty.</p>
-            <Link className="btn btn-primary" href="/shop">
-              BROWSE DIGESTS
+            <Link className="ck__btn ck__btn--gold" href="/companies">
+              Browse digests
             </Link>
           </div>
         ) : (
-          <>
-            <table className="cart-table">
-              <thead>
-                <tr>
-                  <th>Digest</th>
-                  <th>Price</th>
-                  <th>Qty</th>
-                  <th>Total</th>
-                  <th />
-                </tr>
-              </thead>
-              <tbody>
-                {items.map((item) => (
-                  <tr key={item.id}>
-                    <td>
-                      <strong>{item.title}</strong>
-                      {item.company ? (
-                        <div style={{ color: "var(--muted)", fontSize: 13 }}>{item.company}</div>
-                      ) : null}
-                    </td>
-                    <td>{money(item.price)}</td>
-                    <td>
-                      <div className="qty-row">
-                        <button type="button" onClick={() => setQuantity(item.id, item.quantity - 1)} aria-label="Decrease">
-                          −
-                        </button>
-                        <span>{item.quantity}</span>
-                        <button type="button" onClick={() => setQuantity(item.id, item.quantity + 1)} aria-label="Increase">
-                          +
-                        </button>
-                      </div>
-                    </td>
-                    <td>{money(item.price * item.quantity)}</td>
-                    <td>
-                      <button type="button" className="btn btn-secondary" onClick={() => removeItem(item.id)}>
-                        REMOVE
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+          <div className="ck__grid">
+            <div className="ck__items">
+              {items.map((item) => (
+                <div className="ck__item" key={item.id}>
+                  <span className="ck__item-cover" aria-hidden="true">
+                    <b>Q3</b>
+                    <i>Digest</i>
+                  </span>
+                  <div className="ck__item-main">
+                    <strong>{item.title}</strong>
+                    {item.company ? <small>{item.company}</small> : null}
+                  </div>
+                  <div className="ck__item-qty">
+                    <button type="button" onClick={() => setQuantity(item.id, item.quantity - 1)} aria-label="Decrease">−</button>
+                    <span>{item.quantity}</span>
+                    <button type="button" onClick={() => setQuantity(item.id, item.quantity + 1)} aria-label="Increase">+</button>
+                  </div>
+                  <span className="ck__item-price">{money(item.price * item.quantity)}</span>
+                  <button type="button" className="ck__remove" onClick={() => removeItem(item.id)} aria-label="Remove">
+                    ×
+                  </button>
+                </div>
+              ))}
+            </div>
 
-            <div className="cart-summary">
-              <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 12 }}>
+            <aside className="ck__summary">
+              <div className="ck__row">
                 <span>Subtotal</span>
                 <strong>{money(subtotal)}</strong>
               </div>
-              <p style={{ color: "var(--muted)", fontSize: 14 }}>
-                Fulfilment is handled offline in this MVP. Send a contact note with your cart details to complete an
-                order.
-              </p>
-              <div style={{ display: "grid", gap: 10, marginTop: 14 }}>
-                <Link className="btn btn-primary" href="/contact">
-                  REQUEST CHECKOUT
-                </Link>
-                <button type="button" className="btn btn-secondary" onClick={clear}>
-                  CLEAR CART
-                </button>
+              <div className="ck__row">
+                <span>Shipping</span>
+                <strong>Free</strong>
               </div>
-            </div>
-          </>
+              <div className="ck__row ck__row--total">
+                <span>Total</span>
+                <strong>{money(subtotal)}</strong>
+              </div>
+              <Link className="ck__btn ck__btn--gold ck__checkout" href="/contact">
+                Checkout · {money(subtotal)}
+              </Link>
+              <button type="button" className="ck__btn ck__btn--ghost" onClick={clear}>
+                Clear cart
+              </button>
+            </aside>
+          </div>
         )}
       </div>
-    </section>
+    </main>
   );
 }

@@ -1,0 +1,82 @@
+/* ============================================================================
+   Cart / checkout — modern mint, with the header's blue + gold hard-shadow buttons.
+   ========================================================================== */
+.ck {
+  position: relative; overflow: hidden;
+  min-height: 72vh;
+  padding: clamp(52px, 7vw, 92px) clamp(24px, 6vw, 90px);
+  background:
+    radial-gradient(130% 90% at 50% -10%, #ffffff, rgba(255, 255, 255, 0) 58%),
+    linear-gradient(178deg, #e9f8f0 0%, #d3ecdf 62%, #c3e6d7 100%);
+  color: #161b2e;
+}
+.ck__trim {
+  position: absolute; top: 0; left: 0; right: 0; height: 3px; z-index: 3;
+  background: linear-gradient(90deg, transparent, #93b0f7 18%, #3a5be0 50%, #7ba0f5 82%, transparent);
+}
+.ck__inner { position: relative; z-index: 2; width: min(100%, 960px); margin: 0 auto; }
+.ck__kicker {
+  display: inline-block; font-family: var(--font-space-grotesk), "Space Grotesk", sans-serif;
+  font-size: 12px; font-weight: 800; letter-spacing: 0.2em; text-transform: uppercase; color: #176d5c;
+}
+.ck__title {
+  margin: 10px 0 clamp(24px, 4vw, 40px); font-family: var(--font-heading-family), "Fraunces", Georgia, serif;
+  font-size: clamp(44px, 8vw, 84px); font-weight: 600; line-height: 0.95; letter-spacing: -0.045em; color: #161b2e;
+}
+
+/* buttons — blue face + gold hard-shadow, like the header's cart button */
+.ck__btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  padding: 14px 22px; border-radius: 12px; text-decoration: none; cursor: pointer;
+  font-family: var(--font-space-grotesk), "Space Grotesk", sans-serif;
+  font-size: 13px; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase;
+  border: 2px solid #161b2e; transition: transform 0.14s ease, box-shadow 0.14s ease;
+}
+.ck__btn--gold { color: #fffdf6; background: #3a5be0; box-shadow: 4px 4px 0 #e0a526; }
+.ck__btn--gold:hover { transform: translate(-1px, -1px); box-shadow: 6px 6px 0 #e0a526; }
+.ck__btn--ghost { color: #161b2e; background: #e0a526; box-shadow: 4px 4px 0 #3a5be0; }
+.ck__btn--ghost:hover { transform: translate(-1px, -1px); box-shadow: 6px 6px 0 #3a5be0; }
+
+.ck__empty { display: flex; flex-direction: column; align-items: flex-start; gap: 18px; color: #3d4457; font-family: var(--font-body-family), serif; font-size: 16px; }
+
+.ck__grid { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); gap: clamp(20px, 3vw, 40px); align-items: start; }
+
+/* items — cream cards on mint */
+.ck__items { display: flex; flex-direction: column; gap: 10px; }
+.ck__item {
+  display: grid; grid-template-columns: auto minmax(0, 1fr) auto auto auto; gap: 16px; align-items: center;
+  padding: 14px; border-radius: 12px; background: #fffdf6; border: 1.5px solid #c9bea8; box-shadow: 0 6px 17px rgba(22, 27, 46, 0.06);
+}
+.ck__item-cover {
+  flex: 0 0 auto; width: 44px; height: 58px; border-radius: 3px 6px 6px 3px;
+  display: flex; flex-direction: column; justify-content: flex-end; gap: 2px; padding: 7px 6px; color: #fffdf6;
+  background: #161b2e; box-shadow: inset 3px 0 0 rgba(255, 255, 255, 0.16);
+}
+.ck__item-cover b { font-family: var(--font-space-grotesk), sans-serif; font-size: 11px; font-weight: 800; color: #e0a526; }
+.ck__item-cover i { font-style: normal; font-family: var(--font-fraunces), "Fraunces", serif; font-size: 9px; }
+.ck__item-main { min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.ck__item-main strong { font-family: var(--font-heading-family), "Fraunces", serif; font-size: 17px; font-weight: 600; color: #161b2e; }
+.ck__item-main small { font-family: var(--font-space-grotesk), sans-serif; font-size: 10px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: #176d5c; }
+.ck__item-qty { display: inline-flex; align-items: center; gap: 4px; border: 1.5px solid #c9bea8; border-radius: 999px; padding: 3px; }
+.ck__item-qty button { width: 26px; height: 26px; border-radius: 50%; border: 0; cursor: pointer; background: #3a5be0; color: #fffdf6; font-size: 15px; line-height: 1; }
+.ck__item-qty button:hover { background: #2f4bc0; }
+.ck__item-qty span { min-width: 20px; text-align: center; font-family: var(--font-space-grotesk), sans-serif; font-weight: 800; color: #161b2e; }
+.ck__item-price { font-family: var(--font-heading-family), "Fraunces", serif; font-size: 17px; font-weight: 600; color: #161b2e; }
+.ck__remove { width: 28px; height: 28px; border-radius: 50%; border: 1.5px solid #c9bea8; background: #fff; color: #646575; font-size: 16px; line-height: 1; cursor: pointer; }
+.ck__remove:hover { color: #fffdf6; background: #ed5c5c; border-color: #ed5c5c; }
+
+/* summary */
+.ck__summary { padding: 22px; border-radius: 14px; background: #fffdf6; border: 1.5px solid #c9bea8; box-shadow: 0 14px 30px rgba(22, 27, 46, 0.08); }
+.ck__row { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; padding: 9px 0; font-family: var(--font-space-grotesk), sans-serif; font-size: 13px; font-weight: 700; color: #646575; }
+.ck__row strong { font-family: var(--font-heading-family), "Fraunces", serif; font-size: 16px; color: #161b2e; }
+.ck__row--total { margin-top: 4px; padding-top: 14px; border-top: 1.5px solid #c9bea8; }
+.ck__row--total span { font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; color: #161b2e; }
+.ck__row--total strong { font-size: 24px; }
+.ck__checkout { width: 100%; margin-top: 18px; }
+.ck__summary .ck__btn--ghost { width: 100%; margin-top: 14px; }
+
+@media (max-width: 760px) {
+  .ck__grid { grid-template-columns: 1fr; }
+  .ck__item { grid-template-columns: auto minmax(0, 1fr) auto; row-gap: 10px; }
+  .ck__item-price { grid-column: 2 / 3; }
+}

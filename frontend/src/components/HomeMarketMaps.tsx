@@ -84,11 +84,11 @@ export function HomeMarketMaps() {
   const [mode, setMode] = useState<"heat" | "hq" | "globe">("heat");
   const [activeSector, setActiveSector] = useState<string>("all");
   const [tip, setTip] = useState<Tip>(null);
-  const [openCluster, setOpenCluster] = useState<number | null>(null);
+  const [openCluster, setOpenCluster] = useState<string | null>(null);
   // globe rotation [yaw, pitch]; dragged with the pointer. zoom via wheel.
   const [rot, setRot] = useState<[number, number]>([100, -40]);
   const [zoom, setZoom] = useState(1.7);
-  const drag = useRef<{ x: number; y: number; r: [number, number] } | null>(null);
+  const drag = useRef<{ x: number; y: number; r: [number, number]; moved: boolean; id: number; el: Element } | null>(null);
   // render the d3 SVG only after mount — the treemap/projection produce tiny
   // float differences between server and client that trip React hydration.
   const [mounted, setMounted] = useState(false);
@@ -99,17 +99,26 @@ export function HomeMarketMaps() {
 
   const onPointerDown = (e: ReactPointerEvent) => {
     if (mode !== "globe") return;
-    drag.current = { x: e.clientX, y: e.clientY, r: rot };
-    (e.currentTarget as Element).setPointerCapture?.(e.pointerId);
+    // record the start but DON'T capture yet — capturing on down steals the
+    // click from dots/clusters. We only capture once a real drag begins.
+    drag.current = { x: e.clientX, y: e.clientY, r: rot, moved: false, id: e.pointerId, el: e.currentTarget as Element };
   };
   const onPointerMove = (e: ReactPointerEvent) => {
-    if (!drag.current) return;
-    const dx = e.clientX - drag.current.x;
-    const dy = e.clientY - drag.current.y;
-    const [r0, r1] = drag.current.r;
-    setRot([r0 + dx * 0.35, Math.max(-85, Math.min(85, r1 - dy * 0.35))]);
+    const d = drag.current;
+    if (!d) return;
+    const dx = e.clientX - d.x;
+    const dy = e.clientY - d.y;
+    if (!d.moved) {
+      if (Math.hypot(dx, dy) < 5) return; // below threshold → still a click, let it pass
+      d.moved = true;
+      d.el.setPointerCapture?.(d.id);
+    }
+    const [r0, r1] = d.r;
+    setRot([r0 + dx * 0.5, Math.max(-85, Math.min(85, r1 - dy * 0.5))]);
   };
   const onPointerUp = () => {
+    const d = drag.current;
+    if (d?.moved) d.el.releasePointerCapture?.(d.id);
     drag.current = null;
   };
 
@@ -155,6 +164,22 @@ export function HomeMarketMaps() {
     animRef.current = requestAnimationFrame(step);
   };
 
+  // a stable id for a cluster (its members), so "open" survives re-clustering on zoom
+  const clusterSig = (members: Array<{ co: Co }>) => members.map((m) => m.co.ticker).sort().join(",");
+  // click a cluster → auto-zoom to its location and fan the web open
+  const openClusterFocus = (cl: { members: Array<{ co: Co }> }) => {
+    const sig = clusterSig(cl.members);
+    if (openCluster === sig) {
+      setOpenCluster(null);
+      return;
+    }
+    const lon = cl.members.reduce((s, m) => s + m.co.lon, 0) / cl.members.length;
+    const lat = cl.members.reduce((s, m) => s + m.co.lat, 0) / cl.members.length;
+    // dive deep into the cluster's web
+    focusContinent([-lon, -lat], Math.min(9, Math.max(zoom * 1.8, 5.5)));
+    setOpenCluster(sig);
+  };
+
   // wheel: globe zooms, heat scrolls through sectors seamlessly.
   useEffect(() => {
     const el = svgRef.current;
@@ -162,20 +187,10 @@ export function HomeMarketMaps() {
     const onWheel = (e: WheelEvent) => {
       if (mode === "globe") {
         e.preventDefault();
-        setZoom((z) => Math.max(0.7, Math.min(4, z * (e.deltaY < 0 ? 1.12 : 0.89))));
+        setZoom((z) => Math.max(0.7, Math.min(9, z * (e.deltaY < 0 ? 1.14 : 0.88))));
         return;
       }
-      if (mode === "heat") {
-        e.preventDefault();
-        const now = e.timeStamp || 0;
-        if (now - lastWheel.current < 260) return;
-        lastWheel.current = now;
-        const dir = e.deltaY > 0 ? 1 : -1;
-        setActiveSector((cur) => {
-          const i = sectorOrder.indexOf(cur);
-          return sectorOrder[(i + dir + sectorOrder.length) % sectorOrder.length];
-        });
-      }
+      // heat map: let the page scroll normally — sectors change only via the buttons
     };
     el.addEventListener("wheel", onWheel, { passive: false });
     return () => el.removeEventListener("wheel", onWheel);
@@ -261,7 +276,8 @@ export function HomeMarketMaps() {
     return { clusters, maxCap };
   }, [companies, geo.proj]);
 
-  const dotR = (cap: number) => Math.max(Math.sqrt(cap / hq.maxCap) * 26, 5);
+  // tamer dot sizing — concentration barely changes the size, stays legible at all zooms
+  const dotR = (cap: number) => 6 + Math.sqrt(Math.max(cap, 0) / hq.maxCap) * 9;
 
   // GLOBE — the HQ map as a real 3D world: companies plotted at their true HQ, clustered.
   const globe = useMemo(() => {
@@ -497,7 +513,7 @@ export function HomeMarketMaps() {
               {/* clusters + dots */}
               {hq.clusters.map((cl, i) => {
                 const summed = cl.members.reduce((s, m) => s + m.co.cap, 0);
-                const isOpen = openCluster === i;
+                const isOpen = openCluster === clusterSig(cl.members);
                 if (cl.members.length === 1) {
                   const m = cl.members[0];
                   return (
@@ -558,7 +574,7 @@ export function HomeMarketMaps() {
                       stroke="#FFFDF6"
                       strokeWidth={2}
                       className="mm-maps__cluster"
-                      onClick={() => setOpenCluster(isOpen ? null : i)}
+                      onClick={() => openClusterFocus(cl)}
                     />
                     <text
                       x={cl.x}
@@ -566,7 +582,7 @@ export function HomeMarketMaps() {
                       textAnchor="middle"
                       className="mm-maps__cluster-n"
                       fill="#FFFDF6"
-                      onClick={() => setOpenCluster(isOpen ? null : i)}
+                      onClick={() => openClusterFocus(cl)}
                     >
                       {isOpen ? "×" : cl.members.length}
                     </text>
@@ -587,7 +603,7 @@ export function HomeMarketMaps() {
               {/* HQ dots + clusters at true locations */}
               {globe.clusters.map((cl, i) => {
                 const summed = cl.members.reduce((s, m) => s + m.co.cap, 0);
-                const isOpen = openCluster === i;
+                const isOpen = openCluster === clusterSig(cl.members);
                 if (cl.members.length === 1) {
                   const m = cl.members[0];
                   return (
@@ -595,7 +611,7 @@ export function HomeMarketMaps() {
                       <circle
                         cx={m.x}
                         cy={m.y}
-                        r={Math.max(dotR(m.co.cap) * 0.72, 5)}
+                        r={dotR(m.co.cap)}
                         fill={SECTOR_COLORS[m.co.sector] || "#176D5C"}
                         fillOpacity={0.95}
                         stroke="#FFFDF6"
@@ -612,8 +628,9 @@ export function HomeMarketMaps() {
                     {isOpen
                       ? cl.members.map((m, j) => {
                           const ang = (j / cl.members.length) * Math.PI * 2 - Math.PI / 2;
-                          const dx = cl.x + Math.cos(ang) * 44;
-                          const dy = cl.y + Math.sin(ang) * 44;
+                          const spread = 40 + cl.members.length * 3;
+                          const dx = cl.x + Math.cos(ang) * spread;
+                          const dy = cl.y + Math.sin(ang) * spread;
                           return (
                             <g key={`g-leg-${j}`}>
                               <line x1={cl.x} y1={cl.y} x2={dx} y2={dy} stroke="#176D5C" strokeWidth={1} strokeOpacity={0.5} />
@@ -621,7 +638,7 @@ export function HomeMarketMaps() {
                                 <circle
                                   cx={dx}
                                   cy={dy}
-                                  r={Math.max(dotR(m.co.cap) * 0.6, 8)}
+                                  r={Math.max(dotR(m.co.cap), 9)}
                                   fill={SECTOR_COLORS[m.co.sector] || "#176D5C"}
                                   fillOpacity={0.95}
                                   stroke="#FFFDF6"
@@ -641,15 +658,15 @@ export function HomeMarketMaps() {
                     <circle
                       cx={cl.x}
                       cy={cl.y}
-                      r={Math.max(Math.sqrt(summed / hq.maxCap) * 24, 13)}
+                      r={Math.max(13 + Math.sqrt(summed / hq.maxCap) * 10, 14)}
                       fill="#176D5C"
                       fillOpacity={isOpen ? 0.5 : 0.85}
                       stroke="#FFFDF6"
                       strokeWidth={2}
                       className="mm-maps__cluster"
-                      onClick={() => setOpenCluster(isOpen ? null : i)}
+                      onClick={() => openClusterFocus(cl)}
                     />
-                    <text x={cl.x} y={cl.y + 4} textAnchor="middle" className="mm-maps__cluster-n" fill="#FFFDF6" onClick={() => setOpenCluster(isOpen ? null : i)}>
+                    <text x={cl.x} y={cl.y + 4} textAnchor="middle" className="mm-maps__cluster-n" fill="#FFFDF6" onClick={() => openClusterFocus(cl)}>
                       {isOpen ? "×" : cl.members.length}
                     </text>
                   </g>

@@ -54,7 +54,7 @@
       "period": "1Y",
       "status": "AVAILABLE",
       "module_link": "/apple",
-      "popup_tagline": "THE MACHINE THAT PRINTS VALUE",
+      "popup_tagline": "",
       "popup_chapter": "Hardware, software and services as one system",
       "popup_level": 1,
       "popup_cover_color": "#54545C",
