@@ -181,3 +181,22 @@
   }
 ];
 
+export type DigestProduct = (typeof products)[number];
+
+export const digestCoverStyles: Record<string, { background: string; color: string }> = {
+  green: { background: "linear-gradient(165deg, #2ec4a8 0%, #176d5c 48%, #0b3d34 100%)", color: "#fffdf6" },
+  navy: { background: "linear-gradient(165deg, #4c6ef0 0%, #243a75 50%, #12182e 100%)", color: "#fffdf6" },
+  cream: { background: "linear-gradient(165deg, #f4e6c1 0%, #d4bc7a 52%, #8a6d3b 100%)", color: "#161b2e" },
+  teal: { background: "linear-gradient(165deg, #3db8c4 0%, #1a6b74 50%, #0d3a40 100%)", color: "#fffdf6" },
+  gold: { background: "linear-gradient(165deg, #f0c14b 0%, #c4921a 48%, #7a5a10 100%)", color: "#161b2e" },
+  red: { background: "linear-gradient(165deg, #e05a4a 0%, #9a2e28 50%, #4a1414 100%)", color: "#fffdf6" },
+};
+
+export function digestCover(color?: string | null) {
+  return digestCoverStyles[color || "green"] ?? digestCoverStyles.green;
+}
+
+export function productById(id: string) {
+  return products.find((p) => p.id === id);
+}
+

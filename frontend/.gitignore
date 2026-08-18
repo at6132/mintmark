@@ -9,5 +9,7 @@ out
 
 # Runtime data (optional persistence — recreate empty on deploy)
 # data/*.json kept for seed products
+data/members.json
+data/sessions.json
 
 .turbo

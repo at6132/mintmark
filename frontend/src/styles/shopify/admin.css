@@ -1,0 +1,759 @@
+.ara-admin {
+  --ara-admin-bg: #e9f6f0;
+  --ara-admin-paper: #fffdf6;
+  --ara-admin-ink: #161b2e;
+  --ara-admin-muted: #646575;
+  --ara-admin-mint: #1fa88f;
+  --ara-admin-deep: #176d5c;
+  --ara-admin-gold: #e0a526;
+  --ara-admin-rule: #c9bea8;
+  --ara-admin-blue: #3a5be0;
+  --ara-admin-max: 1640px;
+  position: relative;
+  overflow: hidden;
+  padding: 48px 0 100px;
+  background-color: var(--ara-admin-bg);
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0 35px,
+    color-mix(in srgb, var(--ara-admin-mint) 9%, transparent) 35px 36px
+  );
+  color: var(--ara-admin-ink);
+}
+
+.ara-admin * {
+  box-sizing: border-box;
+}
+
+.ara-admin__inner {
+  width: min(100%, var(--ara-admin-max));
+  margin: 0 auto;
+  padding: 0 40px;
+}
+
+.ara-admin__folio {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 18px;
+  align-items: center;
+  padding: 0 0 14px;
+  border-bottom: 4px solid var(--ara-admin-ink);
+  color: var(--ara-admin-deep);
+  font-family: var(--font-accent-family);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.ara-admin__folio span:last-child {
+  text-align: right;
+}
+
+.ara-admin__folio strong {
+  color: var(--ara-admin-ink);
+  font-family: var(--font-heading-family);
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+}
+
+.ara-admin__intro {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(280px, 0.8fr);
+  gap: 48px;
+  align-items: end;
+  padding: 28px 0 30px;
+  border-bottom: 1px solid var(--ara-admin-ink);
+}
+
+.ara-admin__file {
+  display: block;
+  margin-top: 3px;
+  color: var(--ara-admin-muted);
+  font-family: var(--font-accent-family);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.ara-admin__eyebrow,
+.ara-admin__nav-kicker,
+.ara-admin__stage-kicker,
+.ara-admin__stat span,
+.ara-admin label > span,
+.ara-admin__tabs button,
+.ara-admin__pill,
+.ara-admin__btn,
+.ara-admin__text-btn,
+.ara-admin__table th,
+.ara-admin__coming-kicker {
+  margin: 0;
+  color: var(--ara-admin-mint);
+  font-family: var(--font-accent-family);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  line-height: 1.25;
+  text-transform: uppercase;
+}
+
+.ara-admin__intro h1 {
+  margin: 10px 0 0;
+  font-family: var(--font-heading-family);
+  font-size: clamp(42px, 6vw, 72px);
+  font-style: var(--font-heading-style);
+  font-weight: var(--font-heading-weight);
+  letter-spacing: -0.055em;
+  line-height: 0.93;
+}
+
+.ara-admin__intro h1 mark {
+  background: none;
+  color: inherit;
+}
+
+.ara-admin__intro p,
+.ara-admin__lede {
+  margin: 0;
+  color: var(--ara-admin-muted);
+  font-family: var(--font-body-family);
+  font-size: 16px;
+  line-height: 1.65;
+}
+
+.ara-admin__intro-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.ara-admin__btn {
+  display: inline-flex;
+  min-height: 42px;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 16px;
+  border: 1px solid var(--ara-admin-ink);
+  border-radius: 7px;
+  background: var(--ara-admin-ink);
+  color: #fff;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.ara-admin__btn:hover:not(:disabled) {
+  background: var(--ara-admin-deep);
+  border-color: var(--ara-admin-deep);
+}
+
+.ara-admin__btn:disabled {
+  opacity: 0.55;
+  cursor: wait;
+}
+
+.ara-admin__btn--ghost {
+  background: transparent;
+  color: var(--ara-admin-ink);
+}
+
+.ara-admin__btn--ghost:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--ara-admin-mint) 12%, transparent);
+  border-color: var(--ara-admin-ink);
+  color: var(--ara-admin-ink);
+}
+
+.ara-admin__shell {
+  display: grid;
+  grid-template-columns: minmax(220px, 0.72fr) minmax(0, 1.28fr);
+  gap: 24px;
+  margin-top: 32px;
+  align-items: start;
+}
+
+.ara-admin__nav,
+.ara-admin__stage,
+.ara-admin__stat,
+.ara-admin__panel,
+.ara-admin__card {
+  border: 1px solid var(--ara-admin-ink);
+  border-radius: 14px;
+  background: var(--ara-admin-paper);
+}
+
+.ara-admin__nav {
+  position: sticky;
+  top: 18px;
+  overflow: hidden;
+  box-shadow: 7px 7px 0 color-mix(in srgb, var(--ara-admin-mint) 22%, transparent);
+}
+
+.ara-admin__nav-art {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-height: 132px;
+  color: color-mix(in srgb, var(--ara-admin-deep) 35%, transparent);
+  border-bottom: 1px solid color-mix(in srgb, var(--ara-admin-ink) 18%, transparent);
+}
+
+.ara-admin__colonnade {
+  position: absolute;
+  inset: 6px 4px auto;
+  width: 100%;
+  height: 118px;
+  opacity: 0.5;
+}
+
+.ara-admin__desk-coin {
+  position: relative;
+  z-index: 1;
+  width: 86px;
+  height: 86px;
+  filter: drop-shadow(0 10px 16px rgba(154, 109, 18, 0.28));
+  animation: ara-admin-coin 8s ease-in-out infinite;
+}
+
+@keyframes ara-admin-coin {
+  0%,
+  100% {
+    transform: translateY(0) rotate(-4deg);
+  }
+  50% {
+    transform: translateY(-6px) rotate(4deg);
+  }
+}
+
+.ara-admin__nav-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 18px 20px 14px;
+  border-bottom: 1px solid var(--ara-admin-ink);
+}
+
+.ara-admin__nav-head strong {
+  font-family: var(--font-accent-family);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-align: right;
+}
+
+.ara-admin__nav-list {
+  display: grid;
+  padding: 6px 0 10px;
+}
+
+.ara-admin__nav-list button {
+  display: grid;
+  grid-template-columns: 38px minmax(0, 1fr);
+  gap: 12px;
+  width: 100%;
+  padding: 12px 20px;
+  border: 0;
+  border-bottom: 1px solid color-mix(in srgb, var(--ara-admin-ink) 14%, transparent);
+  background: transparent;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.ara-admin__nav-list button:hover,
+.ara-admin__nav-list button.is-active {
+  background: color-mix(in srgb, var(--ara-admin-mint) 10%, transparent);
+}
+
+.ara-admin__nav-list button > span:first-child {
+  color: var(--ara-admin-gold);
+  font-family: var(--font-heading-family);
+  font-size: 18px;
+  line-height: 1.1;
+}
+
+.ara-admin__nav-list h2 {
+  margin: 0;
+  font-family: var(--font-heading-family);
+  font-size: 18px;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+}
+
+.ara-admin__nav-list small {
+  display: block;
+  margin-top: 3px;
+  color: var(--ara-admin-muted);
+  font-family: var(--font-body-family);
+  font-size: 12px;
+  letter-spacing: 0;
+  text-transform: none;
+  font-weight: 400;
+}
+
+.ara-admin__nav-note {
+  margin: 0;
+  padding: 16px 20px 20px;
+  color: var(--ara-admin-muted);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.ara-admin__stage {
+  min-height: 640px;
+  overflow: hidden;
+  box-shadow: 7px 7px 0 color-mix(in srgb, var(--ara-admin-gold) 26%, transparent);
+}
+
+.ara-admin__stage-head {
+  padding: 22px 27px 20px;
+  border-bottom: 1px solid var(--ara-admin-ink);
+  background: var(--ara-admin-ink);
+  color: #fff;
+}
+
+.ara-admin__stage-kicker {
+  color: var(--ara-admin-gold);
+}
+
+.ara-admin__stage-head h2 {
+  margin: 8px 0 0;
+  font-family: var(--font-heading-family);
+  font-size: 34px;
+  letter-spacing: -0.035em;
+  line-height: 1;
+}
+
+.ara-admin__stage-head p {
+  margin: 10px 0 0;
+  color: color-mix(in srgb, #ffffff 72%, var(--ara-admin-mint));
+  font-size: 15px;
+  line-height: 1.45;
+}
+
+.ara-admin__stage-body {
+  padding: 22px 24px 28px;
+}
+
+.ara-admin__toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 18px;
+}
+
+.ara-admin__toolbar input,
+.ara-admin__toolbar select,
+.ara-admin label input,
+.ara-admin label select {
+  min-height: 42px;
+  padding: 8px 12px;
+  border: 1px solid var(--ara-admin-rule);
+  border-radius: 8px;
+  background: #fff;
+  color: var(--ara-admin-ink);
+  font: inherit;
+  font-size: 15px;
+}
+
+.ara-admin__toolbar input {
+  flex: 1 1 220px;
+}
+
+.ara-admin__toolbar input:focus-visible,
+.ara-admin__toolbar select:focus-visible {
+  outline: 2px solid var(--ara-admin-mint);
+  outline-offset: 2px;
+}
+
+.ara-admin__stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.ara-admin__stat {
+  padding: 16px 16px 14px;
+  box-shadow: 4px 4px 0 color-mix(in srgb, var(--ara-admin-mint) 16%, transparent);
+}
+
+.ara-admin__stat strong {
+  display: block;
+  margin-top: 8px;
+  font-family: var(--font-heading-family);
+  font-size: clamp(22px, 3vw, 32px);
+  letter-spacing: -0.04em;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.ara-admin__stat em {
+  display: block;
+  margin-top: 8px;
+  color: var(--ara-admin-muted);
+  font-style: italic;
+  font-size: 13px;
+}
+
+.ara-admin__grid-2 {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 14px;
+}
+
+.ara-admin__panel {
+  padding: 18px 18px 8px;
+}
+
+.ara-admin__panel h3 {
+  margin: 0 0 12px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--ara-admin-ink);
+  font-family: var(--font-heading-family);
+  font-size: 22px;
+  letter-spacing: -0.03em;
+}
+
+.ara-admin__bars {
+  display: grid;
+  gap: 8px;
+  padding-bottom: 12px;
+}
+
+.ara-admin__bar {
+  display: grid;
+  grid-template-columns: 72px minmax(0, 1fr) auto;
+  gap: 10px;
+  align-items: center;
+  font-size: 13px;
+}
+
+.ara-admin__bar i {
+  display: block;
+  height: 8px;
+  border-radius: 99px;
+  background: linear-gradient(90deg, var(--ara-admin-mint), var(--ara-admin-gold));
+}
+
+.ara-admin__bar span:first-child {
+  color: var(--ara-admin-muted);
+  font-family: var(--font-accent-family);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.ara-admin__table-wrap {
+  overflow-x: auto;
+  margin: 0 -4px;
+}
+
+.ara-admin__table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.ara-admin__table th,
+.ara-admin__table td {
+  padding: 11px 10px;
+  border-bottom: 1px solid color-mix(in srgb, var(--ara-admin-ink) 16%, transparent);
+  text-align: left;
+  vertical-align: top;
+}
+
+.ara-admin__table th {
+  color: var(--ara-admin-deep);
+}
+
+.ara-admin__table tbody tr {
+  cursor: pointer;
+}
+
+.ara-admin__table tbody tr:hover,
+.ara-admin__table tbody tr.is-open {
+  background: color-mix(in srgb, var(--ara-admin-mint) 9%, transparent);
+}
+
+.ara-admin__table .num {
+  font-family: var(--font-accent-family);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.ara-admin__pill {
+  display: inline-flex;
+  align-items: center;
+  min-height: 22px;
+  padding: 2px 8px;
+  border-radius: 99px;
+  border: 1px solid color-mix(in srgb, var(--ara-admin-ink) 22%, transparent);
+  color: var(--ara-admin-ink);
+  background: color-mix(in srgb, var(--ara-admin-mint) 12%, #fff);
+  letter-spacing: 0.1em;
+  white-space: nowrap;
+}
+
+.ara-admin__pill--gold {
+  background: color-mix(in srgb, var(--ara-admin-gold) 28%, #fff);
+}
+
+.ara-admin__pill--ink {
+  background: var(--ara-admin-ink);
+  color: #fff;
+  border-color: var(--ara-admin-ink);
+}
+
+.ara-admin__pill--warn {
+  background: color-mix(in srgb, #c93a32 12%, #fff);
+  border-color: color-mix(in srgb, #c93a32 40%, var(--ara-admin-ink));
+}
+
+.ara-admin__detail {
+  display: grid;
+  gap: 12px;
+  margin-top: 16px;
+  padding: 18px;
+  border: 1px solid var(--ara-admin-ink);
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--ara-admin-mint) 6%, #fff);
+}
+
+.ara-admin__detail h3 {
+  margin: 0;
+  font-family: var(--font-heading-family);
+  font-size: 26px;
+  letter-spacing: -0.03em;
+}
+
+.ara-admin__dl {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px 18px;
+}
+
+.ara-admin__dl div span {
+  display: block;
+  color: var(--ara-admin-mint);
+  font-family: var(--font-accent-family);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.ara-admin__dl div strong,
+.ara-admin__dl div p {
+  margin: 4px 0 0;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.45;
+  word-break: break-word;
+}
+
+.ara-admin__empty,
+.ara-admin__error,
+.ara-admin__loading {
+  padding: 28px 8px 18px;
+  color: var(--ara-admin-muted);
+  font-style: italic;
+  line-height: 1.6;
+}
+
+.ara-admin__error {
+  color: #8a241f;
+  font-style: normal;
+}
+
+.ara-admin__tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  margin: 0 0 18px;
+  border: 1px solid color-mix(in srgb, #ffffff 22%, transparent);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.ara-admin__tabs button {
+  min-height: 38px;
+  padding: 8px 12px;
+  border: 0;
+  background: transparent;
+  color: color-mix(in srgb, #ffffff 70%, transparent);
+  cursor: pointer;
+}
+
+.ara-admin__tabs button.is-active {
+  background: var(--ara-admin-gold);
+  color: var(--ara-admin-ink);
+}
+
+.ara-admin__coming {
+  display: grid;
+  place-items: center;
+  min-height: 360px;
+  padding: 28px 18px 36px;
+  text-align: center;
+}
+
+.ara-admin__coming .ara-admin__nav-art {
+  width: 100%;
+  max-width: 360px;
+  margin-bottom: 4px;
+  border: 0;
+  background: transparent;
+}
+
+.ara-admin__coming-stamp {
+  display: inline-flex;
+  margin-bottom: 18px;
+  padding: 8px 14px;
+  border: 2px solid var(--ara-admin-gold);
+  border-radius: 4px;
+  color: var(--ara-admin-gold);
+  font-family: var(--font-accent-family);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  transform: rotate(-6deg);
+}
+
+.ara-admin__coming h3 {
+  margin: 8px 0 0;
+  font-family: var(--font-heading-family);
+  font-size: clamp(32px, 5vw, 48px);
+  letter-spacing: -0.045em;
+  line-height: 0.95;
+}
+
+.ara-admin__coming p {
+  max-width: 42ch;
+  margin: 14px auto 0;
+  color: var(--ara-admin-muted);
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.ara-admin__catalog {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.ara-admin__card {
+  display: grid;
+  grid-template-columns: 72px minmax(0, 1fr);
+  gap: 14px;
+  padding: 14px;
+}
+
+.ara-admin__cover {
+  display: grid;
+  place-items: center;
+  border-radius: 6px;
+  font-family: var(--font-heading-family);
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.ara-admin__card h3 {
+  margin: 4px 0 0;
+  font-family: var(--font-heading-family);
+  font-size: 20px;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+}
+
+.ara-admin__card p {
+  margin: 6px 0 0;
+  color: var(--ara-admin-muted);
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.ara-admin__card-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+  align-items: center;
+}
+
+.ara-admin__text-btn {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--ara-admin-deep);
+  cursor: pointer;
+}
+
+.ara-admin__message {
+  white-space: pre-wrap;
+  font-size: 15px;
+  line-height: 1.55;
+}
+
+.ara-admin__ops-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+@media (max-width: 1100px) {
+  .ara-admin__stats,
+  .ara-admin__grid-2,
+  .ara-admin__catalog,
+  .ara-admin__ops-grid,
+  .ara-admin__dl {
+    grid-template-columns: 1fr;
+  }
+
+  .ara-admin__shell {
+    grid-template-columns: 1fr;
+  }
+
+  .ara-admin__nav {
+    position: static;
+  }
+
+  .ara-admin__nav-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 760px) {
+  .ara-admin {
+    padding: 28px 0 72px;
+  }
+
+  .ara-admin__inner {
+    padding: 0 18px;
+  }
+
+  .ara-admin__intro,
+  .ara-admin__folio {
+    grid-template-columns: 1fr;
+    text-align: left;
+  }
+
+  .ara-admin__folio span:last-child,
+  .ara-admin__intro-actions {
+    justify-content: flex-start;
+    text-align: left;
+  }
+
+  .ara-admin__nav-list {
+    grid-template-columns: 1fr;
+  }
+
+  .ara-admin__stage-head h2 {
+    font-size: 28px;
+  }
+}

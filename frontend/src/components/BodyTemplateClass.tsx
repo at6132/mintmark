@@ -56,6 +56,23 @@ export function BodyTemplateClass() {
       pageType = "page";
       suffix = "contact";
       handle = "contact";
+    } else if (pathname === "/account" || pathname === "/login" || pathname === "/signup") {
+      pageType = "page";
+      suffix = "account";
+      handle = "account";
+    } else if (pathname === "/admin" || pathname.startsWith("/admin/")) {
+      pageType = "page";
+      suffix = "admin";
+      handle = "admin";
+    } else if (pathname === "/cart") {
+      pageType = "cart";
+      handle = "cart";
+    } else if (pathname === "/shop") {
+      pageType = "collection";
+      handle = "shop";
+    } else if (pathname.startsWith("/order")) {
+      pageType = "page";
+      handle = "order";
     } else {
       pageType = "page";
       handle = pathname.split("/").filter(Boolean).join("-") || "page";
