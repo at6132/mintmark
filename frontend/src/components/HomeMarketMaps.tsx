@@ -10,7 +10,7 @@ import landTopoRaw from "world-atlas/land-50m.json";
 import countriesTopoRaw from "world-atlas/countries-110m.json";
 import { marketMapsContent } from "@/data/marketMaps";
 import { appHref } from "@/lib/assets";
-import { SECTOR_COLORS, SECTOR_HALO } from "@/lib/sectors";
+import { SECTOR_COLORS, SECTOR_HALO, orderSectorsByContrast } from "@/lib/sectors";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 const statesTopo = statesTopoRaw as any;
@@ -233,16 +233,27 @@ export function HomeMarketMaps() {
       if (!bySector.has(c.sector)) bySector.set(c.sector, []);
       bySector.get(c.sector)!.push(c);
     }
+    // lay the sector groups out so neighbouring blocks are as far apart in hue
+    // as possible — the treemap follows child order, so this is what keeps two
+    // similar sector colours from ending up side by side
+    const laidOut = orderSectorsByContrast([...bySector.keys()]);
     const rootData = {
       name: "root",
-      children: [...bySector.entries()].map(([sector, cos]) => ({
+      children: laidOut.map((sector, i) => ({
         name: sector,
-        children: cos.map((co) => ({ name: co.ticker, co, cap: co.cap })),
+        order: i,
+        children: (bySector.get(sector) || []).map((co) => ({ name: co.ticker, co, cap: co.cap })),
       })),
     };
     const root = hierarchy(rootData as never)
       .sum((d) => (d as { cap?: number }).cap || 0)
-      .sort((a, b) => (b.value || 0) - (a.value || 0));
+      .sort((a, b) => {
+        // sector groups keep the contrast order; companies inside sort by size
+        const ao = (a.data as { order?: number }).order;
+        const bo = (b.data as { order?: number }).order;
+        if (ao !== undefined && bo !== undefined) return ao - bo;
+        return (b.value || 0) - (a.value || 0);
+      });
 
     const layout = treemap();
     layout
