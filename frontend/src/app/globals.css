@@ -18,7 +18,6 @@
 @import "../styles/shopify/catalog.css";
 @import "../styles/shopify/company-hero.css";
 @import "../styles/shopify/contact.css";
-@import "../styles/shopify/account.css";
 @import "../styles/shopify/admin.css";
 @import "../styles/shopify/article.css";
 /* Live Shopify global overrides (layout/theme.liquid + ara-site-consistency) — load last */
@@ -28,6 +27,9 @@
 @import "../styles/shopify/ad.css";
 /* sleek glossy finishing layer — must load last so it wins the cascade */
 @import "../styles/shopify/zz-polish.css";
+/* trims/dividers load last so they own the newsroom trim + rule system */
+@import "../styles/shopify/newsroom-trims.css";
+@import "../styles/shopify/company-feed.css";
 
 /*
  * Live Shopify / ara sections use single-dash tokens:

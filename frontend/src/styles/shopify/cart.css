@@ -12,7 +12,7 @@
 }
 .ck__trim {
   position: absolute; top: 0; left: 0; right: 0; height: 3px; z-index: 3;
-  background: linear-gradient(90deg, transparent, #93b0f7 18%, #3a5be0 50%, #7ba0f5 82%, transparent);
+  background: linear-gradient(90deg, transparent, #3a5be0 14%, #e0a526 38%, #3a5be0 62%, #e0a526 86%, transparent);
 }
 .ck__inner { position: relative; z-index: 2; width: min(100%, 960px); margin: 0 auto; }
 .ck__kicker {
@@ -80,3 +80,121 @@
   .ck__item { grid-template-columns: auto minmax(0, 1fr) auto; row-gap: 10px; }
   .ck__item-price { grid-column: 2 / 3; }
 }
+
+/* ---- checkout ---------------------------------------------------------- */
+.ck__form { display: flex; flex-direction: column; gap: 18px; }
+
+.ck__field {
+  margin: 0;
+  padding: 20px;
+  border: 1.5px solid #c9bea8;
+  border-radius: 14px;
+  background: #fffdf6;
+  box-shadow: 0 8px 20px rgba(22, 27, 46, 0.05);
+}
+.ck__field legend {
+  padding: 0 8px;
+  margin-left: -4px;
+  font-family: var(--font-space-grotesk), "Space Grotesk", sans-serif;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #176d5c;
+}
+.ck__field > * + * { margin-top: 10px; }
+
+.ck__field-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(0, 1fr)); gap: 10px; }
+.ck__field-row > * + * { margin-top: 0; }
+
+.ck__input {
+  width: 100%;
+  min-height: 46px;
+  padding: 11px 14px;
+  border: 1.5px solid #c9bea8;
+  border-radius: 10px;
+  background: #fdfaf0;
+  color: #161b2e;
+  font-family: var(--font-body-family), serif;
+  font-size: 15.5px;
+  transition: border-color 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+}
+.ck__input::placeholder { color: #8a8f9e; }
+.ck__input:focus {
+  outline: none;
+  background: #fffdf6;
+  border-color: #3a5be0;
+  box-shadow: 0 0 0 3px rgba(58, 91, 224, 0.16);
+}
+
+.ck__note {
+  margin: 4px 0 0;
+  font-family: var(--font-body-family), serif;
+  font-size: 13px;
+  line-height: 1.45;
+  color: #646575;
+}
+
+.ck__summary-items {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-bottom: 14px;
+  margin-bottom: 6px;
+  border-bottom: 1.5px solid #c9bea8;
+}
+.ck__summary-line {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  font-family: var(--font-body-family), serif;
+  font-size: 14.5px;
+  color: #3d4457;
+}
+.ck__summary-line em { font-style: normal; color: #8a8f9e; }
+.ck__summary-line strong { font-family: var(--font-heading-family), "Fraunces", serif; color: #161b2e; }
+
+.ck__btn:disabled { opacity: 0.6; cursor: progress; transform: none; }
+
+@media (max-width: 760px) {
+  .ck__field-row { grid-template-columns: 1fr; }
+}
+
+/* checkout detail — the header's blue + gold, carried through the page */
+.ck__field { position: relative; }
+.ck__field::before {
+  content: ""; position: absolute; left: 20px; right: 20px; top: 0; height: 3px;
+  border-radius: 0 0 3px 3px;
+  background: linear-gradient(90deg, #3a5be0 0 44px, #e0a526 44px 74px, transparent 74px);
+}
+.ck__field legend { color: #3a5be0; }
+.ck__summary { position: relative; border-color: #3a5be0; }
+.ck__summary::before {
+  content: ""; position: absolute; left: -1.5px; right: -1.5px; top: -1.5px; height: 6px;
+  border-radius: 14px 14px 0 0;
+  background: linear-gradient(90deg, #3a5be0, #e0a526);
+}
+.ck__summary { padding-top: 26px; }
+.ck__row--total strong { color: #3a5be0; }
+.ck__summary-line strong { color: #161b2e; }
+.ck__note { border-left: 3px solid #e0a526; padding-left: 10px; }
+
+/* ---- member desk (shares the cart/checkout shell) ----------------------- */
+.md__loading,
+.md__signin { font-family: var(--font-body-family), serif; color: #3d4457; }
+.md__signin { display: flex; justify-content: center; }
+.md__signin .mm-auth { width: 100%; }
+.ck__textarea { min-height: 132px; resize: vertical; line-height: 1.5; }
+.md__err {
+  margin: 0; padding: 8px 11px; border-left: 3px solid #c2410c; border-radius: 4px;
+  background: rgba(194, 65, 12, .08);
+  font-family: var(--font-body-family), serif; font-size: 13.5px; color: #8c2f39;
+}
+.md__sent {
+  margin: 0; padding: 8px 11px; border-left: 3px solid #176d5c; border-radius: 4px;
+  background: rgba(23, 109, 92, .08);
+  font-family: var(--font-body-family), serif; font-size: 13.5px; color: #176d5c;
+}
+.md .ck__summary .ck__btn { width: 100%; margin-top: 10px; }
+.md .ck__field select.ck__input { cursor: pointer; }

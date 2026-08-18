@@ -5,6 +5,7 @@ import { useEffect, useMemo, useState } from "react";
 import { homeContent } from "@/data/home";
 import { appHref, assets } from "@/lib/assets";
 import { stripHtml } from "@/lib/format";
+import { AdPeriodicTable } from "@/components/FeedAd";
 
 // "write it 100 times" assignment — the second half of each line changes.
 const STAKE_LINES = [
@@ -21,44 +22,6 @@ const STAKE_LINES = [
 ];
 
 // compact periodic-table icon for the building-blocks ad
-const AD_METALS = ["#7fd9c4", "#e0a526", "#3a5be0", "#4fa98f", "#c9a24a", "#82ddc7"];
-const AD_PT_SYM: Record<string, string> = { "0-0": "H", "8-0": "He", "0-3": "Au", "3-4": "Ag", "6-4": "Cu" };
-function AdPeriodicTable() {
-  const rows = [
-    [0, 8],
-    [0, 1, 4, 5, 6, 7, 8],
-    [0, 1, 4, 5, 6, 7, 8],
-    [0, 1, 2, 3, 4, 5, 6, 7, 8],
-    [0, 1, 2, 3, 4, 5, 6, 7, 8],
-  ];
-  const CW = 15;
-  const GAP = 2.6;
-  const cells: Array<{ c: number; r: number }> = [];
-  rows.forEach((cols, r) => cols.forEach((c) => cells.push({ c, r })));
-  const w = 9 * (CW + GAP);
-  const h = 5 * (CW + GAP);
-  return (
-    <svg viewBox={`0 0 ${w} ${h}`} width="100%" height="100%">
-      {cells.map((cell, i) => {
-        const x = cell.c * (CW + GAP);
-        const y = cell.r * (CW + GAP);
-        const co = AD_METALS[(cell.c + cell.r) % AD_METALS.length];
-        const key = `${cell.c}-${cell.r}`;
-        return (
-          <g key={i}>
-            <rect x={x} y={y} width={CW} height={CW} rx="2" fill={co} fillOpacity="0.85" stroke="rgba(255,255,255,0.3)" strokeWidth="0.6" />
-            {AD_PT_SYM[key] ? (
-              <text x={x + CW / 2} y={y + CW / 2 + 3} textAnchor="middle" fontFamily="var(--font-space-grotesk), sans-serif" fontWeight="800" fontSize="8" fill="#0c1020">
-                {AD_PT_SYM[key]}
-              </text>
-            ) : null}
-          </g>
-        );
-      })}
-    </svg>
-  );
-}
-
 export function HomeHero() {
   const hero = homeContent.hero as Record<string, unknown>;
   const blocks = (homeContent.hero.blocks || []) as unknown as Array<Record<string, string>>;

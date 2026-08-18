@@ -40,7 +40,7 @@
   body.template-blog .section-background,
   body.template-article:not(.template-suffix-company-story) .section-background,
   body.template-404 .section-background,
-  body.template-page:not(.template-suffix-apple):not(.template-suffix-module):not(.template-suffix-bookshelf):not(.template-suffix-cataloge):not(.template-suffix-mint):not(.template-suffix-mission):not(.template-suffix-contact):not(.template-suffix-account) .section-background {
+  body.template-page:not(.template-suffix-company):not(.template-suffix-module):not(.template-suffix-bookshelf):not(.template-suffix-cataloge):not(.template-suffix-mint):not(.template-suffix-mission):not(.template-suffix-contact):not(.template-suffix-account) .section-background {
     background: transparent !important;
   }
 
@@ -52,7 +52,7 @@
   body.template-blog .blog-posts-container,
   body.template-article:not(.template-suffix-company-story) .section-content-wrapper,
   body.template-404 .section-content-wrapper,
-  body.template-page:not(.template-suffix-apple):not(.template-suffix-module):not(.template-suffix-bookshelf):not(.template-suffix-cataloge):not(.template-suffix-mint):not(.template-suffix-mission):not(.template-suffix-contact):not(.template-suffix-account) .section-content-wrapper {
+  body.template-page:not(.template-suffix-company):not(.template-suffix-module):not(.template-suffix-bookshelf):not(.template-suffix-cataloge):not(.template-suffix-mint):not(.template-suffix-mission):not(.template-suffix-contact):not(.template-suffix-account) .section-content-wrapper {
     border-color: var(--ara-site-rule);
     color: var(--ara-site-ink);
   }
@@ -89,7 +89,7 @@
   body.template-cart .cart-page__title h1,
   body.template-404 .section-content-wrapper h1,
   body.template-list-collections h1,
-  body.template-page:not(.template-suffix-apple):not(.template-suffix-module):not(.template-suffix-bookshelf):not(.template-suffix-cataloge):not(.template-suffix-mint):not(.template-suffix-mission):not(.template-suffix-contact):not(.template-suffix-account) h1 {
+  body.template-page:not(.template-suffix-company):not(.template-suffix-module):not(.template-suffix-bookshelf):not(.template-suffix-cataloge):not(.template-suffix-mint):not(.template-suffix-mission):not(.template-suffix-contact):not(.template-suffix-account) h1 {
     font-family: var(--font-heading-family);
     font-style: var(--font-heading-style);
     font-weight: var(--font-heading-weight);
@@ -236,7 +236,7 @@
     background-color: var(--ara-site-cream) !important;
   }
 
-  body.template-suffix-apple [class*='ara-company-'],
+  body.template-suffix-company [class*='ara-company-'],
   body.template-suffix-module [class*='ara-company-'] {
     --ara-shared-radius: 14px;
   }

@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 750" role="img" aria-label="Placeholder">
+  <rect width="1200" height="750" fill="#f3ecdc"/>
+  <g fill="none" stroke="#c9bea8" stroke-width="2">
+    <path d="M0 187.5H1200M0 375H1200M0 562.5H1200M300 0V750M600 0V750M900 0V750"/>
+  </g>
+  <g transform="translate(600 375)">
+    <circle r="96" fill="none" stroke="#161b2e" stroke-width="4" opacity=".5"/>
+    <path d="M-46 26 L-14 -22 L14 18 L46 -34" fill="none" stroke="#e0a526" stroke-width="7"
+          stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+  <text x="600" y="530" text-anchor="middle" font-family="'Space Grotesk',sans-serif"
+        font-size="26" font-weight="700" letter-spacing="6" fill="#646575">PLACEHOLDER</text>
+</svg>

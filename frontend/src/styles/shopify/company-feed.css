@@ -1,0 +1,265 @@
+/* ============================================================================
+   Company file feed — the Fin newsroom language applied to a company's stories.
+   One continuous column: a section rule, trim cards, ledger dividers between
+   items, and the house ad sitting in the flow as a unit rather than a banner
+   bolted on the end.
+   ========================================================================== */
+.mm-feed { display: block; }
+
+.mm-feed__item {
+  position: relative;
+  display: block;
+  padding: 22px 24px 24px;
+  border-radius: 14px;
+  background: var(--ara-news-paper, #fffdf6);
+  box-shadow: 0 10px 24px rgba(22, 27, 46, .06);
+  text-decoration: none;
+  color: inherit;
+  transition: transform .3s cubic-bezier(.2, .7, .3, 1);
+}
+.mm-feed__item + .mm-feed__item { margin-top: 34px; }
+.mm-feed__item:hover { transform: translateY(-3px); }
+
+/* ledger divider between consecutive items — the newsroom's rule, turned flat */
+.mm-feed__item + .mm-feed__item::after {
+  content: ""; position: absolute; left: 8%; right: 8%; top: -18px; height: 1px;
+  background: linear-gradient(90deg,
+    transparent 0, rgba(22, 27, 46, .22) 12%, rgba(22, 27, 46, .22) 88%, transparent 100%);
+  pointer-events: none;
+}
+
+.mm-feed__meta {
+  display: flex; align-items: center; gap: 12px; margin-bottom: 10px;
+  font-family: var(--font-body-family);
+  font-size: 10.5px; font-weight: 900; letter-spacing: .11em; text-transform: uppercase;
+}
+.mm-feed__cat { color: var(--t1, #2aa78f); }
+.mm-feed__cat::after {
+  content: ""; display: inline-block; width: 5px; height: 5px; margin-left: 12px;
+  transform: rotate(45deg) translateY(-1px); background: var(--t2, #d9a531);
+}
+.mm-feed__date { color: var(--ara-news-muted, #646575); }
+
+.mm-feed__title {
+  margin: 0 0 8px;
+  font-family: var(--font-heading--family);
+  font-size: clamp(21px, 2.4vw, 27px); line-height: 1.18; font-weight: 600;
+}
+.mm-feed__excerpt {
+  margin: 0 0 14px; max-width: 62ch;
+  font-family: var(--font-body-family); font-size: 15.5px; line-height: 1.5;
+  color: #3a3f52;
+}
+.mm-feed__go {
+  font-family: var(--font-body-family);
+  font-size: 10.5px; font-weight: 900; letter-spacing: .11em; text-transform: uppercase;
+  color: var(--ara-news-gold, #e0a526);
+}
+.mm-feed__go span { display: inline-block; transition: transform .25s ease; }
+.mm-feed__item:hover .mm-feed__go span { transform: translateX(4px); }
+
+/* the house ad, in the flow: same rhythm as an item, its own full-bleed unit */
+.mm-feed__ad { margin: 34px 0; position: relative; }
+.mm-feed__ad::before {
+  content: ""; position: absolute; left: 8%; right: 8%; top: -18px; height: 1px;
+  background: linear-gradient(90deg,
+    transparent 0, rgba(22, 27, 46, .22) 12%, rgba(22, 27, 46, .22) 88%, transparent 100%);
+}
+.mm-feed__ad .mm-ad { padding: 0; }
+.mm-feed__ad .mm-ad__inner { width: 100%; }
+
+@media (max-width: 749px) {
+  .mm-feed__item { padding: 18px 18px 20px; }
+  .mm-feed__ad .mm-ad__inner { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* ---- the quick-open feed --------------------------------------------------
+   These are the newsroom's own pieces — flip strips, short-take squares, static
+   pitch cards, the question band — not a second card style. All this does is
+   pack them into a dense two-track mosaic at panel scale, so wide, square and
+   tall shapes sit together the way a feed looks, with the house ad sprinkled
+   through it.
+   ------------------------------------------------------------------------- */
+.ara-nr-quickfeed {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 11px;
+  grid-auto-flow: dense;
+  align-items: start;
+}
+
+/* wide, short: market news strips run the full track */
+.ara-nr-quickfeed .ara-nr-strip {
+  grid-column: 1 / -1;
+  height: auto;
+  min-height: 74px;
+  margin-bottom: 0;
+}
+.ara-nr-quickfeed .ara-nr-strip .ara-nr-flip__face { padding: 10px 13px; gap: 4px; }
+.ara-nr-quickfeed .ara-nr-strip h4 { font-size: 15px; line-height: 1.25; }
+
+/* square: short takes, one track wide */
+.ara-nr-quickfeed .ara-nr-sq { grid-column: span 1; width: 100%; aspect-ratio: auto; height: auto; min-height: 132px; }
+.ara-nr-quickfeed .ara-nr-sq .ara-nr-flip__face { padding: 12px; }
+.ara-nr-quickfeed .ara-nr-sq h4 { font-size: 15px; line-height: 1.26; }
+.ara-nr-quickfeed .ara-nr-sq p { font-size: 13.5px; line-height: 1.42; }
+/* the full-width pitch/story bands have room for a proper headline */
+.ara-nr-quickfeed .ara-nr-sq--pitch:nth-of-type(3n) h4 { font-size: 18px; line-height: 1.2; }
+
+/* tall: every other pitch/story card takes both tracks, so the mosaic breaks
+   out of a strict checkerboard */
+.ara-nr-quickfeed .ara-nr-sq--pitch:nth-of-type(3n) { grid-column: 1 / -1; width: 100%; }
+.ara-nr-quickfeed .ara-nr-sq--story { width: 100%; }
+
+/* wide band: the Mintmark view */
+.ara-nr-quickfeed .ara-editorial-front-page__question {
+  grid-column: 1 / -1;
+  display: block;
+  padding: 16px 18px;
+  border-radius: 14px;
+  background: var(--ara-question-bg, #161b2e);
+  color: var(--ara-question-text, #f2f8f6);
+}
+.ara-nr-quickfeed .ara-editorial-front-page__question h3 { font-size: 19px; line-height: 1.28; margin: 7px 0 11px; }
+.ara-nr-quickfeed .ara-editorial-front-page__question-copy { padding: 0; }
+
+/* the ad rides the full width, sprinkled through the mosaic */
+.ara-nr-quickfeed__ad { grid-column: 1 / -1; }
+.ara-nr-quickfeed .mm-feedad__headline { font-size: 17px; }
+.ara-nr-quickfeed .mm-feedad__text { font-size: 12.5px; margin-bottom: 10px; }
+.ara-nr-quickfeed .mm-feedad__logo { width: 100px; margin-bottom: 8px; }
+.ara-nr-quickfeed .mm-feedad__body { padding: 13px; gap: 12px; }
+.ara-nr-quickfeed .mm-feedad__table { max-height: 84px; }
+.ara-nr-quickfeed .mm-feedad__flag { padding: 5px 13px; font-size: 8.5px; }
+.ara-nr-quickfeed .mm-feedad__cta { padding: 8px 13px; font-size: 10px; }
+
+/* auto-size the card interiors. The front face drives the height (so nothing
+   is clipped or floating in dead space) and the back face overlays it; the
+   back's copy is clamped so a long summary can't blow past the front. */
+.ara-nr-quickfeed .ara-nr-flip .ara-nr-flip__inner { height: auto; min-height: 100%; }
+.ara-nr-quickfeed .ara-nr-flip .ara-nr-flip__inner .ara-nr-flip__front {
+  position: relative; inset: auto;
+}
+.ara-nr-quickfeed .ara-nr-flip .ara-nr-flip__inner .ara-nr-flip__back {
+  position: absolute; inset: 0;
+}
+.ara-nr-quickfeed .ara-nr-flip__back p {
+  display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.ara-nr-quickfeed .ara-nr-sq h4,
+.ara-nr-quickfeed .ara-nr-strip h4 {
+  display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+}
+
+/* the foot row carries a label and a call to action; in a half-width tile they
+   collide, so let it wrap and stack instead of overlapping */
+.ara-nr-quickfeed .ara-nr-sq__foot {
+  flex-wrap: wrap;
+  row-gap: 5px;
+  column-gap: 10px;
+  font-size: 10px;
+  letter-spacing: .07em;
+}
+.ara-nr-quickfeed .ara-nr-sq__foot .ara-nr-sq__go {
+  flex: 1 0 100%;
+  font-size: 10px;
+  letter-spacing: .07em;
+}
+/* on a full-width pitch band there is room for them side by side again */
+.ara-nr-quickfeed .ara-nr-sq--pitch:nth-of-type(3n) .ara-nr-sq__foot { flex-wrap: nowrap; }
+.ara-nr-quickfeed .ara-nr-sq--pitch:nth-of-type(3n) .ara-nr-sq__foot .ara-nr-sq__go { flex: 0 0 auto; }
+
+/* trims scale with the pieces */
+.ara-nr-quickfeed .ara-nr-trim { padding: 2.5px; }
+.ara-nr-quickfeed .ara-nr-trim::after { inset: 2.5px; box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .9); }
+
+@media (max-width: 620px) {
+  .ara-nr-quickfeed { grid-template-columns: minmax(0, 1fr); }
+  .ara-nr-quickfeed .ara-nr-sq { grid-column: 1 / -1; }
+}
+
+/* ---- the house ad, in the flow (same creative as the homepage) ---------- */
+.mm-feedad {
+  display: block;
+  border: 2px solid #161b2e;
+  border-radius: 16px;
+  overflow: hidden;
+  color: #fffdf6;
+  background:
+    radial-gradient(120% 140% at 100% 0%, rgba(224, 165, 38, .18), transparent 55%),
+    linear-gradient(155deg, #1b2236 0%, #10152a 60%, #0c1020 100%);
+  box-shadow: 0 16px 38px rgba(22, 27, 46, .22);
+}
+.mm-feedad__flag {
+  display: block; padding: 7px 16px;
+  border-bottom: 1px solid rgba(255, 253, 246, .16);
+  font-family: var(--font-space-grotesk), "Space Grotesk", sans-serif;
+  font-size: 9.5px; font-weight: 800; letter-spacing: .2em; text-transform: uppercase;
+  color: rgba(255, 253, 246, .55);
+}
+.mm-feedad__body {
+  display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+  gap: 18px; align-items: center; padding: 18px;
+}
+.mm-feedad__eyebrow {
+  display: inline-block; margin-bottom: 8px;
+  font-family: var(--font-space-grotesk), "Space Grotesk", sans-serif;
+  font-size: 10.5px; font-weight: 800; letter-spacing: .16em; text-transform: uppercase;
+  color: #7fd9c4;
+}
+.mm-feedad__headline {
+  margin: 0 0 10px;
+  font-family: var(--font-heading--family);
+  font-size: clamp(20px, 2.4vw, 26px); line-height: 1.15; font-weight: 600;
+}
+.mm-feedad__headline em { font-style: italic; color: #e0a526; }
+.mm-feedad__text {
+  margin: 0 0 14px; font-family: var(--font-body-family), serif;
+  font-size: 14px; line-height: 1.45; color: rgba(255, 253, 246, .8);
+}
+.mm-feedad__logo { width: 132px; height: auto; margin-bottom: 12px; }
+.mm-feedad__cta {
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 10px 16px; border-radius: 999px;
+  border: 1.5px solid #e0a526; color: #e0a526; text-decoration: none;
+  font-family: var(--font-space-grotesk), "Space Grotesk", sans-serif;
+  font-size: 11px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase;
+  transition: background .2s ease, color .2s ease;
+}
+.mm-feedad__cta:hover { background: #e0a526; color: #161b2e; }
+.mm-feedad__table { align-self: stretch; display: flex; align-items: center; }
+
+@media (max-width: 749px) {
+  .mm-feedad__body { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* the quick panel is a scroll container — promote the card so the hover pulse
+   composites instead of repainting the modal (no `contain`, which would clip
+   the pulse ring itself) */
+.mm-feed--quick .mm-feed__item { will-change: transform; }
+
+/* ---- feed type scale ---------------------------------------------------
+   Dates are the smallest thing on a card — they orient, they don't compete.
+   Everything else steps up from there: label, body, headline.
+   ---------------------------------------------------------------------- */
+.ara-nr-quickfeed .ara-nr-sq__num b,
+.ara-nr-quickfeed .ara-nr-strip__tick small {
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: .07em;
+  opacity: .72;
+  padding: 1px 5px;
+  white-space: nowrap;
+}
+.ara-nr-quickfeed .ara-nr-sq__num span { font-size: 13px; }
+.ara-nr-quickfeed .ara-nr-sq__foot { font-size: 9px; letter-spacing: .06em; }
+.ara-nr-quickfeed .ara-nr-sq__foot .ara-nr-sq__go { font-size: 9.5px; letter-spacing: .06em; }
+.ara-nr-quickfeed .ara-nr-strip__tick { gap: 7px; }
+.ara-nr-quickfeed .ara-nr-strip h4 { font-size: 14.5px; line-height: 1.26; }
+.ara-nr-quickfeed .ara-nr-sq h4 { font-size: 14.5px; line-height: 1.28; }
+.ara-nr-quickfeed .ara-nr-sq--pitch:nth-of-type(3n) h4 { font-size: 17px; line-height: 1.22; }
+.ara-nr-quickfeed .ara-nr-sq p,
+.ara-nr-quickfeed .ara-nr-strip p { font-size: 13px; line-height: 1.4; }
+.ara-nr-quickfeed .ara-editorial-front-page__question h3 { font-size: 18px; line-height: 1.3; }
+.ara-nr-quickfeed .ara-editorial-front-page__question-label span { font-size: 9px; letter-spacing: .12em; }

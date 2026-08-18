@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { products } from "@/data/products";
-import { catalogContent } from "@/data/catalog";
+import { companies } from "@/data/companies";
 import { homeContent } from "@/data/home";
 
 export async function GET(req: Request) {
@@ -17,12 +17,12 @@ export async function GET(req: Request) {
       meta: p.company,
     }));
 
-  const companyHits = catalogContent.companies
+  const companyHits = companies
     .filter((c) => `${c.company_name} ${c.ticker} ${c.keywords || ""}`.toLowerCase().includes(q))
     .map((c) => ({
       type: "company",
       title: c.company_name,
-      href: c.module_link || "/companies",
+      href: "/companies",
       meta: c.ticker,
     }));
 

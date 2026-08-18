@@ -1,0 +1,281 @@
+/* ============================================================================
+   Newsroom trims + flip system.
+   COMMONALITY: a 360deg rotating colour trim (masked to the border ring) with a
+   white inner hairline, on a dedicated <span class="ara-nr-trim"> so nothing
+   fights the existing ::before/::after decoration.
+   Flip cards carry the trim on BOTH faces, so it flips with the card.
+   DISTINCTION: a brand-aligned colour pair + a different flip motion per type.
+   ========================================================================== */
+@property --nra { syntax: "<angle>"; inherits: false; initial-value: 0deg; }
+@keyframes nr-rot { to { --nra: 360deg; } }
+@keyframes nr-shimmer { 0% { transform: translateX(-120%); } 55%, 100% { transform: translateX(120%); } }
+
+/* ---- the trim ring ---- */
+.ara-editorial-front-page .ara-nr-trim {
+  position: absolute; inset: 0; z-index: 6; pointer-events: none;
+  border-radius: inherit; padding: 3px; display: block;
+  background: conic-gradient(from var(--nra), var(--t1), var(--t2), var(--t1), var(--t2), var(--t1));
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+          mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor; mask-composite: exclude;
+  animation: nr-rot var(--spd, 10s) linear infinite;
+  transition: filter .3s ease;
+}
+/* white inner hairline, so the trim reads as a printed rule not a glow */
+.ara-editorial-front-page .ara-nr-trim::after {
+  content: ""; position: absolute; inset: 3px; border-radius: inherit;
+  box-shadow: inset 0 0 0 1.5px rgba(255, 255, 255, 0.9);
+}
+
+/* faces + the two static cards need a positioning context */
+/* zz-polish sets .ara-nr-flip__front { position: relative }, which pulls the
+   front face out of the stack and leaves its trim short. Force both faces back
+   to absolute at a higher specificity — they still make their own containing
+   block, so zz-polish's ::before accents are unaffected. */
+.ara-editorial-front-page .ara-nr-flip .ara-nr-flip__inner .ara-nr-flip__face {
+  position: absolute; inset: 0;
+}
+.ara-editorial-front-page .ara-nr-feat,
+.ara-editorial-front-page .ara-editorial-front-page__question { position: relative; }
+.ara-editorial-front-page .ara-nr-feat,
+.ara-editorial-front-page .ara-editorial-front-page__question { border-radius: 16px; }
+
+/* ============================================================================
+   FEATURED — its own trim. Not the shared conic hairline: a heavier gold bar
+   that slides along the frame, a white inner hairline, and navy register marks
+   at two corners, so the lead story is framed like a plate and not like a tile.
+   ========================================================================== */
+@keyframes nr-slide { to { background-position: 220% 50%; } }
+
+.ara-editorial-front-page .ara-nr-feat > .ara-nr-trim {
+  padding: 4px;
+  background: linear-gradient(100deg,
+    #a97512 0%, #e0a526 16%, #f7e2a6 30%, #e0a526 44%,
+    #a97512 58%, #e0a526 74%, #f7e2a6 88%, #a97512 100%);
+  background-size: 220% 100%;
+  animation: nr-slide 9s linear infinite;
+}
+.ara-editorial-front-page .ara-nr-feat > .ara-nr-trim::after {
+  inset: 4px; box-shadow: inset 0 0 0 1.5px rgba(255, 255, 255, .95);
+}
+/* register marks — top-left and bottom-right */
+.ara-editorial-front-page .ara-nr-feat::before,
+.ara-editorial-front-page .ara-nr-feat::after {
+  content: ""; position: absolute; width: 20px; height: 20px; z-index: 7;
+  pointer-events: none; opacity: .85;
+}
+.ara-editorial-front-page .ara-nr-feat::before {
+  left: 13px; top: 13px;
+  border-left: 2px solid #161b2e; border-top: 2px solid #161b2e;
+}
+.ara-editorial-front-page .ara-nr-feat::after {
+  right: 13px; bottom: 13px;
+  border-right: 2px solid #161b2e; border-bottom: 2px solid #161b2e;
+}
+.ara-editorial-front-page .ara-nr-feat:hover > .ara-nr-trim { animation-duration: 3.4s; }
+
+/* ---- one colourway per section — set on the section container, so the cards,
+        the dividers and the section underline all read from the same pair ---- */
+.ara-editorial-front-page .ara-nr-hero,
+.ara-editorial-front-page .ara-nr-feat   { --t1: #e0a526; --t2: #eec06a; --spd: 11s; } /* Featured: gold -> amber */
+.ara-editorial-front-page .ara-nr-strips { --t1: #5f86ee; --t2: #7fd9c4; --spd: 8s;  } /* Market news: blue -> mint */
+.ara-editorial-front-page .ara-nr-col--short    { --t1: #2aa78f; --t2: #d9a531; --spd: 9s;  } /* Short takes: mint -> gold */
+.ara-editorial-front-page .ara-nr-col--pitch    { --t1: #8fdcc8; --t2: #cf7f86; --spd: 9s;  } /* Pitches: light mint -> dust red */
+.ara-editorial-front-page .ara-nr-col--heat     { --t1: #2f7e8c; --t2: #8fdcc8; --spd: 10s; } /* Market maps: teal -> mint */
+.ara-editorial-front-page .ara-nr-col--question { --t1: #3a5be0; --t2: #e0a526; --spd: 10s; } /* Questions: blue -> gold */
+
+/* ============================================================================
+   FLIP MOTION — a different feel per type
+   ========================================================================== */
+@media (hover: hover) {
+  /* Market news strips: keep the horizontal turn, a touch quicker */
+  .ara-editorial-front-page .ara-nr-strip .ara-nr-flip__inner { transition: transform .5s cubic-bezier(.2,.7,.2,1); }
+
+}
+
+/* Short takes: the vertical page-turn flip (top over bottom) */
+@media (hover: hover) {
+  .ara-editorial-front-page .ara-nr-sq:not(.ara-nr-sq--pitch) .ara-nr-flip__inner {
+    transition: transform .52s cubic-bezier(.22,.85,.28,1);
+  }
+  .ara-editorial-front-page .ara-nr-sq:not(.ara-nr-sq--pitch):hover .ara-nr-flip__inner {
+    transform: rotateX(180deg);
+  }
+}
+.ara-editorial-front-page .ara-nr-sq:not(.ara-nr-sq--pitch) .ara-nr-flip__back { transform: rotateX(180deg); }
+.ara-editorial-front-page .ara-nr-sq:not(.ara-nr-sq--pitch).is-flipped .ara-nr-flip__inner { transform: rotateX(180deg); }
+
+/* Pitches: a plain static card — no flip, no reveal panel. The "Read the pitch"
+   link lives on the front, so there is nothing to uncover. Hover life comes from
+   the lift + the trim spin-up below. */
+.ara-editorial-front-page .ara-nr-sq--pitch .ara-nr-flip__inner {
+  transform: none !important; transition: none;
+  transform-style: flat; overflow: hidden;
+}
+.ara-editorial-front-page .ara-nr-sq--pitch .ara-nr-flip__face {
+  backface-visibility: visible; -webkit-backface-visibility: visible;
+}
+/* the link now sits in the front's foot row, not on a hidden panel */
+.ara-editorial-front-page .ara-nr-sq--pitch .ara-nr-sq__go { margin-top: 0; }
+.ara-editorial-front-page .ara-nr-sq--pitch .ara-nr-sq__go span {
+  display: inline-block; transition: transform .25s ease;
+}
+.ara-editorial-front-page .ara-nr-sq--pitch:hover .ara-nr-sq__go span { transform: translateX(4px); }
+
+/* ============================================================================
+   HOVER LIFE — on every piece
+   ========================================================================== */
+.ara-editorial-front-page .ara-nr-feat,
+.ara-editorial-front-page .ara-editorial-front-page__question {
+  transition: transform .3s cubic-bezier(.2,.7,.3,1), box-shadow .3s ease;
+}
+.ara-editorial-front-page .ara-nr-feat:hover,
+.ara-editorial-front-page .ara-editorial-front-page__question:hover {
+  transform: translateY(-4px); box-shadow: 0 22px 48px rgba(22, 27, 46, .16);
+}
+.ara-editorial-front-page .ara-nr-strip,
+.ara-editorial-front-page .ara-nr-sq { transition: transform .3s cubic-bezier(.2,.7,.3,1); }
+.ara-editorial-front-page .ara-nr-strip:hover,
+.ara-editorial-front-page .ara-nr-sq:hover { transform: translateY(-3px); }
+
+/* the dynamic hover pulse the question card has — now on every piece.
+   A ring of the section's own trim colour breathing out from the card edge. */
+@keyframes nr-hover-pulse {
+  0%   { box-shadow: 0 0 0 0 color-mix(in srgb, var(--t1, #2aa78f) 55%, transparent), 0 18px 40px rgba(22, 27, 46, .16); }
+  70%  { box-shadow: 0 0 0 13px transparent, 0 18px 40px rgba(22, 27, 46, .16); }
+  100% { box-shadow: 0 0 0 0 transparent, 0 18px 40px rgba(22, 27, 46, .16); }
+}
+.ara-editorial-front-page .ara-nr-strip:hover,
+.ara-editorial-front-page .ara-nr-sq:hover,
+.ara-editorial-front-page .ara-nr-feat:hover,
+.ara-editorial-front-page .mm-feed__item:hover,
+.ara-editorial-front-page .ara-editorial-front-page__question:hover {
+  animation: nr-hover-pulse 1.9s ease-out infinite;
+}
+
+/* the trim reacts on every card: spin up + brighten */
+.ara-editorial-front-page .ara-nr-flip:hover .ara-nr-trim,
+.ara-editorial-front-page .mm-feed__item:hover .ara-nr-trim,
+.ara-editorial-front-page .ara-nr-feat:hover .ara-nr-trim,
+.ara-editorial-front-page .ara-editorial-front-page__question:hover .ara-nr-trim {
+  animation-duration: calc(var(--spd, 10s) / 2.8);
+  filter: saturate(1.3) brightness(1.1);
+}
+
+/* ---- ticker: different — a gold running shimmer ---- */
+.ara-editorial-front-page .ara-nr-ticker { position: relative; box-shadow: inset 0 2px 0 rgba(224, 165, 38, .7), 0 8px 20px rgba(22, 27, 46, .14); }
+.ara-editorial-front-page .ara-nr-ticker::after {
+  content: ""; position: absolute; inset: 0; z-index: 4; pointer-events: none;
+  background: linear-gradient(100deg, transparent 42%, rgba(255, 220, 130, .3) 50%, transparent 58%);
+  transform: translateX(-120%); animation: nr-shimmer 6s ease-in-out infinite;
+}
+
+/* ============================================================================
+   DIVIDERS — "ledger rules"
+   A newspaper column rule that fades at both ends with a small section-coloured
+   diamond at its centre, plus a two-tone rule under every section heading.
+   ========================================================================== */
+.ara-editorial-front-page .ara-nr-col { position: relative; }
+
+/* vertical rule: only between columns that actually sit side by side */
+.ara-editorial-front-page .ara-nr-col--heat::before {
+  content: ""; position: absolute; left: -17px; top: 4px; bottom: 4px; width: 1px;
+  background: linear-gradient(180deg,
+    transparent 0, rgba(22, 27, 46, .20) 10%, rgba(22, 27, 46, .20) 90%, transparent 100%);
+  pointer-events: none;
+}
+.ara-editorial-front-page .ara-nr-col--heat::after {
+  content: ""; position: absolute; left: -20px; top: 50%; width: 7px; height: 7px;
+  margin-top: -3.5px; transform: rotate(45deg);
+  background: var(--t1, #2aa78f);
+  box-shadow: 0 0 0 4px var(--ara-news-bg, #f7f1e1);
+  pointer-events: none;
+}
+
+/* horizontal rule above the full-width rows, same language turned on its side */
+.ara-editorial-front-page .ara-nr-col--question::before {
+  content: ""; position: absolute; left: 0; right: 0; top: -18px; height: 1px;
+  background: linear-gradient(90deg,
+    transparent 0, rgba(22, 27, 46, .22) 10%, rgba(22, 27, 46, .22) 90%, transparent 100%);
+  pointer-events: none;
+}
+.ara-editorial-front-page .ara-nr-col--question::after {
+  content: ""; position: absolute; left: 50%; top: -18px; width: 7px; height: 7px;
+  margin: -3.5px 0 0 -3.5px; transform: rotate(45deg);
+  background: var(--t1, #e0a526);
+  box-shadow: 0 0 0 4px var(--ara-news-bg, #f7f1e1);
+  pointer-events: none;
+}
+
+/* two-tone rule under each section heading: a section-coloured lead segment
+   butting into a hairline that fades out to the right */
+.ara-editorial-front-page .ara-editorial-front-page__section-heading {
+  border-bottom: 0 !important;
+  background-image:
+    linear-gradient(90deg, var(--t1, #2aa78f), var(--t2, #d9a531)),
+    linear-gradient(90deg, rgba(22, 27, 46, .26), rgba(22, 27, 46, .04));
+  background-size: 96px 3px, 100% 1px;
+  background-position: 0 100%, 0 100%;
+  background-repeat: no-repeat;
+}
+
+@media (max-width: 989px) {
+  .ara-editorial-front-page .ara-nr-col--heat::before,
+  .ara-editorial-front-page .ara-nr-col--heat::after { content: none; }
+}
+
+/* ---- the finish: a closing rule that ends the newsroom the way the section
+        dividers punctuate it — one hairline, one gold diamond, full stop ---- */
+.ara-editorial-front-page .ara-nr-band3 { position: relative; }
+.ara-editorial-front-page .ara-nr-band3::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: -26px; height: 1px;
+  background: linear-gradient(90deg,
+    transparent 0, rgba(22, 27, 46, .24) 22%, rgba(22, 27, 46, .24) 78%, transparent 100%);
+  pointer-events: none;
+}
+.ara-editorial-front-page .ara-nr-band3::before {
+  content: ""; position: absolute; left: 50%; bottom: -26px; z-index: 1;
+  width: 9px; height: 9px; margin: 0 0 -4.5px -4.5px; transform: rotate(45deg);
+  background: #e0a526; box-shadow: 0 0 0 5px var(--ara-news-bg, #f7f1e1);
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ara-editorial-front-page .ara-nr-strip:hover,
+  .ara-editorial-front-page .ara-nr-sq:hover,
+  .ara-editorial-front-page .ara-nr-feat:hover,
+  .ara-editorial-front-page .ara-editorial-front-page__question:hover { animation: none; }
+  .ara-editorial-front-page .ara-nr-trim,
+  .ara-editorial-front-page .ara-nr-ticker::after { animation: none; }
+}
+
+/* ---- ticker tags ---------------------------------------------------------
+   A piece of content can be tagged to several companies. Each ticker chip is
+   coloured by that company's sector, so the tag tells you which part of the
+   market the piece belongs to before you read a word of it.
+   ------------------------------------------------------------------------ */
+.ara-editorial-front-page .mm-tick {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 7px;
+  border-radius: 6px;
+  border: 1px solid color-mix(in srgb, var(--chip, #646575) 45%, transparent);
+  background: color-mix(in srgb, var(--chip, #646575) 12%, transparent);
+  color: var(--chip, #646575) !important;
+  font-family: var(--font-body-family);
+  font-size: 9.5px;
+  font-weight: 900;
+  letter-spacing: .08em;
+  line-height: 1.5;
+  white-space: nowrap;
+}
+.ara-editorial-front-page .mm-tick + .mm-tick { margin-left: 5px; }
+/* the number row and the strip tick both hold tags, so they wrap rather than push */
+.ara-editorial-front-page .ara-nr-sq__num,
+.ara-editorial-front-page .ara-nr-strip__tick { flex-wrap: wrap; row-gap: 4px; }
+/* the lead flag on the ticker rail is a label, not a company — it stays neutral */
+.ara-editorial-front-page .ara-nr-ticker__flag {
+  font-family: var(--font-body-family);
+  font-size: 9.5px; font-weight: 900; letter-spacing: .12em;
+  color: var(--ara-news-gold, #e0a526);
+}

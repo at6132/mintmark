@@ -117,13 +117,9 @@
 }
 .mm-maps__sector-lbl {
   font-family: var(--font-space-grotesk), "Space Grotesk", sans-serif;
-  font-size: 10px;
-  font-weight: 700;
+  font-size: 9.5px;
+  font-weight: 800;
   letter-spacing: 0.12em;
-  opacity: 0.7;
-  paint-order: stroke;
-  stroke: var(--mm-paper);
-  stroke-width: 3px;
 }
 
 /* hq dots + clusters */

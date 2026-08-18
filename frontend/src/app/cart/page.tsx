@@ -60,7 +60,7 @@ export default function CartPage() {
                 <span>Total</span>
                 <strong>{money(subtotal)}</strong>
               </div>
-              <Link className="ck__btn ck__btn--gold ck__checkout" href="/contact">
+              <Link className="ck__btn ck__btn--gold ck__checkout" href="/checkout">
                 Checkout · {money(subtotal)}
               </Link>
               <button type="button" className="ck__btn ck__btn--ghost" onClick={clear}>

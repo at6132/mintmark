@@ -6,6 +6,7 @@ import { homeContent } from "@/data/home";
 import { appHref, assets } from "@/lib/assets";
 import { stripHtml } from "@/lib/format";
 import { HomeMarketMaps } from "@/components/HomeMarketMaps";
+import { TickerTags } from "@/components/TickerTags";
 
 type Block = Record<string, string>;
 
@@ -22,53 +23,28 @@ export function HomeNewsroom() {
   const rootRef = useRef<HTMLElement | null>(null);
 
   // Featured slideshow: three distinct featured pieces, click-through only.
-  const featSlides = useMemo(
-    () => [
-      {
-        key: "nvda",
-        story_type: "PITCH",
-        company: "NVIDIA",
-        ticker: "NVDA",
-        heading: "NVIDIA: The Factory of Intelligence",
-        body: "How a graphics-card company became the engine of the AI revolution — and why it's building the computing factory floor for the future.",
-        link: "/pages/nvidia-digest",
-        link_label: "READ THE PITCH",
-        module_link: "",
-        module_label: "OPEN COMPANY FILE",
-        accent: "#176d5c",
-        image: assets.nvdaLead,
-      },
-      {
-        key: "aapl",
-        story_type: "PITCH",
-        company: "APPLE",
-        ticker: "AAPL",
-        heading: "Apple Intelligence: The New Privacy Moat",
-        body: "How Apple turns on-device processing into a wall competitors can't climb — winning the AI privacy war one iPhone at a time.",
-        link: "/pages/apple",
-        link_label: "READ THE PITCH",
-        module_link: "/pages/apple",
-        module_label: "OPEN COMPANY FILE",
-        accent: "#3a5be0",
-        image: assets.appleFeature,
-      },
-      {
-        key: "cost",
-        story_type: "PITCH",
-        company: "COSTCO",
-        ticker: "COST",
-        heading: "Costco: The Economics of the $1.50 Hot Dog",
-        body: "Why the membership model — not the products on the shelves — is the real business, and how a loss-leader hot dog guards the moat.",
-        link: "/pages/costco",
-        link_label: "READ THE PITCH",
-        module_link: "",
-        module_label: "COMPANY FILE",
-        accent: "#e0a526",
-        image: assets.costcoFeature,
-      },
-    ],
-    [],
-  );
+  // The featured carousel is data-driven: it reads the editorial blocks marked
+  // lead_story / featured_story. Add or remove blocks in data/home.ts and the
+  // carousel follows — nothing here needs editing.
+  const featSlides = useMemo(() => {
+    const blocks = (homeContent.editorial.blocks || []) as unknown as Array<Record<string, string>>;
+    return blocks
+      .filter((b) => b.type === "lead_story" || b.type === "featured_story")
+      .map((b, i) => ({
+        key: b.id || `feat-${i}`,
+        story_type: b.story_type || "FEATURED",
+        company: b.company || "",
+        ticker: b.ticker || "",
+        heading: b.heading || "",
+        body: stripHtml(b.description || b.summary || ""),
+        link: b.link || "",
+        link_label: b.link_label || "READ THE STORY",
+        module_link: b.company_module_link || "",
+        module_label: b.company_module_label || "OPEN COMPANY FILE",
+        accent: b.accent_color || "#176d5c",
+        image: assets.leadPlaceholder,
+      }));
+  }, []);
   const [featIdx, setFeatIdx] = useState(0);
   // click-only carousel (no auto-advance) so the controls never jump.
 
@@ -160,11 +136,12 @@ export function HomeNewsroom() {
 
   const tickerItems = [
     ...(lead
-      ? [{ key: "lead", ticker: "LEAD", heading: lead.heading, link: lead.link }]
+      ? [{ key: "lead", ticker: lead.ticker || "", label: "LEAD", heading: lead.heading, link: lead.link }]
       : []),
     ...marketNews.map((m) => ({
       key: m.id,
       ticker: m.ticker,
+      label: "",
       heading: m.heading,
       link: m.link,
     })),
@@ -211,7 +188,8 @@ export function HomeNewsroom() {
                       className="ara-nr-ticker__item"
                       href={appHref(item.link) || "#"}
                     >
-                      {item.ticker ? <b>{item.ticker}</b> : null}
+                      {item.label ? <b className="ara-nr-ticker__flag">{item.label}</b> : null}
+                      <TickerTags tickers={item.ticker} />
                       <span>{item.heading}</span>
                     </a>
                   ))}
@@ -224,12 +202,13 @@ export function HomeNewsroom() {
         <section className="ara-nr-band1">
           {featSlides.length ? (() => {
             const s = featSlides[Math.min(featIdx, featSlides.length - 1)];
-            const href = appHref(s.link) || "/digests/nvidia";
+            const href = appHref(s.link) || "/companies";
             return (
               <article
                 className="ara-editorial-front-page__lead ara-nr-hero ara-nr-feat"
                 style={{ ["--ara-story-accent" as string]: s.accent || "#176d5c" }}
               >
+                <span className="ara-nr-trim" aria-hidden="true" />
                 <a className="ara-editorial-front-page__lead-media" href={href}>
                   <picture>
                     <img
@@ -313,15 +292,16 @@ export function HomeNewsroom() {
               <div key={m.id} className="ara-nr-flip ara-nr-strip">
                 <div className="ara-nr-flip__inner">
                   <div className="ara-nr-flip__face ara-nr-flip__front">
+<span className="ara-nr-trim" aria-hidden="true" />
                     <div className="ara-nr-strip__tick">
-                      <b>{m.ticker}</b>
-                      <small>{m.time_label}</small>
+                      <TickerTags tickers={m.ticker} />
                     </div>
                     <h4>{m.heading}</h4>
                   </div>
                   <div className="ara-nr-flip__face ara-nr-flip__back">
+<span className="ara-nr-trim" aria-hidden="true" />
                     <div className="ara-nr-strip__tick">
-                      <b>{m.ticker}</b>
+                      <TickerTags tickers={m.ticker} />
                     </div>
                     <p>{m.summary || "Tap to read the full story."}</p>
                     <a
@@ -351,23 +331,19 @@ export function HomeNewsroom() {
                 <div key={q.id} className="ara-nr-flip ara-nr-sq">
                   <div className="ara-nr-flip__inner">
                     <div className="ara-nr-flip__face ara-nr-flip__front">
+<span className="ara-nr-trim" aria-hidden="true" />
                       <div className="ara-nr-sq__num">
                         <span>{q.number}</span>
-                        {q.ticker ? <b>{q.ticker}</b> : null}
+                        <TickerTags tickers={q.ticker} />
                       </div>
                       {q.heading ? <h4>{q.heading}</h4> : null}
+                      {/* short takes carry no price chart and no period — the fact is the point */}
                       <div className="ara-nr-sq__foot">
-                        {q.change ? (
-                          <span className={`ara-nr-sq__chg ara-nr-sq__chg--${q.direction || "up"}`}>
-                            {q.change}
-                          </span>
-                        ) : (
-                          <span />
-                        )}
-                        {q.period ? <span>{q.period}</span> : <span />}
+                        <span>Short take</span>
                       </div>
                     </div>
                     <div className="ara-nr-flip__face ara-nr-flip__back">
+<span className="ara-nr-trim" aria-hidden="true" />
                       {q.summary ? <p>{q.summary}</p> : null}
                       <a className="ara-nr-sq__go" href={appHref(q.link) || "#"}>
                         Read <span aria-hidden="true">→</span>
@@ -392,21 +368,18 @@ export function HomeNewsroom() {
                 <div key={r.id} className="ara-nr-flip ara-nr-sq ara-nr-sq--pitch">
                   <div className="ara-nr-flip__inner">
                     <div className="ara-nr-flip__face ara-nr-flip__front">
+                      <span className="ara-nr-trim" aria-hidden="true" />
                       <div className="ara-nr-sq__num">
                         <span>{String(i + 1).padStart(2, "0")}</span>
-                        {r.ticker ? <b>{r.ticker}</b> : null}
+                        <TickerTags tickers={r.ticker} />
                       </div>
                       {r.heading ? <h4>{r.heading}</h4> : null}
                       <div className="ara-nr-sq__foot">
                         <span>Pitch</span>
-                        <span>Tap</span>
+                        <a className="ara-nr-sq__go" href={appHref(r.link) || "#"}>
+                          Read the pitch <span aria-hidden="true">→</span>
+                        </a>
                       </div>
-                    </div>
-                    <div className="ara-nr-flip__face ara-nr-flip__back">
-                      {r.summary ? <p>{r.summary}</p> : null}
-                      <a className="ara-nr-sq__go" href={appHref(r.link) || "#"}>
-                        Read the pitch <span aria-hidden="true">→</span>
-                      </a>
                     </div>
                   </div>
                 </div>
@@ -434,6 +407,7 @@ export function HomeNewsroom() {
                   ["--ara-question-ratio" as string]: question.image_ratio || "16 / 10",
                 }}
               >
+                <span className="ara-nr-trim" aria-hidden="true" />
                 <div className="ara-editorial-front-page__question-copy">
                   <div className="ara-editorial-front-page__question-label">
                     <span>{question.label}</span>
@@ -455,7 +429,7 @@ export function HomeNewsroom() {
                 >
                   <img
                     className="ara-editorial-front-page__question-image"
-                    src={assets.questionCostco}
+                    src={assets.questionPlaceholder}
                     alt=""
                     width={1400}
                     height={1000}

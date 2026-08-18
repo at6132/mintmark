@@ -10,6 +10,7 @@ import landTopoRaw from "world-atlas/land-50m.json";
 import countriesTopoRaw from "world-atlas/countries-110m.json";
 import { marketMapsContent } from "@/data/marketMaps";
 import { appHref } from "@/lib/assets";
+import { SECTOR_COLORS, SECTOR_HALO } from "@/lib/sectors";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 const statesTopo = statesTopoRaw as any;
@@ -20,14 +21,6 @@ const W = 980;
 const H = 600;
 const PAD = 14;
 
-const SECTOR_COLORS: Record<string, string> = {
-  Technology: "#1fa88f",
-  Financials: "#e0a526",
-  Healthcare: "#9a5ba6",
-  Consumer: "#7a9e5b",
-  Energy: "#c25b3f",
-  Industrials: "#4c6b8a",
-};
 
 // 7-bucket diverging ramp (change %) — vibrant reds & greens.
 function bucket(pct: number | null): { bg: string; fg: string } {
@@ -64,14 +57,21 @@ type Co = {
 
 const GLOBE_R = 250;
 
-// continent focus presets (rotation = [-lon, -lat] of the centre, plus a zoom).
-const CONTINENTS: Array<{ name: string; rot: [number, number]; zoom: number }> = [
-  { name: "N. America", rot: [100, -40], zoom: 1.7 },
-  { name: "S. America", rot: [60, 15], zoom: 1.7 },
-  { name: "Europe", rot: [-12, -50], zoom: 2.2 },
-  { name: "Africa", rot: [-20, -3], zoom: 1.7 },
-  { name: "Asia", rot: [-95, -38], zoom: 1.6 },
-  { name: "Oceania", rot: [-134, 25], zoom: 1.9 },
+// region focus presets. Finer than continents so a deep zoom still frames the
+// whole region instead of slicing it — rotation = [-lon, -lat] of the centre.
+const REGIONS: Array<{ name: string; rot: [number, number]; zoom: number }> = [
+  { name: "United States", rot: [98, -39], zoom: 4.2 },
+  { name: "Canada", rot: [96, -58], zoom: 3.4 },
+  { name: "Latin America", rot: [75, 12], zoom: 2.4 },
+  { name: "W. Europe", rot: [-6, -48], zoom: 5.0 },
+  { name: "N. Europe", rot: [-16, -60], zoom: 4.6 },
+  { name: "E. Europe", rot: [-40, -50], zoom: 3.6 },
+  { name: "Middle East", rot: [-45, -28], zoom: 4.4 },
+  { name: "Africa", rot: [-20, -2], zoom: 2.6 },
+  { name: "South Asia", rot: [-80, -22], zoom: 4.2 },
+  { name: "East Asia", rot: [-115, -32], zoom: 3.6 },
+  { name: "SE Asia", rot: [-110, -8], zoom: 4.0 },
+  { name: "Oceania", rot: [-140, 25], zoom: 3.4 },
 ];
 
 function fmtCap(b: number): string {
@@ -114,7 +114,10 @@ export function HomeMarketMaps() {
       d.el.setPointerCapture?.(d.id);
     }
     const [r0, r1] = d.r;
-    setRot([r0 + dx * 0.5, Math.max(-85, Math.min(85, r1 - dy * 0.5))]);
+    // the deeper the zoom, the finer the drag — otherwise a small hand movement
+    // throws the globe across a hemisphere once you are inside a region
+    const sens = 0.5 / Math.max(1, Math.pow(zoom, 0.85));
+    setRot([r0 + dx * sens, Math.max(-85, Math.min(85, r1 - dy * sens))]);
   };
   const onPointerUp = () => {
     const d = drag.current;
@@ -176,7 +179,7 @@ export function HomeMarketMaps() {
     const lon = cl.members.reduce((s, m) => s + m.co.lon, 0) / cl.members.length;
     const lat = cl.members.reduce((s, m) => s + m.co.lat, 0) / cl.members.length;
     // dive deep into the cluster's web
-    focusContinent([-lon, -lat], Math.min(9, Math.max(zoom * 1.8, 5.5)));
+    focusContinent([-lon, -lat], Math.min(16, Math.max(zoom * 1.9, 9)));
     setOpenCluster(sig);
   };
 
@@ -187,7 +190,11 @@ export function HomeMarketMaps() {
     const onWheel = (e: WheelEvent) => {
       if (mode === "globe") {
         e.preventDefault();
-        setZoom((z) => Math.max(0.7, Math.min(9, z * (e.deltaY < 0 ? 1.14 : 0.88))));
+        // finer wheel steps once you are zoomed in, so deep focus is controllable
+        setZoom((z) => {
+          const step = z > 4 ? 1.06 : z > 2 ? 1.1 : 1.16;
+          return Math.max(0.7, Math.min(16, z * (e.deltaY < 0 ? step : 1 / step)));
+        });
         return;
       }
       // heat map: let the page scroll normally — sectors change only via the buttons
@@ -374,11 +381,15 @@ export function HomeMarketMaps() {
             <clipPath id="mm-heat-clip">
               <rect x={8} y={8} width={W - 16} height={H - 16} rx={24} />
             </clipPath>
-            <radialGradient id="mm-globe-grad" cx="38%" cy="32%" r="72%">
-              <stop offset="0%" stopColor="#fbfdfb" />
-              <stop offset="55%" stopColor="#eaf5ef" />
-              <stop offset="100%" stopColor="#cfe6da" />
+            {/* the sea */}
+            <radialGradient id="mm-globe-grad" cx="36%" cy="30%" r="76%">
+              <stop offset="0%" stopColor="#dff2ff" />
+              <stop offset="45%" stopColor="#8ec6e8" />
+              <stop offset="100%" stopColor="#2f6f9e" />
             </radialGradient>
+            <clipPath id="mm-globe-clip">
+              <rect x={8} y={8} width={W - 16} height={H - 16} rx={24} />
+            </clipPath>
             <linearGradient id="mm-heat-grad" x1="0" y1="0" x2="0" y2="1">
               <stop offset="0%" stopColor="#fffdf6" />
               <stop offset="100%" stopColor="#f2f8f4" />
@@ -427,14 +438,14 @@ export function HomeMarketMaps() {
                         >
                           {/* fill = today's move; every cell is ringed in its sector colour */}
                           <rect
-                            x={n.x0 + 1.75}
-                            y={n.y0 + 1.75}
-                            width={Math.max(w - 3.5, 0)}
-                            height={Math.max(h - 3.5, 0)}
+                            x={n.x0 + 2.75}
+                            y={n.y0 + 2.75}
+                            width={Math.max(w - 5.5, 0)}
+                            height={Math.max(h - 5.5, 0)}
                             rx={3}
                             fill={b.bg}
                             stroke={sectorCol}
-                            strokeWidth={3}
+                            strokeWidth={5}
                             strokeOpacity={1}
                             strokeDasharray={co.change === null ? "3 2" : undefined}
                           />
@@ -469,18 +480,29 @@ export function HomeMarketMaps() {
                     const n = s as { x0: number; y0: number; x1: number; y1: number; data: { name: string } };
                     const col = SECTOR_COLORS[n.data.name] || "#646575";
                     return (
-                      <rect
-                        key={`sec-ol-${n.data.name}`}
-                        x={n.x0 + 1}
-                        y={n.y0 + 1}
-                        width={Math.max(n.x1 - n.x0 - 2, 0)}
-                        height={Math.max(n.y1 - n.y0 - 2, 0)}
-                        rx={5}
-                        fill="none"
-                        stroke={col}
-                        strokeWidth={4}
-                        strokeOpacity={1}
-                      />
+                      <g key={`sec-ol-${n.data.name}`}>
+                        {/* paper halo first, so the colour keyline reads on any cell fill */}
+                        <rect
+                          x={n.x0 + 1}
+                          y={n.y0 + 1}
+                          width={Math.max(n.x1 - n.x0 - 2, 0)}
+                          height={Math.max(n.y1 - n.y0 - 2, 0)}
+                          rx={6}
+                          fill="none"
+                          stroke={SECTOR_HALO}
+                          strokeWidth={14}
+                        />
+                        <rect
+                          x={n.x0 + 1}
+                          y={n.y0 + 1}
+                          width={Math.max(n.x1 - n.x0 - 2, 0)}
+                          height={Math.max(n.y1 - n.y0 - 2, 0)}
+                          rx={6}
+                          fill="none"
+                          stroke={col}
+                          strokeWidth={8}
+                        />
+                      </g>
                     );
                   })}
                 </g>
@@ -492,16 +514,29 @@ export function HomeMarketMaps() {
                   const w = n.x1 - n.x0;
                   const h = n.y1 - n.y0;
                   if (w < 74 || h < 46) return null;
+                  const col = SECTOR_COLORS[n.data.name] || "#FFFDF6";
+                  const label = n.data.name.toUpperCase();
+                  const tabW = Math.min(label.length * 7.2 + 16, w - 10);
                   return (
-                    <text
-                      key={`lbl-${n.data.name}`}
-                      x={n.x0 + 6}
-                      y={n.y0 + 13}
-                      className="mm-maps__sector-lbl"
-                      fill="#161B2E"
-                    >
-                      {n.data.name.toUpperCase()}
-                    </text>
+                    <g key={`lbl-${n.data.name}`}>
+                      <rect
+                        x={n.x0 + 5}
+                        y={n.y0 + 4}
+                        width={tabW}
+                        height={17}
+                        rx={4}
+                        fill={col}
+                      />
+                      <text
+                        x={n.x0 + 5 + tabW / 2}
+                        y={n.y0 + 16}
+                        textAnchor="middle"
+                        className="mm-maps__sector-lbl"
+                        fill="#161B2E"
+                      >
+                        {label}
+                      </text>
+                    </g>
                   );
                 })}
               </g>
@@ -592,14 +627,18 @@ export function HomeMarketMaps() {
             </g>
           ) : (
             <g className="mm-globe">
-              <circle cx={W / 2} cy={H / 2} r={GLOBE_R * zoom} fill="url(#mm-globe-grad)" stroke="#161B2E" strokeWidth={2} />
-              <path d={globe.gratPath} fill="none" stroke="#8fb9ac" strokeOpacity={0.3} strokeWidth={0.6} />
-              {/* real continents in their true positions */}
-              <path d={globe.landPath} fill="#E7DCC6" stroke="#b7ab90" strokeWidth={0.5} vectorEffect="non-scaling-stroke" />
-              {/* country borders */}
-              <path d={globe.countryPath} fill="none" stroke="#b7ab90" strokeWidth={0.6} strokeOpacity={0.85} vectorEffect="non-scaling-stroke" />
-              {/* US state borders */}
-              <path d={globe.statePath} fill="none" stroke="#c9bea8" strokeWidth={0.5} strokeOpacity={0.7} vectorEffect="non-scaling-stroke" />
+              {/* the box around the globe gets its own colour + a clear frame */}
+              <rect x={8} y={8} width={W - 16} height={H - 16} rx={24} fill="#F4EEDF" stroke="#161B2E" strokeWidth={2.5} />
+              <g clipPath="url(#mm-globe-clip)">
+                {/* the sea */}
+                <circle cx={W / 2} cy={H / 2} r={GLOBE_R * zoom} fill="url(#mm-globe-grad)" stroke="#161B2E" strokeWidth={2.5} />
+                <path d={globe.gratPath} fill="none" stroke="#ffffff" strokeOpacity={0.38} strokeWidth={0.7} />
+                {/* the land — light mint, keylined in ink so every coast is clear */}
+                <path d={globe.landPath} fill="#B4E7D0" stroke="#161B2E" strokeWidth={1.1} vectorEffect="non-scaling-stroke" />
+                {/* country borders */}
+                <path d={globe.countryPath} fill="none" stroke="#1d6b53" strokeWidth={0.9} strokeOpacity={0.9} vectorEffect="non-scaling-stroke" />
+                {/* US state borders */}
+                <path d={globe.statePath} fill="none" stroke="#3c8c72" strokeWidth={0.6} strokeOpacity={0.7} vectorEffect="non-scaling-stroke" />
               {/* HQ dots + clusters at true locations */}
               {globe.clusters.map((cl, i) => {
                 const summed = cl.members.reduce((s, m) => s + m.co.cap, 0);
@@ -673,7 +712,8 @@ export function HomeMarketMaps() {
                 );
               })}
               {/* rim highlight */}
-              <circle cx={W / 2} cy={H / 2} r={GLOBE_R * zoom} fill="none" stroke="#FFFFFF" strokeOpacity={0.25} strokeWidth={1} />
+              <circle cx={W / 2} cy={H / 2} r={GLOBE_R * zoom} fill="none" stroke="#FFFFFF" strokeOpacity={0.3} strokeWidth={1} />
+              </g>
             </g>
           )}
         </svg>
@@ -731,7 +771,7 @@ export function HomeMarketMaps() {
       ) : null}
 
       {mode === "globe" ? (
-        <div className="mm-maps__secbar" aria-label="Focus a continent">
+        <div className="mm-maps__secbar" aria-label="Focus a region">
           <button
             type="button"
             className="mm-maps__secchip"
@@ -740,7 +780,7 @@ export function HomeMarketMaps() {
           >
             World
           </button>
-          {CONTINENTS.map((c) => (
+          {REGIONS.map((c) => (
             <button
               key={c.name}
               type="button"
@@ -780,7 +820,7 @@ export function HomeMarketMaps() {
           </div>
         ) : (
           <div className="mm-maps__hqhint">
-            Real headquarters on a live globe. Drag to spin · scroll to zoom · click a cluster to fan out its companies.
+            Pick a region, or drag to spin · scroll to zoom · click a cluster to fan out its companies.
           </div>
         )}
       </div>

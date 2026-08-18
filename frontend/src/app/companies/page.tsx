@@ -1,14 +1,20 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { Fragment, useMemo, useState } from "react";
 import { geoAlbersUsa, geoPath } from "d3-geo";
 import { feature, mesh } from "topojson-client";
 import statesTopoRaw from "us-atlas/states-10m.json";
 import { catalogContent } from "@/data/catalog";
-import { appleContent } from "@/data/apple";
 import { appHref } from "@/lib/assets";
+import { FeedAd } from "@/components/FeedAd";
 import { useCart } from "@/lib/cart";
+import { SECTOR_TONE } from "@/lib/sectors";
+import { companies as companyRecords, FEED_TRIMS, type CompanyFeedItem, type CompanyRecord } from "@/data/companies";
+import { DigestCover } from "@/components/DigestCover";
+import { MemberAuth } from "@/components/MemberAuth";
+import { useAuth } from "@/lib/auth";
+import { useWantList } from "@/lib/wantlist";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 const usStatesTopo = statesTopoRaw as any;
@@ -48,19 +54,6 @@ const FILTERS: Array<{ id: string; labelKey: string; fallback: string }> = [
   { id: "other", labelKey: "other_label", fallback: "OTHER" },
 ];
 
-const SECTOR_TONE: Record<string, string> = {
-  all: "#161b2e",
-  classics: "#8a6d3b",
-  technology: "#1fa88f",
-  consumer: "#7a9e5b",
-  industrials: "#4c6b8a",
-  "food-beverage": "#c25b3f",
-  financials: "#e0a526",
-  healthcare: "#9a5ba6",
-  energy: "#b4482f",
-  retail: "#3a5be0",
-  other: "#646575",
-};
 
 const SPARK: Record<string, string> = {
   "steady-up": "M2 46 C24 43 43 39 61 35 C82 30 101 31 121 25 C143 19 164 21 184 15 C205 10 222 11 238 7",
@@ -74,50 +67,40 @@ const SPARK: Record<string, string> = {
 const DEFAULT_PATH =
   "M2 43 C20 39 31 42 46 36 C62 30 75 38 91 31 C107 25 121 29 137 23 C154 17 170 24 187 18 C205 12 222 17 238 10";
 
-// Apple module content — profile, digests (current + past), and FIN news by style
-const APPLE_PROFILE = {
-  description:
-    "Apple makes the iPhone, Mac, iPad and the software and services that run on them — then ties them together so tightly that leaving means giving up your photos, apps, messages and habits. That lock-in is the business.",
-  ticker: "AAPL",
-  size: "MEGA CAP",
-  sector: "Technology",
-  country: "United States",
-  state: "California",
-  city: "Cupertino",
-  ceo: "Tim Cook",
-  founded: "1976",
-};
-const APPLE_DIGESTS = [
-  { q: "Q3", year: "2026", current: true },
-  { q: "Q2", year: "2026", current: false },
-  { q: "Q1", year: "2026", current: false },
-  { q: "Q4", year: "2025", current: false },
-];
-// FIN news, in the newsroom's own shapes (flip strips + flip squares)
-const APPLE_STRIPS = [
-  { ticker: "AAPL", time: "TODAY", heading: "Services hit a record quarter", summary: "Recurring revenue keeps climbing as the installed base grows.", link: "" },
-  { ticker: "AAPL", time: "TODAY", heading: "iPhone upgrade cycle lengthens", summary: "Fewer phones sold, but customers stay in the ecosystem longer.", link: "" },
-  { ticker: "AAPL", time: "1W", heading: "Gross margin holds near 46%", summary: "A rich services mix keeps profitability unusually high.", link: "" },
-];
-const APPLE_SQUARES: Array<{
-  kind: "pitch" | "short";
-  number: string;
-  ticker: string;
-  heading: string;
-  foot: string;
-  summary: string;
-  link: string;
-}> = [
-  { kind: "pitch", number: "01", ticker: "AAPL", heading: "Apple Intelligence: the new privacy moat", foot: "Pitch", summary: "On-device AI becomes a wall competitors can’t climb — the privacy war, won one iPhone at a time.", link: "" },
-  { kind: "short", number: "02", ticker: "AAPL", heading: "Services is now the second-biggest business", foot: "Short take", summary: "The quiet engine behind the headline numbers.", link: "" },
-  { kind: "short", number: "03", ticker: "AAPL", heading: "A longer upgrade cycle, stickier customers", foot: "Short take", summary: "Fewer units sold, but far more loyalty.", link: "" },
-];
-const APPLE_NEWS_QUOTE = {
-  text: "Understand the device in your pocket before you ever own the stock.",
-  who: "The Mintmark view",
+
+/**
+ * Feed advertising rule: at most one ad per AD_EVERY content pieces, and never
+ * before AD_MIN_LEAD pieces have run. A short feed therefore carries one ad or
+ * none — the ad unit is full width and tall, so a tighter ratio reads as an ad
+ * break rather than a feed.
+ */
+const AD_EVERY = 8;
+const AD_MIN_LEAD = 5;
+const adSlots = (count: number): Set<number> => {
+  const slots = new Set<number>();
+  for (let i = AD_MIN_LEAD; i < count; i += AD_EVERY) slots.add(i);
+  return slots;
 };
 
 // a real US map (d3-geo + us-atlas — the site's own map data) with the HQ pinned
+
+/** Six ranges, each showing the return on its own — no chart. */
+function PriceTracker({ returns }: { returns: CompanyRecord["returns"] }) {
+  return (
+    <div className="ara-cc-quick__tracker">
+      <span className="ara-cc-quick__tracker-lbl">Share price return</span>
+      <div className="ara-cc-quick__tracker-grid">
+        {returns.map((d) => (
+          <div className="ara-cc-quick__tracker-cell" key={d.range}>
+            <span className="ara-cc-quick__tracker-range">{d.range}</span>
+            <strong style={{ color: d.up ? "#176d5c" : "#a6432a" }}>{d.chg}</strong>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 function HqMiniMap({ lon, lat, label }: { lon: number; lat: number; label: string }) {
   const W = 320;
   const H = 176;
@@ -137,7 +120,6 @@ function HqMiniMap({ lon, lat, label }: { lon: number; lat: number; label: strin
       <path d={geo.borders} fill="none" stroke="#c9bea8" strokeWidth={0.6} />
       {geo.pin ? (
         <g className="ara-cc-quick__pin" transform={`translate(${geo.pin[0]} ${geo.pin[1]})`}>
-          <circle className="ara-cc-quick__pin-halo" r="15" fill="#e0a526" fillOpacity="0.28" />
           <path d="M0 -15 C8 -15 12 -9 12 -4 C12 4 3 9 0 15 C-3 9 -12 4 -12 -4 C-12 -9 -8 -15 0 -15 Z" fill="#e0a526" stroke="#161b2e" strokeWidth="1.2" />
           <circle cy="-4" r="3.4" fill="#fffdf6" />
           <text x="16" y="1" className="ara-cc-quick__pin-label" fill="#161b2e">{label}</text>
@@ -147,50 +129,16 @@ function HqMiniMap({ lon, lat, label }: { lon: number; lat: number; label: strin
   );
 }
 
-const PRICE_RANGES = ["1W", "1M", "YTD", "1Y", "3Y", "ALL"] as const;
-const PRICE_DATA: Record<string, { pts: number[]; chg: string; up: boolean }> = {
-  "1W": { pts: [0.4, 0.42, 0.38, 0.46, 0.5, 0.47, 0.55], chg: "+1.2%", up: true },
-  "1M": { pts: [0.32, 0.36, 0.3, 0.42, 0.4, 0.48, 0.52, 0.5, 0.58], chg: "+3.4%", up: true },
-  YTD: { pts: [0.5, 0.44, 0.4, 0.48, 0.56, 0.5, 0.6, 0.58, 0.66], chg: "+6.1%", up: true },
-  "1Y": { pts: [0.35, 0.3, 0.4, 0.44, 0.5, 0.42, 0.56, 0.6, 0.58, 0.7], chg: "+4.7%", up: true },
-  "3Y": { pts: [0.2, 0.3, 0.24, 0.4, 0.5, 0.44, 0.6, 0.7, 0.64, 0.82], chg: "+58%", up: true },
-  ALL: { pts: [0.04, 0.09, 0.07, 0.2, 0.34, 0.3, 0.5, 0.64, 0.8, 0.96], chg: "+21,400%", up: true },
-};
-function pricePath(pts: number[]) {
-  const W = 300;
-  const H = 88;
-  const pad = 6;
-  const step = (W - 2 * pad) / (pts.length - 1);
-  const y = (v: number) => H - pad - v * (H - 2 * pad);
-  return pts.map((v, i) => `${i ? "L" : "M"}${(pad + i * step).toFixed(1)} ${y(v).toFixed(1)}`).join(" ");
-}
-function PriceTracker() {
-  return (
-    <div className="ara-cc-quick__tracker">
-      <span className="ara-cc-quick__tracker-lbl">Share price return</span>
-      <div className="ara-cc-quick__tracker-grid">
-        {PRICE_RANGES.map((r) => {
-          const d = PRICE_DATA[r];
-          const color = d.up ? "#12a67c" : "#ed5c5c";
-          return (
-            <div className="ara-cc-quick__tracker-cell" key={r}>
-              <span className="ara-cc-quick__tracker-range">{r}</span>
-              <strong style={{ color }}>{d.up ? "▲" : "▼"} {d.chg}</strong>
-            </div>
-          );
-        })}
-      </div>
-    </div>
-  );
-}
-
 export default function CompaniesPage() {
   const settings = catalogContent.settings as unknown as Record<string, unknown>;
-  // catalog is focused on a single company for now — Apple
-  const companies = (catalogContent.companies as unknown as Company[]).filter((c) => c.id === "apple");
+  const companies = companyRecords as unknown as Company[];
   const [query, setQuery] = useState("");
-  const [sector, setSector] = useState("classics");
+  // default to every sector — the shell must not assume one exists
+  const [sector, setSector] = useState("all");
   const [active, setActive] = useState<Company | null>(null);
+  const [belt, setBelt] = useState<"catalog" | "bookshelf">("catalog");
+  const { member } = useAuth();
+  const want = useWantList();
   const { addItem } = useCart();
   const [added, setAdded] = useState(false);
   const [digestIdx, setDigestIdx] = useState(0);
@@ -201,7 +149,10 @@ export default function CompaniesPage() {
       const s = c.sector || "other";
       counts.set(s, (counts.get(s) || 0) + 1);
     });
-    return FILTERS.filter((f) => f.id === "all" || (counts.get(f.id) || 0) > 0);
+    return FILTERS.map((f) => ({
+      ...f,
+      count: f.id === "all" ? companies.length : counts.get(f.id) || 0,
+    }));
   }, [companies]);
 
   const filtered = useMemo(() => {
@@ -215,7 +166,7 @@ export default function CompaniesPage() {
   }, [companies, query, sector]);
 
   const grouped = useMemo(() => {
-    const order = availableSectors.filter((s) => s.id !== "all").map((s) => s.id);
+    const order = availableSectors.filter((s) => s.id !== "all" && s.count > 0).map((s) => s.id);
     const map = new Map<string, Company[]>();
     filtered.forEach((c) => {
       const key = c.sector || "other";
@@ -261,37 +212,76 @@ export default function CompaniesPage() {
       <div className="ara-company-catalog__inner">
         {/* conveyor-belt loop of books — a few pass in front of you at a time */}
         <div className="mm-vitrine mm-vitrine--belt">
+          <div className="mm-belt-switch" role="tablist" aria-label="Which belt to show">
+            <button
+              type="button"
+              role="tab"
+              aria-selected={belt === "catalog"}
+              className={`mm-belt-switch__btn${belt === "catalog" ? " is-on" : ""}`}
+              onClick={() => setBelt("catalog")}
+            >
+              Catalog
+            </button>
+            <button
+              type="button"
+              role="tab"
+              aria-selected={belt === "bookshelf"}
+              className={`mm-belt-switch__btn${belt === "bookshelf" ? " is-on" : ""}`}
+              onClick={() => setBelt("bookshelf")}
+            >
+              Bookshelf
+              {member && want.items.length ? <i>{want.items.length}</i> : null}
+            </button>
+          </div>
+
           <div className="mm-vitrine__frame">
             <span className="mm-vitrine__lamp" aria-hidden="true" />
-            <div className="mm-conveyor">
-              <div className="mm-conveyor__fade mm-conveyor__fade--l" aria-hidden="true" />
-              <div className="mm-conveyor__fade mm-conveyor__fade--r" aria-hidden="true" />
-              <div className="mm-conveyor__track">
-                {(() => {
-                  const base = grouped.flatMap((g) => g.companies);
-                  if (!base.length) return [] as Company[];
-                  const filled = Array.from({ length: Math.max(10, base.length * 2) }, (_, i) => base[i % base.length]);
-                  return [...filled, ...filled];
-                })().map((c, i) => (
-                  <button
-                    key={`${c.id}-${i}`}
-                    type="button"
-                    className="mm-conveyor__book"
-                    style={{ ["--co" as string]: c.accent_color || "#176d5c" }}
-                    onClick={() => setActive(c)}
-                    aria-haspopup="dialog"
-                    aria-label={c.company_name}
-                    title={c.company_name}
-                  >
-                    <span className="mm-conveyor__band" aria-hidden="true" />
-                    <span className="mm-conveyor__tk">{c.ticker || c.company_name.slice(0, 3).toUpperCase()}</span>
-                    <span className="mm-conveyor__name">{c.company_name}</span>
-                    <span className="mm-conveyor__band mm-conveyor__band--lo" aria-hidden="true" />
-                  </button>
-                ))}
+
+            {belt === "bookshelf" && !member ? (
+              <div className="mm-belt-gate">
+                <MemberAuth compact />
               </div>
-              <div className="mm-conveyor__belt" aria-hidden="true" />
-            </div>
+            ) : (
+              <div className="mm-conveyor">
+                <div className="mm-conveyor__fade mm-conveyor__fade--l" aria-hidden="true" />
+                <div className="mm-conveyor__fade mm-conveyor__fade--r" aria-hidden="true" />
+                <div className="mm-conveyor__track">
+                  {(() => {
+                    const base =
+                      belt === "bookshelf"
+                        ? (want.items
+                            .map((w) => companies.find((c) => c.id === w.id))
+                            .filter(Boolean) as Company[])
+                        : grouped.flatMap((g) => g.companies);
+                    if (!base.length) return [] as Company[];
+                    const filled = Array.from({ length: Math.max(10, base.length * 2) }, (_, i) => base[i % base.length]);
+                    return [...filled, ...filled];
+                  })().map((c, i) => (
+                    <button
+                      key={`${c.id}-${i}`}
+                      type="button"
+                      className="mm-conveyor__book"
+                      onClick={() => setActive(c)}
+                      aria-haspopup="dialog"
+                      aria-label={c.company_name}
+                      title={c.company_name}
+                    >
+                      <DigestCover
+                        label={c.company_name}
+                        accent={c.accent_color || "#176d5c"}
+                        size="md"
+                      />
+                    </button>
+                  ))}
+                </div>
+                <div className="mm-conveyor__belt" aria-hidden="true" />
+                {belt === "bookshelf" && !want.items.length ? (
+                  <p className="mm-belt-empty">
+                    Your Bookshelf is empty — open a company and add it to your list.
+                  </p>
+                ) : null}
+              </div>
+            )}
           </div>
         </div>
 
@@ -312,12 +302,17 @@ export default function CompaniesPage() {
               <button
                 key={f.id}
                 type="button"
-                className={`ara-company-catalog__filter${sector === f.id ? " is-active" : ""}`}
+                className={`ara-company-catalog__filter${sector === f.id ? " is-active" : ""}${
+                  f.count === 0 ? " is-empty" : ""
+                }`}
                 style={{ ["--chip" as string]: SECTOR_TONE[f.id] || "#161b2e" }}
                 aria-pressed={sector === f.id}
+                disabled={f.count === 0}
+                title={f.count === 0 ? "No companies in this sector yet" : undefined}
                 onClick={() => setSector(f.id)}
               >
                 {String(settings[f.labelKey] || f.fallback)}
+                <i className="ara-company-catalog__filter-n">{f.count}</i>
               </button>
             ))}
           </div>
@@ -331,7 +326,10 @@ export default function CompaniesPage() {
         <div className="ara-company-catalog__groups">
           {grouped.map((group) => (
             <div key={group.sector} className="ara-company-catalog__group">
-              <div className="ara-company-catalog__group-heading">
+              <div
+                className="ara-company-catalog__group-heading"
+                style={{ ["--ara-company-marker" as string]: SECTOR_TONE[group.sector] || "#176D5C" }}
+              >
                 <strong>{group.label}</strong>
                 <small>
                   {String(group.companies.length).padStart(2, "0")} · {group.sector.toUpperCase()}
@@ -340,9 +338,8 @@ export default function CompaniesPage() {
               <div className="ara-company-catalog__grid">
                 {group.companies.map((c) => {
                   const path = SPARK[c.sparkline_style || ""] || DEFAULT_PATH;
-                  const href =
-                    appHref(c.module_link) ||
-                    (c.company_name === "Apple" ? "/companies/apple" : undefined);
+                  // companies have no full page — the quick-open panel is the view
+                  const href = appHref(c.module_link);
                   const cy =
                     c.direction === "down" ? 50 : c.direction === "flat" ? 26 : 9;
                   const card = (
@@ -389,7 +386,9 @@ export default function CompaniesPage() {
                   );
 
                   const className = `ara-company-catalog__card ara-company-catalog__card--${c.direction || "up"}`;
-                  const styleCard = { ["--ara-company-marker" as string]: c.accent_color || "#176D5C" };
+                  const styleCard = {
+                    ["--ara-company-marker" as string]: SECTOR_TONE[c.sector || "other"] || "#176D5C",
+                  };
 
                   return (
                     <button
@@ -413,22 +412,33 @@ export default function CompaniesPage() {
       {active ? (
         (() => {
           const keywords = (active.keywords || "").split(/\s+/).filter(Boolean);
+          // the header keeps the company's own colour; only its trim and the
+          // smaller markings carry the sector, so colour says which sector you
+          // are in without repainting the company
           const marker = active.accent_color || "#176D5C";
-          // all tagged stories for this company, grouped by content (category)
-          const rawStories =
-            (appleContent.apple_company_stories?.blocks as unknown as Array<Record<string, string>>)?.filter(
-              (b) => b.type === "story",
-            ) || [];
-          const storyGroups = Object.values(
-            rawStories.reduce((acc, st) => {
-              const cat = (st.category || "Stories").toUpperCase();
-              (acc[cat] = acc[cat] || { cat, items: [] as Array<Record<string, string>> }).items.push(st);
-              return acc;
-            }, {} as Record<string, { cat: string; items: Array<Record<string, string>> }>),
-          );
+          const sectorColor = SECTOR_TONE[active.sector || "other"] || "#176D5C";
+          // one mixed stream — news, takes, pitches, the view and the tagged
+          // stories interleaved the way a feed reads, not filed into sections
+          const record = companyRecords.find((r) => r.id === active.id);
+          const profile = record?.profile;
+          type FeedEntry = CompanyFeedItem & { t1: string; t2: string };
+          // round-robin by kind so types alternate instead of clumping
+          const byKind = new Map<string, FeedEntry[]>();
+          (record?.feed || []).forEach((f) => {
+            const entry = { ...f, ...FEED_TRIMS[f.kind] };
+            byKind.set(f.kind, [...(byKind.get(f.kind) || []), entry]);
+          });
+          const pools = [...byKind.values()];
+          const feed: FeedEntry[] = [];
+          const total = pools.reduce((n, pool) => n + pool.length, 0);
+          for (let i = 0; feed.length < total; i += 1) {
+            pools.forEach((pool) => { if (pool[i]) feed.push(pool[i]); });
+          }
+          const ads = adSlots(feed.length);
           const digestTitle = `The ${active.company_name} Digest`;
           const price = 9.99;
-          const current = APPLE_DIGESTS[digestIdx] || APPLE_DIGESTS[0];
+          const issues = record?.digests || [];
+          const current = issues[digestIdx] || issues[0] || { q: "", year: "" };
           const onAdd = () => {
             addItem({
               id: `digest-${active.id}-${current.q}-${current.year}`,
@@ -449,7 +459,10 @@ export default function CompaniesPage() {
             >
               <aside
                 className="ara-cc-quick"
-                style={{ ["--ara-company-marker" as string]: marker }}
+                style={{
+                  ["--ara-company-marker" as string]: marker,
+                  ["--ara-company-sector" as string]: sectorColor,
+                }}
                 onClick={(e) => e.stopPropagation()}
               >
                 <button
@@ -474,11 +487,6 @@ export default function CompaniesPage() {
                   <div className="ara-cc-quick__cover-meta">
                     {active.business_model ? <span>{active.business_model}</span> : null}
                     {active.headquarters ? <span>{active.headquarters}</span> : null}
-                    {active.change ? (
-                      <span className={`is-${active.direction || "up"}`}>
-                        {active.change} · {active.period || "1Y"}
-                      </span>
-                    ) : null}
                   </div>
                 </div>
 
@@ -487,151 +495,183 @@ export default function CompaniesPage() {
                   <section className="ara-cc-quick__sec" style={{ ["--d" as string]: "0.06s" }}>
                     <h4 className="ara-cc-quick__sec-h">Profile</h4>
                     <div className="ara-cc-quick__map">
-                      <HqMiniMap lon={-122.0322} lat={37.323} label={APPLE_PROFILE.city} />
+                      <HqMiniMap lon={profile?.lon ?? -98.5} lat={profile?.lat ?? 39.8} label={profile?.city || ""} />
                     </div>
-                    <PriceTracker />
-                    <p className="ara-cc-quick__lead">{APPLE_PROFILE.description}</p>
+                    {record ? <PriceTracker returns={record.returns} /> : null}
+                    <p className="ara-cc-quick__lead">{(profile?.description || "—")}</p>
                     <div className="ara-cc-quick__rows">
-                      <div className="ara-cc-quick__row"><span>Ticker</span><strong>{APPLE_PROFILE.ticker}</strong></div>
-                      <div className="ara-cc-quick__row"><span>Size</span><strong>{APPLE_PROFILE.size}</strong></div>
-                      <div className="ara-cc-quick__row"><span>Sector</span><strong>{APPLE_PROFILE.sector}</strong></div>
-                      <div className="ara-cc-quick__row"><span>Headquarters</span><strong>{APPLE_PROFILE.city} · {APPLE_PROFILE.state} · USA</strong></div>
-                      <div className="ara-cc-quick__row"><span>Chief executive</span><strong>{APPLE_PROFILE.ceo}</strong></div>
-                      <div className="ara-cc-quick__row"><span>Founded</span><strong>{APPLE_PROFILE.founded}</strong></div>
+                      <div className="ara-cc-quick__row"><span>Ticker</span><strong>{(active.ticker || "—")}</strong></div>
+                      <div className="ara-cc-quick__row"><span>Size</span><strong>{(profile?.size || "—")}</strong></div>
+                      <div className="ara-cc-quick__row"><span>Sector</span><strong>{(profile?.sector || "—")}</strong></div>
+                      <div className="ara-cc-quick__row"><span>Headquarters</span><strong>{(profile?.city || "—")} · {(profile?.state || "—")} · USA</strong></div>
+                      <div className="ara-cc-quick__row"><span>Chief executive</span><strong>{(profile?.ceo || "—")}</strong></div>
+                      <div className="ara-cc-quick__row"><span>Founded</span><strong>{(profile?.founded || "—")}</strong></div>
                     </div>
                   </section>
 
                   <section className="ara-cc-quick__sec" style={{ ["--d" as string]: "0.14s" }}>
                     <h4 className="ara-cc-quick__sec-h">Digest</h4>
                     <div className="ara-cc-quick__digest">
-                      <span className="ara-cc-quick__digest-cover" aria-hidden="true">
-                        <b>{current.q}</b>
-                        <i>Digest</i>
-                      </span>
+                      {/* the heading already says the company — the cover shows
+                          the ticker only, so nothing is said twice */}
+                      <DigestCover
+                        label={active.ticker || active.company_name}
+                        accent={active.accent_color || "#176d5c"}
+                        size="lg"
+                      />
                       <span className="ara-cc-quick__digest-txt">
                         <strong>{digestTitle}</strong>
-                        <small>{current.q} {current.year} · one company, one read.</small>
+                        <label className="ara-cc-quick__qtr">
+                          <span>Issue</span>
+                          <select
+                            value={digestIdx}
+                            onChange={(e) => setDigestIdx(Number(e.target.value))}
+                          >
+                            {issues.map((d, i) => (
+                              <option key={`${d.q}-${d.year}`} value={i}>
+                                {d.q} {d.year}
+                              </option>
+                            ))}
+                          </select>
+                        </label>
+                        <small>One company, one read.</small>
                       </span>
                     </div>
+
                     <div className="ara-cc-quick__buy">
                       <span className="ara-cc-quick__price">${price}</span>
                       <button type="button" className="ara-cc-quick__addbtn" onClick={onAdd}>
                         {added ? "Added ✓" : "Add to cart"}
                       </button>
                       <Link className="ara-cc-quick__viewcart" href="/cart">View cart</Link>
+                      <button
+                        type="button"
+                        className={`ara-cc-quick__wantbtn${want.has(active.id) ? " is-on" : ""}`}
+                        onClick={() =>
+                          want.toggle({
+                            id: active.id,
+                            name: active.company_name,
+                            ticker: active.ticker,
+                            accent: active.accent_color,
+                          })
+                        }
+                        disabled={!member}
+                        title={member ? undefined : "Sign in to keep a Bookshelf"}
+                      >
+                        {want.has(active.id) ? "On my Bookshelf ✓" : "Add to Bookshelf"}
+                      </button>
                     </div>
-                    <div className="ara-cc-quick__past">
-                      <span className="ara-cc-quick__past-h">Past digests — tap to select</span>
-                      <div className="ara-cc-quick__past-grid">
-                        {APPLE_DIGESTS.map((d, i) =>
-                          i === digestIdx ? null : (
-                            <button
-                              key={`${d.q}-${d.year}`}
-                              type="button"
-                              className="ara-cc-quick__slot"
-                              onClick={() => setDigestIdx(i)}
-                              aria-label={`Select the ${d.q} ${d.year} digest`}
-                              title={`Select ${d.q} ${d.year}`}
-                            >
-                              <b>{d.q}</b>
-                              <i>{d.year}</i>
-                            </button>
-                          ),
-                        )}
-                      </div>
-                    </div>
+
                   </section>
 
                   <section className="ara-cc-quick__sec ara-cc-quick__feed" style={{ ["--d" as string]: "0.22s" }}>
                     <h4 className="ara-cc-quick__sec-h">News from FIN</h4>
                     <p className="ara-cc-quick__feed-note">A live feed of everything FIN has tagged to {active.company_name}.</p>
 
-                    <div className="ara-editorial-front-page ara-cc-quick__fin">
-                    {/* news strips — real FIN flip tickers (tap to flip → read) */}
-                    <div className="ara-nr-strips ara-cc-quick__nr" style={{ ["--sec" as string]: "#176d5c" }}>
-                      {APPLE_STRIPS.map((m, i) => (
-                        <div key={i} className="ara-nr-flip ara-nr-strip">
-                          <div className="ara-nr-flip__inner">
-                            <div className="ara-nr-flip__face ara-nr-flip__front">
-                              <div className="ara-nr-strip__tick">
-                                <b>{m.ticker}</b>
-                                <small>{m.time}</small>
+                    <div className="ara-editorial-front-page ara-nr-quickfeed">
+                      {feed.map((f, i) => (
+                        <Fragment key={`${f.kind}-${i}`}>
+                          {f.kind === "news" ? (
+                            <div className="ara-nr-flip ara-nr-strip" style={{ ["--t1" as string]: f.t1, ["--t2" as string]: f.t2 }}>
+                              <div className="ara-nr-flip__inner">
+                                <div className="ara-nr-flip__face ara-nr-flip__front">
+                                  <span className="ara-nr-trim" aria-hidden="true" />
+                                  <div className="ara-nr-strip__tick">
+                                    <small>{f.tag}</small>
+                                  </div>
+                                  <h4>{f.title}</h4>
+                                </div>
+                                <div className="ara-nr-flip__face ara-nr-flip__back">
+                                  <span className="ara-nr-trim" aria-hidden="true" />
+                                  <p>{f.body}</p>
+                                  <a className="ara-nr-strip__go" href={appHref(f.link) || "#"}>
+                                    {f.cta} <span aria-hidden="true">&rarr;</span>
+                                  </a>
+                                </div>
                               </div>
-                              <h4>{m.heading}</h4>
                             </div>
-                            <div className="ara-nr-flip__face ara-nr-flip__back">
-                              <div className="ara-nr-strip__tick"><b>{m.ticker}</b></div>
-                              <p>{m.summary}</p>
-                              <a className="ara-nr-strip__go" href={appHref(m.link) || "#"}>
-                                Read <span aria-hidden="true">→</span>
-                              </a>
+                          ) : null}
+
+                          {f.kind === "short" ? (
+                            <div className="ara-nr-flip ara-nr-sq" style={{ ["--t1" as string]: f.t1, ["--t2" as string]: f.t2 }}>
+                              <div className="ara-nr-flip__inner">
+                                <div className="ara-nr-flip__face ara-nr-flip__front">
+                                  <span className="ara-nr-trim" aria-hidden="true" />
+                                  <div className="ara-nr-sq__num">
+                                    <span>{String(i + 1).padStart(2, "0")}</span>
+                                  </div>
+                                  <h4>{f.title}</h4>
+                                  <div className="ara-nr-sq__foot">
+                                    <span>{f.tag}</span>
+                                  </div>
+                                </div>
+                                <div className="ara-nr-flip__face ara-nr-flip__back">
+                                  <span className="ara-nr-trim" aria-hidden="true" />
+                                  <p>{f.body}</p>
+                                  <a className="ara-nr-sq__go" href={appHref(f.link) || "#"}>
+                                    {f.cta} <span aria-hidden="true">&rarr;</span>
+                                  </a>
+                                </div>
+                              </div>
                             </div>
-                          </div>
-                        </div>
+                          ) : null}
+
+                          {f.kind === "pitch" || f.kind === "story" ? (
+                            <div
+                              className={`ara-nr-flip ara-nr-sq ara-nr-sq--pitch${f.kind === "story" ? " ara-nr-sq--story" : ""}`}
+                              style={{ ["--t1" as string]: f.t1, ["--t2" as string]: f.t2 }}
+                            >
+                              <div className="ara-nr-flip__inner">
+                                <div className="ara-nr-flip__face ara-nr-flip__front">
+                                  <span className="ara-nr-trim" aria-hidden="true" />
+                                  <div className="ara-nr-sq__num">
+                                    <span>{String(i + 1).padStart(2, "0")}</span>
+                                    {f.kind === "story" && f.meta ? <b>{f.meta}</b> : null}
+                                  </div>
+                                  <h4>{f.title}</h4>
+                                  <div className="ara-nr-sq__foot">
+                                    <span>{f.tag}</span>
+                                    <a className="ara-nr-sq__go" href={appHref(f.link) || "#"}>
+                                      {f.cta} <span aria-hidden="true">&rarr;</span>
+                                    </a>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          ) : null}
+
+                          {f.kind === "view" ? (
+                            <article
+                              className="ara-editorial-front-page__question"
+                              style={{
+                                ["--ara-question-bg" as string]: "#161b2e",
+                                ["--ara-question-text" as string]: "#f2f8f6",
+                                ["--t1" as string]: f.t1,
+                                ["--t2" as string]: f.t2,
+                              }}
+                            >
+                              <span className="ara-nr-trim" aria-hidden="true" />
+                              <div className="ara-editorial-front-page__question-copy">
+                                <div className="ara-editorial-front-page__question-label">
+                                  <span>{f.tag}</span>
+                                  <i />
+                                </div>
+                                <h3>{f.title}</h3>
+                                <Link className="ara-editorial-front-page__question-link" href={appHref(f.link) || "/mint"}>
+                                  {f.cta} <span aria-hidden="true">&rarr;</span>
+                                </Link>
+                              </div>
+                            </article>
+                          ) : null}
+
+                          {ads.has(i) ? (
+                            <div className="ara-nr-quickfeed__ad">
+                              <FeedAd />
+                            </div>
+                          ) : null}
+                        </Fragment>
                       ))}
                     </div>
-
-                    {/* pitches + short takes — real FIN flip squares */}
-                    <div className="ara-nr-sqgrid ara-cc-quick__nr" style={{ ["--sec" as string]: "#c0881e" }}>
-                      {APPLE_SQUARES.map((q, i) => (
-                        <div key={i} className={`ara-nr-flip ara-nr-sq${q.kind === "pitch" ? " ara-nr-sq--pitch" : ""}`}>
-                          <div className="ara-nr-flip__inner">
-                            <div className="ara-nr-flip__face ara-nr-flip__front">
-                              <div className="ara-nr-sq__num">
-                                <span>{q.number}</span>
-                                <b>{q.ticker}</b>
-                              </div>
-                              <h4>{q.heading}</h4>
-                              <div className="ara-nr-sq__foot">
-                                <span>{q.foot}</span>
-                                <span>Tap</span>
-                              </div>
-                            </div>
-                            <div className="ara-nr-flip__face ara-nr-flip__back">
-                              <p>{q.summary}</p>
-                              <a className="ara-nr-sq__go" href={appHref(q.link) || "#"}>
-                                {q.kind === "pitch" ? "Read the pitch" : "Read"} <span aria-hidden="true">→</span>
-                              </a>
-                            </div>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-
-                    {/* question / quote — real FIN question card */}
-                    <article
-                      className="ara-editorial-front-page__question ara-cc-quick__nr"
-                      style={{ ["--ara-question-bg" as string]: "#161b2e", ["--ara-question-text" as string]: "#f2f8f6" }}
-                    >
-                      <div className="ara-editorial-front-page__question-copy">
-                        <div className="ara-editorial-front-page__question-label">
-                          <span>The Mintmark view</span>
-                          <i />
-                        </div>
-                        <h3>{APPLE_NEWS_QUOTE.text}</h3>
-                        <Link className="ara-editorial-front-page__question-link" href="/mint">
-                          Explore the curriculum <span aria-hidden="true">→</span>
-                        </Link>
-                      </div>
-                    </article>
-                    </div>
-
-                    {/* stories — tagged, organized by content */}
-                    {storyGroups.map((g) => (
-                      <div className="ara-cc-quick__storygroup" key={g.cat}>
-                        <div className="ara-cc-quick__storycat">
-                          <span>{g.cat}</span>
-                          <i>{String(g.items.length).padStart(2, "0")}</i>
-                        </div>
-                        {g.items.map((st, i) => (
-                          <article className="ara-cc-quick__story" key={i}>
-                            <strong>{st.custom_title}</strong>
-                            <p>{st.custom_excerpt}</p>
-                            <span>{st.custom_date}</span>
-                          </article>
-                        ))}
-                      </div>
-                    ))}
                   </section>
                 </div>
 

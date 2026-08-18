@@ -33,11 +33,17 @@
 
   .ara-mintmark-footer .ara-mintmark-footer__logo-image {
     display: block;
-    width: min(100%, var(--ara-footer-logo-width));
-    height: auto;
+    /* the parent is inline-flex with no width of its own, so the mark needs an
+       explicit basis — a percentage would resolve to zero */
+    flex: 0 0 auto;
+    width: var(--ara-footer-logo-width);
+    max-width: 100%;
+    aspect-ratio: 1000 / 220;
     max-height: 92px;
-    object-fit: contain;
-    object-position: left center;
+    /* gold through the mark, blue through the tail of the wordmark */
+    background: linear-gradient(100deg, #e0a526 0 34%, #3a5be0 46% 100%);
+    -webkit-mask: url("/images/logo.png") no-repeat left center / contain;
+            mask: url("/images/logo.png") no-repeat left center / contain;
   }
 
   .ara-mintmark-footer .ara-mintmark-footer__emblem {
@@ -174,3 +180,54 @@
       font-size: var(--ara-footer-mobile-bottom-size);
     }
   }
+
+/* ---- footer colourway: the checkout blue + gold ------------------------- */
+.ara-mintmark-footer { position: relative; }
+/* the same trim that caps the cart and checkout pages */
+.ara-mintmark-footer::before {
+  content: ""; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, transparent, #3a5be0 14%, #e0a526 38%, #3a5be0 62%, #e0a526 86%, transparent);
+}
+/* column headings in gold, links lifting to blue — one pair, used consistently */
+.ara-mintmark-footer .ara-mintmark-footer__column h2 { color: #e0a526; }
+.ara-mintmark-footer .ara-mintmark-footer__column a { transition: color .18s ease; }
+.ara-mintmark-footer .ara-mintmark-footer__column a:hover { color: #7ba0f5; }
+/* the statement reads once, in gold, and the rule under it picks up the pair */
+.ara-mintmark-footer .ara-mintmark-footer__brand p { color: #f2f6ff; }
+.ara-mintmark-footer .ara-mintmark-footer__bottom {
+  border-top: 0;
+  background:
+    linear-gradient(90deg, #3a5be0 0 64px, #e0a526 64px 104px, transparent 104px) 0 0 / 100% 2px no-repeat,
+    linear-gradient(90deg, rgba(122, 150, 230, .30), rgba(122, 150, 230, .06)) 0 0 / 100% 1px no-repeat;
+  padding-top: 24px;
+}
+
+/* the statement is trimmed on the letters themselves — a gold edge drawn round
+   each glyph with a blue trim set behind it, the checkout pair carried into the
+   type instead of sitting on a bar above it */
+.ara-mintmark-footer .ara-mintmark-footer__brand p {
+  /* a bold grotesque holds an outline far better than the serif did, and the
+     trim wants more size to read as a border round each letter */
+  font-family: var(--font-space-grotesk), "Space Grotesk", sans-serif !important;
+  font-weight: 800 !important;
+  font-size: clamp(19px, 2.75vw, 38px) !important;
+  white-space: nowrap;
+  letter-spacing: -0.02em !important;
+  line-height: 1.02 !important;
+  max-width: none;
+  color: #fffdf6;
+  -webkit-text-stroke: 1.9px #e0a526;
+  text-stroke: 1.9px #e0a526;
+  paint-order: stroke fill;
+  text-shadow:
+    2.5px 2.5px 0 #3a5be0,
+    -0.5px -0.5px 0 rgba(58, 91, 224, .5);
+}
+
+@media screen and (max-width: 899px) {
+  .ara-mintmark-footer .ara-mintmark-footer__brand p {
+    font-size: clamp(15px, 4.6vw, 26px) !important;
+    -webkit-text-stroke-width: 1.3px;
+    text-shadow: 1.8px 1.8px 0 #3a5be0;
+  }
+}

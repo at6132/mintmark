@@ -49,7 +49,7 @@
       "id": "orders",
       "type": "channel",
       "heading": "Books and fulfilment",
-      "text": "Questions about physical digests, orders, shipping or Lulu Direct fulfilment.",
+      "text": "Questions about physical digests, orders, and shipping.",
       "link_label": "USE THE FORM",
       "link": ""
     },
