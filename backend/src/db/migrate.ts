@@ -10,7 +10,10 @@ if (!DATABASE_URL) {
 }
 
 const dir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../../drizzle");
-const sql = postgres(DATABASE_URL, { max: 1 });
+const sql = postgres(DATABASE_URL, {
+  max: 1,
+  ssl: process.env.NODE_ENV === "production" ? { rejectUnauthorized: false } : undefined,
+});
 
 await sql`
   CREATE TABLE IF NOT EXISTS schema_migrations (
