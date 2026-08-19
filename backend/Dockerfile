@@ -1,7 +1,7 @@
 FROM node:22-alpine AS deps
 WORKDIR /app
 COPY package.json package-lock.json* ./
-RUN npm install
+RUN npm ci
 
 FROM node:22-alpine AS builder
 WORKDIR /app
@@ -13,9 +13,11 @@ FROM node:22-alpine AS runner
 WORKDIR /app
 ENV NODE_ENV=production
 ENV SERVICE=api
-COPY package.json ./
-COPY --from=deps /app/node_modules ./node_modules
+RUN addgroup -S mintmark && adduser -S mintmark -G mintmark
+COPY package.json package-lock.json* ./
+RUN npm ci --omit=dev && npm cache clean --force
 COPY --from=builder /app/dist ./dist
 COPY drizzle ./drizzle
+USER mintmark
 EXPOSE 3001
 CMD ["sh", "-c", "node dist/db/migrate.js && node dist/api/server.js"]
