@@ -28,6 +28,13 @@ export const printJobQueueStatusEnum = pgEnum("print_job_queue_status", [
   "failed",
 ]);
 export const webhookSourceEnum = pgEnum("webhook_source", ["stripe", "lulu"]);
+export const adminChallengeStatusEnum = pgEnum("admin_challenge_status", [
+  "pending",
+  "allowed",
+  "denied",
+  "expired",
+  "consumed",
+]);
 
 export const products = pgTable("products", {
   id: text("id").primaryKey(),
@@ -149,6 +156,37 @@ export const subscribers = pgTable("subscribers", {
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
 });
 
+export const adminChallenges = pgTable(
+  "admin_challenges",
+  {
+    id: text("id").primaryKey(),
+    status: adminChallengeStatusEnum("status").notNull().default("pending"),
+    ip: text("ip"),
+    userAgent: text("user_agent"),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+    expiresAt: timestamp("expires_at", { withTimezone: true }).notNull(),
+    decidedAt: timestamp("decided_at", { withTimezone: true }),
+    decidedByPhone: text("decided_by_phone"),
+    consumedAt: timestamp("consumed_at", { withTimezone: true }),
+  },
+  (t) => [index("admin_challenges_status_idx").on(t.status, t.createdAt)],
+);
+
+export const adminSessions = pgTable(
+  "admin_sessions",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    tokenHash: text("token_hash").notNull().unique(),
+    challengeId: text("challenge_id").references(() => adminChallenges.id, { onDelete: "set null" }),
+    ip: text("ip"),
+    userAgent: text("user_agent"),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+    expiresAt: timestamp("expires_at", { withTimezone: true }).notNull(),
+    revokedAt: timestamp("revoked_at", { withTimezone: true }),
+  },
+  (t) => [index("admin_sessions_expires_idx").on(t.expiresAt)],
+);
+
 export type ShippingAddress = {
   name: string;
   street1: string;
@@ -180,3 +218,5 @@ export type Product = typeof products.$inferSelect;
 export type Order = typeof orders.$inferSelect;
 export type OrderItem = typeof orderItems.$inferSelect;
 export type PrintJob = typeof printJobs.$inferSelect;
+export type AdminChallenge = typeof adminChallenges.$inferSelect;
+export type AdminSession = typeof adminSessions.$inferSelect;

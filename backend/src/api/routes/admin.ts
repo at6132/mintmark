@@ -19,12 +19,14 @@ import {
 } from "../../db/schema.js";
 import { env } from "../../env.js";
 import { centsToDollars } from "../../lib/money.js";
+import { requireAdminSession } from "./admin-auth.js";
 
 /**
- * Intentionally unauthenticated for now — the storefront /admin desk
- * is an internal working surface. Gate this before a public launch.
+ * Admin desk data. Session required (PIN + WhatsApp /allow).
  */
 export const adminRoutes = new Hono();
+
+adminRoutes.use("*", requireAdminSession);
 
 const SAMPLE_PDF_HINT = "dropbox.com";
 
@@ -466,6 +468,7 @@ async function loadSnapshot() {
         id: p.id,
         title: p.title,
         company: p.company,
+        ticker: p.ticker,
         unitsSold: p.unitsSold,
         revenueCents: p.revenueCents,
         orderCount: p.orderCount,
