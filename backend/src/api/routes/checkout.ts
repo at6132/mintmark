@@ -1,8 +1,7 @@
 import { Hono } from "hono";
-import { zValidator } from "@hono/zod-validator";
-import { z } from "zod";
 import { eq, inArray } from "drizzle-orm";
-import { env } from "../../env.js";
+import { z } from "zod";
+import { env, hasLuluCredentials, hasStripeCredentials } from "../../env.js";
 import { db } from "../../db/index.js";
 import { orderItems, orders, products } from "../../db/schema.js";
 import { publicOrderId, randomLetters } from "../../lib/ids.js";
@@ -10,22 +9,37 @@ import { stripe } from "../../lib/stripe.js";
 import {
   DEFAULT_SHIPPING_COUNTRIES,
   STRIPE_SHIPPING_OPTIONS,
-  isShippingLevel,
 } from "../../lib/shipping.js";
 import { calculatePrintJobCost, dollarsStringToCents } from "../../lib/lulu.js";
-import { shippingAddressSchema } from "./shipping.js";
+import {
+  cartItemsSchema,
+  emailSchema,
+  jsonValidator,
+  shippingAddressSchema,
+  shippingLevelSchema,
+} from "../lib/validation.js";
 
 export const checkoutRoutes = new Hono();
 
 const checkoutSchema = z.object({
-  items: z.array(z.object({ id: z.string().min(1), quantity: z.number().int().positive() })).min(1),
-  email: z.string().email().optional(),
+  items: cartItemsSchema,
+  email: emailSchema.optional(),
   shippingAddress: shippingAddressSchema.optional(),
-  shippingLevel: z.string().refine(isShippingLevel).optional(),
+  shippingLevel: shippingLevelSchema.optional(),
 });
 
-checkoutRoutes.post("/v1/checkout", zValidator("json", checkoutSchema), async (c) => {
+checkoutRoutes.post("/v1/checkout", jsonValidator(checkoutSchema), async (c) => {
   const body = c.req.valid("json");
+  if (!hasStripeCredentials()) {
+    return c.json({ error: "Checkout is not configured yet" }, 503);
+  }
+  if (Boolean(body.shippingAddress) !== Boolean(body.shippingLevel)) {
+    return c.json({ error: "Shipping address and level are both required when quoting shipping" }, 400);
+  }
+  if (body.shippingAddress && !hasLuluCredentials()) {
+    return c.json({ error: "Shipping quotes are not configured yet" }, 503);
+  }
+
   const ids = [...new Set(body.items.map((i) => i.id))];
   const catalog = await db.select().from(products).where(inArray(products.id, ids));
   const byId = new Map(catalog.map((p) => [p.id, p]));
@@ -53,7 +67,7 @@ checkoutRoutes.post("/v1/checkout", zValidator("json", checkoutSchema), async (c
       })),
       shipping_address: {
         city: body.shippingAddress.city,
-        country_code: body.shippingAddress.country_code.toUpperCase(),
+        country_code: body.shippingAddress.country_code,
         postcode: body.shippingAddress.postcode,
         state_code: body.shippingAddress.state_code,
         street1: body.shippingAddress.street1,
@@ -83,9 +97,7 @@ checkoutRoutes.post("/v1/checkout", zValidator("json", checkoutSchema), async (c
       shippingCents,
       totalCents,
       shippingLevel,
-      shippingAddress: body.shippingAddress
-        ? { ...body.shippingAddress, country_code: body.shippingAddress.country_code.toUpperCase() }
-        : null,
+      shippingAddress: body.shippingAddress ?? null,
     })
     .returning();
 
@@ -141,6 +153,7 @@ checkoutRoutes.post("/v1/checkout", zValidator("json", checkoutSchema), async (c
     success_url: `${cfg.PUBLIC_APP_URL}/order/success?session_id={CHECKOUT_SESSION_ID}`,
     cancel_url: `${cfg.PUBLIC_APP_URL}/cart`,
     client_reference_id: order.id,
+    expires_at: Math.floor(Date.now() / 1000) + 60 * 60,
     metadata: {
       orderId: order.id,
       publicId: order.publicId,
@@ -167,24 +180,27 @@ checkoutRoutes.post("/v1/checkout", zValidator("json", checkoutSchema), async (c
     }));
   }
 
-  const session = await stripe().checkout.sessions.create(sessionParams);
+  try {
+    const session = await stripe().checkout.sessions.create(sessionParams);
+    if (!session.url) {
+      throw new Error("Stripe did not return a checkout URL");
+    }
 
-  if (!session.url) {
-    return c.json({ error: "Stripe did not return a checkout URL" }, 502);
+    await db
+      .update(orders)
+      .set({
+        stripeCheckoutSessionId: session.id,
+        updatedAt: new Date(),
+      })
+      .where(eq(orders.id, order.id));
+
+    return c.json({ url: session.url });
+  } catch (err) {
+    await db
+      .update(orders)
+      .set({ status: "canceled", updatedAt: new Date() })
+      .where(eq(orders.id, order.id));
+    console.error("checkout session create failed", err);
+    return c.json({ error: "Checkout is unavailable" }, 502);
   }
-
-  await db
-    .update(orders)
-    .set({
-      stripeCheckoutSessionId: session.id,
-      updatedAt: new Date(),
-    })
-    .where(eq(orders.id, order.id));
-
-  return c.json({
-    url: session.url,
-    sessionId: session.id,
-    orderId: order.id,
-    publicId: order.publicId,
-  });
 });

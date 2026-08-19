@@ -1,20 +1,17 @@
 import { Hono } from "hono";
-import { zValidator } from "@hono/zod-validator";
 import { z } from "zod";
 import { db } from "../../db/index.js";
 import { subscribers } from "../../db/schema.js";
+import { emailSchema, jsonValidator } from "../lib/validation.js";
 
 export const newsletterRoutes = new Hono();
 
 const schema = z.object({
-  email: z.string().email(),
+  email: emailSchema,
 });
 
-newsletterRoutes.post("/v1/newsletter", zValidator("json", schema), async (c) => {
+newsletterRoutes.post("/v1/newsletter", jsonValidator(schema), async (c) => {
   const { email } = c.req.valid("json");
-  await db
-    .insert(subscribers)
-    .values({ email: email.toLowerCase() })
-    .onConflictDoNothing({ target: subscribers.email });
+  await db.insert(subscribers).values({ email }).onConflictDoNothing({ target: subscribers.email });
   return c.json({ ok: true });
 });

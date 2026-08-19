@@ -1,11 +1,15 @@
-import { env } from "../env.js";
+import { env, hasLuluCredentials } from "../env.js";
 import { workerTick } from "./process-print-job.js";
 
 env();
 
 const POLL_MS = 2_000;
 
-console.log("mintmark worker started");
+console.log(
+  hasLuluCredentials()
+    ? "mintmark worker started"
+    : "mintmark worker started (Lulu not configured; print jobs idle)",
+)
 
 let running = false;
 

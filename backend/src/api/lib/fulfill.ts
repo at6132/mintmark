@@ -1,4 +1,4 @@
-import { eq } from "drizzle-orm";
+import { and, eq, inArray } from "drizzle-orm";
 import type Stripe from "stripe";
 import { db } from "../../db/index.js";
 import { orderItems, orders, products, type ShippingAddress } from "../../db/schema.js";
@@ -22,9 +22,7 @@ function shippingFromSession(session: Stripe.Checkout.Session): {
   };
   const collected = asRecord(raw.collected_information);
   const details =
-    asRecord(raw.shipping_details) ??
-    asRecord(collected?.shipping_details) ??
-    null;
+    asRecord(raw.shipping_details) ?? asRecord(collected?.shipping_details) ?? null;
   const addr = asRecord(details?.address);
   const customer = session.customer_details;
 
@@ -63,7 +61,19 @@ function shippingFromSession(session: Stripe.Checkout.Session): {
   return { address, level, shippingCents };
 }
 
+function paymentIntentSucceeded(session: Stripe.Checkout.Session): boolean {
+  const intent = session.payment_intent;
+  if (!intent || typeof intent === "string") return true;
+  return intent.status === "succeeded";
+}
+
 export async function fulfillPaidCheckout(session: Stripe.Checkout.Session): Promise<void> {
+  if (session.payment_status !== "paid") return;
+  if (!paymentIntentSucceeded(session)) return;
+  if (session.currency && session.currency !== "usd") {
+    throw new Error(`Unexpected checkout currency ${session.currency}`);
+  }
+
   const orderId = session.metadata?.orderId ?? session.client_reference_id;
   if (!orderId) {
     throw new Error("Checkout session missing orderId metadata");
@@ -71,13 +81,22 @@ export async function fulfillPaidCheckout(session: Stripe.Checkout.Session): Pro
 
   const [order] = await db.select().from(orders).where(eq(orders.id, orderId)).limit(1);
   if (!order) throw new Error(`Order ${orderId} not found`);
+  if (order.stripeCheckoutSessionId && order.stripeCheckoutSessionId !== session.id) {
+    throw new Error("Checkout session does not match this order");
+  }
+
+  if (typeof session.amount_total !== "number" || session.amount_total < order.subtotalCents) {
+    throw new Error("Paid amount does not cover order subtotal");
+  }
+
   if (order.status !== "pending_payment" && order.status !== "paid") {
     return;
   }
 
   const { address, level, shippingCents } = shippingFromSession(session);
   const shippingAddress = address ?? order.shippingAddress;
-  const shippingLevel = level ?? (order.shippingLevel && isShippingLevel(order.shippingLevel) ? order.shippingLevel : "MAIL");
+  const shippingLevel =
+    level ?? (order.shippingLevel && isShippingLevel(order.shippingLevel) ? order.shippingLevel : "MAIL");
 
   if (!shippingAddress) {
     throw new Error("Paid session is missing a shipping address");
@@ -90,30 +109,37 @@ export async function fulfillPaidCheckout(session: Stripe.Checkout.Session): Pro
     shippingAddress.phone_number = fallback;
   }
 
-  await db
-    .update(orders)
-    .set({
-      status: "paid",
-      email: session.customer_details?.email ?? order.email,
-      customerName: shippingAddress.name ?? order.customerName,
-      phone: shippingAddress.phone_number,
-      shippingAddress,
-      shippingLevel,
-      shippingCents: shippingCents ?? order.shippingCents,
-      totalCents: order.subtotalCents + (shippingCents ?? order.shippingCents),
-      stripeCheckoutSessionId: session.id,
-      stripePaymentIntentId:
-        typeof session.payment_intent === "string"
-          ? session.payment_intent
-          : session.payment_intent?.id ?? order.stripePaymentIntentId,
-      updatedAt: new Date(),
-    })
-    .where(eq(orders.id, order.id));
+  if (order.status === "pending_payment") {
+    const [claimed] = await db
+      .update(orders)
+      .set({
+        status: "paid",
+        email: session.customer_details?.email ?? order.email,
+        customerName: shippingAddress.name ?? order.customerName,
+        phone: shippingAddress.phone_number,
+        shippingAddress,
+        shippingLevel,
+        shippingCents: shippingCents ?? order.shippingCents,
+        totalCents: order.subtotalCents + (shippingCents ?? order.shippingCents),
+        stripeCheckoutSessionId: session.id,
+        stripePaymentIntentId:
+          typeof session.payment_intent === "string"
+            ? session.payment_intent
+            : session.payment_intent?.id ?? order.stripePaymentIntentId,
+        updatedAt: new Date(),
+      })
+      .where(and(eq(orders.id, order.id), eq(orders.status, "pending_payment")))
+      .returning({ id: orders.id });
+
+    if (!claimed) return;
+  }
 
   const items = await db.select().from(orderItems).where(eq(orderItems.orderId, order.id));
   const productIds = items.map((i) => i.productId);
-  const catalog = await db.select().from(products);
-  const byId = new Map(catalog.filter((p) => productIds.includes(p.id)).map((p) => [p.id, p]));
+  const catalog = productIds.length
+    ? await db.select().from(products).where(inArray(products.id, productIds))
+    : [];
+  const byId = new Map(catalog.map((p) => [p.id, p]));
 
   await enqueuePrintJob(order.id, {
     contact_email: env().LULU_CONTACT_EMAIL,
@@ -137,5 +163,5 @@ export async function fulfillPaidCheckout(session: Stripe.Checkout.Session): Pro
   await db
     .update(orders)
     .set({ status: "fulfilling", updatedAt: new Date() })
-    .where(eq(orders.id, order.id));
+    .where(and(eq(orders.id, order.id), eq(orders.status, "paid")));
 }

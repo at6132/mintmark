@@ -1,7 +1,7 @@
 import { Hono } from "hono";
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 import Stripe from "stripe";
-import { env } from "../../env.js";
+import { env, hasStripeCredentials } from "../../env.js";
 import { db } from "../../db/index.js";
 import { orders, webhookEvents } from "../../db/schema.js";
 import { stripe } from "../../lib/stripe.js";
@@ -10,16 +10,18 @@ import { fulfillPaidCheckout } from "../lib/fulfill.js";
 export const stripeWebhookRoutes = new Hono();
 
 stripeWebhookRoutes.post("/v1/webhooks/stripe", async (c) => {
+  if (!hasStripeCredentials()) {
+    return c.json({ error: "Checkout is not configured yet" }, 503);
+  }
   const signature = c.req.header("stripe-signature");
-  if (!signature) return c.json({ error: "Missing stripe-signature" }, 400);
+  if (!signature) return c.json({ error: "Invalid signature" }, 400);
 
   const raw = await c.req.text();
   let event: Stripe.Event;
   try {
     event = await stripe().webhooks.constructEventAsync(raw, signature, env().STRIPE_WEBHOOK_SECRET);
-  } catch (err) {
-    const message = err instanceof Error ? err.message : "Invalid signature";
-    return c.json({ error: message }, 400);
+  } catch {
+    return c.json({ error: "Invalid signature" }, 400);
   }
 
   const inserted = await db
@@ -33,12 +35,11 @@ stripeWebhookRoutes.post("/v1/webhooks/stripe", async (c) => {
     switch (event.type) {
       case "checkout.session.completed": {
         const session = event.data.object as Stripe.Checkout.Session;
-        if (session.payment_status === "paid" || session.status === "complete") {
-          const full = await stripe().checkout.sessions.retrieve(session.id, {
-            expand: ["shipping_cost.shipping_rate", "payment_intent"],
-          });
-          await fulfillPaidCheckout(full);
-        }
+        if (session.payment_status !== "paid") break;
+        const full = await stripe().checkout.sessions.retrieve(session.id, {
+          expand: ["shipping_cost.shipping_rate", "payment_intent"],
+        });
+        await fulfillPaidCheckout(full);
         break;
       }
       case "checkout.session.async_payment_succeeded": {
@@ -57,7 +58,7 @@ stripeWebhookRoutes.post("/v1/webhooks/stripe", async (c) => {
           await db
             .update(orders)
             .set({ status: "canceled", updatedAt: new Date() })
-            .where(eq(orders.id, orderId));
+            .where(and(eq(orders.id, orderId), eq(orders.status, "pending_payment")));
         }
         break;
       }

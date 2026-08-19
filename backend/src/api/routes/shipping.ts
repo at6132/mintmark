@@ -1,36 +1,30 @@
 import { inArray } from "drizzle-orm";
 import { db } from "../../db/index.js";
 import { products } from "../../db/schema.js";
-import {
-  calculatePrintJobCost,
-  dollarsStringToCents,
-} from "../../lib/lulu.js";
-import { env } from "../../env.js";
-import { isShippingLevel, type LuluShippingLevel } from "../../lib/shipping.js";
+import { calculatePrintJobCost, dollarsStringToCents } from "../../lib/lulu.js";
+import { env, hasLuluCredentials } from "../../env.js";
+import type { LuluShippingLevel } from "../../lib/shipping.js";
 import { z } from "zod";
 import { Hono } from "hono";
-import { zValidator } from "@hono/zod-validator";
-
-export const shippingAddressSchema = z.object({
-  name: z.string().min(1),
-  street1: z.string().min(1),
-  street2: z.string().optional(),
-  city: z.string().min(1),
-  state_code: z.string().default(""),
-  postcode: z.string().min(1),
-  country_code: z.string().length(2),
-  phone_number: z.string().min(5),
-});
+import {
+  cartItemsSchema,
+  jsonValidator,
+  shippingAddressSchema,
+  shippingLevelSchema,
+} from "../lib/validation.js";
 
 const quoteSchema = z.object({
-  items: z.array(z.object({ id: z.string().min(1), quantity: z.number().int().positive() })).min(1),
+  items: cartItemsSchema,
   shippingAddress: shippingAddressSchema,
-  shippingLevel: z.string().refine(isShippingLevel),
+  shippingLevel: shippingLevelSchema,
 });
 
 export const shippingRoutes = new Hono();
 
-shippingRoutes.post("/v1/shipping/quote", zValidator("json", quoteSchema), async (c) => {
+shippingRoutes.post("/v1/shipping/quote", jsonValidator(quoteSchema), async (c) => {
+  if (!hasLuluCredentials()) {
+    return c.json({ error: "Shipping quotes are not configured yet" }, 503);
+  }
   const body = c.req.valid("json");
   const ids = [...new Set(body.items.map((i) => i.id))];
   const rows = await db.select().from(products).where(inArray(products.id, ids));
@@ -54,7 +48,7 @@ shippingRoutes.post("/v1/shipping/quote", zValidator("json", quoteSchema), async
     line_items: lineItems,
     shipping_address: {
       city: body.shippingAddress.city,
-      country_code: body.shippingAddress.country_code.toUpperCase(),
+      country_code: body.shippingAddress.country_code,
       postcode: body.shippingAddress.postcode,
       state_code: body.shippingAddress.state_code,
       street1: body.shippingAddress.street1,
@@ -63,7 +57,6 @@ shippingRoutes.post("/v1/shipping/quote", zValidator("json", quoteSchema), async
     shipping_option: body.shippingLevel as LuluShippingLevel,
   });
 
-  const luluTotal = dollarsStringToCents(calc.total_cost_incl_tax) ?? 0;
   const luluShipping =
     dollarsStringToCents(calc.shipping_cost?.total_cost_incl_tax) ??
     dollarsStringToCents(calc.shipping_cost?.total_cost_excl_tax) ??
@@ -72,10 +65,7 @@ shippingRoutes.post("/v1/shipping/quote", zValidator("json", quoteSchema), async
 
   return c.json({
     shippingLevel: body.shippingLevel,
-    luluTotalCents: luluTotal,
-    luluShippingCents: luluShipping,
     customerShippingCents: luluShipping + handling,
     currency: "usd",
-    raw: calc,
   });
 });

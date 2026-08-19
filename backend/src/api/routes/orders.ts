@@ -2,9 +2,10 @@ import { Hono } from "hono";
 import { eq } from "drizzle-orm";
 import { db } from "../../db/index.js";
 import { orderItems, orders, printJobs } from "../../db/schema.js";
-import { stripe } from "../../lib/stripe.js";
 
 export const orderRoutes = new Hono();
+
+const STRIPE_SESSION_ID = /^cs_(test|live)_[A-Za-z0-9]{1,200}$/;
 
 async function orderPayload(orderId: string) {
   const items = await db.select().from(orderItems).where(eq(orderItems.orderId, orderId));
@@ -14,31 +15,16 @@ async function orderPayload(orderId: string) {
 
 orderRoutes.get("/v1/orders/session/:sessionId", async (c) => {
   const sessionId = c.req.param("sessionId");
-  let [order] = await db
+  if (!STRIPE_SESSION_ID.test(sessionId)) {
+    return c.json({ error: "Order not found" }, 404);
+  }
+
+  const [order] = await db
     .select()
     .from(orders)
     .where(eq(orders.stripeCheckoutSessionId, sessionId))
     .limit(1);
 
-  if (!order) {
-    const session = await stripe().checkout.sessions.retrieve(sessionId);
-    const orderId = session.metadata?.orderId;
-    if (!orderId) return c.json({ error: "Order not found" }, 404);
-    [order] = await db.select().from(orders).where(eq(orders.id, orderId)).limit(1);
-  }
-
-  if (!order) return c.json({ error: "Order not found" }, 404);
-  const { items, job } = await orderPayload(order.id);
-  return c.json(serializeOrder(order, items, job));
-});
-
-orderRoutes.get("/v1/orders/:id", async (c) => {
-  const id = c.req.param("id");
-  const [order] = await db
-    .select()
-    .from(orders)
-    .where(id.startsWith("mm_") ? eq(orders.publicId, id) : eq(orders.id, id))
-    .limit(1);
   if (!order) return c.json({ error: "Order not found" }, 404);
   const { items, job } = await orderPayload(order.id);
   return c.json(serializeOrder(order, items, job));
@@ -51,7 +37,6 @@ function serializeOrder(
 ) {
   return {
     order: {
-      id: order.id,
       publicId: order.publicId,
       status: order.status,
       email: order.email,
@@ -71,7 +56,6 @@ function serializeOrder(
     fulfillment: job
       ? {
           status: job.status,
-          luluStatus: job.luluStatus,
           trackingId: job.trackingId,
           trackingUrl: job.trackingUrl,
           carrier: job.carrier,

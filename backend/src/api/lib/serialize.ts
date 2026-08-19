@@ -1,7 +1,47 @@
 import type { Product } from "../../db/schema.js";
+import { products } from "../../db/schema.js";
 import { centsToDollars } from "../../lib/money.js";
 
-export function serializeProduct(p: Product) {
+export const publicProductColumns = {
+  id: products.id,
+  slug: products.slug,
+  company: products.company,
+  title: products.title,
+  priceCents: products.priceCents,
+  currency: products.currency,
+  status: products.status,
+  sector: products.sector,
+  ticker: products.ticker,
+  summary: products.summary,
+  volume: products.volume,
+  color: products.color,
+  moduleLink: products.moduleLink,
+  headquarters: products.headquarters,
+  spineHeight: products.spineHeight,
+  spineWidth: products.spineWidth,
+};
+
+export type PublicProduct = Pick<
+  Product,
+  | "id"
+  | "slug"
+  | "company"
+  | "title"
+  | "priceCents"
+  | "currency"
+  | "status"
+  | "sector"
+  | "ticker"
+  | "summary"
+  | "volume"
+  | "color"
+  | "moduleLink"
+  | "headquarters"
+  | "spineHeight"
+  | "spineWidth"
+>;
+
+export function serializeProduct(p: PublicProduct) {
   return {
     id: p.id,
     slug: p.slug,

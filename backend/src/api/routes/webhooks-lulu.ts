@@ -1,3 +1,4 @@
+import { createHash } from "node:crypto";
 import { Hono } from "hono";
 import { eq } from "drizzle-orm";
 import { db } from "../../db/index.js";
@@ -10,11 +11,22 @@ function asRecord(value: unknown): Record<string, unknown> | null {
   return value && typeof value === "object" ? (value as Record<string, unknown>) : null;
 }
 
+function httpsUrl(value: unknown): string | null {
+  if (typeof value !== "string") return null;
+  try {
+    const url = new URL(value);
+    if (url.protocol !== "https:") return null;
+    return url.toString();
+  } catch {
+    return null;
+  }
+}
+
 luluWebhookRoutes.post("/v1/webhooks/lulu", async (c) => {
   const raw = await c.req.text();
   const header = c.req.header("Lulu-HMAC-SHA256") ?? c.req.header("lulu-hmac-sha256");
   if (!verifyLuluHmac(raw, header)) {
-    return c.json({ error: "Invalid Lulu HMAC" }, 400);
+    return c.json({ error: "Invalid signature" }, 400);
   }
 
   let payload: { topic?: string; data?: Record<string, unknown> };
@@ -25,8 +37,7 @@ luluWebhookRoutes.post("/v1/webhooks/lulu", async (c) => {
   }
 
   const data = payload.data ?? {};
-  const luluId = data.id != null ? String(data.id) : "";
-  const eventId = `lulu:${payload.topic ?? "unknown"}:${luluId}:${String(data.date_modified ?? data.status ?? Date.now())}`;
+  const eventId = `lulu:${createHash("sha256").update(raw).digest("hex")}`;
 
   const inserted = await db
     .insert(webhookEvents)
@@ -36,6 +47,7 @@ luluWebhookRoutes.post("/v1/webhooks/lulu", async (c) => {
   if (!inserted.length) return c.json({ received: true, duplicate: true });
 
   try {
+    const luluId = data.id != null ? String(data.id) : "";
     if (payload.topic !== "PRINT_JOB_STATUS_CHANGED" || !luluId) {
       return c.json({ received: true });
     }
@@ -48,7 +60,7 @@ luluWebhookRoutes.post("/v1/webhooks/lulu", async (c) => {
       }
     }
     if (!job) {
-      console.warn("lulu webhook for unknown print job", luluId);
+      console.warn("lulu webhook for unknown print job");
       return c.json({ received: true, unknown: true });
     }
 
@@ -65,11 +77,13 @@ luluWebhookRoutes.post("/v1/webhooks/lulu", async (c) => {
     const firstLine = asRecord(Array.isArray(lineStatuses) ? lineStatuses[0] : null);
     const messages = asRecord(firstLine?.messages);
 
-    const trackingId = typeof messages?.tracking_id === "string" ? messages.tracking_id : job.trackingId;
+    const trackingId = typeof messages?.tracking_id === "string" ? messages.tracking_id.slice(0, 120) : job.trackingId;
     const trackingUrls = messages?.tracking_urls;
     const trackingUrl =
-      Array.isArray(trackingUrls) && typeof trackingUrls[0] === "string" ? trackingUrls[0] : job.trackingUrl;
-    const carrier = typeof messages?.carrier_name === "string" ? messages.carrier_name : job.carrier;
+      Array.isArray(trackingUrls) && typeof trackingUrls[0] === "string"
+        ? httpsUrl(trackingUrls[0]) ?? job.trackingUrl
+        : job.trackingUrl;
+    const carrier = typeof messages?.carrier_name === "string" ? messages.carrier_name.slice(0, 80) : job.carrier;
 
     await db
       .update(printJobs)

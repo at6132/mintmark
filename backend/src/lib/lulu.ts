@@ -1,9 +1,11 @@
 import { createHmac, timingSafeEqual } from "node:crypto";
-import { env } from "../env.js";
+import { env, hasLuluCredentials } from "../env.js";
 import type { ShippingAddress } from "../db/schema.js";
 import type { LuluShippingLevel } from "./shipping.js";
 
 type Token = { accessToken: string; expiresAt: number };
+
+const LULU_TIMEOUT_MS = 20_000;
 
 let tokenCache: Token | null = null;
 
@@ -13,6 +15,9 @@ function authHeader(): string {
 }
 
 export async function luluAccessToken(): Promise<string> {
+  if (!hasLuluCredentials()) {
+    throw new Error("Lulu is not configured");
+  }
   if (tokenCache && tokenCache.expiresAt > Date.now() + 30_000) {
     return tokenCache.accessToken;
   }
@@ -24,6 +29,7 @@ export async function luluAccessToken(): Promise<string> {
       "Content-Type": "application/x-www-form-urlencoded",
     },
     body: "grant_type=client_credentials",
+    signal: AbortSignal.timeout(LULU_TIMEOUT_MS),
   });
   if (!res.ok) {
     const text = await res.text();
@@ -44,7 +50,11 @@ async function luluFetch(path: string, init: RequestInit = {}): Promise<Response
   headers.set("Authorization", `Bearer ${token}`);
   if (!headers.has("Content-Type") && init.body) headers.set("Content-Type", "application/json");
   headers.set("Cache-Control", "no-cache");
-  return fetch(`${base}${path}`, { ...init, headers });
+  return fetch(`${base}${path}`, {
+    ...init,
+    headers,
+    signal: init.signal ?? AbortSignal.timeout(LULU_TIMEOUT_MS),
+  });
 }
 
 export type CostLineItem = {
@@ -143,14 +153,14 @@ export async function createPrintJob(input: CreatePrintJobInput): Promise<Record
 }
 
 export function verifyLuluHmac(rawBody: string, header: string | undefined): boolean {
-  if (!header) return false;
   const secret = env().LULU_WEBHOOK_SECRET || env().LULU_CLIENT_SECRET;
-  const digest = createHmac("sha256", secret).update(rawBody, "utf8").digest("hex");
+  if (!header || !secret) return false;
   const incoming = header.trim().toLowerCase().replace(/^sha256=/, "");
-  const a = Buffer.from(digest, "utf8");
-  const b = Buffer.from(incoming, "utf8");
-  if (a.length !== b.length) return false;
-  return timingSafeEqual(a, b);
+  if (!/^[0-9a-f]+$/.test(incoming) || incoming.length % 2 !== 0) return false;
+  const expected = createHmac("sha256", secret).update(rawBody, "utf8").digest();
+  const provided = Buffer.from(incoming, "hex");
+  if (provided.length !== expected.length) return false;
+  return timingSafeEqual(provided, expected);
 }
 
 export function dollarsStringToCents(value: string | undefined): number | null {

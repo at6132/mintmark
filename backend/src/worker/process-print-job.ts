@@ -1,4 +1,5 @@
 import { eq } from "drizzle-orm";
+import { hasLuluCredentials } from "../env.js";
 import { db } from "../db/index.js";
 import { orders } from "../db/schema.js";
 import { createPrintJob } from "../lib/lulu.js";
@@ -65,6 +66,7 @@ export async function processOnePrintJob(): Promise<boolean> {
 }
 
 export async function workerTick(): Promise<void> {
+  if (!hasLuluCredentials()) return;
   await touchStaleProcessing(10);
   for (let i = 0; i < 5; i++) {
     const did = await processOnePrintJob();

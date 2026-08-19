@@ -1,7 +1,7 @@
 import { randomBytes } from "node:crypto";
 
 export function publicOrderId(): string {
-  return `mm_${randomBytes(5).toString("hex")}`;
+  return `mm_${randomBytes(16).toString("hex")}`;
 }
 
 export function randomLetters(n = 8): string {
