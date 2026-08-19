@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "The Desk",
-  description: "Mintmark press desk — orders, customers, catalog, and the working paper.",
+  title: "Admin",
+  description: "Internal Mintmark ops console — orders, customers, catalog, fulfillment.",
+  robots: { index: false, follow: false },
 };
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {

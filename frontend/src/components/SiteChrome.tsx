@@ -285,16 +285,27 @@ function Footer() {
 }
 
 export function SiteChrome({ children }: { children: React.ReactNode }) {
+  const pathname = usePathname() || "/";
+  const isAdmin = pathname === "/admin" || pathname.startsWith("/admin/");
+
   return (
     <AuthProvider>
       <CartProvider>
         <BodyTemplateClass />
-        <TopBar />
-        <Header />
-        <main id="MainContent" className="content-for-layout">
-          {children}
-        </main>
-        <Footer />
+        {isAdmin ? (
+          <main id="MainContent" className="content-for-layout is-admin">
+            {children}
+          </main>
+        ) : (
+          <>
+            <TopBar />
+            <Header />
+            <main id="MainContent" className="content-for-layout">
+              {children}
+            </main>
+            <Footer />
+          </>
+        )}
       </CartProvider>
     </AuthProvider>
   );
