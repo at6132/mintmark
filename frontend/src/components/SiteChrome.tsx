@@ -7,6 +7,7 @@ import { siteContent } from "@/data/site";
 import { assets, appHref } from "@/lib/assets";
 import { CartProvider, useCart } from "@/lib/cart";
 import { AuthProvider, useAuth } from "@/lib/auth";
+import { WantListProvider } from "@/lib/wantlist";
 import { BodyTemplateClass } from "@/components/BodyTemplateClass";
 
 function TopBar() {
@@ -241,13 +242,9 @@ function Footer() {
         <div className="ara-mintmark-footer__brand">
           <div className="ara-mintmark-footer__brand-row">
             <Link href="/" className="ara-mintmark-footer__logo" aria-label="Mintmark">
-              <img
-                src={assets.logo}
-                className="ara-mintmark-footer__logo-image"
-                alt="Mintmark"
-                width={1000}
-                height={220}
-              />
+              {/* the wordmark is painted through a mask so it can carry the
+                  footer's gold-and-blue rather than its flat source colour */}
+              <span className="ara-mintmark-footer__logo-image" role="img" aria-label="Mintmark" />
             </Link>
           </div>
           {f.statement ? <p>{String(f.statement)}</p> : null}
@@ -290,6 +287,7 @@ export function SiteChrome({ children }: { children: React.ReactNode }) {
 
   return (
     <AuthProvider>
+      <WantListProvider>
       <CartProvider>
         <BodyTemplateClass />
         {isAdmin ? (
@@ -307,6 +305,7 @@ export function SiteChrome({ children }: { children: React.ReactNode }) {
           </>
         )}
       </CartProvider>
+      </WantListProvider>
     </AuthProvider>
   );
 }

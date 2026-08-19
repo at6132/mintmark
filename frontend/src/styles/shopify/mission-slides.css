@@ -594,8 +594,7 @@
 /* facade logo on the lead, tinted mint */
 .mm-lead__mark {
   display: block; width: clamp(120px, 16vw, 182px); height: auto; margin: 0 auto clamp(12px, 2vw, 20px);
-  filter: brightness(0) saturate(100%) invert(84%) sepia(26%) saturate(520%) hue-rotate(108deg) brightness(1.04)
-          drop-shadow(0 2px 5px rgba(0, 0, 0, 0.3));
+  filter: brightness(0) invert(1) drop-shadow(0 2px 5px rgba(0, 0, 0, 0.3));
 }
 
 /* remove the binder-hole circles; small handwriting size for labels */
@@ -640,8 +639,330 @@
   background: rgba(255, 255, 255, 0.06) !important; border-color: rgba(159, 224, 205, 0.4) !important; box-shadow: none !important;
 }
 
+/* mission statement — plays off the Trump-Accounts ad palette (navy ground, mint + gold accents) */
+.mm-lead__intro {
+  max-width: 40ch;
+  margin: clamp(16px, 2.4vw, 24px) auto 0;
+  font-family: var(--font-space-grotesk), "Space Grotesk", sans-serif;
+  font-size: clamp(14px, 1.5vw, 17px);
+  line-height: 1.5;
+  letter-spacing: 0.02em;
+  color: #fffdf6;
+}
+.mm-lead__statement {
+  max-width: 34ch;
+  margin: clamp(22px, 3.4vw, 34px) auto 0;
+  font-family: var(--font-fraunces), "Fraunces", Georgia, serif;
+  font-size: clamp(19px, 2.4vw, 28px);
+  font-weight: 400;
+  line-height: 1.5;
+  letter-spacing: -0.01em;
+  color: #e0e5ec;
+}
+.mm-lead__gold { font-style: normal; font-weight: 600; color: #e7b23e; }
+.mm-lead__mint { font-style: normal; font-weight: 600; color: #82ddc7; }
+.mm-lead__mintlite { font-style: normal; font-weight: 600; color: #d3f2e6; }
+.mm-lead__statement::before {
+  content: "";
+  display: block;
+  width: 46px;
+  height: 3px;
+  margin: 0 auto clamp(18px, 2.6vw, 26px);
+  border-radius: 999px;
+  background: linear-gradient(90deg, #176d5c, #1fbe57 22%, #e0a526 55%, #b88332 78%, #176d5c);
+}
+.mm-lead__brand {
+  font-weight: 700;
+  background: linear-gradient(100deg, #176d5c, #2f9c84 30%, #e0a526 70%, #176d5c);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+
 /* mission headline — typewriter: letters appear one at a time */
 .mm-write--type .mm-type__c { opacity: 1; animation: none; }
 @keyframes mm-type { to { opacity: 1; } }
 .mm-write--type .mm-write__w.is-em .mm-type__c { color: #c3f2e0; -webkit-text-fill-color: #c3f2e0; }
 @media (prefers-reduced-motion: reduce) { .mm-write--type .mm-type__c { opacity: 1; animation: none; } }
+
+/* ============================================================================
+   Three vertical slides — one per pillar, alternating mint / navy grounds.
+   Same design language as the lead: handwriting titles, gold + mint accents,
+   the signature green→gold trim.
+   ========================================================================== */
+.mm-vdeck { position: relative; }
+.mm-vslide {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  min-height: 88vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(70px, 12vh, 130px) clamp(24px, 6vw, 90px);
+}
+/* signature site trim — the catalog/conveyor blue hairline */
+.mm-vslide::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  z-index: 4;
+  background: linear-gradient(90deg, transparent, #5f86ee 18%, #3a5be0 50%, #7ba0f5 82%, transparent);
+}
+
+/* navy ground — echoes the Trump-Accounts ad box */
+.mm-vslide.is-navy {
+  color: #e6ebf2;
+  background:
+    radial-gradient(120% 140% at 100% 0%, rgba(58, 91, 224, 0.16), transparent 55%),
+    linear-gradient(155deg, #1b2236 0%, #10152a 60%, #0c1020 100%);
+}
+/* mint ground */
+.mm-vslide.is-mint {
+  color: #161b2e;
+  background:
+    radial-gradient(120% 120% at 0% 0%, rgba(23, 109, 92, 0.12), transparent 55%),
+    linear-gradient(178deg, #eafaf2, #cdeadd);
+}
+/* the last slide is a bright sunny sky that the tiles rain into and pile up on */
+.mm-vslide--mint {
+  background:
+    radial-gradient(78% 60% at 78% 4%, rgba(255, 243, 194, 0.9), rgba(255, 228, 148, 0.28) 40%, transparent 70%),
+    linear-gradient(180deg, #a6dbff 0%, #c9eaff 32%, #e9f6ec 58%, #f5e4b6 100%) !important;
+}
+
+/* ---- animated background layer + legibility scrim ---- */
+.mm-vslide__bg { position: absolute; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; }
+.mm-vslide__scrim { position: absolute; inset: 0; z-index: 1; pointer-events: none; }
+.is-navy .mm-vslide__scrim {
+  background: radial-gradient(62% 58% at 50% 50%, rgba(12, 16, 32, 0.94), rgba(12, 16, 32, 0.55) 46%, rgba(12, 16, 32, 0.12) 78%);
+}
+.is-mint .mm-vslide__scrim {
+  background: radial-gradient(62% 58% at 50% 50%, rgba(233, 249, 241, 0.94), rgba(233, 249, 241, 0.55) 46%, rgba(233, 249, 241, 0.1) 78%);
+}
+@media (prefers-reduced-motion: reduce) {
+  .mm-newscol, .mm-beltrow, .mm-rain-sq { animation: none !important; }
+}
+
+.mm-vslide__inner {
+  position: relative; z-index: 2;
+  width: min(100% - 24px, 880px);
+  margin: 0 auto;
+  display: flex; flex-direction: column; align-items: center;
+  text-align: center;
+}
+
+/* navy text box floating in the middle of each slide */
+.mm-vslide__card {
+  display: flex; flex-direction: column; align-items: center;
+  width: min(100%, 560px);
+  padding: clamp(26px, 3.6vw, 44px) clamp(28px, 4.4vw, 56px);
+  background: linear-gradient(160deg, #1f2d56 0%, #131f42 100%);
+  border: 1px solid #2c3d68;
+  border-radius: 16px;
+  box-shadow: 0 30px 66px rgba(8, 12, 26, 0.45);
+}
+
+/* kicker — clean caption line: "01 — Every day" */
+.mm-vslide__kicker {
+  display: inline-block;
+  font-family: var(--font-space-grotesk), "Space Grotesk", sans-serif;
+  font-size: 12px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase;
+  margin: clamp(10px, 1.6vw, 14px) 0 0;
+  color: #9fe0cd;
+}
+.mm-vslide__kicker b { color: #e7b23e; font-weight: 800; }
+
+/* handwriting title (reuses .mm-write Caveat) — mint on the navy box */
+.mm-vslide__title.mm-write {
+  margin: 0;
+  font-size: clamp(46px, 8vw, 104px);
+  line-height: 0.98;
+  -webkit-text-stroke: 0;
+  color: #82ddc7 !important; -webkit-text-fill-color: #82ddc7;
+}
+
+/* trim divider — blue hairline to match the site */
+.mm-vslide__rule {
+  display: block; width: 54px; height: 2px; border-radius: 999px;
+  margin: clamp(18px, 3vw, 26px) auto;
+  background: linear-gradient(90deg, transparent, #5f86ee, #3a5be0, #7ba0f5, transparent);
+}
+
+/* supporting line — the regular header font */
+.mm-vslide__line {
+  margin: clamp(12px, 1.8vw, 18px) auto 0;
+  max-width: 24ch;
+  font-family: var(--font-heading-family), "Fraunces", Georgia, serif;
+  font-size: clamp(20px, 2.5vw, 30px);
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  color: #eef2f7;
+}
+
+/* body copy — the regular header font */
+.mm-vslide__body {
+  margin: clamp(10px, 1.4vw, 16px) auto 0;
+  max-width: 40ch;
+  font-family: var(--font-heading-family), "Fraunces", Georgia, serif;
+  font-size: clamp(14px, 1.5vw, 17px);
+  font-weight: 500;
+  line-height: 1.5;
+  color: #c6d0e0;
+}
+
+/* ---- feature graphics inside the navy box ---- */
+.mm-feat { width: clamp(104px, 13vw, 138px); height: clamp(104px, 13vw, 138px); margin: 0 auto clamp(6px, 1.4vw, 12px); }
+.mm-feat--mail { height: clamp(96px, 12vw, 128px); }
+
+/* word-ball */
+.mm-ball-spin { transform-origin: 100px 100px; animation: mm-ball-rot 30s linear infinite; }
+.mm-ball-spin--rev { animation-duration: 22s; animation-direction: reverse; }
+@keyframes mm-ball-rot { to { transform: rotate(360deg); } }
+.mm-ball-txt--o { font-family: var(--font-space-grotesk), sans-serif; font-weight: 700; font-size: 12px; letter-spacing: 2.5px; fill: #82ddc7; }
+.mm-ball-txt--i { font-family: var(--font-space-grotesk), sans-serif; font-weight: 700; font-size: 11px; letter-spacing: 2px; fill: #e7b23e; }
+.mm-ball-core { font-family: var(--font-space-grotesk), sans-serif; font-weight: 800; font-size: 15px; letter-spacing: 1px; fill: #eafff8; }
+
+/* periodic table icon */
+.mm-feat--ptable { height: clamp(96px, 13vw, 132px); }
+.mm-pt-sym { font-family: var(--font-space-grotesk), sans-serif; font-weight: 800; font-size: 8px; fill: #0c1020; }
+.mm-pt-cell { animation: mm-pt-tw 5s ease-in-out infinite; animation-delay: calc(var(--i, 0) * 0.09s); }
+@keyframes mm-pt-tw { 0%, 100% { opacity: 0.72; } 50% { opacity: 1; } }
+
+/* mailbox — the digest drops through the slot, then the flag pops up */
+.mm-mail-pkg { animation: mm-mail-pkg 4s ease-in-out infinite; }
+@keyframes mm-mail-pkg {
+  0% { transform: translateY(-26px) rotate(-6deg); opacity: 0; }
+  14% { opacity: 1; }
+  48% { transform: translateY(84px) rotate(3deg); opacity: 1; }
+  60% { transform: translateY(98px) rotate(0deg); opacity: 0; }
+  100% { transform: translateY(98px); opacity: 0; }
+}
+.mm-mail-flag { transform-origin: 141px 112px; animation: mm-mail-flag 4s ease-in-out infinite; }
+@keyframes mm-mail-flag {
+  0%, 52% { transform: rotate(34deg); }
+  66%, 100% { transform: rotate(0deg); }
+}
+.mm-mail-q { font-family: var(--font-space-grotesk), sans-serif; font-weight: 800; font-size: 9px; fill: #0c1020; }
+
+@media (prefers-reduced-motion: reduce) {
+  .mm-ball-spin, .mm-mail-pkg, .mm-mail-flag, .mm-pt-cell { animation: none !important; }
+}
+
+/* ============================================================================
+   NEWS bg — homepage-newsroom look: columns of live headline cards drifting
+   ========================================================================== */
+.mm-vslide__bg--news {
+  display: flex; justify-content: center; gap: clamp(14px, 2vw, 26px);
+  padding: 0 clamp(10px, 3vw, 40px);
+}
+.mm-newscol { display: flex; flex-direction: column; gap: clamp(12px, 1.6vw, 18px); width: min(24%, 230px); will-change: transform; }
+.mm-newscol--up { animation: mm-col-up var(--sp, 40s) linear infinite; }
+.mm-newscol--dn { animation: mm-col-dn var(--sp, 40s) linear infinite; }
+@keyframes mm-col-up { from { transform: translateY(0); } to { transform: translateY(-50%); } }
+@keyframes mm-col-dn { from { transform: translateY(-50%); } to { transform: translateY(0); } }
+.mm-newscard {
+  flex: 0 0 auto; display: flex; flex-direction: column; gap: 7px;
+  padding: 13px 14px; border-radius: 10px;
+  background: #fbfdff; border: 1px solid #dfe7f2;
+  box-shadow: 0 10px 22px rgba(22, 30, 52, 0.10);
+}
+.mm-newscard__top { display: flex; align-items: center; justify-content: space-between; }
+.mm-newscard__tk {
+  font-family: var(--font-space-grotesk), sans-serif; font-weight: 800; font-size: 14px; letter-spacing: 0.03em;
+  color: #fff; background: var(--co); padding: 2px 8px; border-radius: 5px;
+}
+.mm-newscard__ar { font-style: normal; font-size: 13px; font-weight: 700; }
+.mm-newscard__ar.is-up { color: #12a67c; }
+.mm-newscard__ar.is-dn { color: #ed5c5c; }
+.mm-newscard__h { font-family: var(--font-fraunces), Georgia, serif; font-size: 15px; font-weight: 600; color: #16203a; line-height: 1.15; }
+.mm-newscard__l { height: 6px; border-radius: 3px; background: #e7edf6; }
+.mm-newscard__l--1 { width: 100%; }
+.mm-newscard__l--2 { width: 72%; }
+.mm-newscard__bars { display: flex; align-items: flex-end; gap: 4px; height: 30px; margin-top: 2px; }
+.mm-newscard__bars i { flex: 1; height: var(--h, 60%); border-radius: 2px 2px 0 0; background: linear-gradient(180deg, #7ba0f5, #3a5be0); }
+
+/* ============================================================================
+   DIGEST bg — conveyor belt of real-company covers, rows sliding both ways
+   ========================================================================== */
+.mm-vslide__bg--belt {
+  display: flex; flex-direction: column; justify-content: center;
+  gap: clamp(16px, 2.4vw, 30px);
+}
+.mm-beltrow { display: flex; width: max-content; gap: clamp(14px, 1.8vw, 22px); will-change: transform; }
+.mm-beltrow--l { animation: mm-belt-l var(--sp, 50s) linear infinite; }
+.mm-beltrow--r { animation: mm-belt-r var(--sp, 50s) linear infinite; }
+@keyframes mm-belt-l { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+@keyframes mm-belt-r { from { transform: translateX(-50%); } to { transform: translateX(0); } }
+.mm-belt-cover {
+  flex: 0 0 auto; position: relative; overflow: hidden;
+  width: clamp(96px, 12vw, 132px); height: clamp(128px, 16vw, 176px);
+  border-radius: 9px; padding: 13px 13px 11px;
+  display: flex; flex-direction: column; justify-content: flex-end; gap: 4px;
+  background: linear-gradient(158deg, color-mix(in srgb, var(--co) 80%, #0c1020), #0c1020 92%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 14px 26px rgba(0, 0, 0, 0.34), inset 0 1px 0 rgba(255, 255, 255, 0.10);
+}
+.mm-belt-cover::before { content: ""; position: absolute; top: 0; bottom: 0; left: 0; width: 5px; background: var(--co); }
+.mm-belt-cover__q {
+  position: absolute; top: 12px; left: 15px;
+  font-family: var(--font-space-grotesk), sans-serif; font-size: 8.5px; font-weight: 700; letter-spacing: 0.16em;
+  color: rgba(255, 255, 255, 0.62);
+}
+.mm-belt-cover__tk { font-family: var(--font-space-grotesk), sans-serif; font-weight: 800; font-size: clamp(16px, 1.7vw, 20px); letter-spacing: 0.03em; color: #fff; }
+.mm-belt-cover__nm { font-family: var(--font-space-grotesk), sans-serif; font-size: 9.5px; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255, 255, 255, 0.7); }
+.mm-belt-cover__band { height: 3px; width: 58%; border-radius: 2px; margin-top: 3px; background: linear-gradient(90deg, #7ba0f5, #3a5be0); }
+
+/* ============================================================================
+   MINT bg — periodic metal squares raining down
+   ========================================================================== */
+.mm-vslide__bg--rain { opacity: 1; }
+/* the sun */
+.mm-rain-sun {
+  position: absolute; top: 7%; right: 11%; z-index: 0;
+  width: clamp(90px, 11vw, 140px); height: clamp(90px, 11vw, 140px); border-radius: 50%;
+  background: radial-gradient(circle at 50% 46%, #fff6d0, #ffe081 52%, #ffcb4d 70%, rgba(255, 203, 77, 0) 73%);
+  box-shadow: 0 0 100px 34px rgba(255, 214, 120, 0.55);
+}
+/* sandy ground the tiles settle onto */
+.mm-rain-ground {
+  position: absolute; left: 0; right: 0; bottom: 0; height: 120px; z-index: 1;
+  background: linear-gradient(180deg, rgba(232, 214, 158, 0) 0%, #e7d199 46%, #d9be80 100%);
+}
+.mm-rain-sq {
+  position: absolute; top: -14vh;
+  left: calc(var(--x) * 1%);
+  width: var(--sz, 40px); height: var(--sz, 40px);
+  border-radius: 9px;
+  display: flex; align-items: center; justify-content: center;
+  background: linear-gradient(150deg, color-mix(in srgb, var(--co) 92%, #fff), color-mix(in srgb, var(--co) 62%, #000 24%));
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.34), 0 8px 16px rgba(20, 40, 30, 0.18);
+  color: rgba(255, 255, 255, 0.92); font-family: var(--font-space-grotesk), sans-serif; font-weight: 700; font-size: 12px;
+  animation: mm-rain var(--dur, 8s) linear infinite;
+  animation-delay: calc(var(--delay, 0) * -1s);
+}
+@keyframes mm-rain {
+  0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+  8% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { transform: translateY(128vh) rotate(26deg); opacity: 0; }
+}
+/* the settled dune — tiles piled along the bottom like sand */
+.mm-rain-pile { position: absolute; left: 0; right: 0; bottom: -8px; height: 140px; z-index: 2; pointer-events: none; }
+.mm-pile-sq {
+  position: absolute;
+  bottom: calc(var(--lift, 0) * 1px);
+  left: calc(var(--x, 0) * 1%);
+  width: var(--sz, 40px); height: var(--sz, 40px);
+  border-radius: 8px;
+  transform: rotate(calc(var(--rot, 0) * 1deg));
+  display: flex; align-items: center; justify-content: center;
+  background: linear-gradient(150deg, color-mix(in srgb, var(--co) 92%, #fff), color-mix(in srgb, var(--co) 62%, #000 24%));
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.34), 0 6px 12px rgba(20, 40, 30, 0.22);
+  color: rgba(255, 255, 255, 0.9); font-family: var(--font-space-grotesk), sans-serif; font-weight: 700; font-size: 11px;
+}

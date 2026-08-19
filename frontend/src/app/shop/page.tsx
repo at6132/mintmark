@@ -25,7 +25,8 @@ export default function ShopPage() {
         <div className="ara-shop__grid">
           {products.map((p) => {
             const paint = digestCover(p.color);
-            const photo = p.id === "apple" ? assets.appleDigestCover : undefined;
+            // a product may ship its own cover photo; otherwise the painted cover is used
+            const photo = undefined;
             const available = p.status === "AVAILABLE";
             return (
               <article key={p.id} className="ara-shop__card">

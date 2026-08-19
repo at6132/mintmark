@@ -34,8 +34,8 @@ export function BodyTemplateClass() {
       handle = pathname.split("/").filter(Boolean).pop() || "";
     } else if (pathname.startsWith("/companies/")) {
       pageType = "page";
-      suffix = "apple";
-      handle = pathname.split("/").filter(Boolean).pop() || "apple";
+      handle = pathname.split("/").filter(Boolean).pop() || "company";
+      suffix = handle;
     } else if (pathname === "/companies" || pathname === "/catalog" || pathname === "/cataloge") {
       pageType = "page";
       suffix = "cataloge";

@@ -1235,6 +1235,37 @@
   .ara-mintmark-hero .ara-mintmark-hero__market-ad--usa .ara-mintmark-hero__market-ad-top { margin: 2px 0 0; }
   .ara-mintmark-hero .ara-mintmark-hero__market-ad--usa .ara-mintmark-hero__market-ad-logo { width: 132px; }
 
+  /* right landing box — sliding ad carousel: same box shape, ads scroll one at a time */
+  .ara-mintmark-hero .ara-mintmark-hero__ad-carousel {
+    position: relative; flex: 1 1 auto; min-height: 300px;
+    margin: -16px -18px 0; overflow: hidden;
+  }
+  .ara-mintmark-hero .ara-mintmark-hero__ad-track {
+    display: flex; height: 100%; will-change: transform;
+    transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .ara-mintmark-hero .ara-mintmark-hero__ad-slide { flex: 0 0 100%; width: 100%; display: flex; }
+  .ara-mintmark-hero .ara-mintmark-hero__ad-slide > .ara-mintmark-hero__market-ad { flex: 1 1 auto; margin: 0; }
+  .ara-mintmark-hero .ara-mintmark-hero__ad-dots {
+    position: relative; z-index: 4; flex: 0 0 auto;
+    display: flex; justify-content: center; gap: 7px; margin-top: 12px;
+  }
+  .ara-mintmark-hero .ara-mintmark-hero__ad-dot {
+    width: 7px; height: 7px; border-radius: 50%; border: 0; padding: 0; cursor: pointer;
+    background: color-mix(in srgb, var(--ara-hero-gold) 38%, transparent);
+    transition: width 0.2s ease, background 0.2s ease, border-radius 0.2s ease;
+  }
+  .ara-mintmark-hero .ara-mintmark-hero__ad-dot.is-on { width: 20px; border-radius: 4px; background: linear-gradient(90deg, #176d5c, #e0a526); }
+
+  /* building-blocks ad — periodic table icon */
+  .ara-mintmark-hero .ara-mintmark-hero__blocks-table {
+    position: relative; z-index: 1; width: min(74%, 190px); margin: 6px auto 2px;
+  }
+  /* mint-tinted logo on the building-blocks ad */
+  .ara-mintmark-hero .ara-mintmark-hero__market-ad--blocks .ara-mintmark-hero__market-ad-logo {
+    filter: brightness(0) saturate(100%) invert(84%) sepia(26%) saturate(520%) hue-rotate(108deg) brightness(1.04);
+  }
+
   /* "write it 100 times" — real ruled paper, pencil handwriting, highlighted variants */
   .ara-mintmark-hero .ara-mintmark-hero__market-ad--lines { padding-top: 14px; }
   .ara-mintmark-hero .ara-mintmark-hero__lines-sheet {

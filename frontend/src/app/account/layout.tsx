@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Member Desk",
+  title: "Account",
   description: "Sign in or join the Mintmark ledger — the journal, the mint, and a press pass with your name on the plate.",
 };
 

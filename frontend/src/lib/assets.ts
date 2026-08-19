@@ -9,17 +9,14 @@ export const assets = {
   markApp: "/assets/mintmark-mark-app.png",
   mintEmblem: "/assets/mintmark-mint-emblem.png",
   bookplate: "/assets/mintmark-bookplate.png",
-  companyCoinNvda: "/assets/mintmark-company-coin-nvda.png",
   // Homepage media from Shopify Files
   heroBooks: "/images/hero-books.png",
-  nvdaLead: "/images/nvda-lead.png",
-  appleFeature: "/images/apple-feature.png",
-  costcoFeature: "/images/costco-feature.png",
-  questionCostco: "/images/question-costco.png",
+  // Placeholder art. Swap these for the day's real images, or point the block's
+  // own image field at an upload — nothing else needs to change.
+  leadPlaceholder: "/images/placeholder-lead.svg",
+  questionPlaceholder: "/images/placeholder-lead.svg",
   // Company / bookshelf file images
-  appleLogo: "/images/aa9f57b5-bb13-471c-9f31-aaf8905e82e4.png",
-  appleHero: "/images/8c72f11b-3415-4cdb-ac0c-643eacf49247.png",
-  appleDigestCover: "/images/mintmark-digest-cover-reference.png",
+  digestCoverReference: "/images/mintmark-digest-cover-reference.png",
   bookshelfDesktop: "/images/918ad2ad-aeea-4c3b-894f-9cc1cacd37eb.png",
   bookshelfMobile: "/images/c69ee960-dcda-4c7d-a3df-326f6ab46e02.png",
   bookshelfEmblem: "/images/b4f7d89e-f1bc-41ea-86a8-680c71157e96.png",
@@ -50,7 +47,6 @@ export function appHref(url?: string | null) {
     .replace("shopify://", "/");
   if (u === "/cataloge" || u === "/companies") u = "/catalog";
   if (u === "/the-mint") u = "/mint";
-  if (u === "/apple") u = "/companies/apple";
-  if (u === "/nvidia-digest" || u === "/nvidia") u = "/digests/nvidia";
+  if (u === "/companies/apple") u = "/catalog";
   return u;
 }

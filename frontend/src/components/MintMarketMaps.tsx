@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { marketMapsContent } from "@/data/marketMaps";
+import { SECTOR_COLORS } from "@/lib/sectors";
 
 type Company = {
   id: string;
@@ -12,14 +13,6 @@ type Company = {
   daily_move?: string;
 };
 
-const SECTOR_COLORS: Record<string, string> = {
-  Technology: "#1FA88F",
-  Financials: "#E0A526",
-  Healthcare: "#9A5BA6",
-  Consumer: "#7A9E5B",
-  Energy: "#C25B3F",
-  Industrials: "#4C6B8A",
-};
 
 export function MintMarketMaps() {
   const settings = marketMapsContent.settings as Record<string, unknown>;

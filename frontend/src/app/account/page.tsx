@@ -1,10 +1,10 @@
 import { Suspense } from "react";
-import { AccountLedger } from "@/components/AccountLedger";
+import { AccountDesk } from "@/components/AccountDesk";
 
 export default function AccountPage() {
   return (
     <Suspense>
-      <AccountLedger />
+      <AccountDesk />
     </Suspense>
   );
 }

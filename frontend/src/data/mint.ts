@@ -8,7 +8,7 @@
       "progress_two": "Pass its Framing Check — strike a mintmark",
       "progress_three": "All six levels struck — the mark mints",
       "search_label": "FIND A BOOK",
-      "search_placeholder": "Type a company name — Apple, Nike, Berkshire...",
+      "search_placeholder": "Type a company name…",
       "search_note": "Search levels, concepts and listed company books.",
       "matrix_heading": "The whole map",
       "matrix_description": "Read down a column for one level; read across a row to watch one job get harder from Day One to the corner office.",
@@ -106,7 +106,7 @@
         "subtitle": "Connect funding, supply chains, lifetime value, incentives, buybacks and toll-booth economics.",
         "status": "LEVEL IV",
         "company_count": "20 BOOKS",
-        "company_list": "Boeing, Disney, McDonald’s, Nike, Meta, Amazon, Walmart, Starbucks, Deere, Nestlé, Pepsi, J&J, Pfizer, UnitedHealth, ExxonMobil, Chevron, Shell, Costco, IKEA, Zara",
+        "company_list": "",
         "open_by_default": true,
         "raise_title": "Giving Up Slices",
         "raise_text": "Dilution — every new slice you sell to raise money shrinks everyone’s slice, yours included.",
@@ -204,22 +204,22 @@
     },
     "companies": [
       {
-        "id": "company_01_apple",
+        "id": "example_co",
         "type": "company",
-        "ticker": "AAPL",
-        "company_name": "Apple",
+        "ticker": "EXCO",
+        "company_name": "Example Co",
         "sector": "Technology",
         "market_cap": "3300",
         "daily_move": "0.6",
         "longitude": "-122.0322",
         "latitude": "37.3230",
-        "module_link": "/apple"
+        "module_link": ""
       },
       {
-        "id": "company_02_microsoft",
+        "id": "example_co",
         "type": "company",
-        "ticker": "MSFT",
-        "company_name": "Microsoft",
+        "ticker": "EXCO",
+        "company_name": "Example Co",
         "sector": "Technology",
         "market_cap": "3100",
         "daily_move": "1.1",
@@ -228,10 +228,10 @@
         "module_link": ""
       },
       {
-        "id": "company_03_nvidia",
+        "id": "example_co",
         "type": "company",
-        "ticker": "NVDA",
-        "company_name": "Nvidia",
+        "ticker": "EXCO",
+        "company_name": "Example Co",
         "sector": "Technology",
         "market_cap": "3200",
         "daily_move": "2.1",
@@ -240,10 +240,10 @@
         "module_link": ""
       },
       {
-        "id": "company_04_alphabet",
+        "id": "example_co",
         "type": "company",
-        "ticker": "GOOGL",
-        "company_name": "Alphabet",
+        "ticker": "EXCO",
+        "company_name": "Example Co",
         "sector": "Technology",
         "market_cap": "2100",
         "daily_move": "-0.4",
@@ -252,10 +252,10 @@
         "module_link": ""
       },
       {
-        "id": "company_05_visa",
+        "id": "example_co",
         "type": "company",
-        "ticker": "V",
-        "company_name": "Visa",
+        "ticker": "EXCO",
+        "company_name": "Example Co",
         "sector": "Financials",
         "market_cap": "600",
         "daily_move": "1.4",
@@ -264,10 +264,10 @@
         "module_link": ""
       },
       {
-        "id": "company_06_jpmorgan",
+        "id": "example_co",
         "type": "company",
-        "ticker": "JPM",
-        "company_name": "JPMorgan",
+        "ticker": "EXCO",
+        "company_name": "Example Co",
         "sector": "Financials",
         "market_cap": "680",
         "daily_move": "0.3",
@@ -276,10 +276,10 @@
         "module_link": ""
       },
       {
-        "id": "company_07_mastercard",
+        "id": "example_co",
         "type": "company",
-        "ticker": "MA",
-        "company_name": "Mastercard",
+        "ticker": "EXCO",
+        "company_name": "Example Co",
         "sector": "Financials",
         "market_cap": "460",
         "daily_move": "0.9",
@@ -288,10 +288,10 @@
         "module_link": ""
       },
       {
-        "id": "company_08_berkshire",
+        "id": "example_co",
         "type": "company",
-        "ticker": "BRK.B",
-        "company_name": "Berkshire",
+        "ticker": "EXCO",
+        "company_name": "Example Co",
         "sector": "Financials",
         "market_cap": "950",
         "daily_move": "0.2",
@@ -300,10 +300,10 @@
         "module_link": ""
       },
       {
-        "id": "company_09_union-pacific",
+        "id": "example_co",
         "type": "company",
-        "ticker": "UNP",
-        "company_name": "Union Pacific",
+        "ticker": "EXCO",
+        "company_name": "Example Co",
         "sector": "Industrials",
         "market_cap": "140",
         "daily_move": "-0.4",
@@ -312,10 +312,10 @@
         "module_link": ""
       },
       {
-        "id": "company_10_boeing",
+        "id": "example_co",
         "type": "company",
-        "ticker": "BA",
-        "company_name": "Boeing",
+        "ticker": "EXCO",
+        "company_name": "Example Co",
         "sector": "Industrials",
         "market_cap": "130",
         "daily_move": "-1.1",
@@ -324,10 +324,10 @@
         "module_link": ""
       },
       {
-        "id": "company_11_caterpillar",
+        "id": "example_co",
         "type": "company",
-        "ticker": "CAT",
-        "company_name": "Caterpillar",
+        "ticker": "EXCO",
+        "company_name": "Example Co",
         "sector": "Industrials",
         "market_cap": "170",
         "daily_move": "0.5",
@@ -336,10 +336,10 @@
         "module_link": ""
       },
       {
-        "id": "company_12_waste-mgmt",
+        "id": "example_co",
         "type": "company",
-        "ticker": "WM",
-        "company_name": "Waste Mgmt",
+        "ticker": "EXCO",
+        "company_name": "Example Co",
         "sector": "Industrials",
         "market_cap": "90",
         "daily_move": "0.6",
@@ -348,10 +348,10 @@
         "module_link": ""
       },
       {
-        "id": "company_13_exxonmobil",
+        "id": "example_co",
         "type": "company",
-        "ticker": "XOM",
-        "company_name": "ExxonMobil",
+        "ticker": "EXCO",
+        "company_name": "Example Co",
         "sector": "Energy",
         "market_cap": "520",
         "daily_move": "-0.8",
@@ -360,10 +360,10 @@
         "module_link": ""
       },
       {
-        "id": "company_14_chevron",
+        "id": "example_co",
         "type": "company",
-        "ticker": "CVX",
-        "company_name": "Chevron",
+        "ticker": "EXCO",
+        "company_name": "Example Co",
         "sector": "Energy",
         "market_cap": "300",
         "daily_move": "-0.3",
@@ -372,10 +372,10 @@
         "module_link": ""
       },
       {
-        "id": "company_15_conocophillips",
+        "id": "example_co",
         "type": "company",
-        "ticker": "COP",
-        "company_name": "ConocoPhillips",
+        "ticker": "EXCO",
+        "company_name": "Example Co",
         "sector": "Energy",
         "market_cap": "130",
         "daily_move": "-1.4",
@@ -384,10 +384,10 @@
         "module_link": ""
       },
       {
-        "id": "company_16_schlumberger",
+        "id": "example_co",
         "type": "company",
-        "ticker": "SLB",
-        "company_name": "Schlumberger",
+        "ticker": "EXCO",
+        "company_name": "Example Co",
         "sector": "Energy",
         "market_cap": "70",
         "daily_move": "0.7",
@@ -396,10 +396,10 @@
         "module_link": ""
       },
       {
-        "id": "company_17_costco",
+        "id": "example_co",
         "type": "company",
-        "ticker": "COST",
-        "company_name": "Costco",
+        "ticker": "EXCO",
+        "company_name": "Example Co",
         "sector": "Consumer",
         "market_cap": "400",
         "daily_move": "0.8",
@@ -408,10 +408,10 @@
         "module_link": ""
       },
       {
-        "id": "company_18_coca-cola",
+        "id": "example_co",
         "type": "company",
-        "ticker": "KO",
-        "company_name": "Coca-Cola",
+        "ticker": "EXCO",
+        "company_name": "Example Co",
         "sector": "Consumer",
         "market_cap": "270",
         "daily_move": "0.3",
@@ -420,10 +420,10 @@
         "module_link": ""
       },
       {
-        "id": "company_19_walmart",
+        "id": "example_co",
         "type": "company",
-        "ticker": "WMT",
-        "company_name": "Walmart",
+        "ticker": "EXCO",
+        "company_name": "Example Co",
         "sector": "Consumer",
         "market_cap": "620",
         "daily_move": "0.5",
@@ -432,10 +432,10 @@
         "module_link": ""
       },
       {
-        "id": "company_20_mcdonald-s",
+        "id": "example_co",
         "type": "company",
-        "ticker": "MCD",
-        "company_name": "McDonald's",
+        "ticker": "EXCO",
+        "company_name": "Example Co",
         "sector": "Consumer",
         "market_cap": "210",
         "daily_move": "-0.2",
@@ -444,10 +444,10 @@
         "module_link": ""
       },
       {
-        "id": "company_21_unitedhealth",
+        "id": "example_co",
         "type": "company",
-        "ticker": "UNH",
-        "company_name": "UnitedHealth",
+        "ticker": "EXCO",
+        "company_name": "Example Co",
         "sector": "Healthcare",
         "market_cap": "480",
         "daily_move": "1.2",
@@ -456,10 +456,10 @@
         "module_link": ""
       },
       {
-        "id": "company_22_j-j",
+        "id": "example_co",
         "type": "company",
-        "ticker": "JNJ",
-        "company_name": "J&J",
+        "ticker": "EXCO",
+        "company_name": "Example Co",
         "sector": "Healthcare",
         "market_cap": "380",
         "daily_move": "-0.5",
@@ -468,10 +468,10 @@
         "module_link": ""
       },
       {
-        "id": "company_23_eli-lilly",
+        "id": "example_co",
         "type": "company",
-        "ticker": "LLY",
-        "company_name": "Eli Lilly",
+        "ticker": "EXCO",
+        "company_name": "Example Co",
         "sector": "Healthcare",
         "market_cap": "780",
         "daily_move": "1.8",
@@ -480,10 +480,10 @@
         "module_link": ""
       },
       {
-        "id": "company_24_pfizer",
+        "id": "example_co",
         "type": "company",
-        "ticker": "PFE",
-        "company_name": "Pfizer",
+        "ticker": "EXCO",
+        "company_name": "Example Co",
         "sector": "Healthcare",
         "market_cap": "160",
         "daily_move": "-0.9",

@@ -68,7 +68,7 @@
   "footer": {
     "statement": "Big Ideas for Small Readers",
     "copyright_text": "All rights reserved.",
-    "bottom_text": "Big Ideas for Small Readers.",
+    "bottom_text": "",
     "logo_width": 330,
     "mobile_logo_width": 250,
     "emblem_width": 100,
@@ -87,10 +87,10 @@
     "padding_bottom": 40,
     "background_color": "#161b2e",
     "text_color": "#f2f8f6",
-    "muted_text_color": "#a7afbe",
-    "accent_color": "#1fa88f",
+    "muted_text_color": "#aab6d2",
+    "accent_color": "#7ba0f5",
     "gold_color": "#e0a526",
-    "border_color": "#2f3951"
+    "border_color": "#33406b"
   },
   "footerLinks": [
     {
@@ -118,14 +118,6 @@
       "heading": "Read",
       "links": [
         {
-          "title": "Apple File",
-          "href": "/companies/apple"
-        },
-        {
-          "title": "NVIDIA Digest",
-          "href": "/digests/nvidia"
-        },
-        {
           "title": "Shop Digests",
           "href": "/shop"
         }
@@ -135,7 +127,7 @@
       "heading": "Support",
       "links": [
         {
-          "title": "Member Desk",
+          "title": "Account",
           "href": "/account"
         },
         {
